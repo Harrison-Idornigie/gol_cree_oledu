@@ -1,5 +1,6 @@
 <?php
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\API\Auth\GoogleController;
 
 use App\Http\Controllers\API\{
     LearningPathController,
@@ -13,6 +14,12 @@ use App\Http\Controllers\API\{
     GuideController,
     UserProgressController
 };
+
+// Google Auth Routes 
+Route::prefix('auth')->group(function () {
+    Route::get('google/url', [GoogleController::class, 'getAuthUrl']);
+    Route::post('google/callback', [GoogleController::class, 'handleGoogleCallback']); // Changed to match controller method
+});
 
 Route::middleware(['auth:sanctum'])->group(function () {
     // Learning Content Routes - Read-only access for regular users
@@ -67,4 +74,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('/{type}/{id}', [UserProgressController::class, 'show']);
         Route::put('/{type}/{id}', [UserProgressController::class, 'update']);
     });
+
+    
 });

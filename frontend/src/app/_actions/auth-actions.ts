@@ -85,15 +85,13 @@ export async function register(formData: FormData) {
 
 export async function handleGoogleCallback(code: string): Promise<string> {
   try {
-    const response = await axiosInstance.post<AuthResponse>('/api/auth/google/callback', { code });
+    const response = await axiosInstance.post<AuthResponse>('/auth/google/callback', { code });
 
     if (response.data.data?.token) {
       await setCookie(response.data.data.token);
     }
 
     revalidatePath('/', 'layout');
-    
-    // Return redirect path based on user role
     return response.data.data?.user.role === UserRole.ADMIN ? '/admin' : '/learn';
   } catch (error) {
     throw new Error(getErrorMessage(error));
@@ -157,7 +155,7 @@ export async function updateProfile(formData: FormData) {
 
 export async function getGoogleAuthUrl(): Promise<string> {
   try {
-    const response = await axiosInstance.get<GoogleUrlResponse>('/api/auth/google/url');
+    const response = await axiosInstance.get<GoogleUrlResponse>('/auth/google/url');
     return response.data.url;
   } catch (error) {
     throw new Error(getErrorMessage(error));
