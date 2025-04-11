@@ -1,0 +1,50 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        // Word management
+        Schema::create('words', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('language_id')->constrained();
+            $table->string('text');
+            $table->string('pronunciation_key')->nullable(); // IPA or similar
+            $table->string('part_of_speech')->nullable();
+            $table->json('metadata')->nullable(); // Additional word properties
+            $table->timestamps();
+
+            $table->unique(['language_id', 'text', 'part_of_speech']);
+        });
+
+        Schema::create('word_translations', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('word_id')->constrained()->onDelete('cascade');
+            $table->foreignId('language_id')->constrained(); // Target language
+            $table->string('text');
+            $table->string('pronunciation_key')->nullable();
+            $table->text('context_notes')->nullable();
+            $table->json('usage_examples')->nullable();
+            $table->integer('translation_order')->default(1); // For multiple meanings
+            $table->timestamps();
+
+            $table->index(['word_id', 'language_id', 'translation_order']);
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('word_translations');
+        Schema::dropIfExists('words');
+    }
+};

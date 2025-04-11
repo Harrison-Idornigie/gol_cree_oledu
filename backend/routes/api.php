@@ -2,6 +2,7 @@
 use App\Http\Controllers\API\Auth\GoogleController;
 use App\Http\Controllers\API\ExerciseController;
 use App\Http\Controllers\API\GuideController;
+use App\Http\Controllers\API\LanguageController;
 use App\Http\Controllers\API\LearningPathController;
 use App\Http\Controllers\API\LessonController;
 use App\Http\Controllers\API\QuizController;
@@ -9,7 +10,8 @@ use App\Http\Controllers\API\QuizQuestionController;
 use App\Http\Controllers\API\SectionController;
 use App\Http\Controllers\API\UnitController;
 use App\Http\Controllers\API\UserProgressController;
-use App\Http\Controllers\API\VocabularyController;use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\API\VocabularyController;
+use Illuminate\Support\Facades\Route;
 
 // Google Auth Routes
 Route::prefix('auth')->group(function () {
@@ -33,10 +35,22 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     // Learning Content Routes - Read-only access for regular users
     // These routes should only provide access to published content
 
+    // Languages
+    Route::prefix('languages')->group(function () {
+        Route::get('/', [LanguageController::class, 'index']);
+        Route::get('/with-learning-paths', [LanguageController::class, 'withLearningPaths']);
+        Route::get('/{language}', [LanguageController::class, 'show']);
+        Route::get('/{language}/learning-paths', [LanguageController::class, 'learningPaths']);
+        Route::get('/{language}/proficiency-levels', [LanguageController::class, 'proficiencyLevels']);
+        Route::get('/{language}/progress', [LanguageController::class, 'userProgress']);
+    });
+
     // Learning Paths
     Route::get('learning-paths', [LearningPathController::class, 'index']);
     Route::get('learning-paths/{learningPath}', [LearningPathController::class, 'show']);
     Route::get('learning-paths/{learningPath}/progress', [LearningPathController::class, 'progress']);
+    Route::post('learning-paths/{learningPath}/enroll', [LearningPathController::class, 'enroll']);
+    Route::get('learning-paths/by-level/{level}', [LearningPathController::class, 'byLevel']);
 
     // Units
     Route::get('units', [UnitController::class, 'index']);

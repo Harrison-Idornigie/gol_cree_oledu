@@ -11,6 +11,11 @@ return new class extends Migration
         Schema::create('learning_paths', function (Blueprint $table) {
             $table->id();
             $table->string('title');
+            $table->foreignId('language_id')
+                ->nullable()
+                ->constrained()
+                ->onDelete('set null');
+
             $table->text('description');
             $table->string('target_level');
             $table->enum('status', ['draft', 'published', 'archived'])->default('draft');

@@ -1,5 +1,4 @@
 <?php
-
 namespace Database\Seeders;
 
 use App\Models\User;
@@ -13,11 +12,20 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // Create a test user
+        User::updateOrCreate(
+            ['email' => 'test@example.com'],
+            [
+                'name'              => 'Test User',
+                'password'          => bcrypt('password'),
+                'email_verified_at' => now(),
+            ]
+        );
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        // Run other seeders
+        $this->call([
+            LanguageSeeder::class,
+            LearningPathSeeder::class,
         ]);
     }
 }

@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use App\Models\Traits\HasAuditLog;
@@ -7,6 +6,7 @@ use App\Models\Traits\HasMedia;
 use App\Models\Traits\HasVersions;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
@@ -18,15 +18,16 @@ class LearningPath extends Model
 
     protected $fillable = [
         'title',
+        'language_id',
         'description',
         'target_level',
         'status',
-        'review_status'
+        'review_status',
     ];
 
     protected $casts = [
-        'status' => 'string',
-        'review_status' => 'string'
+        'status'        => 'string',
+        'review_status' => 'string',
     ];
 
     /**
@@ -34,11 +35,20 @@ class LearningPath extends Model
      */
     protected array $versionedAttributes = [
         'title',
+        'language_id',
         'description',
         'target_level',
         'status',
-        'review_status'
+        'review_status',
     ];
+
+    /**
+     * Get the language this learning path belongs to.
+     */
+    public function language(): BelongsTo
+    {
+        return $this->belongsTo(Language::class);
+    }
 
     /**
      * Get the units for the learning path.
@@ -114,16 +124,18 @@ class LearningPath extends Model
     public function getPreviewData(): array
     {
         return [
-            'id' => $this->id,
-            'title' => $this->title,
-            'description' => $this->description,
-            'target_level' => $this->target_level,
-            'status' => $this->status,
-            'units_count' => $this->units()->count(),
+            'id'            => $this->id,
+            'title'         => $this->title,
+            'language_id'   => $this->language_id,
+            'language'      => $this->language?->name,
+            'description'   => $this->description,
+            'target_level'  => $this->target_level,
+            'status'        => $this->status,
+            'units_count'   => $this->units()->count(),
             'lessons_count' => $this->getLessonCount(),
-            'thumbnail' => collect($this->getMedia('thumbnail'))->first()?->getUrl(),
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at
+            'thumbnail'     => collect($this->getMedia('thumbnail'))->first()?->getUrl(),
+            'created_at'    => $this->created_at,
+            'updated_at'    => $this->updated_at,
         ];
     }
 
@@ -133,15 +145,16 @@ class LearningPath extends Model
     public function getExportData(): array
     {
         return [
-            'id' => $this->id,
-            'title' => $this->title,
-            'description' => $this->description,
+            'id'           => $this->id,
+            'title'        => $this->title,
+            'language_id'  => $this->language_id,
+            'description'  => $this->description,
             'target_level' => $this->target_level,
-            'status' => $this->status,
-            'units' => $this->units->map->getExportData()->toArray(),
-            'media' => $this->media->groupBy('collection_name')->toArray(),
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at
+            'status'       => $this->status,
+            'units'        => $this->units->map->getExportData()->toArray(),
+            'media'        => $this->media->groupBy('collection_name')->toArray(),
+            'created_at'   => $this->created_at,
+            'updated_at'   => $this->updated_at,
         ];
     }
 
@@ -151,10 +164,11 @@ class LearningPath extends Model
     public static function importData(array $data): self
     {
         $learningPath = static::create([
-            'title' => $data['title'],
-            'description' => $data['description'],
+            'title'        => $data['title'],
+            'language_id'  => $data['language_id'] ?? null,
+            'description'  => $data['description'],
             'target_level' => $data['target_level'],
-            'status' => 'draft'
+            'status'       => 'draft',
         ]);
 
         foreach ($data['units'] ?? [] as $unitData) {

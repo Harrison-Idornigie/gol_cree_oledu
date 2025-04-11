@@ -11,55 +11,6 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // Core language management
-        Schema::create('languages', function (Blueprint $table) {
-            $table->id();
-            $table->string('code', 5);  // ISO code (e.g., 'en', 'ja', 'es')
-            $table->string('name');     // Display name
-            $table->string('native_name'); // Name in the language itself
-            $table->boolean('is_active')->default(true);
-            $table->timestamps();
-
-            $table->unique('code');
-        });
-
-        Schema::create('language_pairs', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('source_language_id')->constrained('languages');
-            $table->foreignId('target_language_id')->constrained('languages');
-            $table->boolean('is_active')->default(true);
-            $table->timestamps();
-
-            $table->unique(['source_language_id', 'target_language_id']);
-        });
-
-        // Word management
-        Schema::create('words', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('language_id')->constrained();
-            $table->string('text');
-            $table->string('pronunciation_key')->nullable(); // IPA or similar
-            $table->string('part_of_speech')->nullable();
-            $table->json('metadata')->nullable(); // Additional word properties
-            $table->timestamps();
-
-            $table->unique(['language_id', 'text', 'part_of_speech']);
-        });
-
-        Schema::create('word_translations', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('word_id')->constrained()->onDelete('cascade');
-            $table->foreignId('language_id')->constrained(); // Target language
-            $table->string('text');
-            $table->string('pronunciation_key')->nullable();
-            $table->text('context_notes')->nullable();
-            $table->json('usage_examples')->nullable();
-            $table->integer('translation_order')->default(1); // For multiple meanings
-            $table->timestamps();
-
-            $table->index(['word_id', 'language_id', 'translation_order']);
-        });
-
         // Sentence management
         Schema::create('sentences', function (Blueprint $table) {
             $table->id();
@@ -120,9 +71,5 @@ return new class extends Migration
         Schema::dropIfExists('sentence_words');
         Schema::dropIfExists('sentence_translations');
         Schema::dropIfExists('sentences');
-        Schema::dropIfExists('word_translations');
-        Schema::dropIfExists('words');
-        Schema::dropIfExists('language_pairs');
-        Schema::dropIfExists('languages');
     }
 };

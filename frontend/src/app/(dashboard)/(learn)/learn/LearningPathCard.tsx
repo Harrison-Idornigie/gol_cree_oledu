@@ -1,9 +1,13 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
 import { Star } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
+import { enrollInLearningPath } from "@/app/_actions/user/learning-path-actions";
+import { toast } from "@/components/ui/use-toast";
 
 interface LearningPath {
   id: string | number;
@@ -12,17 +16,22 @@ interface LearningPath {
   unlocked: boolean;
   units: number;
   unitsCompleted: number;
+  language?: string;
+  target_level?: string;
 }
 
 export default function LearningPathCard({
   path,
   isCompleted,
   isInProgress,
+  showEnrollButton = false,
 }: {
   path: LearningPath;
   isCompleted: boolean;
   isInProgress: boolean;
+  showEnrollButton?: boolean;
 }) {
+  const [isEnrolling, setIsEnrolling] = useState(false);
   const getStatusColor = () => {
     if (isCompleted) return "bg-green-100 text-green-700 border-green-200";
     if (isInProgress) return "bg-blue-100 text-blue-700 border-blue-200";
@@ -78,15 +87,66 @@ export default function LearningPathCard({
           />
         </div>
 
-        <Link href={`/learn/path/${path.id}`}>
+        {path.language && (
+          <div className="mb-2 text-xs text-muted-foreground">
+            <span className="font-medium">Language:</span> {path.language}
+          </div>
+        )}
+
+        {path.target_level && (
+          <div className="mb-3 text-xs text-muted-foreground">
+            <span className="font-medium">Level:</span> {path.target_level}
+          </div>
+        )}
+
+        {showEnrollButton ? (
           <Button
             className="w-full"
-            disabled={!path.unlocked}
-            variant={isCompleted ? "outline" : "default"}
+            disabled={!path.unlocked || isEnrolling}
+            onClick={async () => {
+              if (!path.unlocked) return;
+
+              setIsEnrolling(true);
+              try {
+                const result = await enrollInLearningPath(Number(path.id));
+                if (result.error) {
+                  toast({
+                    title: "Error",
+                    description: result.error,
+                    variant: "destructive",
+                  });
+                } else {
+                  toast({
+                    title: "Success",
+                    description:
+                      result.message ||
+                      "Successfully enrolled in learning path",
+                  });
+                }
+              } catch (error) {
+                toast({
+                  title: "Error",
+                  description: "Failed to enroll in learning path",
+                  variant: "destructive",
+                });
+              } finally {
+                setIsEnrolling(false);
+              }
+            }}
           >
-            {isCompleted ? "Review" : isInProgress ? "Continue" : "Start"}
+            {isEnrolling ? "Enrolling..." : "Enroll"}
           </Button>
-        </Link>
+        ) : (
+          <Link href={`/learn/path/${path.id}`}>
+            <Button
+              className="w-full"
+              disabled={!path.unlocked}
+              variant={isCompleted ? "outline" : "default"}
+            >
+              {isCompleted ? "Review" : isInProgress ? "Continue" : "Start"}
+            </Button>
+          </Link>
+        )}
       </CardContent>
     </Card>
   );
