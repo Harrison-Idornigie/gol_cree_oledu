@@ -1,9 +1,9 @@
-'use server';
+"use server";
 
-import { revalidatePath } from 'next/cache';
-import { cookies } from 'next/headers';
-import axiosInstance from '@/lib/axios';
-import { UserRole } from '@/types/user';
+import { revalidatePath } from "next/cache";
+import { cookies } from "next/headers";
+import axiosInstance from "@/lib/axios";
+import { UserRole } from "@/types/user";
 
 interface AuthResponse {
   error?: string;
@@ -24,39 +24,39 @@ interface GoogleUrlResponse {
 
 function getErrorMessage(error: unknown): string {
   if (error instanceof Error) return error.message;
-  if (typeof error === 'object' && error && 'message' in error) {
+  if (typeof error === "object" && error && "message" in error) {
     return String(error.message);
   }
-  return 'An unexpected error occurred';
+  return "An unexpected error occurred";
 }
 
-const setCookie = async(token: string) => {
+const setCookie = async (token: string) => {
   const cookieStore = await cookies();
-  cookieStore.set('auth_token', token, {
+  cookieStore.set("auth_token", token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax',
-    path: '/',
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    path: "/",
   });
 };
 
 const deleteCookie = async () => {
   const cookieStore = await cookies();
-  cookieStore.delete('auth_token');
+  cookieStore.delete("auth_token");
 };
 
 export async function login(formData: FormData) {
   try {
-    const response = await axiosInstance.post<AuthResponse>('/api/auth/login', {
-      email: formData.get('email'),
-      password: formData.get('password'),
+    const response = await axiosInstance.post<AuthResponse>("/api/auth/login", {
+      email: formData.get("email"),
+      password: formData.get("password"),
     });
 
     if (response.data.data?.token) {
       await setCookie(response.data.data.token);
     }
 
-    revalidatePath('/login', 'page');
+    revalidatePath("/login", "page");
     return response.data;
   } catch (error) {
     return { error: getErrorMessage(error) };
@@ -65,18 +65,21 @@ export async function login(formData: FormData) {
 
 export async function register(formData: FormData) {
   try {
-    const response = await axiosInstance.post<AuthResponse>('/api/auth/register', {
-      name: formData.get('name'),
-      email: formData.get('email'),
-      password: formData.get('password'),
-      password_confirmation: formData.get('password_confirmation'),
-    });
+    const response = await axiosInstance.post<AuthResponse>(
+      "/api/auth/register",
+      {
+        name: formData.get("name"),
+        email: formData.get("email"),
+        password: formData.get("password"),
+        password_confirmation: formData.get("password_confirmation"),
+      }
+    );
 
     if (response.data.data?.token) {
       await setCookie(response.data.data.token);
     }
 
-    revalidatePath('/register', 'page');
+    revalidatePath("/register", "page");
     return response.data;
   } catch (error) {
     return { error: getErrorMessage(error) };
@@ -85,14 +88,19 @@ export async function register(formData: FormData) {
 
 export async function handleGoogleCallback(code: string): Promise<string> {
   try {
-    const response = await axiosInstance.post<AuthResponse>('/auth/google/callback', { code });
+    const response = await axiosInstance.post<AuthResponse>(
+      "/auth/google/callback",
+      { code }
+    );
 
     if (response.data.data?.token) {
       await setCookie(response.data.data.token);
     }
 
-    revalidatePath('/', 'layout');
-    return response.data.data?.user.role === UserRole.ADMIN ? '/admin' : '/learn';
+    revalidatePath("/", "layout");
+    return response.data.data?.user.role === UserRole.ADMIN
+      ? "/admin"
+      : "/learn";
   } catch (error) {
     throw new Error(getErrorMessage(error));
   }
@@ -100,9 +108,9 @@ export async function handleGoogleCallback(code: string): Promise<string> {
 
 export async function logout() {
   try {
-    await axiosInstance.post('/api/auth/logout');
+    await axiosInstance.post("/api/auth/logout");
     await deleteCookie();
-    revalidatePath('/', 'layout');
+    revalidatePath("/", "layout");
     return { success: true };
   } catch (error) {
     return { error: getErrorMessage(error) };
@@ -111,42 +119,53 @@ export async function logout() {
 
 export async function getCurrentUser() {
   try {
-    const response = await axiosInstance.get<AuthResponse>('/api/auth/me');
+    const response = await axiosInstance.get<AuthResponse>("/api/auth/me");
     return response.data;
   } catch (error) {
     return { error: getErrorMessage(error) };
   }
 }
 
-export async function forgotPassword(formData: FormData) {
+export async function forgotPassword(email: string) {
   try {
-    const response = await axiosInstance.post('/api/auth/forgot-password', {
-      email: formData.get('email'),
+    const response = await axiosInstance.post("/api/auth/password/email", {
+      email: email,
     });
-    return response.data;
+    return { success: true, message: response.data.message };
   } catch (error) {
-    return { error: getErrorMessage(error) };
+    return { error: getErrorMessage(error), success: false };
   }
 }
 
-export async function resetPassword(formData: FormData) {
+export async function resetPassword(data: {
+  token: string;
+  email: string;
+  password: string;
+  password_confirmation: string;
+}) {
   try {
-    const response = await axiosInstance.post('/api/auth/reset-password', {
-      token: formData.get('token'),
-      email: formData.get('email'),
-      password: formData.get('password'),
-      password_confirmation: formData.get('password_confirmation'),
-    });
-    return response.data;
+    const response = await axiosInstance.post("/api/auth/password/reset", data);
+    return { success: true, message: response.data.message };
   } catch (error) {
-    return { error: getErrorMessage(error) };
+    return { error: getErrorMessage(error), success: false };
+  }
+}
+
+export async function resendVerificationEmail() {
+  try {
+    const response = await axiosInstance.post(
+      "/api/auth/email/verification-notification"
+    );
+    return { success: true, message: response.data.message };
+  } catch (error) {
+    return { error: getErrorMessage(error), success: false };
   }
 }
 
 export async function updateProfile(formData: FormData) {
   try {
-    const response = await axiosInstance.patch('/api/auth/profile', formData);
-    revalidatePath('/profile', 'page');
+    const response = await axiosInstance.patch("/api/auth/profile", formData);
+    revalidatePath("/profile", "page");
     return response.data;
   } catch (error) {
     return { error: getErrorMessage(error) };
@@ -155,7 +174,9 @@ export async function updateProfile(formData: FormData) {
 
 export async function getGoogleAuthUrl(): Promise<string> {
   try {
-    const response = await axiosInstance.get<GoogleUrlResponse>('/auth/google/url');
+    const response = await axiosInstance.get<GoogleUrlResponse>(
+      "/auth/google/url"
+    );
     return response.data.url;
   } catch (error) {
     throw new Error(getErrorMessage(error));

@@ -1,25 +1,42 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\API\Auth\LoginController;
-use App\Http\Controllers\API\Auth\RegisterController;
-use App\Http\Controllers\API\Auth\LogoutController;
+use App\Http\Controllers\API\Auth\ForgotPasswordController;
 use App\Http\Controllers\API\Auth\GoogleController;
+use App\Http\Controllers\API\Auth\LoginController;
+use App\Http\Controllers\API\Auth\LogoutController;
+use App\Http\Controllers\API\Auth\RegisterController;
+use App\Http\Controllers\API\Auth\ResetPasswordController;
+use App\Http\Controllers\API\Auth\VerificationController;
+use Illuminate\Support\Facades\Route;
 
 Route::group([
-    'prefix' => 'auth',
-    'as' => 'auth.',
-    'middleware' => 'api'
+    'prefix'     => 'auth',
+    'as'         => 'auth.',
+    'middleware' => 'api',
 ], function () {
     // Authentication routes
     Route::post('login', [LoginController::class, 'login']);
     Route::post('register', [RegisterController::class, 'register']);
-    
+
+    // Email verification routes
+    Route::get('email/verify/{id}/{hash}', [VerificationController::class, 'verify'])
+        ->middleware(['signed', 'throttle:6,1'])
+        ->name('verification.verify');
+
+    // Password reset routes
+    Route::post('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])
+        ->name('password.email');
+    Route::post('password/reset', [ResetPasswordController::class, 'reset'])
+        ->name('password.reset');
+
     // Protected routes that require authentication
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('logout', [LogoutController::class, 'logout']);
+        Route::post('email/verification-notification', [VerificationController::class, 'sendVerificationEmail'])
+            ->middleware(['throttle:6,1'])
+            ->name('verification.send');
     });
-    
+
     // Google OAuth routes
     Route::get('google', [GoogleController::class, 'redirectToGoogle']);
     Route::get('google/callback', [GoogleController::class, 'handleGoogleCallback']);

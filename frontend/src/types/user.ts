@@ -1,6 +1,6 @@
 export enum UserRole {
-  ADMIN = 'admin',
-  USER = 'user'
+  ADMIN = "admin",
+  USER = "user",
 }
 
 export interface User {
@@ -12,6 +12,7 @@ export interface User {
   is_active: boolean;
   created_at: string;
   updated_at: string;
+  email_verified_at: string | null;
 }
 
 export interface AdminInvite {
@@ -36,6 +37,7 @@ export interface UserData {
   email: string;
   avatar_url?: string;
   role: UserRole;
+  email_verified_at: string | null;
 }
 
 export interface AdminUserListResponse {
@@ -87,5 +89,9 @@ export const isAdmin = (user: User | null): boolean => {
 };
 
 export const getDefaultRedirectPath = (user: User | null): string => {
-  return user?.role === UserRole.ADMIN ? '/admin' : '/learn';
+  return user?.role === UserRole.ADMIN ? "/admin" : "/learn";
+};
+
+export const isEmailVerified = (user: User | null): boolean => {
+  return !!user?.email_verified_at;
 };
