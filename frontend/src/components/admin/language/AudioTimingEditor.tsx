@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { audioService, type WordTiming, type WaveformData } from '@/services/audioService';
+import { audioService, type WordTiming, type WaveformData } from '@/lib/services/audioService';
 import { Button } from '@/components/ui/button';
 
 interface Word {

@@ -1,33 +1,38 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { getGoogleAuthUrl, login } from '@/app/_actions/auth-actions';
-import { UserRole } from '@/types/user';
+import Link from "next/link";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { getGoogleAuthUrl, login } from "@/app/_actions/auth-actions";
 
 export default function LoginPage() {
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const router = useRouter();
 
   const handleEmailLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setError('');
+    setError("");
     setLoading(true);
 
     try {
       const result = await login(new FormData(e.currentTarget));
       if (result?.error) {
         setError(result.error);
-      } else if (result.success) {
+      } else {
         // Use client-side navigation after cookies are set
         router.refresh(); // Refresh to update auth state
-        router.push(result.redirect);
+
+        // Add post_login parameter to indicate this is a post-login redirect
+        const redirectUrl = new URL(result.redirect, window.location.origin);
+        redirectUrl.searchParams.set("post_login", "true");
+
+        console.log(`Login successful, redirecting to: ${result.redirect}`);
+        router.push(redirectUrl.pathname + redirectUrl.search);
       }
     } catch {
-      setError('Failed to login');
+      setError("Failed to login");
     } finally {
       setLoading(false);
     }
@@ -46,9 +51,7 @@ export default function LoginPage() {
         onClick={handleGoogleLogin}
         className="w-full bg-[#4285f4] text-white duo-button border-[#357abd] hover:bg-[#357abd] flex items-center justify-center gap-2"
       >
-        <span className="material-icons-outlined">
-          google
-        </span>
+        <span className="material-icons-outlined">google</span>
         Continue with Google
       </button>
 
@@ -71,7 +74,10 @@ export default function LoginPage() {
         )}
 
         <div>
-          <label htmlFor="email" className="block text-sm font-bold text-gray-700">
+          <label
+            htmlFor="email"
+            className="block text-sm font-bold text-gray-700"
+          >
             Email address
           </label>
           <div className="mt-1">
@@ -88,7 +94,10 @@ export default function LoginPage() {
         </div>
 
         <div>
-          <label htmlFor="password" className="block text-sm font-bold text-gray-700">
+          <label
+            htmlFor="password"
+            className="block text-sm font-bold text-gray-700"
+          >
             Password
           </label>
           <div className="mt-1">
@@ -110,7 +119,7 @@ export default function LoginPage() {
             disabled={loading}
             className="w-full duo-button"
           >
-            {loading ? 'Logging in...' : 'Start Learning!'}
+            {loading ? "Logging in..." : "Start Learning!"}
           </button>
         </div>
       </form>
@@ -118,15 +127,15 @@ export default function LoginPage() {
       <div className="space-y-4 text-center">
         <p className="text-sm text-gray-600">
           {"Don't have an account? "}
-          <Link 
-            href="/register" 
+          <Link
+            href="/register"
             className="font-bold text-[var(--duo-blue)] hover:text-[var(--duo-blue-hover)]"
           >
             Sign up for free
           </Link>
         </p>
 
-        <Link 
+        <Link
           href="/forgot-password"
           className="block text-sm font-bold text-[var(--duo-blue)] hover:text-[var(--duo-blue-hover)]"
         >

@@ -35,9 +35,15 @@ Route::group([
         Route::post('email/verification-notification', [VerificationController::class, 'sendVerificationEmail'])
             ->middleware(['throttle:6,1'])
             ->name('verification.send');
+        Route::get('me', [\App\Http\Controllers\API\Auth\UserController::class, 'me']);
     });
 
     // Google OAuth routes
-    Route::get('google', [GoogleController::class, 'redirectToGoogle']);
-    Route::get('google/callback', [GoogleController::class, 'handleGoogleCallback']);
+    Route::get('google', [GoogleController::class, 'redirectToGoogle'])->name('google.redirect');
+    Route::get('google/callback', [GoogleController::class, 'handleGoogleCallback'])->name('google.callback');
+    Route::get('google/url', [GoogleController::class, 'getAuthUrl']);
+    Route::post('google/callback', [GoogleController::class, 'handleGoogleCallback'])->name('google.callback.post');
+
+    // Token exchange endpoint for mobile apps and other clients
+    Route::post('google/token', [GoogleController::class, 'exchangeToken'])->name('google.token.exchange');
 });

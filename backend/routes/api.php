@@ -1,5 +1,4 @@
 <?php
-use App\Http\Controllers\API\Auth\GoogleController;
 use App\Http\Controllers\API\ExerciseController;
 use App\Http\Controllers\API\GuideController;
 use App\Http\Controllers\API\LanguageController;
@@ -13,11 +12,7 @@ use App\Http\Controllers\API\UserProgressController;
 use App\Http\Controllers\API\VocabularyController;
 use Illuminate\Support\Facades\Route;
 
-// Google Auth Routes
-Route::prefix('auth')->group(function () {
-    Route::get('google/url', [GoogleController::class, 'getAuthUrl']);
-    Route::post('google/callback', [GoogleController::class, 'handleGoogleCallback']); // Changed to match controller method
-});
+// All Google Auth Routes are now in auth.php
 
 // Routes that require authentication but not email verification
 Route::middleware(['auth:sanctum'])->group(function () {

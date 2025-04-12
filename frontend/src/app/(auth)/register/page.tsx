@@ -1,18 +1,18 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { register, getGoogleAuthUrl } from '@/app/_actions/auth-actions';
+import Link from "next/link";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { register, getGoogleAuthUrl } from "@/app/_actions/auth-actions";
 
 export default function RegisterPage() {
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setError('');
+    setError("");
     setLoading(true);
 
     try {
@@ -22,10 +22,17 @@ export default function RegisterPage() {
       } else if (result.success) {
         // Use client-side navigation after cookies are set
         router.refresh(); // Refresh to update auth state
-        router.push(result.redirect);
+
+        // Add post_login parameter to indicate this is a post-login redirect
+        const redirectPath = result.redirect || "/learn";
+        const redirectUrl = new URL(redirectPath, window.location.origin);
+        redirectUrl.searchParams.set("post_login", "true");
+
+        console.log(`Registration successful, redirecting to: ${redirectPath}`);
+        router.push(redirectUrl.pathname + redirectUrl.search);
       }
     } catch {
-      setError('Failed to create account');
+      setError("Failed to create account");
     } finally {
       setLoading(false);
     }
@@ -44,9 +51,7 @@ export default function RegisterPage() {
         onClick={handleGoogleLogin}
         className="w-full bg-[#4285f4] text-white duo-button border-[#357abd] hover:bg-[#357abd] flex items-center justify-center gap-2"
       >
-        <span className="material-icons-outlined">
-          google
-        </span>
+        <span className="material-icons-outlined">google</span>
         Continue with Google
       </button>
 
@@ -69,7 +74,10 @@ export default function RegisterPage() {
         )}
 
         <div>
-          <label htmlFor="name" className="block text-sm font-bold text-gray-700">
+          <label
+            htmlFor="name"
+            className="block text-sm font-bold text-gray-700"
+          >
             Full Name
           </label>
           <div className="mt-1">
@@ -85,7 +93,10 @@ export default function RegisterPage() {
         </div>
 
         <div>
-          <label htmlFor="email" className="block text-sm font-bold text-gray-700">
+          <label
+            htmlFor="email"
+            className="block text-sm font-bold text-gray-700"
+          >
             Email address
           </label>
           <div className="mt-1">
@@ -102,7 +113,10 @@ export default function RegisterPage() {
         </div>
 
         <div>
-          <label htmlFor="password" className="block text-sm font-bold text-gray-700">
+          <label
+            htmlFor="password"
+            className="block text-sm font-bold text-gray-700"
+          >
             Password
           </label>
           <div className="mt-1">
@@ -119,7 +133,10 @@ export default function RegisterPage() {
         </div>
 
         <div>
-          <label htmlFor="password_confirmation" className="block text-sm font-bold text-gray-700">
+          <label
+            htmlFor="password_confirmation"
+            className="block text-sm font-bold text-gray-700"
+          >
             Confirm Password
           </label>
           <div className="mt-1">
@@ -141,16 +158,16 @@ export default function RegisterPage() {
             disabled={loading}
             className="w-full duo-button"
           >
-            {loading ? 'Creating Account...' : 'Start Your Learning Journey'}
+            {loading ? "Creating Account..." : "Start Your Learning Journey"}
           </button>
         </div>
       </form>
 
       <div className="text-center">
         <p className="text-sm text-gray-600">
-          Already have an account?{' '}
-          <Link 
-            href="/login" 
+          Already have an account?{" "}
+          <Link
+            href="/login"
             className="font-bold text-[var(--duo-blue)] hover:text-[var(--duo-blue-hover)]"
           >
             Sign in

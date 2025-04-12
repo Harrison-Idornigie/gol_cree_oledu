@@ -1,16 +1,7 @@
 'use client';
 
-import {
-  AlertDialog as AlertDialogComponent,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
 
 export interface AlertDialogProps {
   trigger: React.ReactNode;
@@ -33,32 +24,48 @@ export function AlertDialog({
   onConfirm,
   onCancel,
 }: AlertDialogProps) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleOpen = () => setIsOpen(true);
+  const handleClose = () => {
+    setIsOpen(false);
+    onCancel?.();
+  };
+
+  const handleConfirm = () => {
+    onConfirm();
+    setIsOpen(false);
+  };
+
   return (
-    <AlertDialogComponent>
-      <AlertDialogTrigger asChild>
-        {trigger}
-      </AlertDialogTrigger>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>{title}</AlertDialogTitle>
-          <AlertDialogDescription>{description}</AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel onClick={onCancel}>
-            {cancelText}
-          </AlertDialogCancel>
-          <AlertDialogAction
-            onClick={onConfirm}
-            className={
-              variant === 'destructive'
-                ? 'bg-red-600 hover:bg-red-700'
-                : undefined
-            }
-          >
-            {confirmText}
-          </AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialogComponent>
+    <>
+      <div onClick={handleOpen}>{trigger}</div>
+      
+      {isOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <div className="bg-white rounded-lg shadow-lg p-6 max-w-md w-full">
+            <div className="mb-4">
+              <h3 className="text-lg font-semibold">{title}</h3>
+              <p className="text-sm text-gray-500 mt-1">{description}</p>
+            </div>
+            
+            <div className="flex justify-end gap-2">
+              <Button 
+                variant="outline" 
+                onClick={handleClose}
+              >
+                {cancelText}
+              </Button>
+              <Button 
+                onClick={handleConfirm}
+                className={variant === 'destructive' ? 'bg-red-600 hover:bg-red-700 text-white' : ''}
+              >
+                {confirmText}
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 }

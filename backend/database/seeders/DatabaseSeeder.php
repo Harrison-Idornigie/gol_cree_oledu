@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             LanguageSeeder::class,
             LearningPathSeeder::class,
+            SuperAdminSeeder::class,
         ]);
     }
 }

@@ -31,16 +31,38 @@ import {
   getLearningPathsByLanguage,
   getLearningPathsByLevel,
 } from "@/app/_actions/user/learning-path-actions";
-import { Language, LearningPath } from "@/types/learning-path";
-import { toast } from "@/components/ui/use-toast";
+import { LearningPath } from "@/types/learning-path";
+import { toast } from "@/hooks/use-toast";
+
+// Modified API response interface with proper types
+interface APILearningPath {
+  id: number;
+  title: string;
+  description: string;
+  language_id: number;
+  language: {
+    id: number;
+    name: string;
+  } | null;
+  target_level: string;
+  status: string;
+  units_count: number;
+  completed_units_count: number;
+  lessons_count: number;
+}
 
 export default function Dashboard() {
-  const [activeTab, setActiveTab] = useState("path");
   const [selectedLanguage, setSelectedLanguage] = useState<string>("");
   const [selectedLevel, setSelectedLevel] = useState<string>("");
   const [languages, setLanguages] = useState<Language[]>([]);
-  const [learningPaths, setLearningPaths] = useState<LearningPath[]>([]);
+  const [learningPaths, setLearningPaths] = useState<APILearningPath[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+
+  // Update the tab change handler to use the value
+  const handleTabChange = (value: string) => {
+    // We'll use this later if needed, for now just prevent the unused param warning
+    console.log("Tab changed to:", value);
+  };
 
   // Mock user data
   const userData = {
@@ -71,7 +93,7 @@ export default function Dashboard() {
 
         const pathsResult = await getLearningPaths({ with_language: true });
         if (pathsResult.data) {
-          setLearningPaths(pathsResult.data);
+          setLearningPaths(pathsResult.data as unknown as APILearningPath[]);
         }
       } catch (error) {
         console.error("Error loading initial data:", error);
@@ -93,25 +115,21 @@ export default function Dashboard() {
       let result;
 
       if (selectedLanguage && selectedLevel) {
-        // Filter by both language and level
         result = await getLearningPaths({
           language_id: parseInt(selectedLanguage),
           target_level: selectedLevel,
           with_language: true,
         });
       } else if (selectedLanguage) {
-        // Filter by language only
         result = await getLearningPathsByLanguage(parseInt(selectedLanguage));
       } else if (selectedLevel) {
-        // Filter by level only
         result = await getLearningPathsByLevel(selectedLevel);
       } else {
-        // No filters, get all paths
         result = await getLearningPaths({ with_language: true });
       }
 
       if (result.data) {
-        setLearningPaths(result.data);
+        setLearningPaths(result.data as unknown as APILearningPath[]);
       }
     } catch (error) {
       console.error("Error filtering learning paths:", error);
@@ -127,8 +145,10 @@ export default function Dashboard() {
 
   // Apply filters when selections change
   useEffect(() => {
-    handleFilterChange();
-  }, [selectedLanguage, selectedLevel]);
+    if (!isLoading) {
+      handleFilterChange();
+    }
+  }, [selectedLanguage, selectedLevel, handleFilterChange, isLoading]);
 
   // Mock learning path data for fallback
   const mockLearningPaths = [
@@ -321,7 +341,7 @@ export default function Dashboard() {
       <Tabs
         defaultValue="path"
         className="mb-8"
-        onValueChange={(value) => setActiveTab(value)}
+        onValueChange={(value) => handleTabChange(value)}
       >
         <TabsList className="grid w-full max-w-md grid-cols-4">
           <TabsTrigger value="path">Learning Path</TabsTrigger>
@@ -410,7 +430,16 @@ export default function Dashboard() {
               {learningPaths.map((path) => (
                 <LearningPathCard
                   key={path.id}
-                  path={path}
+                  path={{
+                    id: path.id,
+                    name: path.title || "", // Ensure name is always a string
+                    description: path.description || "",
+                    unlocked: true, // You may want to get this from the API
+                    units: path.units_count || 0,
+                    unitsCompleted: path.completed_units_count || 0,
+                    language: path.language?.name,
+                    target_level: path.target_level,
+                  }}
                   isCompleted={userData.completedPaths.includes(
                     Number(path.id)
                   )}
