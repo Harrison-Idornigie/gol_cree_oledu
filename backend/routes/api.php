@@ -8,6 +8,7 @@ use App\Http\Controllers\API\QuizController;
 use App\Http\Controllers\API\QuizQuestionController;
 use App\Http\Controllers\API\SectionController;
 use App\Http\Controllers\API\UnitController;
+use App\Http\Controllers\API\UserLanguageController;
 use App\Http\Controllers\API\UserProgressController;
 use App\Http\Controllers\API\VocabularyController;
 use Illuminate\Support\Facades\Route;
@@ -38,6 +39,14 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::get('/{language}/learning-paths', [LanguageController::class, 'learningPaths']);
         Route::get('/{language}/proficiency-levels', [LanguageController::class, 'proficiencyLevels']);
         Route::get('/{language}/progress', [LanguageController::class, 'userProgress']);
+    });
+
+    // User Selected Languages
+    Route::prefix('user/selected-languages')->group(function () {
+        Route::get('/', [UserLanguageController::class, 'index']);
+        Route::post('/', [UserLanguageController::class, 'store']);
+        Route::delete('/{languageId}', [UserLanguageController::class, 'destroy']);
+        Route::patch('/{languageId}/set-primary', [UserLanguageController::class, 'setPrimary']);
     });
 
     // Learning Paths

@@ -9,15 +9,25 @@ import {
   BookText,
   GraduationCap,
   Filter,
+  Globe,
+  Plus,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardFooter,
+} from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ChevronRight, Medal, Mic, Volume2 } from "lucide-react";
 import LearningPathCard from "./LearningPathCard";
 import Image from "next/image";
+import Link from "next/link";
 import {
   Select,
   SelectContent,
@@ -25,13 +35,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Badge } from "@/components/ui/badge";
 import {
   getLearningPaths,
   getLanguagesWithLearningPaths,
   getLearningPathsByLanguage,
   getLearningPathsByLevel,
 } from "@/app/_actions/user/learning-path-actions";
-import { LearningPath } from "@/types/learning-path";
+import { getSelectedLanguages } from "@/app/_actions/user/language-actions";
+import { Language, LearningPath } from "@/types/learning-path";
 import { toast } from "@/hooks/use-toast";
 
 // Modified API response interface with proper types
@@ -55,6 +67,7 @@ export default function Dashboard() {
   const [selectedLanguage, setSelectedLanguage] = useState<string>("");
   const [selectedLevel, setSelectedLevel] = useState<string>("");
   const [languages, setLanguages] = useState<Language[]>([]);
+  const [selectedLanguages, setSelectedLanguages] = useState<Language[]>([]);
   const [learningPaths, setLearningPaths] = useState<APILearningPath[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -89,6 +102,11 @@ export default function Dashboard() {
         const languagesResult = await getLanguagesWithLearningPaths();
         if (languagesResult.data) {
           setLanguages(languagesResult.data);
+        }
+
+        const selectedLanguagesResult = await getSelectedLanguages();
+        if (selectedLanguagesResult.data) {
+          setSelectedLanguages(selectedLanguagesResult.data);
         }
 
         const pathsResult = await getLearningPaths({ with_language: true });
@@ -331,7 +349,43 @@ export default function Dashboard() {
           </span>
         </div>
       </div>
-      <div className="m-8">
+
+      {/* Selected Languages Section */}
+      {selectedLanguages.length > 0 && (
+        <div className="mb-8">
+          <h2 className="mb-4 text-xl font-bold">Your Languages</h2>
+          <div className="flex flex-wrap gap-3">
+            {selectedLanguages.map((language) => (
+              <Link
+                key={language.id}
+                href={`/learn?language=${language.id}`}
+                className="group"
+              >
+                <div className="flex items-center gap-2 p-3 transition-colors border rounded-lg hover:bg-accent">
+                  <Globe className="w-5 h-5 text-primary" />
+                  <div>
+                    <div className="font-medium">{language.name}</div>
+                    <div className="text-xs text-muted-foreground">
+                      {language.native_name}
+                    </div>
+                  </div>
+                  <Badge variant="outline" className="ml-2">
+                    {language.code.toUpperCase()}
+                  </Badge>
+                </div>
+              </Link>
+            ))}
+            <Link href="/languages" className="group">
+              <div className="flex items-center gap-2 p-3 transition-colors border rounded-lg hover:bg-accent">
+                <Plus className="w-5 h-5 text-primary" />
+                <div className="font-medium">Add Language</div>
+              </div>
+            </Link>
+          </div>
+        </div>
+      )}
+
+      <div className="mb-8">
         <h2 className="mb-4 text-xl font-bold">Daily Goal</h2>
         <div className="flex items-center gap-4">
           <Progress value={60} className="w-full h-3" />

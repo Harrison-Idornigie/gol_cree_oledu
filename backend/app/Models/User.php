@@ -81,6 +81,24 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * Get the user's selected languages.
+     */
+    public function userLanguages(): HasMany
+    {
+        return $this->hasMany(UserLanguage::class);
+    }
+
+    /**
+     * Get the languages selected by the user.
+     */
+    public function selectedLanguages(): BelongsToMany
+    {
+        return $this->belongsToMany(Language::class, 'user_languages')
+            ->withPivot('is_primary', 'proficiency_level', 'metadata')
+            ->withTimestamps();
+    }
+
+    /**
      * XP Management
      */
     public function awardXp(int $amount, string $source, ?int $lessonId = null): void
