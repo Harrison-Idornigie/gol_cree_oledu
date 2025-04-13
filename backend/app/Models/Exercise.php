@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use App\Models\Traits\HasAuditLog;
@@ -8,20 +7,20 @@ use App\Models\Traits\HasVersions;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Exercise extends Model
 {
     use HasFactory, HasVersions, HasAuditLog, HasMedia;
 
-    const AUDIT_AREA = 'exercises';
+    public const AUDIT_AREA = 'exercises';
 
-    const TYPE_MULTIPLE_CHOICE = 'multiple_choice';
-    const TYPE_FILL_BLANK = 'fill_blank';
-    const TYPE_MATCHING = 'matching';
-    const TYPE_WRITING = 'writing';
-    const TYPE_SPEAKING = 'speaking';
+    public const TYPE_MULTIPLE_CHOICE = 'multiple_choice';
+    public const TYPE_FILL_BLANK      = 'fill_blank';
+    public const TYPE_MATCHING        = 'matching';
+    public const TYPE_WRITING         = 'writing';
+    public const TYPE_SPEAKING        = 'speaking';
 
     protected $fillable = [
         'section_id',
@@ -33,15 +32,15 @@ class Exercise extends Model
         'answers',
         'order',
         'status',
-        'review_status'
+        'review_status',
     ];
 
     protected $casts = [
-        'content' => 'array',
-        'answers' => 'array',
-        'order' => 'integer',
-        'status' => 'string',
-        'review_status' => 'string'
+        'content'       => 'array',
+        'answers'       => 'array',
+        'order'         => 'integer',
+        'status'        => 'string',
+        'review_status' => 'string',
     ];
 
     /**
@@ -51,7 +50,7 @@ class Exercise extends Model
         'type',
         'content',
         'answers',
-        'order'
+        'order',
     ];
 
     /**
@@ -110,8 +109,8 @@ class Exercise extends Model
         return $query->withCount(['attempts', 'attempts as successful_attempts' => function ($query) {
             $query->where('is_correct', true);
         }])
-        ->having('attempts_count', '>=', $minimumAttempts)
-        ->havingRaw('(successful_attempts / attempts_count) < ?', [$successThreshold]);
+            ->having('attempts_count', '>=', $minimumAttempts)
+            ->havingRaw('(successful_attempts / attempts_count) < ?', [$successThreshold]);
     }
 
     /**
@@ -121,10 +120,10 @@ class Exercise extends Model
     {
         return match ($this->type) {
             self::TYPE_MULTIPLE_CHOICE => $this->checkMultipleChoice($userAnswer),
-            self::TYPE_FILL_BLANK => $this->checkFillBlank($userAnswer),
-            self::TYPE_MATCHING => $this->checkMatching($userAnswer),
+            self::TYPE_FILL_BLANK      => $this->checkFillBlank($userAnswer),
+            self::TYPE_MATCHING        => $this->checkMatching($userAnswer),
             self::TYPE_WRITING, self::TYPE_SPEAKING => false, // Requires manual review
-            default => false
+            default                    => false
         };
     }
 
@@ -160,12 +159,15 @@ class Exercise extends Model
      */
     private function checkMatching($answers): bool
     {
-        if (!is_array($answers) || count($answers) !== count($this->answers['correct'])) {
+        // Get the correct answers from the content field
+        $correctAnswers = $this->content['answers']['correct'] ?? null;
+
+        if (! $correctAnswers || ! is_array($answers) || count($answers) !== count($correctAnswers)) {
             return false;
         }
 
-        foreach ($this->answers['correct'] as $key => $value) {
-            if (!isset($answers[$key]) || $answers[$key] !== $value) {
+        foreach ($correctAnswers as $key => $value) {
+            if (! isset($answers[$key]) || $answers[$key] !== $value) {
                 return false;
             }
         }
@@ -174,16 +176,28 @@ class Exercise extends Model
     }
 
     /**
+     * Get hint for the exercise
+     */
+    public function getHint(): ?array
+    {
+        if ($this->type === self::TYPE_MATCHING) {
+            return $this->content['answers']['correct'] ?? null;
+        }
+
+        return null;
+    }
+
+    /**
      * Get the export data structure
      */
     public function getExportData(): array
     {
         return [
-            'type' => $this->type,
+            'type'    => $this->type,
             'content' => $this->content,
             'answers' => $this->answers,
-            'order' => $this->order,
-            'media' => $this->media->groupBy('collection_name')->toArray(),
+            'order'   => $this->order,
+            'media'   => $this->media->groupBy('collection_name')->toArray(),
         ];
     }
 
@@ -194,10 +208,10 @@ class Exercise extends Model
     {
         return static::create([
             'section_id' => $section->id,
-            'type' => $data['type'],
-            'content' => $data['content'],
-            'answers' => $data['answers'],
-            'order' => $data['order']
+            'type'       => $data['type'],
+            'content'    => $data['content'],
+            'answers'    => $data['answers'],
+            'order'      => $data['order'],
         ]);
     }
 
@@ -208,23 +222,23 @@ class Exercise extends Model
     {
         return [
             'question_images' => [
-                'max_files' => 3,
+                'max_files'   => 3,
                 'conversions' => [
-                    'thumb' => ['width' => 100, 'height' => 100],
-                    'display' => ['width' => 600, 'height' => null]
-                ]
+                    'thumb'   => ['width' => 100, 'height' => 100],
+                    'display' => ['width' => 600, 'height' => null],
+                ],
             ],
-            'audio_prompts' => [
-                'max_files' => 1,
-                'allowed_types' => ['audio/mpeg', 'audio/wav']
+            'audio_prompts'   => [
+                'max_files'     => 1,
+                'allowed_types' => ['audio/mpeg', 'audio/wav'],
             ],
-            'answer_images' => [
-                'max_files' => 4,
+            'answer_images'   => [
+                'max_files'   => 4,
                 'conversions' => [
-                    'thumb' => ['width' => 100, 'height' => 100],
-                    'display' => ['width' => 400, 'height' => null]
-                ]
-            ]
+                    'thumb'   => ['width' => 100, 'height' => 100],
+                    'display' => ['width' => 400, 'height' => null],
+                ],
+            ],
         ];
     }
 
@@ -235,34 +249,34 @@ class Exercise extends Model
     {
         return match ($type) {
             self::TYPE_MULTIPLE_CHOICE => [
-                'content.question' => 'required|string',
-                'content.options' => 'required|array|min:2',
+                'content.question'  => 'required|string',
+                'content.options'   => 'required|array|min:2',
                 'content.options.*' => 'required|string',
-                'answers.correct' => 'required|string|in_array:content.options.*'
+                'answers.correct'   => 'required|string|in_array:content.options.*',
             ],
-            self::TYPE_FILL_BLANK => [
-                'content.text' => 'required|string',
-                'content.blanks' => 'required|array|min:1',
+            self::TYPE_FILL_BLANK      => [
+                'content.text'     => 'required|string',
+                'content.blanks'   => 'required|array|min:1',
                 'content.blanks.*' => 'required|integer',
-                'answers.correct' => 'required|array|size:content.blanks'
+                'answers.correct'  => 'required|array|size:content.blanks',
             ],
-            self::TYPE_MATCHING => [
-                'content.items' => 'required|array|min:2',
-                'content.items.*' => 'required|string',
-                'content.matches' => 'required|array|size:content.items',
+            self::TYPE_MATCHING        => [
+                'content.items'     => 'required|array|min:2',
+                'content.items.*'   => 'required|string',
+                'content.matches'   => 'required|array|size:content.items',
                 'content.matches.*' => 'required|string',
-                'answers.correct' => 'required|array|size:content.items'
+                'answers.correct'   => 'required|array|size:content.items',
             ],
-            self::TYPE_WRITING => [
-                'content.prompt' => 'required|string',
+            self::TYPE_WRITING         => [
+                'content.prompt'    => 'required|string',
                 'content.min_words' => 'required|integer|min:1',
-                'content.max_words' => 'required|integer|gt:content.min_words'
+                'content.max_words' => 'required|integer|gt:content.min_words',
             ],
-            self::TYPE_SPEAKING => [
-                'content.prompt' => 'required|string',
-                'content.duration' => 'required|integer|min:5|max:300'
+            self::TYPE_SPEAKING        => [
+                'content.prompt'   => 'required|string',
+                'content.duration' => 'required|integer|min:5|max:300',
             ],
-            default => []
+            default                    => []
         };
     }
 }

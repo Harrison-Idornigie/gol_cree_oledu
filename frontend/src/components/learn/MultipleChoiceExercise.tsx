@@ -6,8 +6,8 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { CheckCircle, XCircle, AlertCircle, Volume2 } from "lucide-react";
-import WordTooltip from "./WordTooltip";
 import { getWordsForExercise } from "@/app/_actions/user/word-actions";
+import ClickableText from "./ClickableText";
 
 import { WordData } from "@/types/vocabulary";
 
@@ -88,34 +88,7 @@ export default function MultipleChoiceExercise({
 
   // Function to render text with clickable words
   const renderWithClickableWords = (text: string) => {
-    // Simple word splitting - in a real app, you'd want more sophisticated parsing
-    const words = text.split(/\s+/);
-
-    return (
-      <>
-        {words.map((word, index) => {
-          // Clean the word from punctuation for lookup
-          const cleanWord = word.replace(/[.,!?;:'"()]/g, "");
-          const wordInfo = localWordData[cleanWord.toLowerCase()];
-
-          if (wordInfo) {
-            return (
-              <span key={index}>
-                <WordTooltip word={wordInfo} />
-                {index < words.length - 1 ? " " : ""}
-              </span>
-            );
-          }
-
-          return (
-            <span key={index}>
-              {word}
-              {index < words.length - 1 ? " " : ""}
-            </span>
-          );
-        })}
-      </>
-    );
+    return <ClickableText text={text} wordData={localWordData} />;
   };
 
   return (

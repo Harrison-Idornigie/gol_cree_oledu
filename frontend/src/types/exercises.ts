@@ -85,20 +85,60 @@ export type Question =
   | SpeakingQuestion;
 
 /**
+ * Exercise content structure
+ */
+export interface ExerciseContent {
+  // Common properties
+  word_ids?: number[];
+  word_mapping?: Record<string, number>;
+
+  // Multiple choice properties
+  question?: string;
+  options?: string[];
+  explanation?: string;
+
+  // Fill in blank properties
+  text?: string;
+  blanks?: number[];
+
+  // Matching properties
+  instructions?: string;
+  items?: string[];
+  matches?: string[];
+
+  // Writing properties
+  prompt?: string;
+  min_words?: number;
+  max_words?: number;
+
+  // Speaking properties
+  duration?: number;
+}
+
+/**
+ * Exercise answers structure
+ */
+export interface ExerciseAnswers {
+  correct: any; // Can be string, string[], or Record<string, number> depending on exercise type
+}
+
+/**
  * Exercise data structure
  */
 export interface Exercise {
   id: number;
-  section_id?: number;
-  lesson_id?: number;
+  section_id: number;
+  lesson_id: number;
   title: string;
-  slug?: string;
+  slug: string;
   type: ExerciseType;
-  content: Question[];
-  answers?: Record<string, string | string[] | Record<string, string>>;
-  order?: number;
-  status?: string;
+  content: ExerciseContent;
+  answers?: ExerciseAnswers;
+  order: number;
+  status: string;
   review_status?: string;
+  created_at?: string;
+  updated_at?: string;
 }
 
 /**

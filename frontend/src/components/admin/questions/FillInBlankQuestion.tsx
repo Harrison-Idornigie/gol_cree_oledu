@@ -190,7 +190,7 @@ export default function FillInBlankQuestion({
 
           {/* Blanks */}
           <div className="space-y-4">
-            <div className="flex justify-between items-center">
+            <div className="flex items-center justify-between">
               <label className="text-sm font-medium">Blanks</label>
               <Button type="button" onClick={addBlank}>
                 Add Blank
@@ -199,7 +199,7 @@ export default function FillInBlankQuestion({
             
             {localQuestion.blanks.map((blank, blankIndex) => (
               <Card key={blankIndex} className="p-4 space-y-4">
-                <div className="flex justify-between items-start">
+                <div className="flex items-start justify-between">
                   <h4 className="font-medium">Blank {blankIndex + 1}</h4>
                   <Button
                     type="button"
@@ -282,7 +282,7 @@ export default function FillInBlankQuestion({
               <img
                 src={item.url}
                 alt={item.alt || ''}
-                className="max-w-full h-auto rounded-lg"
+                className="h-auto max-w-full rounded-lg"
               />
             ) : (
               <audio controls className="w-full">

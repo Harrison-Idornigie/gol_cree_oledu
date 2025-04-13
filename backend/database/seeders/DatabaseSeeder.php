@@ -29,6 +29,11 @@ class DatabaseSeeder extends Seeder
             LearningPathSeeder::class,
             SuperAdminSeeder::class,
             UserLanguageSeeder::class,
+
+            // Exercise seeders
+            FillInBlankExerciseSeeder::class,
+            MultipleChoiceExerciseSeeder::class,
+            MatchingExerciseSeeder::class,
         ]);
     }
 }

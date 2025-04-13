@@ -1,96 +1,94 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
-import { ArrowLeft, CheckCircle } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
-import { Card, CardContent } from "@/components/ui/card";
 import Link from "next/link";
-import MultipleChoiceExercise from "@/components/learn/MultipleChoiceExercise";
 import { useSequentialLearning } from "@/hooks/useSequentialLearning";
 import { LockedContent } from "@/components/ui/locked-content";
-
-// Mock data - in a real app, this would come from an API
-const exerciseData = {
-  id: 1006,
-  title: "Counting Practice",
-  type: "multiple_choice",
-  questions: [
-    {
-      id: 1,
-      question: "How do you say 'five' in Spanish?",
-      options: ["uno", "tres", "cinco", "siete"],
-      correctAnswer: "cinco",
-      explanation: "Cinco is the Spanish word for 'five'.",
-    },
-    {
-      id: 2,
-      question: "Which number comes after 'ocho' (8)?",
-      options: ["siete", "nueve", "diez", "seis"],
-      correctAnswer: "nueve",
-      explanation: "Nueve (9) comes after ocho (8).",
-    },
-    {
-      id: 3,
-      question: "What is 'dos' + 'tres'?",
-      options: ["tres", "cuatro", "cinco", "seis"],
-      correctAnswer: "cinco",
-      explanation: "Dos (2) + tres (3) = cinco (5).",
-    },
-  ],
-};
-
-// Mock vocabulary data - in a real app, this would come from an API
-const vocabularyData = {
-  cinco: {
-    text: "cinco",
-    translation: "five",
-    phonetic: "ˈθiŋko",
-    audioUrl: "https://example.com/audio/cinco.mp3",
-    partOfSpeech: "numeral",
-    example: "Tengo cinco dedos en cada mano.",
-  },
-  nueve: {
-    text: "nueve",
-    translation: "nine",
-    phonetic: "ˈnweβe",
-    audioUrl: "https://example.com/audio/nueve.mp3",
-    partOfSpeech: "numeral",
-    example: "El número nueve es mi favorito.",
-  },
-  ocho: {
-    text: "ocho",
-    translation: "eight",
-    phonetic: "ˈotʃo",
-    audioUrl: "https://example.com/audio/ocho.mp3",
-    partOfSpeech: "numeral",
-    example: "Hay ocho planetas en nuestro sistema solar.",
-  },
-};
+import ExerciseContainer from "@/components/learn/ExerciseContainer";
+import {
+  getExercisesForLesson,
+  getWordsForExercises,
+} from "@/app/_actions/user/exercise-actions";
+import { Exercise } from "@/types/exercises";
+import { WordData } from "@/types/vocabulary";
+import { LoadingSpinner } from "@/components/ui/loading-spinner";
 
 export default function ExercisePage() {
   const params = useParams();
   const lessonId = Number.parseInt(params.lessonId as string);
   const pathId = params.id as string;
 
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [userAnswers, setUserAnswers] = useState<Record<number, boolean>>({});
-  const [isCompleted, setIsCompleted] = useState(false);
+  const [exercises, setExercises] = useState<Exercise[]>([]);
+  const [wordData, setWordData] = useState<Record<string, WordData>>({});
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   // Check if the lesson is unlocked
-  const { isUnlocked, isLoading, error } = useSequentialLearning({
+  const {
+    isUnlocked,
+    isLoading: isCheckingAccess,
+    error: accessError,
+  } = useSequentialLearning({
     type: "lesson",
     id: lessonId,
   });
 
+  useEffect(() => {
+    async function loadExercises() {
+      try {
+        setIsLoading(true);
+
+        // Fetch exercises for the lesson
+        const exerciseData = await getExercisesForLesson(lessonId);
+        setExercises(exerciseData);
+
+        // Extract all word IDs from the exercises
+        const wordIds = new Set<number>();
+        exerciseData.forEach((exercise) => {
+          // Add word IDs from content
+          if (exercise.content.word_ids) {
+            exercise.content.word_ids.forEach((id: number) => wordIds.add(id));
+          }
+
+          // Add word IDs from word mapping
+          if (exercise.content.word_mapping) {
+            Object.values(exercise.content.word_mapping).forEach((id) => {
+              if (typeof id === "number") {
+                wordIds.add(id);
+              }
+            });
+          }
+        });
+
+        // Fetch word data for all word IDs
+        if (wordIds.size > 0) {
+          const words = await getWordsForExercises(Array.from(wordIds));
+          setWordData(words);
+        }
+
+        setIsLoading(false);
+      } catch (error) {
+        console.error("Error loading exercises:", error);
+        setError("Failed to load exercises. Please try again later.");
+        setIsLoading(false);
+      }
+    }
+
+    if (isUnlocked && !isCheckingAccess) {
+      loadExercises();
+    }
+  }, [lessonId, isUnlocked, isCheckingAccess]);
+
   // If the lesson is locked, show the locked content component
-  if (!isLoading && !isUnlocked) {
+  if (!isCheckingAccess && !isUnlocked) {
     return (
       <LockedContent
         title="Exercise Locked"
         message={
-          error ||
+          accessError ||
           "You need to complete previous lessons before accessing this exercise."
         }
         redirectPath={`/learn/path/${pathId}`}
@@ -99,98 +97,67 @@ export default function ExercisePage() {
     );
   }
 
-  const currentQuestion = exerciseData.questions[currentQuestionIndex];
+  // Show loading state
+  if (isLoading || isCheckingAccess) {
+    return (
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <LoadingSpinner size="lg" />
+      </div>
+    );
+  }
 
-  const handleAnswer = (isCorrect: boolean) => {
-    setUserAnswers({
-      ...userAnswers,
-      [currentQuestionIndex]: isCorrect,
-    });
-  };
+  // Show error state
+  if (error) {
+    return (
+      <div className="p-6 text-center">
+        <p className="text-red-500">{error}</p>
+        <Link href={`/learn/path/${pathId}`}>
+          <Button className="mt-4">Back to Learning Path</Button>
+        </Link>
+      </div>
+    );
+  }
 
-  const handleNext = () => {
-    if (currentQuestionIndex < exerciseData.questions.length - 1) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
-    } else {
-      setIsCompleted(true);
-      // In a real app, you would submit the results to the server here
-    }
-  };
-
-  const calculateScore = () => {
-    const correctAnswers = Object.values(userAnswers).filter(Boolean).length;
-    return Math.round((correctAnswers / exerciseData.questions.length) * 100);
-  };
-
-  const handleRetry = () => {
-    setCurrentQuestionIndex(0);
-    setUserAnswers({});
-    setIsCompleted(false);
+  // Handle completion
+  const handleComplete = (results: {
+    score: number;
+    totalQuestions: number;
+  }) => {
+    // In a real app, you would submit the results to the server here
+    console.log("Exercise completed with score:", results.score);
   };
 
   return (
     <div className="min-h-screen bg-background">
       <header className="sticky z-10 border-b top-[65px] bg-background">
-        <div className="container flex items-center justify-between h-16 px-4 md:px-6">
-          <div className="flex items-center gap-2">
-            <Link href={`/learn/path/${pathId}`}>
-              <Button variant="ghost" size="icon" className="mr-2">
-                <ArrowLeft className="w-5 h-5" />
-                <span className="sr-only">Back to Path</span>
-              </Button>
-            </Link>
-            <h1 className="text-xl font-bold">{exerciseData.title}</h1>
-          </div>
-          <div className="flex items-center gap-3">
-            <span className="text-sm text-muted-foreground">
-              Question {currentQuestionIndex + 1} of{" "}
-              {exerciseData.questions.length}
-            </span>
-            <Progress
-              value={
-                ((currentQuestionIndex + 1) / exerciseData.questions.length) *
-                100
-              }
-              className="w-24 h-2"
-            />
-          </div>
+        <div className="container flex items-center h-16 px-4 md:px-6">
+          <Link href={`/learn/path/${pathId}/lesson/${lessonId}`}>
+            <Button variant="ghost" size="icon" className="mr-2">
+              <ArrowLeft className="w-5 h-5" />
+              <span className="sr-only">Back to Lesson</span>
+            </Button>
+          </Link>
+          <h1 className="text-xl font-bold">Practice Exercises</h1>
         </div>
       </header>
 
       <main className="container px-4 py-6 md:px-6 md:py-8">
         <div className="max-w-2xl mx-auto">
-          {!isCompleted ? (
-            <MultipleChoiceExercise
-              question={currentQuestion.question}
-              options={currentQuestion.options}
-              correctAnswer={currentQuestion.correctAnswer}
-              explanation={currentQuestion.explanation}
-              onAnswer={handleAnswer}
-              onNext={handleNext}
-              wordData={vocabularyData}
+          {exercises.length > 0 ? (
+            <ExerciseContainer
+              exercises={exercises}
+              lessonId={lessonId}
+              pathId={pathId}
+              wordData={wordData}
+              onComplete={handleComplete}
             />
           ) : (
-            <Card>
-              <CardContent className="p-6 text-center">
-                <div className="flex justify-center mb-4">
-                  <div className="p-4 bg-green-100 rounded-full">
-                    <CheckCircle className="w-12 h-12 text-green-600" />
-                  </div>
-                </div>
-                <h2 className="mb-2 text-2xl font-bold">Exercise Completed!</h2>
-                <p className="mb-6 text-muted-foreground">
-                  You scored {calculateScore()}% on this exercise.
-                </p>
-                <div className="space-y-4">
-                  <Link href={`/learn/path/${pathId}`}>
-                    <Button className="w-full">Continue Learning</Button>
-                  </Link>
-                  <Button variant="outline" onClick={handleRetry}>
-                    Try Again
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
+            <div className="p-6 text-center">
+              <p>No exercises available for this lesson.</p>
+              <Link href={`/learn/path/${pathId}/lesson/${lessonId}`}>
+                <Button className="mt-4">Back to Lesson</Button>
+              </Link>
+            </div>
           )}
         </div>
       </main>
