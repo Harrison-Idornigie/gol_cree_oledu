@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\CheckSequentialAccess;
 use App\Http\Middleware\EnsureEmailIsVerified;
 use App\Http\Middleware\RoleMiddleware;
 use Illuminate\Foundation\Application;
@@ -21,8 +22,9 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
-            'role'     => RoleMiddleware::class,
-            'verified' => EnsureEmailIsVerified::class,
+            'role'                => RoleMiddleware::class,
+            'verified'            => EnsureEmailIsVerified::class,
+            'sequential-learning' => CheckSequentialAccess::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

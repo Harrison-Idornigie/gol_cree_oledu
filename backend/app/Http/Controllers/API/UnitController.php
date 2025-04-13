@@ -1,17 +1,26 @@
 <?php
-
 namespace App\Http\Controllers\API;
 
-use App\Models\Unit;
-use App\Models\LearningPath;
 use App\Http\Requests\API\Unit\StoreUnitRequest;
 use App\Http\Requests\API\Unit\UpdateUnitRequest;
+use App\Models\LearningPath;
+use App\Models\Unit;
+use App\Services\SequentialLearningService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 
 class UnitController extends BaseAPIController
 {
+    protected $sequentialLearningService;
+
+    /**
+     * Create a new controller instance.
+     */
+    public function __construct(SequentialLearningService $sequentialLearningService)
+    {
+        $this->sequentialLearningService = $sequentialLearningService;
+    }
+
     /**
      * Display a listing of units for a learning path.
      */
@@ -35,7 +44,7 @@ class UnitController extends BaseAPIController
         }
 
         $perPage = $request->input('per_page', 15);
-        $units = $query->paginate($perPage);
+        $units   = $query->paginate($perPage);
 
         return $this->sendPaginatedResponse($units);
     }
@@ -59,6 +68,9 @@ class UnitController extends BaseAPIController
      */
     public function show(Request $request, Unit $unit): JsonResponse
     {
+        // Check if the unit is unlocked for the user
+        $isUnlocked = $this->sequentialLearningService->isUnitUnlocked($unit);
+
         if ($request->has('with_lessons')) {
             $unit->load(['lessons' => function ($query) {
                 $query->orderBy('order');
@@ -79,7 +91,11 @@ class UnitController extends BaseAPIController
             }]);
         }
 
-        return $this->sendResponse($unit);
+        // Add unlocked status to the response
+        $unitData                = $unit->toArray();
+        $unitData['is_unlocked'] = $isUnlocked;
+
+        return $this->sendResponse($unitData);
     }
 
     /**
@@ -122,12 +138,12 @@ class UnitController extends BaseAPIController
     public function reorder(Request $request, LearningPath $learningPath): JsonResponse
     {
         $request->validate([
-            'units' => ['required', 'array'],
+            'units'   => ['required', 'array'],
             'units.*' => ['required', 'integer', 'distinct'],
         ]);
 
         $unitIds = $request->units;
-        $order = 1;
+        $order   = 1;
 
         // Verify all units belong to the learning path
         $units = Unit::whereIn('id', $unitIds)
@@ -167,14 +183,19 @@ class UnitController extends BaseAPIController
                 $progress = $lesson->progress->first();
                 return [
                     'lesson_id' => $lesson->id,
-                    'status' => $progress ? $progress->status : 'not_started'
+                    'status'    => $progress ? $progress->status : 'not_started',
                 ];
             });
 
+        // Get unlocked lessons for this unit
+        $unlockedLessons = $this->sequentialLearningService->getUnlockedLessons($unit);
+
         return $this->sendResponse([
-            'unit_progress' => $progress ? $progress->status : 'not_started',
+            'unit_progress'         => $progress ? $progress->status : 'not_started',
             'completion_percentage' => $unit->getCompletionPercentage($request->user()->id),
-            'lessons_progress' => $lessonsProgress
+            'lessons_progress'      => $lessonsProgress,
+            'is_unlocked'           => $this->sequentialLearningService->isUnitUnlocked($unit),
+            'unlocked_lessons'      => $unlockedLessons,
         ]);
     }
 }

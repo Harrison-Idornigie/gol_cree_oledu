@@ -1,18 +1,28 @@
 <?php
-
 namespace App\Http\Controllers\API;
 
-use App\Models\Section;
-use App\Models\Lesson;
-use App\Models\Exercise;
 use App\Http\Requests\API\Section\StoreSectionRequest;
 use App\Http\Requests\API\Section\UpdateSectionRequest;
+use App\Models\Exercise;
+use App\Models\Lesson;
+use App\Models\Section;
+use App\Services\SequentialLearningService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class SectionController extends BaseAPIController
 {
+    protected $sequentialLearningService;
+
+    /**
+     * Create a new controller instance.
+     */
+    public function __construct(SequentialLearningService $sequentialLearningService)
+    {
+        $this->sequentialLearningService = $sequentialLearningService;
+    }
+
     /**
      * Display a listing of sections for a lesson.
      */
@@ -26,7 +36,7 @@ class SectionController extends BaseAPIController
             }]);
         }
 
-        $perPage = $request->input('per_page', 15);
+        $perPage  = $request->input('per_page', 15);
         $sections = $query->paginate($perPage);
 
         return $this->sendPaginatedResponse($sections);
@@ -45,10 +55,10 @@ class SectionController extends BaseAPIController
                 $exercises = collect($request->exercises)
                     ->map(function ($exercise) {
                         return new Exercise([
-                            'type' => $exercise['type'],
+                            'type'    => $exercise['type'],
                             'content' => $exercise['content'],
                             'answers' => $exercise['answers'],
-                            'order' => $exercise['order']
+                            'order'   => $exercise['order'],
                         ]);
                     });
 
@@ -65,6 +75,9 @@ class SectionController extends BaseAPIController
      */
     public function show(Request $request, Section $section): JsonResponse
     {
+        // Check if the section is unlocked for the user
+        $isUnlocked = $this->sequentialLearningService->isSectionUnlocked($section);
+
         if ($request->has('with_exercises')) {
             $section->load(['exercises' => function ($query) {
                 $query->orderBy('order');
@@ -77,7 +90,11 @@ class SectionController extends BaseAPIController
             }]);
         }
 
-        return $this->sendResponse($section);
+        // Add unlocked status to the response
+        $sectionData                = $section->toArray();
+        $sectionData['is_unlocked'] = $isUnlocked;
+
+        return $this->sendResponse($sectionData);
     }
 
     /**
@@ -99,18 +116,18 @@ class SectionController extends BaseAPIController
                     } elseif (isset($exerciseData['id'])) {
                         // Update existing exercise
                         $section->exercises()->where('id', $exerciseData['id'])->update([
-                            'type' => $exerciseData['type'],
+                            'type'    => $exerciseData['type'],
                             'content' => $exerciseData['content'],
                             'answers' => $exerciseData['answers'],
-                            'order' => $exerciseData['order']
+                            'order'   => $exerciseData['order'],
                         ]);
                     } else {
                         // Create new exercise
                         $section->exercises()->create([
-                            'type' => $exerciseData['type'],
+                            'type'    => $exerciseData['type'],
                             'content' => $exerciseData['content'],
                             'answers' => $exerciseData['answers'],
-                            'order' => $exerciseData['order']
+                            'order'   => $exerciseData['order'],
                         ]);
                     }
                 }
@@ -149,12 +166,12 @@ class SectionController extends BaseAPIController
     public function reorder(Request $request, Lesson $lesson): JsonResponse
     {
         $request->validate([
-            'sections' => ['required', 'array'],
+            'sections'   => ['required', 'array'],
             'sections.*' => ['required', 'integer', 'distinct'],
         ]);
 
         $sectionIds = $request->sections;
-        $order = 1;
+        $order      = 1;
 
         // Verify all sections belong to the lesson
         $sections = Section::whereIn('id', $sectionIds)
@@ -194,14 +211,15 @@ class SectionController extends BaseAPIController
                 $progress = $exercise->progress->first();
                 return [
                     'exercise_id' => $exercise->id,
-                    'status' => $progress ? $progress->status : 'not_started',
-                    'meta_data' => $progress ? $progress->meta_data : null
+                    'status'      => $progress ? $progress->status : 'not_started',
+                    'meta_data'   => $progress ? $progress->meta_data : null,
                 ];
             });
 
         return $this->sendResponse([
-            'section_progress' => $progress ? $progress->status : 'not_started',
-            'exercises_progress' => $exercisesProgress
+            'section_progress'   => $progress ? $progress->status : 'not_started',
+            'exercises_progress' => $exercisesProgress,
+            'is_unlocked'        => $this->sequentialLearningService->isSectionUnlocked($section),
         ]);
     }
 }

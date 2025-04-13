@@ -1,18 +1,28 @@
 <?php
-
 namespace App\Http\Controllers\API;
 
+use App\Http\Requests\API\Lesson\StoreLessonRequest;
+use App\Http\Requests\API\Lesson\UpdateLessonRequest;
 use App\Models\Lesson;
 use App\Models\Unit;
 use App\Models\VocabularyItem;
-use App\Http\Requests\API\Lesson\StoreLessonRequest;
-use App\Http\Requests\API\Lesson\UpdateLessonRequest;
+use App\Services\SequentialLearningService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class LessonController extends BaseAPIController
 {
+    protected $sequentialLearningService;
+
+    /**
+     * Create a new controller instance.
+     */
+    public function __construct(SequentialLearningService $sequentialLearningService)
+    {
+        $this->sequentialLearningService = $sequentialLearningService;
+    }
+
     /**
      * Display a listing of lessons for a unit.
      */
@@ -49,9 +59,9 @@ class LessonController extends BaseAPIController
                 $vocabularyItems = collect($request->vocabulary_items)
                     ->map(function ($item) use ($lesson) {
                         return new VocabularyItem([
-                            'word' => $item['word'],
+                            'word'        => $item['word'],
                             'translation' => $item['translation'],
-                            'example' => $item['example'] ?? null
+                            'example'     => $item['example'] ?? null,
                         ]);
                     });
 
@@ -68,6 +78,9 @@ class LessonController extends BaseAPIController
      */
     public function show(Request $request, Lesson $lesson): JsonResponse
     {
+        // Check if the lesson is unlocked for the user
+        $isUnlocked = $this->sequentialLearningService->isLessonUnlocked($lesson);
+
         if ($request->has('with_sections')) {
             $lesson->load(['sections' => function ($query) {
                 $query->orderBy('order');
@@ -84,7 +97,11 @@ class LessonController extends BaseAPIController
             }]);
         }
 
-        return $this->sendResponse($lesson);
+        // Add unlocked status to the response
+        $lessonData                = $lesson->toArray();
+        $lessonData['is_unlocked'] = $isUnlocked;
+
+        return $this->sendResponse($lessonData);
     }
 
     /**
@@ -106,16 +123,16 @@ class LessonController extends BaseAPIController
                     } elseif (isset($item['id'])) {
                         // Update existing item
                         $lesson->vocabularyItems()->where('id', $item['id'])->update([
-                            'word' => $item['word'],
+                            'word'        => $item['word'],
                             'translation' => $item['translation'],
-                            'example' => $item['example'] ?? null
+                            'example'     => $item['example'] ?? null,
                         ]);
                     } else {
                         // Create new item
                         $lesson->vocabularyItems()->create([
-                            'word' => $item['word'],
+                            'word'        => $item['word'],
                             'translation' => $item['translation'],
-                            'example' => $item['example'] ?? null
+                            'example'     => $item['example'] ?? null,
                         ]);
                     }
                 }
@@ -154,12 +171,12 @@ class LessonController extends BaseAPIController
     public function reorder(Request $request, Unit $unit): JsonResponse
     {
         $request->validate([
-            'lessons' => ['required', 'array'],
+            'lessons'   => ['required', 'array'],
             'lessons.*' => ['required', 'integer', 'distinct'],
         ]);
 
         $lessonIds = $request->lessons;
-        $order = 1;
+        $order     = 1;
 
         // Verify all lessons belong to the unit
         $lessons = Lesson::whereIn('id', $lessonIds)
@@ -199,14 +216,15 @@ class LessonController extends BaseAPIController
                 $progress = $section->progress->first();
                 return [
                     'section_id' => $section->id,
-                    'status' => $progress ? $progress->status : 'not_started'
+                    'status'     => $progress ? $progress->status : 'not_started',
                 ];
             });
 
         return $this->sendResponse([
-            'lesson_progress' => $progress ? $progress->status : 'not_started',
-            'completed' => $lesson->isCompletedByUser($request->user()->id),
-            'sections_progress' => $sectionsProgress
+            'lesson_progress'   => $progress ? $progress->status : 'not_started',
+            'completed'         => $lesson->isCompletedByUser($request->user()->id),
+            'sections_progress' => $sectionsProgress,
+            'is_unlocked'       => $this->sequentialLearningService->isLessonUnlocked($lesson),
         ]);
     }
 }

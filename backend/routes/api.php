@@ -67,15 +67,15 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     // Units
     Route::get('units', [UnitController::class, 'index']);
-    Route::get('units/{unit}', [UnitController::class, 'show']);
+    Route::get('units/{unit}', [UnitController::class, 'show'])->middleware('sequential-learning');
 
     // Lessons
     Route::get('lessons', [LessonController::class, 'index']);
-    Route::get('lessons/{lesson}', [LessonController::class, 'show']);
+    Route::get('lessons/{lesson}', [LessonController::class, 'show'])->middleware('sequential-learning');
 
     // Sections
     Route::get('sections', [SectionController::class, 'index']);
-    Route::get('sections/{section}', [SectionController::class, 'show']);
+    Route::get('sections/{section}', [SectionController::class, 'show'])->middleware('sequential-learning');
 
     // Exercises
     Route::get('exercises', [ExerciseController::class, 'index']);

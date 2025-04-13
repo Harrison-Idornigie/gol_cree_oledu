@@ -1,12 +1,33 @@
-"use client"
-import Link from "next/link"
-import { useParams, useRouter } from "next/navigation"
-import { ArrowLeft, BookOpen, Check, ChevronRight, FlameIcon as Fire, Star } from "lucide-react"
+"use client";
+import Link from "next/link";
+import { useParams, useRouter } from "next/navigation";
+import {
+  ArrowLeft,
+  BookOpen,
+  Check,
+  ChevronRight,
+  FlameIcon as Fire,
+  Lock,
+  Star,
+} from "lucide-react";
+import { useEffect, useState } from "react";
 
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Progress } from "@/components/ui/progress"
-
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { useSequentialLearning } from "@/hooks/useSequentialLearning";
 
 // Define the types for our data structure
 type Lesson = {
@@ -45,7 +66,12 @@ const pathData: Record<number, Path> = {
         progress: 100,
         lessons: [
           { id: 1001, name: "Greetings", type: "lesson", completed: true },
-          { id: 1002, name: "Self Introduction", type: "lesson", completed: true },
+          {
+            id: 1002,
+            name: "Self Introduction",
+            type: "lesson",
+            completed: true,
+          },
           { id: 1003, name: "Basic Questions", type: "quiz", completed: true },
         ],
       },
@@ -57,7 +83,12 @@ const pathData: Record<number, Path> = {
         lessons: [
           { id: 1004, name: "Numbers 1-10", type: "lesson", completed: true },
           { id: 1005, name: "Numbers 11-100", type: "lesson", completed: true },
-          { id: 1006, name: "Counting Practice", type: "exercise", completed: true },
+          {
+            id: 1006,
+            name: "Counting Practice",
+            type: "exercise",
+            completed: true,
+          },
           { id: 1007, name: "Numbers Quiz", type: "quiz", completed: true },
         ],
       },
@@ -68,8 +99,18 @@ const pathData: Record<number, Path> = {
         progress: 100,
         lessons: [
           { id: 1008, name: "Common Phrases", type: "lesson", completed: true },
-          { id: 1009, name: "Asking Questions", type: "lesson", completed: true },
-          { id: 1010, name: "Conversation Practice", type: "exercise", completed: true },
+          {
+            id: 1009,
+            name: "Asking Questions",
+            type: "lesson",
+            completed: true,
+          },
+          {
+            id: 1010,
+            name: "Conversation Practice",
+            type: "exercise",
+            completed: true,
+          },
         ],
       },
     ],
@@ -85,9 +126,24 @@ const pathData: Record<number, Path> = {
         description: "Learn vocabulary for different family members",
         progress: 100,
         lessons: [
-          { id: 4001, name: "Immediate Family", type: "lesson", completed: true },
-          { id: 4002, name: "Extended Family", type: "lesson", completed: true },
-          { id: 4003, name: "Family Vocabulary Quiz", type: "quiz", completed: true },
+          {
+            id: 4001,
+            name: "Immediate Family",
+            type: "lesson",
+            completed: true,
+          },
+          {
+            id: 4002,
+            name: "Extended Family",
+            type: "lesson",
+            completed: true,
+          },
+          {
+            id: 4003,
+            name: "Family Vocabulary Quiz",
+            type: "quiz",
+            completed: true,
+          },
         ],
       },
       {
@@ -96,10 +152,30 @@ const pathData: Record<number, Path> = {
         description: "Learn to talk about your family members",
         progress: 75,
         lessons: [
-          { id: 4004, name: "Physical Descriptions", type: "lesson", completed: true },
-          { id: 4005, name: "Personality Traits", type: "lesson", completed: true },
-          { id: 4006, name: "Family Descriptions", type: "exercise", completed: false },
-          { id: 4007, name: "Description Quiz", type: "quiz", completed: false },
+          {
+            id: 4004,
+            name: "Physical Descriptions",
+            type: "lesson",
+            completed: true,
+          },
+          {
+            id: 4005,
+            name: "Personality Traits",
+            type: "lesson",
+            completed: true,
+          },
+          {
+            id: 4006,
+            name: "Family Descriptions",
+            type: "exercise",
+            completed: false,
+          },
+          {
+            id: 4007,
+            name: "Description Quiz",
+            type: "quiz",
+            completed: false,
+          },
         ],
       },
       {
@@ -109,8 +185,18 @@ const pathData: Record<number, Path> = {
         progress: 0,
         lessons: [
           { id: 4008, name: "Celebrations", type: "lesson", completed: false },
-          { id: 4009, name: "Family Traditions", type: "lesson", completed: false },
-          { id: 4010, name: "Events Practice", type: "exercise", completed: false },
+          {
+            id: 4009,
+            name: "Family Traditions",
+            type: "lesson",
+            completed: false,
+          },
+          {
+            id: 4010,
+            name: "Events Practice",
+            type: "exercise",
+            completed: false,
+          },
         ],
       },
       {
@@ -119,26 +205,46 @@ const pathData: Record<number, Path> = {
         description: "Talking about your family background",
         progress: 0,
         lessons: [
-          { id: 4011, name: "Origins & Ancestry", type: "lesson", completed: false },
-          { id: 4012, name: "Family Stories", type: "lesson", completed: false },
-          { id: 4013, name: "History Practice", type: "exercise", completed: false },
-          { id: 4014, name: "Family History Quiz", type: "quiz", completed: false },
+          {
+            id: 4011,
+            name: "Origins & Ancestry",
+            type: "lesson",
+            completed: false,
+          },
+          {
+            id: 4012,
+            name: "Family Stories",
+            type: "lesson",
+            completed: false,
+          },
+          {
+            id: 4013,
+            name: "History Practice",
+            type: "exercise",
+            completed: false,
+          },
+          {
+            id: 4014,
+            name: "Family History Quiz",
+            type: "quiz",
+            completed: false,
+          },
         ],
       },
     ],
   },
-}
+};
 
 export default function LearnPathOverview() {
-  const params = useParams()
-  const router = useRouter()
-  const pathId = Number.parseInt(params.id as string)
+  const params = useParams();
+  const router = useRouter();
+  const pathId = Number.parseInt(params.id as string);
 
   // Get the path data or redirect if not found
-  const path = pathData[pathId]
+  const path = pathData[pathId];
   if (!path) {
-    router.push("/learn")
-    return null
+    router.push("/learn");
+    return null;
   }
 
   return (
@@ -156,7 +262,6 @@ export default function LearnPathOverview() {
               Path {path.id}: {path.name}
             </h1>
           </div>
-           
         </div>
       </header>
 
@@ -194,30 +299,60 @@ export default function LearnPathOverview() {
 
                   {/* Lessons list */}
                   <div className="space-y-2">
-                    {unit.lessons.map((lesson: Lesson) => (
-                      <Link
-                        key={lesson.id}
-                        href={`/learn/path/${pathId}/lesson/${lesson.id}`}
-                        className={`flex items-center justify-between rounded-md border p-3 transition-colors ${
-                          lesson.completed ? "bg-muted/30" : "hover:bg-accent"
-                        }`}
-                      >
-                        <div className="flex items-center gap-3">
-                          <LessonTypeIcon type={lesson.type} completed={lesson.completed} />
-                          <div>
-                            <p className="font-medium">{lesson.name}</p>
-                            <p className="text-xs capitalize text-muted-foreground">{lesson.type}</p>
-                          </div>
-                        </div>
+                    {unit.lessons.map((lesson: Lesson, index: number) => {
+                      // A lesson is locked if any previous lesson is not completed
+                      const isLocked = unit.lessons.some(
+                        (l, i) => i < index && !l.completed
+                      );
 
-                        <div className="flex items-center">
-                          {lesson.completed ? (
-                            <span className="mr-2 text-sm text-muted-foreground">Completed</span>
-                          ) : null}
-                          <ChevronRight className="w-5 h-5 text-muted-foreground" />
-                        </div>
-                      </Link>
-                    ))}
+                      return (
+                        <Link
+                          key={lesson.id}
+                          href={`/learn/path/${pathId}/lesson/${lesson.id}`}
+                          className={`flex items-center justify-between rounded-md border p-3 transition-colors ${
+                            lesson.completed
+                              ? "bg-muted/30"
+                              : isLocked
+                              ? "bg-gray-50 opacity-70 cursor-not-allowed"
+                              : "hover:bg-accent"
+                          }`}
+                          onClick={(e) => {
+                            if (isLocked) {
+                              e.preventDefault();
+                            }
+                          }}
+                        >
+                          <div className="flex items-center gap-3">
+                            <LessonTypeIcon
+                              type={lesson.type}
+                              completed={lesson.completed}
+                              isLocked={isLocked}
+                            />
+                            <div>
+                              <p className="font-medium">{lesson.name}</p>
+                              <p className="text-xs capitalize text-muted-foreground">
+                                {lesson.type}
+                              </p>
+                            </div>
+                          </div>
+
+                          <div className="flex items-center">
+                            {lesson.completed ? (
+                              <span className="mr-2 text-sm text-muted-foreground">
+                                Completed
+                              </span>
+                            ) : isLocked ? (
+                              <Tooltip content="Complete previous lessons to unlock">
+                                <span className="mr-2 text-sm text-amber-600 flex items-center">
+                                  <Lock className="w-4 h-4 mr-1" /> Locked
+                                </span>
+                              </Tooltip>
+                            ) : null}
+                            <ChevronRight className="w-5 h-5 text-muted-foreground" />
+                          </div>
+                        </Link>
+                      );
+                    })}
                   </div>
                 </CardContent>
               </Card>
@@ -226,24 +361,33 @@ export default function LearnPathOverview() {
         </div>
       </main>
     </div>
-  )
+  );
 }
 
-function LessonTypeIcon({ type, completed }: { type: string; completed: boolean }) {
+function LessonTypeIcon({
+  type,
+  completed,
+  isLocked,
+}: {
+  type: string;
+  completed: boolean;
+  isLocked?: boolean;
+}) {
   const getIconColor = () => {
-    if (completed) return "text-green-600 bg-green-100"
+    if (completed) return "text-green-600 bg-green-100";
+    if (isLocked) return "text-gray-400 bg-gray-100";
 
     switch (type) {
       case "lesson":
-        return "text-blue-600 bg-blue-100"
+        return "text-blue-600 bg-blue-100";
       case "exercise":
-        return "text-amber-600 bg-amber-100"
+        return "text-amber-600 bg-amber-100";
       case "quiz":
-        return "text-purple-600 bg-purple-100"
+        return "text-purple-600 bg-purple-100";
       default:
-        return "text-gray-600 bg-gray-100"
+        return "text-gray-600 bg-gray-100";
     }
-  }
+  };
 
   return (
     <div className={`rounded-full p-2 ${getIconColor()}`}>
@@ -251,6 +395,5 @@ function LessonTypeIcon({ type, completed }: { type: string; completed: boolean 
       {type === "exercise" && <Fire className="w-4 h-4" />}
       {type === "quiz" && <Star className="w-4 h-4" />}
     </div>
-  )
+  );
 }
-
