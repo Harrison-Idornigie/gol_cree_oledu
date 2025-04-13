@@ -12,6 +12,7 @@ use App\Http\Controllers\API\UserLanguageController;
 use App\Http\Controllers\API\UserProgressController;
 use App\Http\Controllers\API\UserSettingsController;
 use App\Http\Controllers\API\VocabularyController;
+use App\Http\Controllers\API\WordController;
 use Illuminate\Support\Facades\Route;
 
 // All Google Auth Routes are now in auth.php
@@ -97,6 +98,14 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     // Vocabulary
     Route::get('vocabulary', [VocabularyController::class, 'index']);
     Route::get('vocabulary/{vocabulary}', [VocabularyController::class, 'show']);
+
+    // Words
+    Route::prefix('words')->group(function () {
+        Route::get('/', [WordController::class, 'index']);
+        Route::get('/{word}', [WordController::class, 'show']);
+        Route::get('/{word}/translations', [WordController::class, 'translations']);
+        Route::post('/batch', [WordController::class, 'batch']);
+    });
 
     // Guide Entries
     Route::get('guide-entries', [GuideController::class, 'index']);

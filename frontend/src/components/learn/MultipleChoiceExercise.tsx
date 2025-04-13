@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { CheckCircle, XCircle, AlertCircle, Volume2 } from "lucide-react";
 import WordTooltip from "./WordTooltip";
+import { getWordsForExercise } from "@/app/_actions/user/word-actions";
 
 import { WordData } from "@/types/vocabulary";
 
@@ -34,6 +35,8 @@ export default function MultipleChoiceExercise({
   const [selectedAnswer, setSelectedAnswer] = useState<string>("");
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [localWordData, setLocalWordData] =
+    useState<Record<string, WordData>>(wordData);
 
   const isCorrect = selectedAnswer === correctAnswer;
 
@@ -42,6 +45,30 @@ export default function MultipleChoiceExercise({
     setSelectedAnswer("");
     setIsSubmitted(false);
   }, [question]);
+
+  useEffect(() => {
+    // Fetch word data if not provided
+    if (Object.keys(wordData).length === 0) {
+      const fetchWordData = async () => {
+        const exerciseContent = {
+          content: [
+            {
+              question,
+              options,
+              explanation,
+            },
+          ],
+        };
+
+        const data = await getWordsForExercise(exerciseContent);
+        setLocalWordData(data);
+      };
+
+      fetchWordData();
+    } else {
+      setLocalWordData(wordData);
+    }
+  }, [question, options, explanation, wordData]);
 
   const handleSubmit = () => {
     setIsSubmitted(true);
@@ -69,7 +96,7 @@ export default function MultipleChoiceExercise({
         {words.map((word, index) => {
           // Clean the word from punctuation for lookup
           const cleanWord = word.replace(/[.,!?;:'"()]/g, "");
-          const wordInfo = wordData[cleanWord.toLowerCase()];
+          const wordInfo = localWordData[cleanWord.toLowerCase()];
 
           if (wordInfo) {
             return (
@@ -105,11 +132,11 @@ export default function MultipleChoiceExercise({
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="h-8 w-8 p-0"
+                  className="w-8 h-8 p-0"
                   onClick={playAudio}
                   disabled={isPlaying}
                 >
-                  <Volume2 className="h-5 w-5" />
+                  <Volume2 className="w-5 h-5" />
                 </Button>
               )}
             </div>
@@ -142,9 +169,9 @@ export default function MultipleChoiceExercise({
                 {isSubmitted && (
                   <div className="flex-shrink-0">
                     {option === correctAnswer ? (
-                      <CheckCircle className="h-5 w-5 text-green-600" />
+                      <CheckCircle className="w-5 h-5 text-green-600" />
                     ) : selectedAnswer === option ? (
-                      <XCircle className="h-5 w-5 text-red-600" />
+                      <XCircle className="w-5 h-5 text-red-600" />
                     ) : null}
                   </div>
                 )}
@@ -170,13 +197,13 @@ export default function MultipleChoiceExercise({
                     {isCorrect ? "Correct!" : "Incorrect"}
                   </p>
                   {!isCorrect && (
-                    <p className="text-sm mt-1">
+                    <p className="mt-1 text-sm">
                       The correct answer is:{" "}
                       <span className="font-medium">{correctAnswer}</span>
                     </p>
                   )}
                   {explanation && (
-                    <p className="text-sm mt-2 text-muted-foreground">
+                    <p className="mt-2 text-sm text-muted-foreground">
                       {renderWithClickableWords(explanation)}
                     </p>
                   )}
