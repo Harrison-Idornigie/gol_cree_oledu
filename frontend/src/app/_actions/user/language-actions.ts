@@ -186,3 +186,32 @@ export async function getLanguageDetails(languageId: number) {
     };
   }
 }
+
+// Get language dashboard data
+export async function getLanguageDashboard(languageId: number) {
+  try {
+    const response = await axiosInstance.get<ApiResponse<any>>(
+      `/languages/${languageId}/dashboard`
+    );
+
+    // Check if response.data exists
+    if (!response.data || !response.data.data) {
+      console.error("Invalid response format:", response);
+      return {
+        data: null,
+        error: "Invalid response format from server",
+      };
+    }
+
+    return {
+      data: response.data.data,
+      error: null,
+    };
+  } catch (error) {
+    console.error("Error fetching language dashboard:", error);
+    return {
+      data: null,
+      error: "Failed to fetch language dashboard",
+    };
+  }
+}

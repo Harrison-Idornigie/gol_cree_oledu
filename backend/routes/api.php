@@ -39,6 +39,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::get('/{language}/learning-paths', [LanguageController::class, 'learningPaths']);
         Route::get('/{language}/proficiency-levels', [LanguageController::class, 'proficiencyLevels']);
         Route::get('/{language}/progress', [LanguageController::class, 'userProgress']);
+        Route::get('/{language}/dashboard', [LanguageController::class, 'dashboard']);
     });
 
     // User Selected Languages
