@@ -1,0 +1,327 @@
+[
+    {
+        "text": "a",
+        "language_id": null,
+        "part_of_speech": "letter",
+        "pronunciation_key": "AH",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["alphabet", "letter"],
+            "pronunciation_notes": "Pronounced like the 'a' in 'father'.",
+            "translation": "letter a",
+            "example": "agua (water) begins with a."
+        }
+    },
+    {
+        "text": "b",
+        "language_id": null,
+        "part_of_speech": "letter",
+        "pronunciation_key": "BEH",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["alphabet", "letter"],
+            "pronunciation_notes": "Pronounced like 'b' in 'boy'.",
+            "translation": "letter b",
+            "example": "boca (mouth) begins with b."
+        }
+    },
+    {
+        "text": "c",
+        "language_id": null,
+        "part_of_speech": "letter",
+        "pronunciation_key": "SEH",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["alphabet", "letter"],
+            "pronunciation_notes": "Pronounced like 's' in 'see' before 'e' and 'i', and like 'k' in 'kite' before 'a', 'o', and 'u'.",
+            "translation": "letter c",
+            "example": "casa (house) begins with c."
+        }
+    },
+    {
+        "text": "d",
+        "language_id": null,
+        "part_of_speech": "letter",
+        "pronunciation_key": "DEH",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["alphabet", "letter"],
+            "pronunciation_notes": "Pronounced like 'd' in 'day', but softer between vowels.",
+            "translation": "letter d",
+            "example": "día (day) begins with d."
+        }
+    },
+    {
+        "text": "e",
+        "language_id": null,
+        "part_of_speech": "letter",
+        "pronunciation_key": "EH",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["alphabet", "letter"],
+            "pronunciation_notes": "Pronounced like the 'e' in 'bet'.",
+            "translation": "letter e",
+            "example": "estar (to be) begins with e."
+        }
+    },
+    {
+        "text": "f",
+        "language_id": null,
+        "part_of_speech": "letter",
+        "pronunciation_key": "EH-feh",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["alphabet", "letter"],
+            "pronunciation_notes": "Pronounced like 'f' in 'fish'.",
+            "translation": "letter f",
+            "example": "familia (family) begins with f."
+        }
+    },
+    {
+        "text": "g",
+        "language_id": null,
+        "part_of_speech": "letter",
+        "pronunciation_key": "HEH",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["alphabet", "letter"],
+            "pronunciation_notes": "Pronounced like 'g' in 'go' before 'a', 'o', and 'u', and like 'h' in 'hello' before 'e' and 'i'.",
+            "translation": "letter g",
+            "example": "gato (cat) begins with g."
+        }
+    },
+    {
+        "text": "h",
+        "language_id": null,
+        "part_of_speech": "letter",
+        "pronunciation_key": "AH-cheh",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["alphabet", "letter"],
+            "pronunciation_notes": "Silent in most Spanish words.",
+            "translation": "letter h",
+            "example": "hora (hour) begins with h, but the h is silent."
+        }
+    },
+    {
+        "text": "i",
+        "language_id": null,
+        "part_of_speech": "letter",
+        "pronunciation_key": "EE",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["alphabet", "letter"],
+            "pronunciation_notes": "Pronounced like 'ee' in 'see'.",
+            "translation": "letter i",
+            "example": "isla (island) begins with i."
+        }
+    },
+    {
+        "text": "j",
+        "language_id": null,
+        "part_of_speech": "letter",
+        "pronunciation_key": "HOH-tah",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["alphabet", "letter"],
+            "pronunciation_notes": "Pronounced like a strong 'h' sound, as in 'hello' but more forceful.",
+            "translation": "letter j",
+            "example": "jugar (to play) begins with j."
+        }
+    },
+    {
+        "text": "uno",
+        "language_id": null,
+        "part_of_speech": "number",
+        "pronunciation_key": "OO-no",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["number", "counting"],
+            "pronunciation_notes": "The 'u' is pronounced like 'oo' in 'boot'.",
+            "translation": "one",
+            "example": "Tengo un libro. (I have one book.)"
+        }
+    },
+    {
+        "text": "dos",
+        "language_id": null,
+        "part_of_speech": "number",
+        "pronunciation_key": "DOHS",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["number", "counting"],
+            "pronunciation_notes": "The 'o' is pronounced like 'o' in 'go'.",
+            "translation": "two",
+            "example": "Hay dos personas. (There are two people.)"
+        }
+    },
+    {
+        "text": "tres",
+        "language_id": null,
+        "part_of_speech": "number",
+        "pronunciation_key": "TREHS",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["number", "counting"],
+            "pronunciation_notes": "The 'r' is slightly rolled.",
+            "translation": "three",
+            "example": "Necesito tres manzanas. (I need three apples.)"
+        }
+    },
+    {
+        "text": "cuatro",
+        "language_id": null,
+        "part_of_speech": "number",
+        "pronunciation_key": "KWAH-troh",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["number", "counting"],
+            "pronunciation_notes": "The 'ua' combination is pronounced like 'wa' in 'water'.",
+            "translation": "four",
+            "example": "Hay cuatro estaciones. (There are four seasons.)"
+        }
+    },
+    {
+        "text": "cinco",
+        "language_id": null,
+        "part_of_speech": "number",
+        "pronunciation_key": "SEEN-koh",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["number", "counting"],
+            "pronunciation_notes": "The 'c' before 'i' is pronounced like 's' in 'see'.",
+            "translation": "five",
+            "example": "Tengo cinco dedos en cada mano. (I have five fingers on each hand.)"
+        }
+    },
+    {
+        "text": "hola",
+        "language_id": null,
+        "part_of_speech": "interjection",
+        "pronunciation_key": "OH-la",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["common", "greeting"],
+            "pronunciation_notes": "Stress is on the first syllable. The \"h\" is silent.",
+            "translation": "hello",
+            "example": "¡Hola! ¿Cómo estás? (Hello! How are you?)"
+        }
+    },
+    {
+        "text": "agua",
+        "language_id": null,
+        "part_of_speech": "noun",
+        "pronunciation_key": "AH-gwa",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["common", "nature"],
+            "pronunciation_notes": "Stress is on the first syllable. The \"g\" is soft.",
+            "translation": "water",
+            "example": "Necesito beber agua. (I need to drink water.)"
+        }
+    },
+    {
+        "text": "libro",
+        "language_id": null,
+        "part_of_speech": "noun",
+        "pronunciation_key": "LEE-bro",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["common", "education"],
+            "pronunciation_notes": "Stress is on the first syllable. The \"r\" is slightly rolled.",
+            "translation": "book",
+            "example": "Estoy leyendo un libro. (I am reading a book.)"
+        }
+    },
+    {
+        "text": "correr",
+        "language_id": null,
+        "part_of_speech": "verb",
+        "pronunciation_key": "ko-RRER",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["common", "action"],
+            "pronunciation_notes": "Stress is on the last syllable. The \"rr\" is strongly rolled.",
+            "translation": "to run",
+            "example": "Me gusta correr por la mañana. (I like to run in the morning.)"
+        }
+    },
+    {
+        "text": "amigo",
+        "language_id": null,
+        "part_of_speech": "noun",
+        "pronunciation_key": "ah-MEE-go",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["common", "relationship"],
+            "pronunciation_notes": "Stress is on the second syllable. The \"g\" is soft.",
+            "translation": "friend",
+            "example": "Él es mi mejor amigo. (He is my best friend.)"
+        }
+    },
+    {
+        "text": "idioma",
+        "language_id": null,
+        "part_of_speech": "noun",
+        "pronunciation_key": "ee-dee-OH-ma",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["common", "communication"],
+            "pronunciation_notes": "Stress is on the third syllable.",
+            "translation": "language",
+            "example": "Estoy aprendiendo un nuevo idioma. (I am learning a new language.)"
+        }
+    },
+    {
+        "text": "maestro",
+        "language_id": null,
+        "part_of_speech": "noun",
+        "pronunciation_key": "mah-ES-tro",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["common", "education"],
+            "pronunciation_notes": "Stress is on the second syllable. The \"r\" is slightly rolled.",
+            "translation": "teacher",
+            "example": "Mi maestro es muy amable. (My teacher is very kind.)"
+        }
+    },
+    {
+        "text": "casa",
+        "language_id": null,
+        "part_of_speech": "noun",
+        "pronunciation_key": "KAH-sa",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["common", "dwelling"],
+            "pronunciation_notes": "Stress is on the first syllable. The \"a\" sounds like \"a\" in \"father\".",
+            "translation": "house",
+            "example": "Vivimos en una casa pequeña. (We live in a small house.)"
+        }
+    },
+    {
+        "text": "comida",
+        "language_id": null,
+        "part_of_speech": "noun",
+        "pronunciation_key": "ko-MEE-da",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["common", "food"],
+            "pronunciation_notes": "Stress is on the second syllable.",
+            "translation": "food",
+            "example": "La comida en este restaurante es deliciosa. (The food at this restaurant is delicious.)"
+        }
+    },
+    {
+        "text": "aprender",
+        "language_id": null,
+        "part_of_speech": "verb",
+        "pronunciation_key": "ah-pren-DER",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["common", "education"],
+            "pronunciation_notes": "Stress is on the last syllable. The \"r\" is slightly rolled.",
+            "translation": "to learn",
+            "example": "Quiero aprender a tocar la guitarra. (I want to learn how to play the guitar.)"
+        }
+    }
+]

@@ -27,13 +27,13 @@ export function LockedContent({
     <div className="flex items-center justify-center min-h-[50vh]">
       <Card className="w-full max-w-md border-2 border-amber-500">
         <CardHeader className="text-center">
-          <div className="mx-auto mb-4 bg-amber-100 p-3 rounded-full w-16 h-16 flex items-center justify-center">
-            <Lock className="h-8 w-8 text-amber-500" />
+          <div className="flex items-center justify-center w-16 h-16 p-3 mx-auto mb-4 rounded-full bg-amber-100">
+            <Lock className="w-8 h-8 text-amber-500" />
           </div>
           <CardTitle className="text-xl font-bold text-amber-700">{title}</CardTitle>
           <CardDescription className="text-amber-600">{message}</CardDescription>
         </CardHeader>
-        <CardContent className="text-center text-sm text-muted-foreground">
+        <CardContent className="text-sm text-center text-muted-foreground">
           <p>Complete the previous content to unlock this section.</p>
         </CardContent>
         {redirectPath && (

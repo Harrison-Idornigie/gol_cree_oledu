@@ -6,7 +6,7 @@ This document outlines the functional requirements for the student/user section 
 
 | Requirement ID | Description | User Story | Expected Behavior/Outcome |
 |---------------|-------------|------------|---------------------------|
-| STU-001 | User Registration and Login | As a student, I want to create an account and login so I can access personalized learning content. | Students can register, receive confirmation, and securely log in to access their personalized dashboard. |
+| STU-001 | User Registration and Login | As a student, I want to create an account and login so I can access personalized learning content. | Students can register, receive confirmation, and securely log in to access their personalized dashboard.  |
 | STU-002 | Language Selection | As a student, I want to select which language(s) I want to learn from the available options. | Students can browse available languages, view details about each, and select one or more to learn. Selected languages appear prominently on their dashboard. |
 | STU-003 | Learning Path Selection | As a student, I want to browse and select learning paths based on my proficiency level and chosen language. | Students can view all available learning paths for their selected language(s), see descriptions and difficulty levels, and enroll in their chosen paths. |
 | STU-004 | Progress Tracking | As a student, I want to track my progress through learning paths, units, and lessons across multiple languages. | Students can see visual indicators of progress (percentage complete, completed items) across all learning content, organized by language. |

@@ -1,0 +1,352 @@
+[
+    {
+        "text": "a",
+        "language_id": null,
+        "part_of_speech": "letter",
+        "pronunciation_key": "AH",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["alphabet", "letter"],
+            "pronunciation_notes": "Pronounced like the 'a' in 'father'.",
+            "syllabics": "ᐊ",
+            "translation": "letter a",
+            "example": "atim (dog) begins with a."
+        }
+    },
+    {
+        "text": "â",
+        "language_id": null,
+        "part_of_speech": "letter",
+        "pronunciation_key": "AH",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["alphabet", "letter"],
+            "pronunciation_notes": "Long 'a' sound, like the 'a' in 'father' but held longer.",
+            "syllabics": "ᐋ",
+            "translation": "long a",
+            "example": "âstam (come here) begins with â."
+        }
+    },
+    {
+        "text": "c",
+        "language_id": null,
+        "part_of_speech": "letter",
+        "pronunciation_key": "CH",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["alphabet", "letter"],
+            "pronunciation_notes": "Always pronounced like 'ch' in 'church'.",
+            "syllabics": "ᐨ",
+            "translation": "letter c",
+            "example": "cîmân (boat) begins with c."
+        }
+    },
+    {
+        "text": "e",
+        "language_id": null,
+        "part_of_speech": "letter",
+        "pronunciation_key": "EH",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["alphabet", "letter"],
+            "pronunciation_notes": "Pronounced like the 'e' in 'bed'.",
+            "syllabics": "ᐁ",
+            "translation": "letter e",
+            "example": "emihkwân (spoon) begins with e."
+        }
+    },
+    {
+        "text": "ê",
+        "language_id": null,
+        "part_of_speech": "letter",
+        "pronunciation_key": "EH",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["alphabet", "letter"],
+            "pronunciation_notes": "Long 'e' sound, like the 'ay' in 'say' but held longer.",
+            "syllabics": "ᐯ",
+            "translation": "long e",
+            "example": "êkwa (and) begins with ê."
+        }
+    },
+    {
+        "text": "h",
+        "language_id": null,
+        "part_of_speech": "letter",
+        "pronunciation_key": "H",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["alphabet", "letter"],
+            "pronunciation_notes": "Pronounced like 'h' in 'hello'.",
+            "syllabics": "ᐦ",
+            "translation": "letter h",
+            "example": "hâw (okay) begins with h."
+        }
+    },
+    {
+        "text": "i",
+        "language_id": null,
+        "part_of_speech": "letter",
+        "pronunciation_key": "IH",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["alphabet", "letter"],
+            "pronunciation_notes": "Pronounced like the 'i' in 'sit'.",
+            "syllabics": "ᐃ",
+            "translation": "letter i",
+            "example": "iskwêw (woman) begins with i."
+        }
+    },
+    {
+        "text": "î",
+        "language_id": null,
+        "part_of_speech": "letter",
+        "pronunciation_key": "EE",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["alphabet", "letter"],
+            "pronunciation_notes": "Long 'i' sound, like the 'ee' in 'see'.",
+            "syllabics": "ᐄ",
+            "translation": "long i",
+            "example": "îkwa (louse) begins with î."
+        }
+    },
+    {
+        "text": "k",
+        "language_id": null,
+        "part_of_speech": "letter",
+        "pronunciation_key": "K",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["alphabet", "letter"],
+            "pronunciation_notes": "Pronounced like 'k' in 'kite'.",
+            "syllabics": "ᐠ",
+            "translation": "letter k",
+            "example": "kîsik (sky) begins with k."
+        }
+    },
+    {
+        "text": "m",
+        "language_id": null,
+        "part_of_speech": "letter",
+        "pronunciation_key": "M",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["alphabet", "letter"],
+            "pronunciation_notes": "Pronounced like 'm' in 'mother'.",
+            "syllabics": "ᒼ",
+            "translation": "letter m",
+            "example": "maskwa (bear) begins with m."
+        }
+    },
+    {
+        "text": "pêyak",
+        "language_id": null,
+        "part_of_speech": "number",
+        "pronunciation_key": "PAY-yahk",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["number", "counting"],
+            "pronunciation_notes": "Stress is on the first syllable. The 'ê' is a long 'e' sound like in 'they'.",
+            "syllabics": "ᐯᔭᐠ",
+            "translation": "one",
+            "example": "Pêyak maskwa (One bear)."
+        }
+    },
+    {
+        "text": "nîso",
+        "language_id": null,
+        "part_of_speech": "number",
+        "pronunciation_key": "NEE-soh",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["number", "counting"],
+            "pronunciation_notes": "Stress is on the first syllable. The 'î' is a long 'i' sound like in 'machine'.",
+            "syllabics": "ᓃᓱ",
+            "translation": "two",
+            "example": "Nîso atimwak (Two dogs)."
+        }
+    },
+    {
+        "text": "nisto",
+        "language_id": null,
+        "part_of_speech": "number",
+        "pronunciation_key": "NIS-toh",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["number", "counting"],
+            "pronunciation_notes": "Stress is on the first syllable.",
+            "syllabics": "ᓂᐢᑐ",
+            "translation": "three",
+            "example": "Nisto masinahikana (Three books)."
+        }
+    },
+    {
+        "text": "nêwo",
+        "language_id": null,
+        "part_of_speech": "number",
+        "pronunciation_key": "NAY-woh",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["number", "counting"],
+            "pronunciation_notes": "Stress is on the first syllable. The 'ê' is a long 'e' sound like in 'they'.",
+            "syllabics": "ᓀᐓ",
+            "translation": "four",
+            "example": "Nêwo sîpîhkwak (Four rivers)."
+        }
+    },
+    {
+        "text": "niyânan",
+        "language_id": null,
+        "part_of_speech": "number",
+        "pronunciation_key": "nee-YAH-nan",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["number", "counting"],
+            "pronunciation_notes": "Stress is on the second syllable. The 'â' is a long 'a' sound like in 'father'.",
+            "syllabics": "ᓂᔮᓇᐣ",
+            "translation": "five",
+            "example": "Niyânan wâpamâwak (I see five of them)."
+        }
+    },
+    {
+        "text": "tanisi",
+        "language_id": null,
+        "part_of_speech": "IPC",
+        "pronunciation_key": "TAH-nee-see",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["common", "greeting"],
+            "pronunciation_notes": "Stress is on the first syllable. The \"a\" is like the \"a\" in \"father\".",
+            "syllabics": "ᑕᓂᓯ",
+            "translation": "hello, how are you",
+            "example": "Tanisi, nitôtem. (Hello, my friend.)"
+        }
+    },
+    {
+        "text": "kîkway",
+        "language_id": null,
+        "part_of_speech": "PrI",
+        "pronunciation_key": "KEEK-wai",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["common", "question"],
+            "pronunciation_notes": "The \"î\" (long \"i\") sounds like \"ee\" in \"see,\" and \"kway\" rhymes with \"why.\" The stress is on the first syllable.",
+            "syllabics": "ᑮᑿᐩ",
+            "translation": "what",
+            "example": "Kîkway ôma? (What is this?)"
+        }
+    },
+    {
+        "text": "maskwa",
+        "language_id": null,
+        "part_of_speech": "NA",
+        "pronunciation_key": "MASK-wa",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["common", "animal"],
+            "pronunciation_notes": "Stress is on the first syllable. The \"a\" at the end is like the \"a\" in \"about\".",
+            "syllabics": "ᒪᐢᑿ",
+            "translation": "bear",
+            "example": "Maskwa mîcisow. (The bear is eating.)"
+        }
+    },
+    {
+        "text": "atim",
+        "language_id": null,
+        "part_of_speech": "NA",
+        "pronunciation_key": "AH-tim",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["common", "animal"],
+            "pronunciation_notes": "Stress is on the first syllable. The \"a\" is like the \"a\" in \"father\".",
+            "syllabics": "ᐊᑎᒼ",
+            "translation": "dog",
+            "example": "Atim pimohtêw. (The dog is walking.)"
+        }
+    },
+    {
+        "text": "nîpiy",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "NEE-piy",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["common", "nature"],
+            "pronunciation_notes": "The \"î\" is a long \"ee\" sound. Stress is on the first syllable.",
+            "syllabics": "ᓃᐱᐩ",
+            "translation": "water",
+            "example": "Nîpiy minihkwê. (Drink water.)"
+        }
+    },
+    {
+        "text": "mîcisowin",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "MEE-chee-so-win",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["common", "food"],
+            "pronunciation_notes": "Stress is on the first syllable. The \"î\" is a long \"ee\" sound.",
+            "syllabics": "ᒦᒋᓱᐏᐣ",
+            "translation": "food",
+            "example": "Mîcisowin mitoni mîwâsin. (The food is very good.)"
+        }
+    },
+    {
+        "text": "wâpamew",
+        "language_id": null,
+        "part_of_speech": "VTA",
+        "pronunciation_key": "WAH-pah-mew",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["common", "verb"],
+            "pronunciation_notes": "Stress is on the first syllable. The \"â\" is a long \"a\" sound like in \"father\".",
+            "syllabics": "ᐚᐸᒣᐤ",
+            "translation": "he/she sees him/her",
+            "example": "Niwâpamâw atim. (I see the dog.)"
+        }
+    },
+    {
+        "text": "mîkiwâhp",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "MEE-kee-wahp",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["common", "dwelling"],
+            "pronunciation_notes": "Stress is on the first syllable. The \"î\" is a long \"ee\" sound, and the \"â\" is a long \"a\" sound.",
+            "syllabics": "ᒦᑭᐚᐦᑊ",
+            "translation": "teepee, lodge",
+            "example": "Mîkiwâhpihk niwîkin. (I live in a teepee.)"
+        }
+    },
+    {
+        "text": "âstam",
+        "language_id": null,
+        "part_of_speech": "IPC",
+        "pronunciation_key": "AHS-tam",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["common", "command"],
+            "pronunciation_notes": "Stress is on the first syllable. The \"â\" is a long \"a\" sound like in \"father\".",
+            "syllabics": "ᐋᐢᑕᒼ",
+            "translation": "come here",
+            "example": "Âstam, nitôtem. (Come here, my friend.)"
+        }
+    },
+    {
+        "text": "miywâsin",
+        "language_id": null,
+        "part_of_speech": "VII",
+        "pronunciation_key": "mee-WAH-sin",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["common", "description"],
+            "pronunciation_notes": "Stress is on the second syllable. The \"â\" is a long \"a\" sound like in \"father\".",
+            "syllabics": "ᒥᔼᓯᐣ",
+            "translation": "it is good, it is beautiful",
+            "example": "Miywâsin kîsikâw. (It is a good day.)"
+        }
+    }
+]

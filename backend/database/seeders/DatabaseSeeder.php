@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
         // Run other seeders
         $this->call([
             LanguageSeeder::class,
+            WordSeeder::class, // Add vocabulary words
             LearningPathSeeder::class,
             SuperAdminSeeder::class,
             UserLanguageSeeder::class,

@@ -1,25 +1,24 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import {
   ArrowLeft,
   BookOpen,
   Check,
-  CheckCircle,
   ChevronLeft,
   ChevronRight,
   Volume2,
 } from "lucide-react";
+import QuizResults from "@/components/learn/QuizResults";
+import MultipleChoiceExercise from "@/components/learn/MultipleChoiceExercise";
 import { useSequentialLearning } from "@/hooks/useSequentialLearning";
 import { LockedContent } from "@/components/ui/locked-content";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
 
 // Mock lesson data
 const lessonData: Record<
@@ -273,73 +272,80 @@ export default function LessonPage() {
             // Quiz content
             <div className="space-y-8">
               {!quizSubmitted ? (
-                // Quiz questions
-                <Card>
-                  <CardContent className="p-6">
-                    <div className="space-y-6">
-                      <h2 className="text-xl font-bold">
-                        {lesson.content.questions[currentPage].question}
-                      </h2>
-                      <RadioGroup
-                        value={quizAnswers[currentPage]}
-                        onValueChange={(value) =>
-                          setQuizAnswers({
-                            ...quizAnswers,
-                            [currentPage]: value,
-                          })
-                        }
-                        className="space-y-3"
-                      >
-                        {lesson.content.questions[currentPage].options.map(
-                          (option) => (
-                            <div
-                              key={option}
-                              className="flex items-center p-3 space-x-2 border rounded-md"
-                            >
-                              <RadioGroupItem value={option} id={option} />
-                              <Label
-                                htmlFor={option}
-                                className="flex-1 cursor-pointer"
-                              >
-                                {option}
-                              </Label>
-                            </div>
-                          )
-                        )}
-                      </RadioGroup>
-                    </div>
-                  </CardContent>
-                </Card>
+                // Quiz questions with enhanced feedback
+                <MultipleChoiceExercise
+                  question={lesson.content.questions[currentPage].question}
+                  options={lesson.content.questions[currentPage].options}
+                  correctAnswer={
+                    lesson.content.questions[currentPage].correctAnswer
+                  }
+                  explanation={
+                    lesson.content.questions[currentPage].explanation
+                  }
+                  onAnswer={(isCorrect) => {
+                    // Just store the answer, don't show feedback until submission
+                    setQuizAnswers({
+                      ...quizAnswers,
+                      [currentPage]: lesson.content.questions[
+                        currentPage
+                      ].options.find(
+                        (_, i) => i === (isCorrect ? 0 : 1) // Mock correct/incorrect answer
+                      ),
+                    });
+                  }}
+                  onNext={handleNextPage}
+                  wordData={{
+                    // Mock vocabulary data - in a real app, this would come from an API
+                    cinco: {
+                      text: "cinco",
+                      translation: "five",
+                      phonetic: "ˈθiŋko",
+                      audioUrl: "https://example.com/audio/cinco.mp3",
+                      partOfSpeech: "numeral",
+                      example: "Tengo cinco dedos en cada mano.",
+                    },
+                    nueve: {
+                      text: "nueve",
+                      translation: "nine",
+                      phonetic: "ˈnweβe",
+                      audioUrl: "https://example.com/audio/nueve.mp3",
+                      partOfSpeech: "numeral",
+                      example: "El número nueve es mi favorito.",
+                    },
+                  }}
+                />
               ) : (
-                // Quiz results
-                <Card>
-                  <CardContent className="p-6 text-center">
-                    <div className="flex justify-center mb-4">
-                      <div className="p-4 bg-green-100 rounded-full">
-                        <CheckCircle className="w-12 h-12 text-green-600" />
-                      </div>
-                    </div>
-                    <h2 className="mb-2 text-2xl font-bold">Quiz Completed!</h2>
-                    <p className="mb-6 text-muted-foreground">
-                      You scored {calculateScore()}% on this quiz.
-                    </p>
-                    <div className="space-y-4">
-                      <Link href={`/learn/path/${lesson.levelId}`}>
-                        <Button className="w-full">Continue Learning</Button>
-                      </Link>
-                      <Button
-                        variant="outline"
-                        onClick={() => {
-                          setQuizAnswers({});
-                          setQuizSubmitted(false);
-                          setCurrentPage(0);
-                        }}
-                      >
-                        Try Again
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
+                // Quiz results with detailed feedback
+                <QuizResults
+                  questions={lesson.content.questions}
+                  userAnswers={quizAnswers}
+                  score={calculateScore()}
+                  pathId={lesson.levelId}
+                  onRetry={() => {
+                    setQuizAnswers({});
+                    setQuizSubmitted(false);
+                    setCurrentPage(0);
+                  }}
+                  wordData={{
+                    // Mock vocabulary data - in a real app, this would come from an API
+                    cinco: {
+                      text: "cinco",
+                      translation: "five",
+                      phonetic: "ˈθiŋko",
+                      audioUrl: "https://example.com/audio/cinco.mp3",
+                      partOfSpeech: "numeral",
+                      example: "Tengo cinco dedos en cada mano.",
+                    },
+                    nueve: {
+                      text: "nueve",
+                      translation: "nine",
+                      phonetic: "ˈnweβe",
+                      audioUrl: "https://example.com/audio/nueve.mp3",
+                      partOfSpeech: "numeral",
+                      example: "El número nueve es mi favorito.",
+                    },
+                  }}
+                />
               )}
 
               {!quizSubmitted && (
