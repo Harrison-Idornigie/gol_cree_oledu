@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { Globe, Home, Settings, BookOpen } from "lucide-react";
+import { Globe, Home, Settings, BookOpen, User } from "lucide-react";
 
 export default function LearnSideBar() {
   return (
@@ -31,6 +31,12 @@ export default function LearnSideBar() {
           <Link href="/learn/profile" className="flex items-center">
             <BookOpen className="w-4 h-4 mr-2" />
             Profile
+          </Link>
+        </Button>
+        <Button variant="ghost" className="justify-start w-full" asChild>
+          <Link href="/learn/account" className="flex items-center">
+            <User className="w-4 h-4 mr-2" />
+            Account Settings
           </Link>
         </Button>
       </nav>

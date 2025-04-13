@@ -49,7 +49,6 @@ export default function TopNavBar() {
 
     // reload the page
     window.location.href = "/login";
-    
   };
 
   return (
@@ -101,7 +100,7 @@ export default function TopNavBar() {
                     <DropdownMenuLabel>My Account</DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem asChild>
-                      <a href="/account">
+                      <a href="/learn/account">
                         <User className="w-4 h-4 mr-2" />
                         Account Settings
                       </a>

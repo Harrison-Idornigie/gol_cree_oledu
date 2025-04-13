@@ -10,6 +10,7 @@ use App\Http\Controllers\API\SectionController;
 use App\Http\Controllers\API\UnitController;
 use App\Http\Controllers\API\UserLanguageController;
 use App\Http\Controllers\API\UserProgressController;
+use App\Http\Controllers\API\UserSettingsController;
 use App\Http\Controllers\API\VocabularyController;
 use Illuminate\Support\Facades\Route;
 
@@ -48,6 +49,13 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::post('/', [UserLanguageController::class, 'store']);
         Route::delete('/{languageId}', [UserLanguageController::class, 'destroy']);
         Route::patch('/{languageId}/set-primary', [UserLanguageController::class, 'setPrimary']);
+    });
+
+    // User Settings Routes
+    Route::prefix('user/settings')->group(function () {
+        Route::get('/', [UserSettingsController::class, 'getSettings']);
+        Route::get('/languages', [UserSettingsController::class, 'getAvailableLanguages']);
+        Route::patch('/interface-language', [UserSettingsController::class, 'updateInterfaceLanguage']);
     });
 
     // Learning Paths
