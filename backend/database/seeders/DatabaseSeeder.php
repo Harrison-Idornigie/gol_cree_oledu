@@ -34,6 +34,7 @@ class DatabaseSeeder extends Seeder
             FillInBlankExerciseSeeder::class,
             MultipleChoiceExerciseSeeder::class,
             MatchingExerciseSeeder::class,
+            ConversationExerciseSeeder::class,
         ]);
     }
 }

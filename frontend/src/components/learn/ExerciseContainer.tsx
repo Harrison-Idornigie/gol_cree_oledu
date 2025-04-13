@@ -12,10 +12,17 @@ import MultipleChoiceExercise from "./MultipleChoiceExercise";
 import MatchingExercise from "./MatchingExercise";
 import WritingExercise from "./WritingExercise";
 import SpeakingExercise from "./SpeakingExercise";
+import ConversationExercise from "./ConversationExercise";
 
 interface Exercise {
   id: number;
-  type: "multiple_choice" | "fill_blank" | "matching" | "writing" | "speaking";
+  type:
+    | "multiple_choice"
+    | "fill_blank"
+    | "matching"
+    | "writing"
+    | "speaking"
+    | "conversation";
   content: any;
   answers?: any;
 }
@@ -126,6 +133,15 @@ export default function ExerciseContainer({
       case "speaking":
         return (
           <SpeakingExercise
+            exercise={currentExercise}
+            onAnswer={handleAnswer}
+            onNext={handleNext}
+            wordData={localWordData}
+          />
+        );
+      case "conversation":
+        return (
+          <ConversationExercise
             exercise={currentExercise}
             onAnswer={handleAnswer}
             onNext={handleNext}

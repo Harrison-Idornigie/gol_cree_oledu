@@ -1,4 +1,5 @@
 <?php
+use App\Http\Controllers\API\ConversationExerciseController;
 use App\Http\Controllers\API\ExerciseController;
 use App\Http\Controllers\API\GuideController;
 use App\Http\Controllers\API\LanguageController;
@@ -87,6 +88,12 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     // Speaking Exercises (requires file upload)
     Route::post('exercises/speaking/check', [SpeakingExerciseController::class, 'checkAnswer']);
+
+    // Conversation Exercises
+    Route::post('exercises/conversation/answer', [ConversationExerciseController::class, 'submitAnswer']);
+    Route::post('exercises/conversation/progress', [ConversationExerciseController::class, 'trackProgress']);
+    Route::get('exercises/conversation/progress/{exerciseId}', [ConversationExerciseController::class, 'getProgress']);
+    Route::get('exercises/conversation/language/{languageId}', [ConversationExerciseController::class, 'getExercisesByLanguage']);
 
     // Quizzes
     Route::get('quizzes', [QuizController::class, 'index']);

@@ -6,7 +6,8 @@ export type ExerciseType =
   | "fill_blank"
   | "matching"
   | "writing"
-  | "speaking";
+  | "speaking"
+  | "conversation";
 
 /**
  * Base interface for all exercise questions
@@ -75,6 +76,28 @@ export interface SpeakingQuestion extends BaseQuestion {
 }
 
 /**
+ * Conversation question
+ */
+export interface ConversationQuestion extends BaseQuestion {
+  type: "conversation";
+  title: string;
+  description: string;
+  steps: Array<{
+    type: "dialogue" | "question" | "choice";
+    content: {
+      speaker?: string;
+      text?: string;
+      audio_url?: string;
+      translation?: string;
+      question?: string;
+      hint?: string;
+      options?: string[];
+    };
+  }>;
+  language: string;
+}
+
+/**
  * Union type for all question types
  */
 export type Question =
@@ -82,7 +105,8 @@ export type Question =
   | FillBlankQuestion
   | MatchingQuestion
   | WritingQuestion
-  | SpeakingQuestion;
+  | SpeakingQuestion
+  | ConversationQuestion;
 
 /**
  * Exercise content structure
@@ -113,13 +137,36 @@ export interface ExerciseContent {
 
   // Speaking properties
   duration?: number;
+
+  // Conversation properties
+  title?: string;
+  description?: string;
+  steps?: Array<{
+    type: "dialogue" | "question" | "choice";
+    content: {
+      speaker?: string;
+      text?: string;
+      audio_url?: string;
+      translation?: string;
+      question?: string;
+      hint?: string;
+      options?: string[];
+    };
+  }>;
 }
 
 /**
  * Exercise answers structure
  */
 export interface ExerciseAnswers {
-  correct: any; // Can be string, string[], or Record<string, number> depending on exercise type
+  correct?: string | string[] | Record<string, number>; // For most exercise types
+  steps?: Record<
+    number,
+    {
+      // For conversation exercises
+      correct: string | string[] | number;
+    }
+  >;
 }
 
 /**

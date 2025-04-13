@@ -1,8 +1,8 @@
 <?php
-
 namespace App\Services;
 
 use App\Models\Exercise;
+use App\Services\ExerciseTypes\ConversationHandler;
 use App\Services\ExerciseTypes\ExerciseTypeHandler;
 use App\Services\ExerciseTypes\FillBlankHandler;
 use App\Services\ExerciseTypes\MatchingHandler;
@@ -23,10 +23,11 @@ class ExerciseTypeService
             Exercise::TYPE_MATCHING => new MatchingHandler(),
             Exercise::TYPE_WRITING => new WritingHandler(),
             Exercise::TYPE_SPEAKING => new SpeakingHandler(),
+            Exercise::TYPE_CONVERSATION => new ConversationHandler(),
             default => throw new \Exception("Unknown exercise type: {$type}")
         };
     }
-    
+
     /**
      * Check if the given answer is correct
      */
@@ -35,7 +36,7 @@ class ExerciseTypeService
         $handler = $this->getHandler($exercise->type);
         return $handler->checkAnswer($exercise, $userAnswer);
     }
-    
+
     /**
      * Get a hint or correct answer for the exercise
      */
@@ -44,7 +45,7 @@ class ExerciseTypeService
         $handler = $this->getHandler($exercise->type);
         return $handler->getHint($exercise);
     }
-    
+
     /**
      * Get feedback for the exercise attempt
      */
@@ -53,7 +54,7 @@ class ExerciseTypeService
         $handler = $this->getHandler($exercise->type);
         return $handler->getFeedback($exercise, $isCorrect);
     }
-    
+
     /**
      * Validate the exercise content structure
      */

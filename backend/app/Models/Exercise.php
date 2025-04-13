@@ -21,6 +21,7 @@ class Exercise extends Model
     public const TYPE_MATCHING        = 'matching';
     public const TYPE_WRITING         = 'writing';
     public const TYPE_SPEAKING        = 'speaking';
+    public const TYPE_CONVERSATION    = 'conversation';
 
     protected $fillable = [
         'section_id',
@@ -204,31 +205,39 @@ class Exercise extends Model
                 'content.options.*' => 'required|string',
                 'answers.correct'   => 'required|string|in_array:content.options.*',
             ],
-            self::TYPE_FILL_BLANK => [
+            self::TYPE_FILL_BLANK   => [
                 'content.text'     => 'required|string',
                 'content.blanks'   => 'required|array|min:1',
                 'content.blanks.*' => 'required|integer',
                 'answers.correct'  => 'required|array|size:content.blanks',
             ],
-            self::TYPE_MATCHING   => [
+            self::TYPE_MATCHING     => [
                 'content.items'     => 'required|array|min:2',
                 'content.items.*'   => 'required|string',
                 'content.matches'   => 'required|array|size:content.items',
                 'content.matches.*' => 'required|string',
                 'answers.correct'   => 'required|array|size:content.items',
             ],
-            self::TYPE_WRITING    => [
+            self::TYPE_WRITING      => [
                 'content.prompt'     => 'required|string',
                 'content.word_ids'   => 'required|array|min:2',
                 'content.word_ids.*' => 'required|integer|exists:words,id',
                 'answers.correct'    => 'required|array|min:2',
                 'answers.correct.*'  => 'required|string',
             ],
-            self::TYPE_SPEAKING   => [
+            self::TYPE_SPEAKING     => [
                 'content.prompt'   => 'required|string',
                 'content.duration' => 'required|integer|min:5|max:300',
             ],
-            default               => []
+            self::TYPE_CONVERSATION => [
+                'content.title'           => 'required|string',
+                'content.description'     => 'required|string',
+                'content.steps'           => 'required|array|min:2',
+                'content.steps.*.type'    => 'required|string|in:dialogue,question,choice',
+                'content.steps.*.content' => 'required',
+                'content.word_mapping'    => 'nullable|array',
+            ],
+            default                 => []
         };
     }
 }
