@@ -35,6 +35,8 @@ class DatabaseSeeder extends Seeder
             MultipleChoiceExerciseSeeder::class,
             MatchingExerciseSeeder::class,
             ConversationExerciseSeeder::class,
+            ListeningExerciseSeeder::class,
+            PictureExerciseSeeder::class,
         ]);
     }
 }

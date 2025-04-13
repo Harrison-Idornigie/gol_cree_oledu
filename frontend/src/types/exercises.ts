@@ -7,7 +7,9 @@ export type ExerciseType =
   | "matching"
   | "writing"
   | "speaking"
-  | "conversation";
+  | "conversation"
+  | "listening"
+  | "picture";
 
 /**
  * Base interface for all exercise questions
@@ -98,6 +100,31 @@ export interface ConversationQuestion extends BaseQuestion {
 }
 
 /**
+ * Listening question
+ */
+export interface ListeningQuestion extends BaseQuestion {
+  type: "listening";
+  audio_url: string;
+  transcript: string;
+  prompt: string;
+  language: string;
+  difficulty: "beginner" | "intermediate" | "advanced";
+}
+
+/**
+ * Picture question
+ */
+export interface PictureQuestion extends BaseQuestion {
+  type: "picture";
+  question: string;
+  mode: "word_to_image" | "image_to_word";
+  images?: Array<{ url: string; alt: string }>;
+  words?: string[];
+  target_image?: string;
+  language: string;
+}
+
+/**
  * Union type for all question types
  */
 export type Question =
@@ -106,7 +133,9 @@ export type Question =
   | MatchingQuestion
   | WritingQuestion
   | SpeakingQuestion
-  | ConversationQuestion;
+  | ConversationQuestion
+  | ListeningQuestion
+  | PictureQuestion;
 
 /**
  * Exercise content structure
@@ -153,6 +182,19 @@ export interface ExerciseContent {
       options?: string[];
     };
   }>;
+
+  // Listening properties
+  audio_url?: string;
+  transcript?: string;
+  listening_prompt?: string;
+  difficulty?: "beginner" | "intermediate" | "advanced";
+
+  // Picture properties
+  picture_question?: string;
+  mode?: "word_to_image" | "image_to_word";
+  images?: Array<{ url: string; alt: string }>;
+  words?: string[];
+  target_image?: string;
 }
 
 /**

@@ -5,6 +5,8 @@ use App\Http\Controllers\API\GuideController;
 use App\Http\Controllers\API\LanguageController;
 use App\Http\Controllers\API\LearningPathController;
 use App\Http\Controllers\API\LessonController;
+use App\Http\Controllers\API\ListeningExerciseController;
+use App\Http\Controllers\API\PictureExerciseController;
 use App\Http\Controllers\API\QuizController;
 use App\Http\Controllers\API\QuizQuestionController;
 use App\Http\Controllers\API\SectionController;
@@ -94,6 +96,14 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::post('exercises/conversation/progress', [ConversationExerciseController::class, 'trackProgress']);
     Route::get('exercises/conversation/progress/{exerciseId}', [ConversationExerciseController::class, 'getProgress']);
     Route::get('exercises/conversation/language/{languageId}', [ConversationExerciseController::class, 'getExercisesByLanguage']);
+
+    // Listening Exercises
+    Route::post('exercises/listening/check', [ListeningExerciseController::class, 'checkAnswer']);
+    Route::get('exercises/listening/language/{languageCode}', [ListeningExerciseController::class, 'getByLanguage']);
+
+    // Picture Exercises
+    Route::post('exercises/picture/check', [PictureExerciseController::class, 'checkAnswer']);
+    Route::get('exercises/picture/language/{languageCode}', [PictureExerciseController::class, 'getByLanguage']);
 
     // Quizzes
     Route::get('quizzes', [QuizController::class, 'index']);

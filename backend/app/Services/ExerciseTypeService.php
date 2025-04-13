@@ -5,8 +5,10 @@ use App\Models\Exercise;
 use App\Services\ExerciseTypes\ConversationHandler;
 use App\Services\ExerciseTypes\ExerciseTypeHandler;
 use App\Services\ExerciseTypes\FillBlankHandler;
+use App\Services\ExerciseTypes\ListeningHandler;
 use App\Services\ExerciseTypes\MatchingHandler;
 use App\Services\ExerciseTypes\MultipleChoiceHandler;
+use App\Services\ExerciseTypes\PictureHandler;
 use App\Services\ExerciseTypes\SpeakingHandler;
 use App\Services\ExerciseTypes\WritingHandler;
 
@@ -24,6 +26,8 @@ class ExerciseTypeService
             Exercise::TYPE_WRITING => new WritingHandler(),
             Exercise::TYPE_SPEAKING => new SpeakingHandler(),
             Exercise::TYPE_CONVERSATION => new ConversationHandler(),
+            Exercise::TYPE_LISTENING => new ListeningHandler(),
+            Exercise::TYPE_PICTURE => new PictureHandler(),
             default => throw new \Exception("Unknown exercise type: {$type}")
         };
     }

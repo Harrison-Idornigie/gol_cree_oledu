@@ -22,6 +22,8 @@ class Exercise extends Model
     public const TYPE_WRITING         = 'writing';
     public const TYPE_SPEAKING        = 'speaking';
     public const TYPE_CONVERSATION    = 'conversation';
+    public const TYPE_LISTENING       = 'listening';
+    public const TYPE_PICTURE         = 'picture';
 
     protected $fillable = [
         'section_id',
@@ -236,6 +238,28 @@ class Exercise extends Model
                 'content.steps.*.type'    => 'required|string|in:dialogue,question,choice',
                 'content.steps.*.content' => 'required',
                 'content.word_mapping'    => 'nullable|array',
+            ],
+            self::TYPE_LISTENING    => [
+                'content.audio_url'    => 'required|string',
+                'content.transcript'   => 'required|string',
+                'content.prompt'       => 'required|string',
+                'content.language'     => 'required|string',
+                'content.difficulty'   => 'required|string|in:beginner,intermediate,advanced',
+                'content.word_mapping' => 'nullable|array',
+                'answers.correct'      => 'required|array',
+                'answers.alternatives' => 'nullable|array',
+            ],
+            self::TYPE_PICTURE      => [
+                'content.question'     => 'required|string',
+                'content.mode'         => 'required|string|in:word_to_image,image_to_word',
+                'content.images'       => 'required_if:content.mode,word_to_image|array',
+                'content.images.*.url' => 'required_if:content.mode,word_to_image|string',
+                'content.images.*.alt' => 'required_if:content.mode,word_to_image|string',
+                'content.words'        => 'required_if:content.mode,image_to_word|array',
+                'content.target_image' => 'required_if:content.mode,image_to_word|string',
+                'content.language'     => 'required|string',
+                'content.word_mapping' => 'nullable|array',
+                'answers.correct'      => 'required|integer',
             ],
             default                 => []
         };

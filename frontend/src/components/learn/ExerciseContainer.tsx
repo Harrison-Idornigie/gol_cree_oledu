@@ -13,6 +13,8 @@ import MatchingExercise from "./MatchingExercise";
 import WritingExercise from "./WritingExercise";
 import SpeakingExercise from "./SpeakingExercise";
 import ConversationExercise from "./ConversationExercise";
+import ListeningExercise from "./ListeningExercise";
+import PictureExercise from "./PictureExercise";
 
 interface Exercise {
   id: number;
@@ -22,7 +24,9 @@ interface Exercise {
     | "matching"
     | "writing"
     | "speaking"
-    | "conversation";
+    | "conversation"
+    | "listening"
+    | "picture";
   content: any;
   answers?: any;
 }
@@ -142,7 +146,25 @@ export default function ExerciseContainer({
       case "conversation":
         return (
           <ConversationExercise
-            exercise={currentExercise}
+            exercise={currentExercise as any}
+            onAnswer={handleAnswer}
+            onNext={handleNext}
+            wordData={localWordData}
+          />
+        );
+      case "listening":
+        return (
+          <ListeningExercise
+            exercise={currentExercise as any}
+            onAnswer={handleAnswer}
+            onNext={handleNext}
+            wordData={localWordData}
+          />
+        );
+      case "picture":
+        return (
+          <PictureExercise
+            exercise={currentExercise as any}
             onAnswer={handleAnswer}
             onNext={handleNext}
             wordData={localWordData}
