@@ -1,19 +1,20 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Progress } from '@/components/ui/progress';
-import { ArrowLeft, CheckCircle } from 'lucide-react';
-import Link from 'next/link';
-import { WordData } from '@/types/vocabulary';
-import FillInBlankExercise from './FillInBlankExercise';
-import MultipleChoiceExercise from './MultipleChoiceExercise';
-import MatchingExercise from './MatchingExercise';
+import { useState, useEffect } from "react";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
+import { ArrowLeft, CheckCircle } from "lucide-react";
+import Link from "next/link";
+import { WordData } from "@/types/vocabulary";
+import FillInBlankExercise from "./FillInBlankExercise";
+import MultipleChoiceExercise from "./MultipleChoiceExercise";
+import MatchingExercise from "./MatchingExercise";
+import WritingExercise from "./WritingExercise";
 
 interface Exercise {
   id: number;
-  type: 'multiple_choice' | 'fill_blank' | 'matching' | 'writing' | 'speaking';
+  type: "multiple_choice" | "fill_blank" | "matching" | "writing" | "speaking";
   content: any;
   answers?: any;
 }
@@ -36,7 +37,8 @@ export default function ExerciseContainer({
   const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
   const [userAnswers, setUserAnswers] = useState<Record<number, boolean>>({});
   const [isCompleted, setIsCompleted] = useState(false);
-  const [localWordData, setLocalWordData] = useState<Record<string, WordData>>(wordData);
+  const [localWordData, setLocalWordData] =
+    useState<Record<string, WordData>>(wordData);
 
   useEffect(() => {
     setLocalWordData(wordData);
@@ -57,11 +59,11 @@ export default function ExerciseContainer({
       setCurrentExerciseIndex(currentExerciseIndex + 1);
     } else {
       setIsCompleted(true);
-      
+
       // Calculate results
       const correctAnswers = Object.values(userAnswers).filter(Boolean).length;
       const score = Math.round((correctAnswers / exercises.length) * 100);
-      
+
       // Call onComplete callback if provided
       if (onComplete) {
         onComplete({
@@ -81,7 +83,7 @@ export default function ExerciseContainer({
     if (!currentExercise) return null;
 
     switch (currentExercise.type) {
-      case 'fill_blank':
+      case "fill_blank":
         return (
           <FillInBlankExercise
             exercise={currentExercise}
@@ -90,7 +92,7 @@ export default function ExerciseContainer({
             wordData={localWordData}
           />
         );
-      case 'multiple_choice':
+      case "multiple_choice":
         return (
           <MultipleChoiceExercise
             question={currentExercise.content.question}
@@ -102,9 +104,18 @@ export default function ExerciseContainer({
             wordData={localWordData}
           />
         );
-      case 'matching':
+      case "matching":
         return (
           <MatchingExercise
+            exercise={currentExercise}
+            onAnswer={handleAnswer}
+            onNext={handleNext}
+            wordData={localWordData}
+          />
+        );
+      case "writing":
+        return (
+          <WritingExercise
             exercise={currentExercise}
             onAnswer={handleAnswer}
             onNext={handleNext}
@@ -138,9 +149,7 @@ export default function ExerciseContainer({
           </p>
           <div className="space-y-4">
             <Link href={`/learn/path/${pathId}/lesson/${lessonId}`}>
-              <Button className="w-full">
-                Back to Lesson
-              </Button>
+              <Button className="w-full">Back to Lesson</Button>
             </Link>
             <Link href={`/learn/path/${pathId}`}>
               <Button variant="outline" className="w-full">

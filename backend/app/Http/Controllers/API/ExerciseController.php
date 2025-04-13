@@ -3,6 +3,7 @@ namespace App\Http\Controllers\API;
 
 use App\Models\Exercise;
 use App\Services\AttemptTrackingService;
+use App\Services\ExerciseTypeService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,10 +12,14 @@ use Illuminate\Support\Facades\DB;
 class ExerciseController extends BaseAPIController
 {
     protected AttemptTrackingService $attemptTracker;
+    protected ExerciseTypeService $exerciseTypeService;
 
-    public function __construct(AttemptTrackingService $attemptTracker)
-    {
-        $this->attemptTracker = $attemptTracker;
+    public function __construct(
+        AttemptTrackingService $attemptTracker,
+        ExerciseTypeService $exerciseTypeService
+    ) {
+        $this->attemptTracker      = $attemptTracker;
+        $this->exerciseTypeService = $exerciseTypeService;
     }
 
     /**
@@ -60,7 +65,7 @@ class ExerciseController extends BaseAPIController
             'started_at' => 'required|date', // Client sends the time when exercise was started
         ]);
 
-        $isCorrect = $exercise->checkAnswer($request->answer);
+        $isCorrect = $this->exerciseTypeService->checkAnswer($exercise, $request->answer);
         $timeTaken = now()->diffInSeconds($request->started_at);
 
         // Record the attempt
@@ -74,8 +79,8 @@ class ExerciseController extends BaseAPIController
 
         return $this->sendResponse([
             'correct'        => $isCorrect,
-            'feedback'       => $this->getFeedback($exercise, $isCorrect),
-            'correct_answer' => $isCorrect ? null : $exercise->getHint(),
+            'feedback'       => $this->exerciseTypeService->getFeedback($exercise, $isCorrect),
+            'correct_answer' => $isCorrect ? null : $this->exerciseTypeService->getHint($exercise),
             'time_taken'     => $timeTaken,
         ]);
     }
@@ -124,21 +129,5 @@ class ExerciseController extends BaseAPIController
         ]);
     }
 
-    /**
-     * Get contextual feedback for the exercise attempt
-     */
-    private function getFeedback(Exercise $exercise, bool $isCorrect): string
-    {
-        if ($isCorrect) {
-            return \Illuminate\Support\Arr::random([
-                "¡Excelente! (Excellent!)",
-                "¡Muy bien! (Very good!)",
-                "¡Perfecto! (Perfect!)",
-            ]);
-        }
-
-        return $exercise->type === Exercise::TYPE_WRITING ?
-        "Check your spelling and try again!" :
-        "Not quite right. Try again!";
-    }
+    // Removed getFeedback method as we're now using the ExerciseTypeService
 }

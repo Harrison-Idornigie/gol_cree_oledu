@@ -115,76 +115,26 @@ class Exercise extends Model
 
     /**
      * Check if the given answer is correct
+     *
+     * @deprecated Use ExerciseTypeService instead
      */
     public function checkAnswer($userAnswer): bool
     {
-        return match ($this->type) {
-            self::TYPE_MULTIPLE_CHOICE => $this->checkMultipleChoice($userAnswer),
-            self::TYPE_FILL_BLANK      => $this->checkFillBlank($userAnswer),
-            self::TYPE_MATCHING        => $this->checkMatching($userAnswer),
-            self::TYPE_WRITING, self::TYPE_SPEAKING => false, // Requires manual review
-            default                    => false
-        };
-    }
-
-    /**
-     * Check multiple choice answer
-     */
-    private function checkMultipleChoice($answer): bool
-    {
-        return $answer === $this->answers['correct'];
-    }
-
-    /**
-     * Check fill in the blank answer
-     */
-    private function checkFillBlank($answer): bool
-    {
-        $correct = $this->answers['correct'];
-
-        if (is_array($correct)) {
-            // Multiple acceptable answers
-            return collect($correct)
-                ->contains(
-                    fn($value) =>
-                    strtolower(trim($answer)) === strtolower(trim($value))
-                );
-        }
-
-        return strtolower(trim($answer)) === strtolower(trim($correct));
-    }
-
-    /**
-     * Check matching answer
-     */
-    private function checkMatching($answers): bool
-    {
-        // Get the correct answers from the content field
-        $correctAnswers = $this->content['answers']['correct'] ?? null;
-
-        if (! $correctAnswers || ! is_array($answers) || count($answers) !== count($correctAnswers)) {
-            return false;
-        }
-
-        foreach ($correctAnswers as $key => $value) {
-            if (! isset($answers[$key]) || $answers[$key] !== $value) {
-                return false;
-            }
-        }
-
-        return true;
+        // This method is kept for backward compatibility
+        // Use app(ExerciseTypeService::class)->checkAnswer($this, $userAnswer) instead
+        return app(\App\Services\ExerciseTypeService::class)->checkAnswer($this, $userAnswer);
     }
 
     /**
      * Get hint for the exercise
+     *
+     * @deprecated Use ExerciseTypeService instead
      */
-    public function getHint(): ?array
+    public function getHint(): mixed
     {
-        if ($this->type === self::TYPE_MATCHING) {
-            return $this->content['answers']['correct'] ?? null;
-        }
-
-        return null;
+        // This method is kept for backward compatibility
+        // Use app(ExerciseTypeService::class)->getHint($this) instead
+        return app(\App\Services\ExerciseTypeService::class)->getHint($this);
     }
 
     /**
@@ -254,29 +204,31 @@ class Exercise extends Model
                 'content.options.*' => 'required|string',
                 'answers.correct'   => 'required|string|in_array:content.options.*',
             ],
-            self::TYPE_FILL_BLANK      => [
+            self::TYPE_FILL_BLANK => [
                 'content.text'     => 'required|string',
                 'content.blanks'   => 'required|array|min:1',
                 'content.blanks.*' => 'required|integer',
                 'answers.correct'  => 'required|array|size:content.blanks',
             ],
-            self::TYPE_MATCHING        => [
+            self::TYPE_MATCHING   => [
                 'content.items'     => 'required|array|min:2',
                 'content.items.*'   => 'required|string',
                 'content.matches'   => 'required|array|size:content.items',
                 'content.matches.*' => 'required|string',
                 'answers.correct'   => 'required|array|size:content.items',
             ],
-            self::TYPE_WRITING         => [
-                'content.prompt'    => 'required|string',
-                'content.min_words' => 'required|integer|min:1',
-                'content.max_words' => 'required|integer|gt:content.min_words',
+            self::TYPE_WRITING    => [
+                'content.prompt'     => 'required|string',
+                'content.word_ids'   => 'required|array|min:2',
+                'content.word_ids.*' => 'required|integer|exists:words,id',
+                'answers.correct'    => 'required|array|min:2',
+                'answers.correct.*'  => 'required|string',
             ],
-            self::TYPE_SPEAKING        => [
+            self::TYPE_SPEAKING   => [
                 'content.prompt'   => 'required|string',
                 'content.duration' => 'required|integer|min:5|max:300',
             ],
-            default                    => []
+            default               => []
         };
     }
 }
