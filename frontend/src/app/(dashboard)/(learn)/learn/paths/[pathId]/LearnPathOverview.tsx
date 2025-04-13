@@ -343,7 +343,7 @@ export default function LearnPathOverview() {
                               </span>
                             ) : isLocked ? (
                               <Tooltip content="Complete previous lessons to unlock">
-                                <span className="mr-2 text-sm text-amber-600 flex items-center">
+                                <span className="flex items-center mr-2 text-sm text-amber-600">
                                   <Lock className="w-4 h-4 mr-1" /> Locked
                                 </span>
                               </Tooltip>

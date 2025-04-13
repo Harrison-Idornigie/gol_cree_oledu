@@ -7,6 +7,7 @@ use App\Http\Controllers\API\LessonController;
 use App\Http\Controllers\API\QuizController;
 use App\Http\Controllers\API\QuizQuestionController;
 use App\Http\Controllers\API\SectionController;
+use App\Http\Controllers\API\SpeakingExerciseController;
 use App\Http\Controllers\API\UnitController;
 use App\Http\Controllers\API\UserLanguageController;
 use App\Http\Controllers\API\UserProgressController;
@@ -84,6 +85,9 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::post('exercises/{exercise}/check', [ExerciseController::class, 'checkAnswer']);
     Route::get('exercises/{exercise}/statistics', [ExerciseController::class, 'statistics']);
 
+    // Speaking Exercises (requires file upload)
+    Route::post('exercises/speaking/check', [SpeakingExerciseController::class, 'checkAnswer']);
+
     // Quizzes
     Route::get('quizzes', [QuizController::class, 'index']);
     Route::get('quizzes/{quiz}', [QuizController::class, 'show']);
@@ -96,8 +100,15 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('quiz-questions/{quizQuestion}', [QuizQuestionController::class, 'show']);
 
     // Vocabulary
-    Route::get('vocabulary', [VocabularyController::class, 'index']);
-    Route::get('vocabulary/{vocabulary}', [VocabularyController::class, 'show']);
+    Route::prefix('vocabulary')->group(function () {
+        Route::get('/', [VocabularyController::class, 'index']);
+        Route::get('/review', [VocabularyController::class, 'reviewItems']);
+        Route::get('/mistakes', [VocabularyController::class, 'mistakeItems']);
+        Route::get('/unit/{unitId}', [VocabularyController::class, 'unitVocabulary']);
+        Route::post('/{vocabulary}/check', [VocabularyController::class, 'checkTranslation']);
+        Route::get('/statistics', [VocabularyController::class, 'statistics']);
+        Route::get('/{vocabulary}', [VocabularyController::class, 'show']);
+    });
 
     // Words
     Route::prefix('words')->group(function () {

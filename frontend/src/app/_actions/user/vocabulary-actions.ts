@@ -189,6 +189,236 @@ export async function getVocabularyByWords(
 }
 
 /**
+ * Get vocabulary items for review
+ */
+export async function getVocabularyReviewItems(
+  count: number = 10,
+  options?: {
+    difficulty?: number;
+    unitId?: number;
+    languageId?: number;
+    reviewType?: "due" | "mistakes" | "all";
+  }
+): Promise<VocabularyItem[]> {
+  try {
+    const params = new URLSearchParams();
+    params.append("count", count.toString());
+
+    if (options?.difficulty) {
+      params.append("difficulty", options.difficulty.toString());
+    }
+
+    if (options?.unitId) {
+      params.append("unit_id", options.unitId.toString());
+    }
+
+    if (options?.languageId) {
+      params.append("language_id", options.languageId.toString());
+    }
+
+    if (options?.reviewType) {
+      params.append("review_type", options.reviewType);
+    }
+
+    const response = await axiosInstance.get<ApiResponse<VocabularyItem[]>>(
+      `/api/vocabulary/review?${params.toString()}`
+    );
+
+    return response.data.data || [];
+  } catch (error) {
+    console.error("Error fetching vocabulary review items:", error);
+    return [];
+  }
+}
+
+/**
+ * Get vocabulary items for a specific unit
+ */
+export async function getUnitVocabulary(
+  unitId: number,
+  difficulty?: number
+): Promise<VocabularyItem[]> {
+  try {
+    const params = new URLSearchParams();
+
+    if (difficulty) {
+      params.append("difficulty", difficulty.toString());
+    }
+
+    const response = await axiosInstance.get<ApiResponse<VocabularyItem[]>>(
+      `/api/vocabulary/unit/${unitId}?${params.toString()}`
+    );
+
+    return response.data.data || [];
+  } catch (error) {
+    console.error("Error fetching unit vocabulary:", error);
+    return [];
+  }
+}
+
+/**
+ * Get vocabulary items that the user has struggled with
+ */
+export async function getMistakeVocabularyItems(
+  count: number = 10,
+  options?: {
+    unitId?: number;
+    languageId?: number;
+  }
+): Promise<VocabularyItem[]> {
+  try {
+    const params = new URLSearchParams();
+    params.append("count", count.toString());
+
+    if (options?.unitId) {
+      params.append("unit_id", options.unitId.toString());
+    }
+
+    if (options?.languageId) {
+      params.append("language_id", options.languageId.toString());
+    }
+
+    const response = await axiosInstance.get<ApiResponse<VocabularyItem[]>>(
+      `/api/vocabulary/mistakes?${params.toString()}`
+    );
+
+    return response.data.data || [];
+  } catch (error) {
+    console.error("Error fetching mistake vocabulary items:", error);
+    return [];
+  }
+}
+
+/**
+ * Check a vocabulary translation
+ */
+export async function checkVocabularyTranslation(
+  vocabularyId: number,
+  translation: string
+): Promise<{
+  correct: boolean;
+  correctTranslation?: string;
+  similarWords?: VocabularyItem[];
+}> {
+  try {
+    const response = await axiosInstance.post<
+      ApiResponse<{
+        correct: boolean;
+        correct_translation?: string;
+        similar_words?: VocabularyItem[];
+      }>
+    >(`/api/vocabulary/${vocabularyId}/check`, { translation });
+
+    return {
+      correct: response.data.data.correct,
+      correctTranslation: response.data.data.correct_translation,
+      similarWords: response.data.data.similar_words,
+    };
+  } catch (error) {
+    console.error("Error checking vocabulary translation:", error);
+    return { correct: false };
+  }
+}
+
+/**
+ * Get vocabulary statistics
+ */
+export async function getVocabularyStatistics(options?: {
+  unitId?: number;
+  languageId?: number;
+}): Promise<{
+  total_words_learned: number;
+  words_in_progress: number;
+  mastery_levels: {
+    mastered: number;
+    familiar: number;
+    learning: number;
+  };
+  daily_progress: Record<string, { total: number; completed: number }>;
+  recent_activity: Array<{
+    word: string;
+    translation: string;
+    status: string;
+    correct_streak: number;
+    last_review: string;
+  }>;
+  due_today: number;
+  mistakes: number;
+  recent_vocabulary: Array<{
+    id: number;
+    word: string;
+    translation: string;
+    phonetic?: string;
+    example?: string;
+    mastery: number;
+    review_count: number;
+    last_review?: string;
+  }>;
+}> {
+  try {
+    const params = new URLSearchParams();
+
+    if (options?.unitId) {
+      params.append("unit_id", options.unitId.toString());
+    }
+
+    if (options?.languageId) {
+      params.append("language_id", options.languageId.toString());
+    }
+
+    const response = await axiosInstance.get<
+      ApiResponse<{
+        total_words_learned: number;
+        words_in_progress: number;
+        mastery_levels: {
+          mastered: number;
+          familiar: number;
+          learning: number;
+        };
+        daily_progress: Record<string, { total: number; completed: number }>;
+        recent_activity: Array<{
+          word: string;
+          translation: string;
+          status: string;
+          correct_streak: number;
+          last_review: string;
+        }>;
+        due_today: number;
+        mistakes: number;
+        recent_vocabulary: Array<{
+          id: number;
+          word: string;
+          translation: string;
+          phonetic?: string;
+          example?: string;
+          mastery: number;
+          review_count: number;
+          last_review?: string;
+        }>;
+      }>
+    >(`/api/vocabulary/statistics?${params.toString()}`);
+
+    return response.data.data;
+  } catch (error) {
+    console.error("Error fetching vocabulary statistics:", error);
+    return {
+      total_words_learned: 0,
+      words_in_progress: 0,
+      mastery_levels: {
+        mastered: 0,
+        familiar: 0,
+        learning: 0,
+      },
+      daily_progress: {},
+      recent_activity: [],
+      due_today: 0,
+      mistakes: 0,
+      recent_vocabulary: [],
+    };
+  }
+}
+
+/**
  * Extract words from text
  */
 export function extractWordsFromText(text: string): string[] {

@@ -11,6 +11,7 @@ import FillInBlankExercise from "./FillInBlankExercise";
 import MultipleChoiceExercise from "./MultipleChoiceExercise";
 import MatchingExercise from "./MatchingExercise";
 import WritingExercise from "./WritingExercise";
+import SpeakingExercise from "./SpeakingExercise";
 
 interface Exercise {
   id: number;
@@ -116,6 +117,15 @@ export default function ExerciseContainer({
       case "writing":
         return (
           <WritingExercise
+            exercise={currentExercise}
+            onAnswer={handleAnswer}
+            onNext={handleNext}
+            wordData={localWordData}
+          />
+        );
+      case "speaking":
+        return (
+          <SpeakingExercise
             exercise={currentExercise}
             onAnswer={handleAnswer}
             onNext={handleNext}
