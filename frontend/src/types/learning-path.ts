@@ -4,6 +4,9 @@ export interface Language {
   name: string;
   native_name: string;
   is_active: boolean;
+  description?: string;
+  learning_paths_count?: number;
+  is_popular?: boolean;
 }
 
 export interface LearningPath {

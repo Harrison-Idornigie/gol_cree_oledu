@@ -39,6 +39,15 @@ export async function getLearningPaths(filters?: {
       `/learning-paths?${params.toString()}`
     );
 
+    // Check if response.data.data exists before mapping
+    if (!response.data || !response.data.data) {
+      console.error("Invalid response format:", response);
+      return {
+        data: [],
+        error: "Invalid response format from server",
+      };
+    }
+
     // Transform the data to match the expected format in components
     const transformedData = response.data.data.map((path: LearningPath) => ({
       ...path,

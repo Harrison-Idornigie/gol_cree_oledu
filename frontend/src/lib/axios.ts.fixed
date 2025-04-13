@@ -14,18 +14,19 @@ axiosInstance.interceptors.request.use(
         // For server components, extract token from the request headers
         // This is a more reliable way to get the token in server components
         const { cookies } = await import("next/headers");
-        const cookieStore = await cookies();
+        // Use a different approach to get cookies in server components
+        const cookieStore = cookies();
         
         // Get the token and make sure it's properly decoded
-        let token = cookieStore.get("auth_token")?.value;
+        const token = cookieStore.get("auth_token")?.value;
         if (token) {
           // Ensure the token is properly decoded
-          token = decodeURIComponent(token);
+          const decodedToken = decodeURIComponent(token);
           
           if (config.headers) {
             // Set the Authorization header with the Bearer token
-            config.headers.Authorization = `Bearer ${token}`;
-            console.log("[Server] Setting auth token:", token.substring(0, 10) + "...");
+            config.headers.Authorization = `Bearer ${decodedToken}`;
+            console.log("[Server] Setting auth token:", decodedToken.substring(0, 10) + "...");
           }
         } else {
           console.log("[Server] No auth token found in cookies");
@@ -87,8 +88,11 @@ axiosInstance.interceptors.response.use(
         if (typeof window === "undefined") {
           try {
             const { cookies } = await import("next/headers");
-            const cookieStore = await cookies();
-            cookieStore.set("auth_token", "", { maxAge: 0 }); // This effectively deletes the cookie
+            // Use a different approach to get cookies in server components
+            const cookieStore = cookies();
+            if (cookieStore) {
+              cookieStore.set("auth_token", "", { maxAge: 0 }); // This effectively deletes the cookie
+            }
           } catch (error) {
             console.error(
               "Error handling token expiration in server component:",

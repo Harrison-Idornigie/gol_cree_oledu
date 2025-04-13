@@ -16,7 +16,7 @@ export default function LearnSideBar() {
           </Link>
         </Button>
         <Button variant="ghost" className="justify-start w-full" asChild>
-          <Link href="/languages" className="flex items-center">
+          <Link href="/learn/languages" className="flex items-center">
             <Globe className="w-4 h-4 mr-2" />
             Languages
           </Link>
@@ -28,7 +28,7 @@ export default function LearnSideBar() {
           </Link>
         </Button>
         <Button variant="ghost" className="justify-start w-full" asChild>
-          <Link href="/profile" className="flex items-center">
+          <Link href="/learn/profile" className="flex items-center">
             <BookOpen className="w-4 h-4 mr-2" />
             Profile
           </Link>

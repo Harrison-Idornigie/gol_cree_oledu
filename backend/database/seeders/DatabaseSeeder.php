@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
             LanguageSeeder::class,
             LearningPathSeeder::class,
             SuperAdminSeeder::class,
+            UserLanguageSeeder::class,
         ]);
     }
 }
