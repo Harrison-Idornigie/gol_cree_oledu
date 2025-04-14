@@ -1,9 +1,9 @@
 <?php
 namespace App\Services;
 
+use App\Models\Exercise;
 use App\Models\LearningPath;
 use App\Models\Lesson;
-use App\Models\Section;
 use App\Models\Unit;
 use App\Models\UserProgress;
 use Illuminate\Support\Facades\Auth;
@@ -80,42 +80,41 @@ class SequentialLearningService
     }
 
     /**
-     * Check if a section is unlocked for the current user
+     * Check if an exercise is unlocked for the current user
      *
-     * @param Section $section The section to check
-     * @return bool Whether the section is unlocked
+     * @param Exercise $exercise The exercise to check
+     * @return bool Whether the exercise is unlocked
      */
-    public function isSectionUnlocked(Section $section): bool
+    public function isExerciseUnlocked(Exercise $exercise): bool
     {
         // First check if the lesson is unlocked
-        if (! $this->isLessonUnlocked($section->lesson)) {
+        if (! $this->isLessonUnlocked($exercise->lesson)) {
             return false;
         }
 
-        // If section doesn't require previous completion, it's unlocked if the lesson is unlocked
-        if (! $section->requires_previous) {
+        // If exercise doesn't require previous completion, it's unlocked if the lesson is unlocked
+        if (! $exercise->requires_previous) {
             return true;
         }
 
-        // First section in a lesson is always unlocked if the lesson is unlocked
-        $previousSections = $section->lesson->sections()
-            ->where('order', '<', $section->order)
+        // First exercise in a lesson is always unlocked if the lesson is unlocked
+        $previousExercises = $exercise->lesson->exercises()
+            ->where('order', '<', $exercise->order)
             ->orderBy('order')
             ->get();
 
-        if ($previousSections->isEmpty()) {
+        if ($previousExercises->isEmpty()) {
             return true;
         }
 
-        // Check if the previous section is completed
-        $previousSection         = $previousSections->last();
-        $previousSectionProgress = UserProgress::where([
-            'user_id'        => Auth::id(),
-            'trackable_type' => Section::class,
-            'trackable_id'   => $previousSection->id,
-        ])->first();
+        // Check if the previous exercise is completed
+        $previousExercise         = $previousExercises->last();
+        $previousExerciseAttempts = $previousExercise->attempts()
+            ->where('user_id', Auth::id())
+            ->where('is_correct', true)
+            ->first();
 
-        return $previousSectionProgress && $previousSectionProgress->isCompleted();
+        return $previousExerciseAttempts !== null;
     }
 
     /**

@@ -15,6 +15,10 @@ return new class extends Migration
             $table->boolean('is_correct');
             $table->json('user_answer');
             $table->integer('time_taken_seconds')->nullable();
+            $table->float('score')->nullable();
+            $table->boolean('passed')->nullable();
+            $table->json('feedback')->nullable();
+            $table->integer('attempt_number')->default(1);
             $table->timestamps();
 
             $table->index(['exercise_id', 'is_correct']);

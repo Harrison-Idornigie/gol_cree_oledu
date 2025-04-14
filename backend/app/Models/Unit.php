@@ -59,13 +59,7 @@ class Unit extends Model
         return $this->hasMany(Lesson::class)->orderBy('order');
     }
 
-    /**
-     * Get the quizzes for the unit.
-     */
-    public function quizzes(): HasMany
-    {
-        return $this->hasMany(Quiz::class);
-    }
+    
 
     /**
      * Get the guide book entries for the unit.
@@ -122,8 +116,7 @@ class Unit extends Model
             'description' => $this->description,
             'order' => $this->order,
             'lessons_count' => $this->lessons()->count(),
-            'quizzes_count' => $this->quizzes()->count(),
-            'has_guide' => $this->guideBookEntries()->exists(),
+             'has_guide' => $this->guideBookEntries()->exists(),
             'thumbnail' => collect($this->getMedia('thumbnail'))->first()?->getUrl(),
             'learning_path' => [
                 'id' => $this->learningPath->id,
@@ -144,8 +137,7 @@ class Unit extends Model
             'description' => $this->description,
             'order' => $this->order,
             'lessons' => $this->lessons->map->getExportData()->toArray(),
-            'quizzes' => $this->quizzes->map->getExportData()->toArray(),
-            'guide_book_entries' => $this->guideBookEntries->map->getExportData()->toArray(),
+             'guide_book_entries' => $this->guideBookEntries->map->getExportData()->toArray(),
             'media' => $this->media->groupBy('collection_name')->toArray(),
         ];
     }
@@ -166,9 +158,7 @@ class Unit extends Model
             Lesson::importData($lessonData, $unit);
         }
 
-        foreach ($data['quizzes'] ?? [] as $quizData) {
-            Quiz::importData($quizData, $unit);
-        }
+      
 
         foreach ($data['guide_book_entries'] ?? [] as $entryData) {
             GuideBookEntry::create([

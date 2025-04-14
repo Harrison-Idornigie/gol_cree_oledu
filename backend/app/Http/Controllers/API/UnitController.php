@@ -35,9 +35,7 @@ class UnitController extends BaseAPIController
             }]);
         }
 
-        if ($request->has('with_quizzes')) {
-            $query->with('quizzes');
-        }
+    
 
         if ($request->has('with_guide')) {
             $query->with('guideBookEntries');
@@ -57,7 +55,7 @@ class UnitController extends BaseAPIController
         $unit = Unit::create($request->validated());
 
         if ($request->has('with_relationships')) {
-            $unit->load(['lessons', 'quizzes', 'guideBookEntries']);
+            $unit->load(['lessons',  'guideBookEntries']);
         }
 
         return $this->sendCreatedResponse($unit, 'Unit created successfully.');
@@ -77,9 +75,7 @@ class UnitController extends BaseAPIController
             }]);
         }
 
-        if ($request->has('with_quizzes')) {
-            $unit->load('quizzes');
-        }
+        
 
         if ($request->has('with_guide')) {
             $unit->load('guideBookEntries');
@@ -106,7 +102,7 @@ class UnitController extends BaseAPIController
         $unit->update($request->validated());
 
         if ($request->has('with_relationships')) {
-            $unit->load(['lessons', 'quizzes', 'guideBookEntries']);
+            $unit->load(['lessons', 'guideBookEntries']);
         }
 
         return $this->sendResponse($unit, 'Unit updated successfully.');

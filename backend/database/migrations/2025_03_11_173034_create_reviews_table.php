@@ -27,7 +27,7 @@ return new class extends Migration
             // Foreign keys
             $table->foreign('submitted_by')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('reviewed_by')->references('id')->on('users')->onDelete('set null');
-            
+
             // Index for polymorphic relationship
             $table->index(['content_type', 'content_id']);
         });
@@ -45,17 +45,12 @@ return new class extends Migration
             $table->enum('review_status', ['none', 'pending', 'approved', 'rejected'])->default('none')->after('status');
         });
 
-        Schema::table('sections', function (Blueprint $table) {
-            $table->enum('review_status', ['none', 'pending', 'approved', 'rejected'])->default('none')->after('status');
-        });
+        // Removed sections table reference as sections have been removed from the data model
 
         Schema::table('exercises', function (Blueprint $table) {
             $table->enum('review_status', ['none', 'pending', 'approved', 'rejected'])->default('none')->after('status');
         });
 
-        Schema::table('quizzes', function (Blueprint $table) {
-            $table->enum('review_status', ['none', 'pending', 'approved', 'rejected'])->default('none')->after('status');
-        });
     }
 
     /**
@@ -76,15 +71,9 @@ return new class extends Migration
             $table->dropColumn('review_status');
         });
 
-        Schema::table('sections', function (Blueprint $table) {
-            $table->dropColumn('review_status');
-        });
+        // Removed sections table reference as sections have been removed from the data model
 
         Schema::table('exercises', function (Blueprint $table) {
-            $table->dropColumn('review_status');
-        });
-
-        Schema::table('quizzes', function (Blueprint $table) {
             $table->dropColumn('review_status');
         });
 

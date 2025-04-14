@@ -152,9 +152,7 @@ export async function middleware(request: NextRequest) {
 
     // Protected routes that require email verification
     const requiresVerification = [
-      "/learn/lessons",
-      "/learn/quizzes",
-      "/learn/exercises",
+      "/learn/*",
     ];
 
     // Check if the current route requires email verification

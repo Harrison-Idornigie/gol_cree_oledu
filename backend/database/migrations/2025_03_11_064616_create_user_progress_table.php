@@ -18,7 +18,7 @@ return new class extends Migration
                 ->default('not_started');
             $table->json('meta_data')
                 ->nullable()
-                ->comment('Additional progress data like quiz scores, exercise results');
+                ->comment('Additional progress data like scores, exercise results');
             $table->timestamps();
 
             // Add indexes for common queries

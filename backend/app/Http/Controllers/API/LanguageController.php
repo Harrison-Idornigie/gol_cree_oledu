@@ -5,7 +5,6 @@ use App\Http\Controllers\API\BaseAPIController;
 use App\Models\Language;
 use App\Models\LearningPath;
 use App\Models\Lesson;
-use App\Models\Quiz;
 use App\Models\UserProgress;
 use App\Models\VocabularyItem;
 use Illuminate\Http\JsonResponse;
@@ -232,8 +231,6 @@ class LanguageController extends BaseAPIController
         // Get lesson completion stats
         $lessonStats = $this->getLessonStats($language, $userId);
 
-        // Get quiz performance
-        $quizStats = $this->getQuizStats($language, $userId);
 
         return [
             'total_paths'         => $totalPaths,
@@ -242,8 +239,7 @@ class LanguageController extends BaseAPIController
             'not_started_paths'   => $notStartedPaths,
             'progress_percentage' => $progressPercentage,
             'lesson_stats'        => $lessonStats,
-            'quiz_stats'          => $quizStats,
-        ];
+         ];
     }
 
     /**
@@ -280,49 +276,7 @@ class LanguageController extends BaseAPIController
         ];
     }
 
-    /**
-     * Get quiz statistics for a language.
-     */
-    private function getQuizStats(Language $language, int $userId): array
-    {
-        // Get all quizzes for learning paths in this language
-        $quizIds = DB::table('quizzes')
-            ->join('units', 'quizzes.unit_id', '=', 'units.id')
-            ->join('learning_paths', 'units.learning_path_id', '=', 'learning_paths.id')
-            ->where('learning_paths.language_id', $language->id)
-            ->where('learning_paths.status', 'published')
-            ->pluck('quizzes.id');
-
-        // Get progress for these quizzes
-        $quizProgress = UserProgress::where('user_id', $userId)
-            ->whereIn('progressable_id', $quizIds)
-            ->where('progressable_type', 'App\\Models\\Quiz')
-            ->get();
-
-        $totalQuizzes     = count($quizIds);
-        $completedQuizzes = $quizProgress->where('status', 'completed')->count();
-
-        // Calculate average score
-        $averageScore = 0;
-        $scoresCount  = 0;
-
-        foreach ($quizProgress as $progress) {
-            if (isset($progress->metadata['score'])) {
-                $averageScore += $progress->metadata['score'];
-                $scoresCount++;
-            }
-        }
-
-        if ($scoresCount > 0) {
-            $averageScore = round($averageScore / $scoresCount, 2);
-        }
-
-        return [
-            'total'         => $totalQuizzes,
-            'completed'     => $completedQuizzes,
-            'average_score' => $averageScore,
-        ];
-    }
+  
 
     /**
      * Get recent activities for a language.
@@ -339,14 +293,12 @@ class LanguageController extends BaseAPIController
             ->whereIn('learning_path_id', $learningPathIds)
             ->pluck('id');
 
-        // Get lesson and quiz IDs for these units
+        // Get lesson IDs for these units
         $lessonIds = DB::table('lessons')
             ->whereIn('unit_id', $unitIds)
             ->pluck('id');
 
-        $quizIds = DB::table('quizzes')
-            ->whereIn('unit_id', $unitIds)
-            ->pluck('id');
+       
 
         // Get vocabulary item IDs for these lessons
         $vocabularyIds = DB::table('vocabulary_items')
@@ -355,17 +307,14 @@ class LanguageController extends BaseAPIController
 
         // Get recent progress entries
         $recentProgress = UserProgress::where('user_id', $userId)
-            ->where(function ($query) use ($learningPathIds, $lessonIds, $quizIds, $vocabularyIds) {
+            ->where(function ($query) use ($learningPathIds, $lessonIds, $vocabularyIds) {
                 $query->where(function ($q) use ($learningPathIds) {
                     $q->whereIn('progressable_id', $learningPathIds)
                         ->where('progressable_type', 'App\\Models\\LearningPath');
                 })->orWhere(function ($q) use ($lessonIds) {
                     $q->whereIn('progressable_id', $lessonIds)
                         ->where('progressable_type', 'App\\Models\\Lesson');
-                })->orWhere(function ($q) use ($quizIds) {
-                    $q->whereIn('progressable_id', $quizIds)
-                        ->where('progressable_type', 'App\\Models\\Quiz');
-                })->orWhere(function ($q) use ($vocabularyIds) {
+                })>orWhere(function ($q) use ($vocabularyIds) {
                     $q->whereIn('progressable_id', $vocabularyIds)
                         ->where('progressable_type', 'App\\Models\\VocabularyItem');
                 });
@@ -402,19 +351,6 @@ class LanguageController extends BaseAPIController
                         'type'          => 'lesson',
                         'learning_path' => $item->unit->learningPath->title,
                         'status'        => $progress->status,
-                        'updated_at'    => $progress->updated_at->toISOString(),
-                    ];
-                    break;
-
-                case 'Quiz':
-                    $item         = Quiz::with('unit.learningPath')->find($progress->progressable_id);
-                    $activityData = [
-                        'id'            => $item->id,
-                        'title'         => $item->title,
-                        'type'          => 'quiz',
-                        'learning_path' => $item->unit->learningPath->title,
-                        'status'        => $progress->status,
-                        'score'         => $progress->metadata['score'] ?? null,
                         'updated_at'    => $progress->updated_at->toISOString(),
                     ];
                     break;
@@ -463,10 +399,7 @@ class LanguageController extends BaseAPIController
             ->whereIn('unit_id', $unitIds)
             ->pluck('id');
 
-        // Get quiz IDs for these units
-        $quizIds = DB::table('quizzes')
-            ->whereIn('unit_id', $unitIds)
-            ->pluck('id');
+        
 
         // Get completed lesson IDs
         $completedLessonIds = UserProgress::where('user_id', $userId)
@@ -475,13 +408,7 @@ class LanguageController extends BaseAPIController
             ->whereIn('progressable_id', $lessonIds)
             ->pluck('progressable_id');
 
-        // Get completed quiz IDs
-        $completedQuizIds = UserProgress::where('user_id', $userId)
-            ->where('progressable_type', 'App\\Models\\Quiz')
-            ->where('status', 'completed')
-            ->whereIn('progressable_id', $quizIds)
-            ->pluck('progressable_id');
-
+        
         // Get in-progress learning path IDs
         $inProgressPathIds = UserProgress::where('user_id', $userId)
             ->where('progressable_type', 'App\\Models\\LearningPath')
@@ -518,29 +445,9 @@ class LanguageController extends BaseAPIController
             $recommendations = array_merge($recommendations, $nextLessons);
         }
 
-        // Recommend quizzes that are ready to be taken
-        $readyQuizzes = Quiz::whereIn('unit_id', function ($query) use ($completedLessonIds) {
-            $query->select('unit_id')
-                ->from('lessons')
-                ->whereIn('id', $completedLessonIds)
-                ->groupBy('unit_id');
-        })
-            ->whereNotIn('id', $completedQuizIds)
-            ->with('unit.learningPath')
-            ->limit(2)
-            ->get()
-            ->map(function ($quiz) {
-                return [
-                    'id'                    => $quiz->id,
-                    'title'                 => $quiz->title,
-                    'type'                  => 'quiz',
-                    'learning_path'         => $quiz->unit->learningPath->title,
-                    'recommendation_reason' => 'Test your knowledge',
-                ];
-            })
-            ->toArray();
+       
 
-        $recommendations = array_merge($recommendations, $readyQuizzes);
+        $recommendations = array_merge($recommendations);
 
         // Recommend new learning paths if user has completed some
         if ($completedLessonIds->isNotEmpty()) {

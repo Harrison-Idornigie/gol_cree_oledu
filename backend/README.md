@@ -9,7 +9,6 @@ A comprehensive API for a language learning platform built with Laravel.
 - Various exercise types (multiple choice, fill in blanks, matching, etc.)
 - Progress tracking system
 - Vocabulary management
-- Quiz system with scoring
 - Guide book entries for additional resources
 
 ## API Endpoints
@@ -110,19 +109,6 @@ A comprehensive API for a language learning platform built with Laravel.
 - translation
 - example
 
-### Quiz
-- id
-- unit_id
-- title
-- passing_score
-
-### QuizQuestion
-- id
-- quiz_id
-- question
-- options (JSON)
-- correct_answer
-
 ### GuideBookEntry
 - id
 - unit_id
@@ -150,7 +136,7 @@ Progress statuses:
 - not_started
 - in_progress
 - completed
-- failed (for quizzes)
+- failed
 
 ## Exercise Types
 

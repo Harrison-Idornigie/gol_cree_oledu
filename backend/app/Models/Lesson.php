@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use App\Models\Traits\HasAuditLog;
@@ -15,7 +14,7 @@ class Lesson extends Model
 {
     use HasFactory, HasVersions, HasAuditLog, HasMedia;
 
-    const AUDIT_AREA = 'lessons';
+    public const AUDIT_AREA = 'lessons';
 
     protected $fillable = [
         'unit_id',
@@ -23,13 +22,13 @@ class Lesson extends Model
         'description',
         'order',
         'status',
-        'review_status'
+        'review_status',
     ];
 
     protected $casts = [
-        'order' => 'integer',
-        'status' => 'string',
-        'review_status' => 'string'
+        'order'         => 'integer',
+        'status'        => 'string',
+        'review_status' => 'string',
     ];
 
     /**
@@ -40,7 +39,7 @@ class Lesson extends Model
         'description',
         'order',
         'status',
-        'review_status'
+        'review_status',
     ];
 
     /**
@@ -60,11 +59,11 @@ class Lesson extends Model
     }
 
     /**
-     * Get the sections for the lesson.
+     * Get the exercises for the lesson.
      */
-    public function sections(): HasMany
+    public function exercises(): HasMany
     {
-        return $this->hasMany(Section::class)->orderBy('order');
+        return $this->hasMany(Exercise::class)->orderBy('order');
     }
 
     /**
@@ -92,23 +91,23 @@ class Lesson extends Model
     }
 
     /**
-     * Check if all sections are completed for a user
+     * Check if all exercises are completed for a user
      */
     public function isCompletedByUser(int $userId): bool
     {
-        $totalSections = $this->sections()->count();
-        if ($totalSections === 0) {
+        $totalExercises = $this->exercises()->count();
+        if ($totalExercises === 0) {
             return false;
         }
 
-        $completedSections = $this->sections()
-            ->whereHas('progress', function ($query) use ($userId) {
+        $completedExercises = $this->exercises()
+            ->whereHas('attempts', function ($query) use ($userId) {
                 $query->where('user_id', $userId)
-                    ->where('status', 'completed');
+                    ->where('is_correct', true);
             })
             ->count();
 
-        return $completedSections === $totalSections;
+        return $completedExercises === $totalExercises;
     }
 
     /**
@@ -117,23 +116,23 @@ class Lesson extends Model
     public function getPreviewData(): array
     {
         return [
-            'id' => $this->id,
-            'title' => $this->title,
-            'description' => $this->description,
-            'order' => $this->order,
-            'sections_count' => $this->sections()->count(),
+            'id'               => $this->id,
+            'title'            => $this->title,
+            'description'      => $this->description,
+            'order'            => $this->order,
+            'exercises_count'  => $this->exercises()->count(),
             'vocabulary_count' => $this->vocabularyItems()->count(),
-            'thumbnail' => collect($this->getMedia('thumbnail'))->first()?->getUrl(),
-            'unit' => [
-                'id' => $this->unit->id,
-                'title' => $this->unit->title,
+            'thumbnail'        => collect($this->getMedia('thumbnail'))->first()?->getUrl(),
+            'unit'             => [
+                'id'            => $this->unit->id,
+                'title'         => $this->unit->title,
                 'learning_path' => [
-                    'id' => $this->unit->learningPath->id,
-                    'title' => $this->unit->learningPath->title
-                ]
+                    'id'    => $this->unit->learningPath->id,
+                    'title' => $this->unit->learningPath->title,
+                ],
             ],
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at
+            'created_at'       => $this->created_at,
+            'updated_at'       => $this->updated_at,
         ];
     }
 
@@ -143,12 +142,12 @@ class Lesson extends Model
     public function getExportData(): array
     {
         return [
-            'title' => $this->title,
-            'description' => $this->description,
-            'order' => $this->order,
-            'sections' => $this->sections->map->getExportData()->toArray(),
+            'title'            => $this->title,
+            'description'      => $this->description,
+            'order'            => $this->order,
+            'exercises'        => $this->exercises->map->getExportData()->toArray(),
             'vocabulary_items' => $this->vocabularyItems->map->getExportData()->toArray(),
-            'media' => $this->media->groupBy('collection_name')->toArray(),
+            'media'            => $this->media->groupBy('collection_name')->toArray(),
         ];
     }
 
@@ -158,22 +157,22 @@ class Lesson extends Model
     public static function importData(array $data, Unit $unit): self
     {
         $lesson = static::create([
-            'unit_id' => $unit->id,
-            'title' => $data['title'],
+            'unit_id'     => $unit->id,
+            'title'       => $data['title'],
             'description' => $data['description'],
-            'order' => $data['order']
+            'order'       => $data['order'],
         ]);
 
-        foreach ($data['sections'] ?? [] as $sectionData) {
-            Section::importData($sectionData, $lesson);
+        foreach ($data['exercises'] ?? [] as $exerciseData) {
+            Exercise::importData($exerciseData, $lesson);
         }
 
         foreach ($data['vocabulary_items'] ?? [] as $itemData) {
             VocabularyItem::create([
-                'lesson_id' => $lesson->id,
-                'word' => $itemData['word'],
+                'lesson_id'   => $lesson->id,
+                'word'        => $itemData['word'],
                 'translation' => $itemData['translation'],
-                'example' => $itemData['example'] ?? null
+                'example'     => $itemData['example'] ?? null,
             ]);
         }
 
@@ -208,24 +207,24 @@ class Lesson extends Model
     public static function getMediaCollections(): array
     {
         return [
-            'thumbnail' => [
-                'max_files' => 1,
+            'thumbnail'      => [
+                'max_files'   => 1,
                 'conversions' => [
-                    'thumb' => ['width' => 100, 'height' => 100],
-                    'preview' => ['width' => 300, 'height' => 300]
-                ]
+                    'thumb'   => ['width' => 100, 'height' => 100],
+                    'preview' => ['width' => 300, 'height' => 300],
+                ],
             ],
             'content_images' => [
-                'max_files' => 10,
+                'max_files'   => 10,
                 'conversions' => [
-                    'thumb' => ['width' => 100, 'height' => 100],
-                    'content' => ['width' => 800, 'height' => null]
-                ]
+                    'thumb'   => ['width' => 100, 'height' => 100],
+                    'content' => ['width' => 800, 'height' => null],
+                ],
             ],
-            'audio' => [
-                'max_files' => 5,
-                'allowed_types' => ['audio/mpeg', 'audio/wav']
-            ]
+            'audio'          => [
+                'max_files'     => 5,
+                'allowed_types' => ['audio/mpeg', 'audio/wav'],
+            ],
         ];
     }
 }

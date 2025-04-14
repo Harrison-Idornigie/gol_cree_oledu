@@ -27,8 +27,7 @@ class XpHistory extends Model
      */
     const SOURCE_LESSON_COMPLETION = 'lesson_completion';
     const SOURCE_EXERCISE_COMPLETION = 'exercise_completion';
-    const SOURCE_QUIZ_COMPLETION = 'quiz_completion';
-    const SOURCE_STREAK_BONUS = 'streak_bonus';
+     const SOURCE_STREAK_BONUS = 'streak_bonus';
     const SOURCE_ACHIEVEMENT = 'achievement';
 
     /**
@@ -63,8 +62,7 @@ class XpHistory extends Model
         return match ($this->source) {
             self::SOURCE_LESSON_COMPLETION => 'Lesson Completed',
             self::SOURCE_EXERCISE_COMPLETION => 'Exercise Completed',
-            self::SOURCE_QUIZ_COMPLETION => 'Quiz Completed',
-            self::SOURCE_STREAK_BONUS => 'Streak Bonus',
+             self::SOURCE_STREAK_BONUS => 'Streak Bonus',
             self::SOURCE_ACHIEVEMENT => 'Achievement Unlocked',
             default => ucfirst(str_replace('_', ' ', $this->source))
         };

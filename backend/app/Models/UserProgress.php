@@ -1,7 +1,7 @@
 <?php
-
 namespace App\Models;
 
+use App\Models\Exercise;
 use App\Models\Traits\HasAuditLog;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -12,12 +12,12 @@ class UserProgress extends Model
 {
     use HasFactory, HasAuditLog;
 
-    const AUDIT_AREA = 'user_progress';
+    public const AUDIT_AREA = 'user_progress';
 
-    const STATUS_NOT_STARTED = 'not_started';
-    const STATUS_IN_PROGRESS = 'in_progress';
-    const STATUS_COMPLETED = 'completed';
-    const STATUS_FAILED = 'failed';
+    public const STATUS_NOT_STARTED = 'not_started';
+    public const STATUS_IN_PROGRESS = 'in_progress';
+    public const STATUS_COMPLETED   = 'completed';
+    public const STATUS_FAILED      = 'failed';
 
     protected $fillable = [
         'user_id',
@@ -25,12 +25,12 @@ class UserProgress extends Model
         'trackable_id',
         'status',
         'meta_data',
-        'completed_at'
+        'completed_at',
     ];
 
     protected $casts = [
-        'meta_data' => 'array',
-        'completed_at' => 'datetime'
+        'meta_data'    => 'array',
+        'completed_at' => 'datetime',
     ];
 
     /**
@@ -55,12 +55,12 @@ class UserProgress extends Model
     public function updateStatus(string $status, array $metadata = []): bool
     {
         $this->status = $status;
-        
-        if ($status === self::STATUS_COMPLETED && !$this->completed_at) {
+
+        if ($status === self::STATUS_COMPLETED && ! $this->completed_at) {
             $this->completed_at = now();
         }
 
-        if (!empty($metadata)) {
+        if (! empty($metadata)) {
             $this->meta_data = array_merge($this->meta_data ?? [], $metadata);
         }
 
@@ -138,7 +138,7 @@ class UserProgress extends Model
     {
         $currentTime = $this->getTimeSpent();
         return $this->updateStatus($this->status, [
-            'time_spent' => $currentTime + $seconds
+            'time_spent' => $currentTime + $seconds,
         ]);
     }
 
@@ -157,7 +157,7 @@ class UserProgress extends Model
     {
         $attempts = $this->getAttemptCount();
         return $this->updateStatus($this->status, [
-            'attempts' => $attempts + 1
+            'attempts' => $attempts + 1,
         ]);
     }
 
@@ -185,7 +185,7 @@ class UserProgress extends Model
         $bestScore = $this->getBestScore();
         return $this->updateStatus($this->status, [
             'last_score' => $score,
-            'best_score' => $bestScore === null ? $score : max($bestScore, $score)
+            'best_score' => $bestScore === null ? $score : max($bestScore, $score),
         ]);
     }
 
@@ -219,13 +219,39 @@ class UserProgress extends Model
     public function getSummary(): array
     {
         return [
-            'status' => $this->status,
+            'status'       => $this->status,
             'completed_at' => $this->completed_at,
-            'time_spent' => $this->getTimeSpent(),
-            'attempts' => $this->getAttemptCount(),
-            'last_score' => $this->getLastScore(),
-            'best_score' => $this->getBestScore(),
-            'meta_data' => $this->meta_data
+            'time_spent'   => $this->getTimeSpent(),
+            'attempts'     => $this->getAttemptCount(),
+            'last_score'   => $this->getLastScore(),
+            'best_score'   => $this->getBestScore(),
+            'meta_data'    => $this->meta_data,
         ];
+    }
+
+    /**
+     * Check if this is a checkpoint progress
+     */
+    public function isCheckpointProgress(): bool
+    {
+        if ($this->trackable_type !== Exercise::class) {
+            return false;
+        }
+
+        return $this->trackable->isCheckpoint();
+    }
+
+    /**
+     * Get all checkpoint progress for a user
+     */
+    public static function getCheckpointProgress($userId)
+    {
+        return self::where('user_id', $userId)
+            ->where('trackable_type', Exercise::class)
+            ->whereHas('trackable', function ($query) {
+                $query->checkpoints();
+            })
+            ->with('trackable')
+            ->get();
     }
 }

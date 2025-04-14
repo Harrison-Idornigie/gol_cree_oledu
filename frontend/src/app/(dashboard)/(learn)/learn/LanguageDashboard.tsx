@@ -208,43 +208,7 @@ export default function LanguageDashboard({
             </CardContent>
           </Card>
 
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">
-                Quizzes
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-2xl font-bold">
-                  {progress_summary.quiz_stats.completed}/
-                  {progress_summary.quiz_stats.total}
-                </span>
-                <Medal className="w-5 h-5 text-primary" />
-              </div>
-              <Progress
-                value={
-                  progress_summary.quiz_stats.total > 0
-                    ? (progress_summary.quiz_stats.completed /
-                        progress_summary.quiz_stats.total) *
-                      100
-                    : 0
-                }
-                className="h-2 mb-2"
-              />
-              <div className="text-xs text-muted-foreground">
-                <div className="mb-1">
-                  <span className="font-medium">Average Score: </span>
-                  {progress_summary.quiz_stats.average_score}%
-                </div>
-                <div>
-                  <span className="font-medium">Completed: </span>
-                  {progress_summary.quiz_stats.completed} of{" "}
-                  {progress_summary.quiz_stats.total}
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+     
 
           <Card>
             <CardHeader className="pb-2">
@@ -307,9 +271,7 @@ export default function LanguageDashboard({
                       {activity.type === "lesson" && (
                         <BookOpen className="w-5 h-5 mt-1 text-primary" />
                       )}
-                      {activity.type === "quiz" && (
-                        <Medal className="w-5 h-5 mt-1 text-primary" />
-                      )}
+                     
                       {activity.type === "vocabulary" && (
                         <Volume2 className="w-5 h-5 mt-1 text-primary" />
                       )}
@@ -434,9 +396,7 @@ export default function LanguageDashboard({
                       {recommendation.type === "lesson" && (
                         <BookOpen className="w-5 h-5 mt-1 text-primary" />
                       )}
-                      {recommendation.type === "quiz" && (
-                        <Medal className="w-5 h-5 mt-1 text-primary" />
-                      )}
+                      
 
                       <div className="flex-1">
                         <h3 className="font-medium">{recommendation.title}</h3>

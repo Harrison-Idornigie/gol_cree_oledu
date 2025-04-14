@@ -4,8 +4,7 @@ import { revalidatePath } from 'next/cache';
 import axiosInstance from '@/lib/axios';
 import { Lesson } from '@/types/lesson';
 import { Section } from '@/types/section';
-import { Quiz } from '@/types/quiz';
-
+ 
 interface APIResponse {
   id: number;
   unit_id: number;
@@ -18,8 +17,7 @@ interface APIResponse {
   xp_reward?: number;
   difficulty_level: string;
   sections: Section[];
-  assessment_quiz?: Quiz;
-  created_at: string;
+   created_at: string;
   updated_at: string;
 }
 
@@ -38,7 +36,6 @@ function transformAPIResponse(data: APIResponse): Lesson {
     estimated_time: data.estimated_time || 0,
     xp_reward: data.xp_reward || 0,
     sections: data.sections || [],
-    assessment_quiz: data.assessment_quiz
   };
 }
 

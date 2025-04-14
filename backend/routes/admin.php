@@ -1,32 +1,24 @@
 <?php
 
+use App\Http\Controllers\API\Admin\AdminAnalyticsController;
+use App\Http\Controllers\API\Admin\AdminAuditController;
+use App\Http\Controllers\API\Admin\AdminDashboardController;
+use App\Http\Controllers\API\Admin\AdminExerciseController;
+use App\Http\Controllers\API\Admin\AdminGamificationController;
+use App\Http\Controllers\API\Admin\AdminGuideBookEntryController;
+use App\Http\Controllers\API\Admin\AdminInviteController;
+use App\Http\Controllers\API\Admin\AdminLanguageController;
+use App\Http\Controllers\API\Admin\AdminLearningPathController;
+use App\Http\Controllers\API\Admin\AdminLessonController;
+use App\Http\Controllers\API\Admin\AdminMediaController;
+use App\Http\Controllers\API\Admin\AdminProgressController;
+use App\Http\Controllers\API\Admin\AdminRoleController;
+use App\Http\Controllers\API\Admin\AdminSectionController;
+use App\Http\Controllers\API\Admin\AdminSentenceController;
+use App\Http\Controllers\API\Admin\AdminUnitController;
+use App\Http\Controllers\API\Admin\AdminVocabularyController;
+use App\Http\Controllers\API\Admin\AdminWordController;
 use Illuminate\Support\Facades\Route;
-
-use App\Http\Controllers\API\Admin\{
-    AdminDashboardController,
-    AdminInviteController,
-    AdminMediaController,
-    AdminAuditController,
-    AdminAnalyticsController,
-    AdminRoleController,
-    AdminGamificationController,
-    AdminLanguageController
-};
-
-use App\Http\Controllers\API\Admin\{
-    AdminLearningPathController,
-    AdminUnitController,
-    AdminLessonController,
-    AdminSectionController,
-    AdminExerciseController,
-    AdminQuizController,
-    AdminQuizQuestionController,
-    AdminVocabularyController,
-    AdminGuideBookEntryController,
-    AdminProgressController,
-    AdminSentenceController,
-    AdminWordController
-};
 
 Route::prefix('admin')->middleware(['auth:sanctum', 'role:admin'])->group(function () {
     // Dashboard & Analytics
@@ -45,7 +37,7 @@ Route::prefix('admin')->middleware(['auth:sanctum', 'role:admin'])->group(functi
         Route::get('{language}', [AdminLanguageController::class, 'show']);
         Route::put('{language}', [AdminLanguageController::class, 'update']);
         Route::patch('{language}/status', [AdminLanguageController::class, 'updateStatus']);
-        
+
         // Language Pairs
         Route::post('pairs', [AdminLanguageController::class, 'createPair']);
         Route::delete('pairs/{source}/{target}', [AdminLanguageController::class, 'deletePair']);
@@ -59,12 +51,12 @@ Route::prefix('admin')->middleware(['auth:sanctum', 'role:admin'])->group(functi
         Route::get('{word}', [AdminWordController::class, 'show']);
         Route::put('{word}', [AdminWordController::class, 'update']);
         Route::delete('{word}', [AdminWordController::class, 'destroy']);
-        
+
         // Word Translations
         Route::post('{word}/translations', [AdminWordController::class, 'addTranslation']);
         Route::put('{word}/translations/{translation}', [AdminWordController::class, 'updateTranslation']);
         Route::delete('{word}/translations/{translation}', [AdminWordController::class, 'deleteTranslation']);
-        
+
         // Word Audio
         Route::post('{word}/audio', [AdminWordController::class, 'uploadAudio']);
         Route::post('{word}/translations/{translation}/audio', [AdminWordController::class, 'uploadTranslationAudio']);
@@ -77,17 +69,17 @@ Route::prefix('admin')->middleware(['auth:sanctum', 'role:admin'])->group(functi
         Route::get('{sentence}', [AdminSentenceController::class, 'show']);
         Route::put('{sentence}', [AdminSentenceController::class, 'update']);
         Route::delete('{sentence}', [AdminSentenceController::class, 'destroy']);
-        
+
         // Sentence Translations
         Route::post('{sentence}/translations', [AdminSentenceController::class, 'addTranslation']);
         Route::put('{sentence}/translations/{translation}', [AdminSentenceController::class, 'updateTranslation']);
         Route::delete('{sentence}/translations/{translation}', [AdminSentenceController::class, 'deleteTranslation']);
-        
+
         // Sentence Audio
         Route::post('{sentence}/audio', [AdminSentenceController::class, 'uploadAudio']);
         Route::post('{sentence}/audio-slow', [AdminSentenceController::class, 'uploadSlowAudio']);
         Route::post('{sentence}/translations/{translation}/audio', [AdminSentenceController::class, 'uploadTranslationAudio']);
-        
+
         // Word Timings
         Route::put('{sentence}/word-timings', [AdminSentenceController::class, 'updateWordTimings']);
         Route::put('{sentence}/words/reorder', [AdminSentenceController::class, 'reorderWords']);
@@ -99,8 +91,7 @@ Route::prefix('admin')->middleware(['auth:sanctum', 'role:admin'])->group(functi
     Route::apiResource('lessons', AdminLessonController::class);
     Route::apiResource('sections', AdminSectionController::class);
     Route::apiResource('exercises', AdminExerciseController::class);
-    Route::apiResource('quizzes', AdminQuizController::class);
-    Route::apiResource('quiz-questions', AdminQuizQuestionController::class);
+
     Route::apiResource('vocabulary', AdminVocabularyController::class);
     Route::apiResource('guide-entries', AdminGuideBookEntryController::class);
 

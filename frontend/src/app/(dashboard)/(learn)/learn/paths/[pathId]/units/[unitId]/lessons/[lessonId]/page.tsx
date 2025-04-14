@@ -11,8 +11,7 @@ import {
   ChevronRight,
   Volume2,
 } from "lucide-react";
-import QuizResults from "@/components/learn/QuizResults";
-import MultipleChoiceExercise from "@/components/learn/MultipleChoiceExercise";
+ import MultipleChoiceExercise from "@/components/learn/MultipleChoiceExercise";
 import { useSequentialLearning } from "@/hooks/useSequentialLearning";
 import { LockedContent } from "@/components/ui/locked-content";
 
@@ -120,40 +119,7 @@ const lessonData: Record<
       tips: "When describing family members, start with the most noticeable features first. Remember that it's polite to focus on neutral or positive attributes.",
     },
   },
-  // Quiz example
-  4007: {
-    id: 4007,
-    name: "Description Quiz",
-    type: "quiz",
-    levelId: 4,
-    unitId: 402,
-    content: {
-      introduction: "Test your knowledge of family description vocabulary.",
-      questions: [
-        {
-          question: "Which word describes someone with a lot of muscle?",
-          options: ["Slim", "Athletic", "Tall", "Elegant"],
-          correctAnswer: "Athletic",
-        },
-        {
-          question: "What would you call someone with yellow or golden hair?",
-          options: ["Brunette", "Redhead", "Blonde", "Gray-haired"],
-          correctAnswer: "Blonde",
-        },
-        {
-          question: "Which is NOT a hair length description?",
-          options: ["Long", "Medium", "Short", "Attractive"],
-          correctAnswer: "Attractive",
-        },
-        {
-          question:
-            "How would you describe someone who is above average height?",
-          options: ["Tall", "Short", "Medium", "Average"],
-          correctAnswer: "Tall",
-        },
-      ],
-    },
-  },
+   
 };
 
 export default function LessonPage() {
@@ -162,8 +128,7 @@ export default function LessonPage() {
   const lessonId = Number.parseInt(params.lessonId as string);
   const pathId = params.id as string;
 
-  const [quizAnswers, setQuizAnswers] = useState<Record<number, string>>({});
-  const [quizSubmitted, setQuizSubmitted] = useState(false);
+  
   const [currentPage, setCurrentPage] = useState(0);
 
   // Check if the lesson is unlocked
@@ -194,32 +159,14 @@ export default function LessonPage() {
     );
   }
 
-  const isQuiz = lesson.type === "quiz";
+   
 
-  const handleQuizSubmit = () => {
-    setQuizSubmitted(true);
-  };
-
-  // Calculate quiz score if submitted
-  const calculateScore = () => {
-    if (!isQuiz || !quizSubmitted) return 0;
-
-    let correctCount = 0;
-    lesson.content.questions.forEach((question, index) => {
-      if (quizAnswers[index] === question.correctAnswer) {
-        correctCount++;
-      }
-    });
-
-    return Math.round((correctCount / lesson.content.questions.length) * 100);
-  };
+ 
 
   const handleNextPage = () => {
-    if (isQuiz && currentPage >= lesson.content.questions.length - 1) {
-      handleQuizSubmit();
-    } else {
+   
       setCurrentPage((prev) => prev + 1);
-    }
+    
   };
 
   const handlePrevPage = () => {
@@ -239,30 +186,7 @@ export default function LessonPage() {
             </Link>
             <h1 className="text-xl font-bold">{lesson.name}</h1>
           </div>
-          <div className="flex items-center gap-3">
-            {isQuiz ? (
-              quizSubmitted ? (
-                <div className="flex items-center gap-1 text-green-600">
-                  <span className="font-medium">
-                    Score: {calculateScore()}%
-                  </span>
-                </div>
-              ) : (
-                <span className="text-sm text-muted-foreground">
-                  Question {currentPage + 1} of{" "}
-                  {lesson.content.questions.length}
-                </span>
-              )
-            ) : (
-              <Progress
-                value={
-                  ((currentPage + 1) / (lesson.content.sections.length + 1)) *
-                  100
-                }
-                className="w-24 h-2"
-              />
-            )}
-          </div>
+           
         </div>
       </header>
 
@@ -271,82 +195,7 @@ export default function LessonPage() {
           {isQuiz ? (
             // Quiz content
             <div className="space-y-8">
-              {!quizSubmitted ? (
-                // Quiz questions with enhanced feedback
-                <MultipleChoiceExercise
-                  question={lesson.content.questions[currentPage].question}
-                  options={lesson.content.questions[currentPage].options}
-                  correctAnswer={
-                    lesson.content.questions[currentPage].correctAnswer
-                  }
-                  explanation={
-                    lesson.content.questions[currentPage].explanation
-                  }
-                  onAnswer={(isCorrect) => {
-                    // Just store the answer, don't show feedback until submission
-                    setQuizAnswers({
-                      ...quizAnswers,
-                      [currentPage]: lesson.content.questions[
-                        currentPage
-                      ].options.find(
-                        (_, i) => i === (isCorrect ? 0 : 1) // Mock correct/incorrect answer
-                      ),
-                    });
-                  }}
-                  onNext={handleNextPage}
-                  wordData={{
-                    // Mock vocabulary data - in a real app, this would come from an API
-                    cinco: {
-                      text: "cinco",
-                      translation: "five",
-                      phonetic: "ˈθiŋko",
-                      audioUrl: "https://example.com/audio/cinco.mp3",
-                      partOfSpeech: "numeral",
-                      example: "Tengo cinco dedos en cada mano.",
-                    },
-                    nueve: {
-                      text: "nueve",
-                      translation: "nine",
-                      phonetic: "ˈnweβe",
-                      audioUrl: "https://example.com/audio/nueve.mp3",
-                      partOfSpeech: "numeral",
-                      example: "El número nueve es mi favorito.",
-                    },
-                  }}
-                />
-              ) : (
-                // Quiz results with detailed feedback
-                <QuizResults
-                  questions={lesson.content.questions}
-                  userAnswers={quizAnswers}
-                  score={calculateScore()}
-                  pathId={lesson.levelId}
-                  onRetry={() => {
-                    setQuizAnswers({});
-                    setQuizSubmitted(false);
-                    setCurrentPage(0);
-                  }}
-                  wordData={{
-                    // Mock vocabulary data - in a real app, this would come from an API
-                    cinco: {
-                      text: "cinco",
-                      translation: "five",
-                      phonetic: "ˈθiŋko",
-                      audioUrl: "https://example.com/audio/cinco.mp3",
-                      partOfSpeech: "numeral",
-                      example: "Tengo cinco dedos en cada mano.",
-                    },
-                    nueve: {
-                      text: "nueve",
-                      translation: "nine",
-                      phonetic: "ˈnweβe",
-                      audioUrl: "https://example.com/audio/nueve.mp3",
-                      partOfSpeech: "numeral",
-                      example: "El número nueve es mi favorito.",
-                    },
-                  }}
-                />
-              )}
+            
 
               {!quizSubmitted && (
                 <div className="flex justify-between">

@@ -13,8 +13,7 @@ use App\Models\Language;
 use App\Models\Achievement;
 use App\Models\Exercise;
 use App\Models\ExerciseAttempt;
-use App\Models\Quiz;
-use App\Models\QuizAttempt;
+ 
 use App\Models\Section;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -92,16 +91,7 @@ class AdminDashboardAnalyticsTest extends AdminTestCase
             'order' => 1
         ]);
 
-        // Create test quiz
-        $quiz = Quiz::create([
-            'lesson_id' => $lesson->id,
-            'section_id' => $section->id,
-            'title' => 'Unit 1 Quiz',
-            'slug' => 'unit-1-quiz',
-            'passing_score' => 70,
-            'is_published' => true
-        ]);
-
+ 
         // Create test users with progress and streaks
         for ($i = 1; $i <= 5; $i++) {
             $user = User::create([
@@ -145,19 +135,6 @@ class AdminDashboardAnalyticsTest extends AdminTestCase
                 'time_taken_seconds' => 30 + $i
             ]);
 
-            // Add quiz attempts
-            QuizAttempt::create([
-                'quiz_id' => $quiz->id,
-                'user_id' => $user->id,
-                'answers' => ['q1' => 'A'],
-                'score' => 60 + ($i * 5),
-                'passed' => 60 + ($i * 5) >= 70,
-                'time_taken_seconds' => 300 + ($i * 60),
-                'question_results' => [
-                    ['question_id' => 1, 'correct' => true],
-                    ['question_id' => 2, 'correct' => $i % 2 == 0]
-                ]
-            ]);
         }
 
         // Create some achievements

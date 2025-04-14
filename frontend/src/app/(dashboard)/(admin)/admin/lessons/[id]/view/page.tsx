@@ -103,20 +103,7 @@ export default function ViewLessonPage({ params }: ViewLessonPageProps) {
           <h1 className="text-3xl font-bold tracking-tight">{lesson.title}</h1>
           <p className="text-muted-foreground">{lesson.description}</p>
         </div>
-        <div className="flex gap-2">
-          {!hasAssessmentQuiz(lesson) && (
-            <Button
-              onClick={() => router.push(`/admin/lessons/${params.id}/quizzes/new`)}
-            >
-              Add Assessment Quiz
-            </Button>
-          )}
-          <Button
-            onClick={() => router.push(`/admin/lessons/${params.id}/sections/new`)}
-          >
-            Add Section
-          </Button>
-        </div>
+       
       </div>
 
       {/* Sections List */}
@@ -150,20 +137,7 @@ export default function ViewLessonPage({ params }: ViewLessonPageProps) {
                       </span>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    {section.type === 'theory' && !section.quiz && (
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() =>
-                          router.push(
-                            `/admin/lessons/${params.id}/sections/${section.id}/quizzes/new`
-                          )
-                        }
-                      >
-                        Add Practice Quiz
-                      </Button>
-                    )}
+                  
                     <Button
                       variant="outline"
                       size="sm"

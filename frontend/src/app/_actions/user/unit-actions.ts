@@ -13,8 +13,7 @@ interface Unit {
   review_status: string;
   is_unlocked: boolean;
   lessons?: any[];
-  quizzes?: any[];
-  progress?: any;
+   progress?: any;
 }
 
 /**
@@ -23,7 +22,7 @@ interface Unit {
 export async function getUnit(unitId: number) {
   try {
     const response = await axiosInstance.get<ApiResponse<Unit>>(
-      `/api/units/${unitId}?with_lessons=1&with_quizzes=1&with_progress=1`
+      `/api/units/${unitId}?with_lessons=1&with_progress=1`
     );
     return response.data.data;
   } catch (error) {

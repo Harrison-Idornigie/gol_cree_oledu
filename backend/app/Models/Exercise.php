@@ -16,6 +16,7 @@ class Exercise extends Model
 
     public const AUDIT_AREA = 'exercises';
 
+    // Exercise types
     public const TYPE_MULTIPLE_CHOICE = 'multiple_choice';
     public const TYPE_FILL_BLANK      = 'fill_blank';
     public const TYPE_MATCHING        = 'matching';
@@ -25,8 +26,13 @@ class Exercise extends Model
     public const TYPE_LISTENING       = 'listening';
     public const TYPE_PICTURE         = 'picture';
 
+    // Exercise purposes/modes
+    public const PURPOSE_PRACTICE   = 'practice';
+    public const PURPOSE_CHECKPOINT = 'checkpoint';
+    public const PURPOSE_REVIEW     = 'review';
+    public const PURPOSE_ASSESSMENT = 'assessment';
+
     protected $fillable = [
-        'section_id',
         'lesson_id',
         'title',
         'slug',
@@ -36,14 +42,38 @@ class Exercise extends Model
         'order',
         'status',
         'review_status',
+        'purpose',
+        'difficulty_level',
+        'passing_score',
+        'time_limit',
+        'max_attempts',
+        'show_feedback',
+        'show_hints',
+        'xp_reward',
+        'is_checkpoint',
+        'requires_previous',
+        'show_solutions_after',
+        'min_correct_required',
+        'metadata',
     ];
 
     protected $casts = [
-        'content'       => 'array',
-        'answers'       => 'array',
-        'order'         => 'integer',
-        'status'        => 'string',
-        'review_status' => 'string',
+        'content'              => 'array',
+        'answers'              => 'array',
+        'metadata'             => 'array',
+        'order'                => 'integer',
+        'status'               => 'string',
+        'review_status'        => 'string',
+        'passing_score'        => 'integer',
+        'time_limit'           => 'integer',
+        'max_attempts'         => 'integer',
+        'show_feedback'        => 'boolean',
+        'show_hints'           => 'boolean',
+        'xp_reward'            => 'integer',
+        'is_checkpoint'        => 'boolean',
+        'requires_previous'    => 'boolean',
+        'show_solutions_after' => 'boolean',
+        'min_correct_required' => 'integer',
     ];
 
     /**
@@ -54,14 +84,18 @@ class Exercise extends Model
         'content',
         'answers',
         'order',
+        'purpose',
+        'passing_score',
+        'time_limit',
+        'max_attempts',
     ];
 
     /**
-     * Get the section that owns the exercise.
+     * Get the lesson that owns the exercise.
      */
-    public function section(): BelongsTo
+    public function lesson(): BelongsTo
     {
-        return $this->belongsTo(Section::class);
+        return $this->belongsTo(Lesson::class);
     }
 
     /**
@@ -146,25 +180,49 @@ class Exercise extends Model
     public function getExportData(): array
     {
         return [
-            'type'    => $this->type,
-            'content' => $this->content,
-            'answers' => $this->answers,
-            'order'   => $this->order,
-            'media'   => $this->media->groupBy('collection_name')->toArray(),
+            'type'                 => $this->type,
+            'purpose'              => $this->purpose,
+            'content'              => $this->content,
+            'answers'              => $this->answers,
+            'order'                => $this->order,
+            'passing_score'        => $this->passing_score,
+            'time_limit'           => $this->time_limit,
+            'max_attempts'         => $this->max_attempts,
+            'show_feedback'        => $this->show_feedback,
+            'show_hints'           => $this->show_hints,
+            'is_checkpoint'        => $this->is_checkpoint,
+            'requires_previous'    => $this->requires_previous,
+            'show_solutions_after' => $this->show_solutions_after,
+            'min_correct_required' => $this->min_correct_required,
+            'difficulty_level'     => $this->difficulty_level,
+            'metadata'             => $this->metadata,
+            'media'                => $this->media->groupBy('collection_name')->toArray(),
         ];
     }
 
     /**
      * Import data from an export structure
      */
-    public static function importData(array $data, Section $section): self
+    public static function importData(array $data, Lesson $lesson): self
     {
         return static::create([
-            'section_id' => $section->id,
-            'type'       => $data['type'],
-            'content'    => $data['content'],
-            'answers'    => $data['answers'],
-            'order'      => $data['order'],
+            'lesson_id'            => $lesson->id,
+            'type'                 => $data['type'],
+            'purpose'              => $data['purpose'] ?? self::PURPOSE_PRACTICE,
+            'content'              => $data['content'],
+            'answers'              => $data['answers'],
+            'order'                => $data['order'],
+            'passing_score'        => $data['passing_score'] ?? 70,
+            'time_limit'           => $data['time_limit'] ?? null,
+            'max_attempts'         => $data['max_attempts'] ?? null,
+            'show_feedback'        => $data['show_feedback'] ?? true,
+            'show_hints'           => $data['show_hints'] ?? true,
+            'is_checkpoint'        => $data['is_checkpoint'] ?? false,
+            'requires_previous'    => $data['requires_previous'] ?? false,
+            'show_solutions_after' => $data['show_solutions_after'] ?? true,
+            'min_correct_required' => $data['min_correct_required'] ?? null,
+            'difficulty_level'     => $data['difficulty_level'] ?? 'beginner',
+            'metadata'             => $data['metadata'] ?? [],
         ]);
     }
 
@@ -193,6 +251,104 @@ class Exercise extends Model
                 ],
             ],
         ];
+    }
+
+    /**
+     * Check if this exercise is a checkpoint
+     */
+    public function isCheckpoint(): bool
+    {
+        return $this->is_checkpoint || $this->purpose === self::PURPOSE_CHECKPOINT;
+    }
+
+    /**
+     * Scope a query to only include checkpoint exercises
+     */
+    public function scopeCheckpoints($query)
+    {
+        return $query->where(function ($q) {
+            $q->where('is_checkpoint', true)
+                ->orWhere('purpose', self::PURPOSE_CHECKPOINT);
+        });
+    }
+
+    /**
+     * Check if this exercise is for assessment
+     */
+    public function isAssessment(): bool
+    {
+        return $this->purpose === self::PURPOSE_ASSESSMENT;
+    }
+
+    /**
+     * Check if this exercise is for review
+     */
+    public function isReview(): bool
+    {
+        return $this->purpose === self::PURPOSE_REVIEW;
+    }
+
+    /**
+     * Check if this exercise is for practice
+     */
+    public function isPractice(): bool
+    {
+        return $this->purpose === self::PURPOSE_PRACTICE || $this->purpose === null;
+    }
+
+    /**
+     * Calculate the score for a given answer
+     */
+    public function calculateScore($userAnswer): float
+    {
+        // Simple implementation - either 100% or 0%
+        return $this->checkAnswer($userAnswer) ? 100.0 : 0.0;
+    }
+
+    /**
+     * Check if the user has passed this exercise
+     */
+    public function hasPassed(float $score): bool
+    {
+        return $score >= ($this->passing_score ?? 70);
+    }
+
+    /**
+     * Get all checkpoint exercises for a lesson
+     */
+    public static function getCheckpointsForLesson($lessonId)
+    {
+        return self::where('lesson_id', $lessonId)
+            ->checkpoints()
+            ->orderBy('order')
+            ->get();
+    }
+
+    /**
+     * Get all exercises that should be included in a checkpoint assessment
+     * This could include exercises from previous lessons that are being tested
+     */
+    public static function getExercisesForCheckpoint($checkpointId)
+    {
+        $checkpoint = self::findOrFail($checkpointId);
+
+        if (! $checkpoint->isCheckpoint()) {
+            return collect([$checkpoint]);
+        }
+
+        // Get metadata about which exercises to include
+        $exerciseIds = $checkpoint->metadata['included_exercises'] ?? [];
+
+        if (empty($exerciseIds)) {
+            // If no specific exercises are defined, return just the checkpoint
+            return collect([$checkpoint]);
+        }
+
+        // Return the checkpoint plus all included exercises
+        return self::whereIn('id', $exerciseIds)
+            ->orderBy('order')
+            ->get()
+            ->prepend($checkpoint);
     }
 
     /**

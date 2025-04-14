@@ -1,18 +1,17 @@
 <?php
-
 namespace App\Http\Controllers\API\Admin;
 
 use App\Http\Controllers\API\BaseAPIController;
-use App\Models\Exercise;
-use App\Models\Section;
 use App\Http\Requests\API\Exercise\StoreExerciseRequest;
 use App\Http\Requests\API\Exercise\UpdateExerciseRequest;
 use App\Models\AuditLog;
+use App\Models\Exercise;
+use App\Models\Lesson;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Exception;
 
 class AdminExerciseController extends BaseAPIController
 {
@@ -29,10 +28,8 @@ class AdminExerciseController extends BaseAPIController
                 $query->where('status', $request->status);
             }
 
-            if ($request->has('section_id')) {
-                $query->whereHas('sections', function ($query) use ($request) {
-                    $query->where('sections.id', $request->section_id);
-                });
+            if ($request->has('lesson_id')) {
+                $query->where('lesson_id', $request->lesson_id);
             }
 
             if ($request->has('type')) {
@@ -44,17 +41,17 @@ class AdminExerciseController extends BaseAPIController
             }
 
             // Include relationships if requested
-            if ($request->has('with_sections')) {
-                $query->with('sections');
+            if ($request->has('with_lesson')) {
+                $query->with('lesson');
             }
 
-            $perPage = $request->input('per_page', 15);
+            $perPage   = $request->input('per_page', 15);
             $exercises = $query->paginate($perPage);
 
             return $this->sendPaginatedResponse($exercises);
         } catch (Exception $e) {
             Log::error('Error fetching exercises: ' . $e->getMessage(), [
-                'trace' => $e->getTraceAsString()
+                'trace' => $e->getTraceAsString(),
             ]);
             return $this->sendError('Failed to retrieve exercises', ['status' => 500]);
         }
@@ -69,15 +66,16 @@ class AdminExerciseController extends BaseAPIController
         try {
             $exercise = Exercise::create($request->validated());
 
-            // Attach to section if specified
-            if ($request->has('section_id')) {
-                $section = Section::findOrFail($request->section_id);
-                
-                // Get the highest order in the section
-                $maxOrder = $section->exercises()->max('order') ?? 0;
-                
-                // Attach with the next order
-                $section->exercises()->attach($exercise->id, ['order' => $maxOrder + 1]);
+            // Set the order if not specified
+            if (! $request->has('order') && $request->has('lesson_id')) {
+                $lesson = Lesson::findOrFail($request->lesson_id);
+
+                // Get the highest order in the lesson
+                $maxOrder = $lesson->exercises()->max('order') ?? 0;
+
+                // Set the next order
+                $exercise->order = $maxOrder + 1;
+                $exercise->save();
             }
 
             // Log the creation for audit trail
@@ -94,7 +92,7 @@ class AdminExerciseController extends BaseAPIController
         } catch (Exception $e) {
             DB::rollBack();
             Log::error('Error creating exercise: ' . $e->getMessage(), [
-                'trace' => $e->getTraceAsString()
+                'trace' => $e->getTraceAsString(),
             ]);
             return $this->sendError('Failed to create exercise: ' . $e->getMessage(), ['status' => 500]);
         }
@@ -107,8 +105,8 @@ class AdminExerciseController extends BaseAPIController
     {
         try {
             // Load relationships if requested
-            if ($request->has('with_sections')) {
-                $exercise->load('sections');
+            if ($request->has('with_lesson')) {
+                $exercise->load('lesson');
             }
 
             if ($request->has('with_versions')) {
@@ -119,8 +117,8 @@ class AdminExerciseController extends BaseAPIController
             return $this->sendResponse($exercise);
         } catch (Exception $e) {
             Log::error('Error fetching exercise details: ' . $e->getMessage(), [
-                'trace' => $e->getTraceAsString(),
-                'exercise_id' => $exercise->id
+                'trace'       => $e->getTraceAsString(),
+                'exercise_id' => $exercise->id,
             ]);
             return $this->sendError('Failed to retrieve exercise details', ['status' => 500]);
         }
@@ -139,19 +137,16 @@ class AdminExerciseController extends BaseAPIController
             // Update the exercise
             $exercise->update($request->validated());
 
-            // Handle section attachment/detachment if specified
-            if ($request->has('section_id')) {
-                // Detach from all current sections
-                $exercise->sections()->detach();
-                
-                // Attach to new section
-                $section = Section::findOrFail($request->section_id);
-                
-                // Get the highest order in the section
-                $maxOrder = $section->exercises()->max('order') ?? 0;
-                
-                // Attach with the next order
-                $section->exercises()->attach($exercise->id, ['order' => $maxOrder + 1]);
+            // Update lesson if specified
+            if ($request->has('lesson_id') && $exercise->lesson_id != $request->lesson_id) {
+                $lesson = Lesson::findOrFail($request->lesson_id);
+
+                // Get the highest order in the lesson
+                $maxOrder = $lesson->exercises()->max('order') ?? 0;
+
+                // Set the next order
+                $exercise->order = $maxOrder + 1;
+                $exercise->save();
             }
 
             // Log the update for audit trail
@@ -167,8 +162,8 @@ class AdminExerciseController extends BaseAPIController
         } catch (Exception $e) {
             DB::rollBack();
             Log::error('Error updating exercise: ' . $e->getMessage(), [
-                'trace' => $e->getTraceAsString(),
-                'exercise_id' => $exercise->id
+                'trace'       => $e->getTraceAsString(),
+                'exercise_id' => $exercise->id,
             ]);
             return $this->sendError('Failed to update exercise: ' . $e->getMessage(), ['status' => 500]);
         }
@@ -201,8 +196,8 @@ class AdminExerciseController extends BaseAPIController
         } catch (Exception $e) {
             DB::rollBack();
             Log::error('Error deleting exercise: ' . $e->getMessage(), [
-                'trace' => $e->getTraceAsString(),
-                'exercise_id' => $exercise->id
+                'trace'       => $e->getTraceAsString(),
+                'exercise_id' => $exercise->id,
             ]);
             return $this->sendError('Failed to delete exercise: ' . $e->getMessage(), ['status' => 500]);
         }
@@ -216,10 +211,10 @@ class AdminExerciseController extends BaseAPIController
         DB::beginTransaction();
         try {
             $request->validate([
-                'status' => 'required|string|in:draft,published,archived'
+                'status' => 'required|string|in:draft,published,archived',
             ]);
 
-            $oldStatus = $exercise->status;
+            $oldStatus        = $exercise->status;
             $exercise->status = $request->status;
             $exercise->save();
 
@@ -237,8 +232,8 @@ class AdminExerciseController extends BaseAPIController
         } catch (Exception $e) {
             DB::rollBack();
             Log::error('Error updating exercise status: ' . $e->getMessage(), [
-                'trace' => $e->getTraceAsString(),
-                'exercise_id' => $exercise->id
+                'trace'       => $e->getTraceAsString(),
+                'exercise_id' => $exercise->id,
             ]);
             return $this->sendError('Failed to update exercise status: ' . $e->getMessage(), ['status' => 500]);
         }
@@ -247,12 +242,12 @@ class AdminExerciseController extends BaseAPIController
     /**
      * Clone an existing exercise.
      */
-    public function clone(Request $request, Exercise $exercise): JsonResponse
+    public function clone (Request $request, Exercise $exercise): JsonResponse
     {
         DB::beginTransaction();
         try {
-            $newExercise = $exercise->replicate();
-            $newExercise->title = $newExercise->title . ' (Copy)';
+            $newExercise         = $exercise->replicate();
+            $newExercise->title  = $newExercise->title . ' (Copy)';
             $newExercise->status = 'draft';
             $newExercise->save();
 
@@ -270,45 +265,47 @@ class AdminExerciseController extends BaseAPIController
         } catch (Exception $e) {
             DB::rollBack();
             Log::error('Error cloning exercise: ' . $e->getMessage(), [
-                'trace' => $e->getTraceAsString(),
-                'original_exercise_id' => $exercise->id
+                'trace'                => $e->getTraceAsString(),
+                'original_exercise_id' => $exercise->id,
             ]);
             return $this->sendError('Failed to clone exercise: ' . $e->getMessage(), ['status' => 500]);
         }
     }
 
     /**
-     * Reorder exercises within a section.
+     * Reorder exercises within a lesson.
      */
-    public function reorder(Request $request, Section $section): JsonResponse
+    public function reorder(Request $request, Lesson $lesson): JsonResponse
     {
         // Begin a transaction
         DB::beginTransaction();
 
         try {
             $request->validate([
-                'exercises' => 'required|array',
-                'exercises.*.id' => 'required|exists:exercises,id',
-                'exercises.*.order' => 'required|integer|min:0'
+                'exercises'         => 'required|array',
+                'exercises.*.id'    => 'required|exists:exercises,id',
+                'exercises.*.order' => 'required|integer|min:0',
             ]);
 
             foreach ($request->exercises as $item) {
-                // Update the pivot table with the new order
-                $section->exercises()->updateExistingPivot($item['id'], ['order' => $item['order']]);
+                // Update the exercise order
+                Exercise::where('id', $item['id'])
+                    ->where('lesson_id', $lesson->id)
+                    ->update(['order' => $item['order']]);
             }
 
             // Log the reordering
             AuditLog::log(
                 'reorder',
                 'exercises',
-                $section,
+                $lesson,
                 [],
                 [],
                 [
                     'metadata' => [
-                        'section_id' => $section->id,
-                        'exercises' => $request->exercises
-                    ]
+                        'lesson_id' => $lesson->id,
+                        'exercises' => $request->exercises,
+                    ],
                 ]
             );
 
@@ -319,8 +316,8 @@ class AdminExerciseController extends BaseAPIController
             // Rollback the transaction in case of error
             DB::rollBack();
             Log::error('Error reordering exercises: ' . $e->getMessage(), [
-                'trace' => $e->getTraceAsString(),
-                'section_id' => $section->id
+                'trace'     => $e->getTraceAsString(),
+                'lesson_id' => $lesson->id,
             ]);
             return $this->sendError('Failed to reorder exercises: ' . $e->getMessage(), ['status' => 500]);
         }

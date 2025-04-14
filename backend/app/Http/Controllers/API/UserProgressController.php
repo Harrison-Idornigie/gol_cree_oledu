@@ -103,7 +103,7 @@ class UserProgressController extends BaseAPIController
             'lessons' => 'App\Models\Lesson',
             'sections' => 'App\Models\Section',
             'exercises' => 'App\Models\Exercise',
-            'quizzes' => 'App\Models\Quiz',
+            
             default => abort(400, 'Invalid content type'),
         };
     }

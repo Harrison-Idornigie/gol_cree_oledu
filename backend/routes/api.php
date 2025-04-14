@@ -7,8 +7,7 @@ use App\Http\Controllers\API\LearningPathController;
 use App\Http\Controllers\API\LessonController;
 use App\Http\Controllers\API\ListeningExerciseController;
 use App\Http\Controllers\API\PictureExerciseController;
-use App\Http\Controllers\API\QuizController;
-use App\Http\Controllers\API\QuizQuestionController;
+
 use App\Http\Controllers\API\SectionController;
 use App\Http\Controllers\API\SpeakingExerciseController;
 use App\Http\Controllers\API\UnitController;
@@ -78,10 +77,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('lessons', [LessonController::class, 'index']);
     Route::get('lessons/{lesson}', [LessonController::class, 'show'])->middleware('sequential-learning');
 
-    // Sections
-    Route::get('sections', [SectionController::class, 'index']);
-    Route::get('sections/{section}', [SectionController::class, 'show'])->middleware('sequential-learning');
-
+   
     // Exercises
     Route::get('exercises', [ExerciseController::class, 'index']);
     Route::get('exercises/{exercise}', [ExerciseController::class, 'show']);
@@ -104,18 +100,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     // Picture Exercises
     Route::post('exercises/picture/check', [PictureExerciseController::class, 'checkAnswer']);
     Route::get('exercises/picture/language/{languageCode}', [PictureExerciseController::class, 'getByLanguage']);
-
-    // Quizzes
-    Route::get('quizzes', [QuizController::class, 'index']);
-    Route::get('quizzes/{quiz}', [QuizController::class, 'show']);
-    Route::post('quizzes/{quiz}/submit', [QuizController::class, 'submit']);
-    Route::get('quizzes/{quiz}/history', [QuizController::class, 'history']);
-    Route::get('quizzes/{quiz}/statistics', [QuizController::class, 'statistics']);
-
-    // Quiz Questions
-    Route::get('quiz-questions', [QuizQuestionController::class, 'index']);
-    Route::get('quiz-questions/{quizQuestion}', [QuizQuestionController::class, 'show']);
-
     // Vocabulary
     Route::prefix('vocabulary')->group(function () {
         Route::get('/', [VocabularyController::class, 'index']);

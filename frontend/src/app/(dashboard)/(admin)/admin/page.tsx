@@ -18,12 +18,7 @@ export default function AdminDashboard() {
           </p>
         </Card>
         
-        <Card className="p-4">
-          <h3 className="mb-2 font-semibold">Quizzes & Exercises</h3>
-          <p className="text-sm text-muted-foreground">
-            Create and manage assessments
-          </p>
-        </Card>
+   
         
         <Card className="p-4">
           <h3 className="mb-2 font-semibold">Users & Roles</h3>

@@ -26,8 +26,7 @@ class AdminProgressController extends BaseAPIController
         'lessons' => 'App\\Models\\Lesson',
         'sections' => 'App\\Models\\Section',
         'exercises' => 'App\\Models\\Exercise',
-        'quizzes' => 'App\\Models\\Quiz',
-    ];
+     ];
 
     /**
      * Get an overview of user progress statistics

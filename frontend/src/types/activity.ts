@@ -26,8 +26,7 @@ export enum ActivityType {
   LEARNING_PATH_DELETE = 'learning_path_delete',
   UNIT_MODIFY = 'unit_modify',
   LESSON_MODIFY = 'lesson_modify',
-  QUIZ_MODIFY = 'quiz_modify',
-  EXERCISE_MODIFY = 'exercise_modify',
+   EXERCISE_MODIFY = 'exercise_modify',
   
   // User Actions
   USER_BAN = 'user_ban',
@@ -131,8 +130,7 @@ export const IMPACT_CONFIG = {
       ActivityType.LEARNING_PATH_UPDATE,
       ActivityType.UNIT_MODIFY,
       ActivityType.LESSON_MODIFY,
-      ActivityType.QUIZ_MODIFY,
-      ActivityType.EXERCISE_MODIFY,
+       ActivityType.EXERCISE_MODIFY,
       ActivityType.ADMIN_INVITE
     ]
   },
