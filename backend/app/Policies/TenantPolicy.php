@@ -95,8 +95,8 @@ class TenantPolicy
             return true;
         }
 
-        // Tenant admins and teachers can manage content in their own tenant
-        if (($user->isTenantAdmin() || $user->isTeacher()) && $user->tenant_id === $tenant->id) {
+        // Tenant admins and teams can manage content in their own tenant
+        if (($user->isTenantAdmin() || $user->isTeam()) && $user->tenant_id === $tenant->id) {
             return true;
         }
 

@@ -18,8 +18,8 @@ class AdminInviteTest extends AdminTestCase
     {
         $response = $this->actingAsAdmin()
             ->postJson('/api/admin/users/invite', [
-                'email' => 'newteacher@example.com',
-                'role' => 'teacher',
+                'email' => 'newteam@example.com',
+                'role' => 'team',
                 'message' => 'Welcome to our platform!'
             ]);
 
@@ -27,20 +27,20 @@ class AdminInviteTest extends AdminTestCase
             ->assertJson([
                 'success' => true,
                 'data' => [
-                    'email' => 'newteacher@example.com',
-                    'role' => 'teacher',
+                    'email' => 'newteam@example.com',
+                    'role' => 'team',
                     'status' => 'pending'
                 ]
             ]);
 
         $this->assertDatabaseHas('admin_invites', [
-            'email' => 'newteacher@example.com',
-            'role' => 'teacher',
+            'email' => 'newteam@example.com',
+            'role' => 'team',
             'status' => 'pending'
         ]);
 
         Mail::assertSent(\App\Mail\AdminInvitation::class, function ($mail) {
-            return $mail->hasTo('newteacher@example.com');
+            return $mail->hasTo('newteam@example.com');
         });
     }
 
@@ -56,7 +56,7 @@ class AdminInviteTest extends AdminTestCase
         $response = $this->actingAsAdmin()
             ->postJson('/api/admin/users/invite', [
                 'email' => 'existing@example.com',
-                'role' => 'teacher'
+                'role' => 'team'
             ]);
 
         $response->assertStatus(422)
@@ -79,7 +79,7 @@ class AdminInviteTest extends AdminTestCase
     {
         $invite = AdminInvite::create([
             'email' => 'pending@example.com',
-            'role' => 'teacher',
+            'role' => 'team',
             'token' => 'test-token',
             'status' => 'pending',
             'invited_by' => $this->admin->id,
@@ -105,7 +105,7 @@ class AdminInviteTest extends AdminTestCase
     {
         $invite = AdminInvite::create([
             'email' => 'accepted@example.com',
-            'role' => 'teacher',
+            'role' => 'team',
             'token' => 'test-token',
             'status' => 'accepted',
             'invited_by' => $this->admin->id,
@@ -127,7 +127,7 @@ class AdminInviteTest extends AdminTestCase
         $response = $this->actingAsAdmin()
             ->postJson('/api/admin/users/invite', [
                 'email' => 'invalid-email',
-                'role' => 'teacher'
+                'role' => 'team'
             ]);
 
         $response->assertStatus(422)
@@ -139,7 +139,7 @@ class AdminInviteTest extends AdminTestCase
         $response = $this->actingAsUser()
             ->postJson('/api/admin/users/invite', [
                 'email' => 'newuser@example.com',
-                'role' => 'teacher'
+                'role' => 'team'
             ]);
 
         $this->assertUnauthorized($response);
@@ -149,7 +149,7 @@ class AdminInviteTest extends AdminTestCase
     {
         $invite = AdminInvite::create([
             'email' => 'pending@example.com',
-            'role' => 'teacher',
+            'role' => 'team',
             'token' => 'test-token',
             'status' => 'pending',
             'invited_by' => $this->admin->id,

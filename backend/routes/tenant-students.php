@@ -1,0 +1,138 @@
+<?php
+
+use App\Http\Controllers\API\Tenant\Student\StudentConversationExerciseController;
+use App\Http\Controllers\API\Tenant\Student\StudentExerciseController;
+use App\Http\Controllers\API\Tenant\Student\StudentGuideController;
+use App\Http\Controllers\API\Tenant\Student\StudentLanguageController;
+use App\Http\Controllers\API\Tenant\Student\StudentLearningPathController;
+use App\Http\Controllers\API\Tenant\Student\StudentLessonController;
+use App\Http\Controllers\API\Tenant\Student\StudentListeningExerciseController;
+use App\Http\Controllers\API\Tenant\Student\StudentPictureExerciseController;
+use App\Http\Controllers\API\Tenant\Student\StudentSpeakingExerciseController;
+use App\Http\Controllers\API\Tenant\Student\StudentTopicController;
+use App\Http\Controllers\API\Tenant\Student\StudentUnitController;
+use App\Http\Controllers\API\Tenant\Student\StudentUserLanguageController;
+use App\Http\Controllers\API\Tenant\Student\StudentUserProgressController;
+use App\Http\Controllers\API\Tenant\Student\StudentUserSettingsController;
+use App\Http\Controllers\API\Tenant\Student\StudentVocabularyController;
+use App\Http\Controllers\API\Tenant\Student\StudentWordController;
+use Illuminate\Support\Facades\Route;
+
+/**
+ * Student Routes
+ *
+ * These routes are for students who can access learning content
+ * within their tenant space.
+ */
+
+// Routes that require authentication but not email verification
+Route::prefix('student')->middleware(['auth:sanctum', 'tenant'])->group(function () {
+    // User Progress Routes - Allow users to track their own progress even without verification
+    Route::prefix('progress')->group(function () {
+        Route::get('/', [StudentUserProgressController::class, 'index']);
+        Route::post('/{type}/{id}', [StudentUserProgressController::class, 'store']);
+        Route::get('/{type}/{id}', [StudentUserProgressController::class, 'show']);
+        Route::put('/{type}/{id}', [StudentUserProgressController::class, 'update']);
+    });
+});
+
+// Routes that require both authentication and email verification
+Route::prefix('student')->middleware(['auth:sanctum', 'verified', 'tenant', 'role:student'])->group(function () {
+    // Learning Content Routes - Read-only access for regular users
+    // These routes should only provide access to published content
+
+    // Languages
+    Route::prefix('languages')->group(function () {
+        Route::get('/', [StudentLanguageController::class, 'index']);
+        Route::get('/with-learning-paths', [StudentLanguageController::class, 'withLearningPaths']);
+        Route::get('/{language}', [StudentLanguageController::class, 'show']);
+        Route::get('/{language}/learning-paths', [StudentLanguageController::class, 'learningPaths']);
+        Route::get('/{language}/proficiency-levels', [StudentLanguageController::class, 'proficiencyLevels']);
+        Route::get('/{language}/progress', [StudentLanguageController::class, 'userProgress']);
+        Route::get('/{language}/dashboard', [StudentLanguageController::class, 'dashboard']);
+    });
+
+    // User Selected Languages
+    Route::prefix('user/selected-languages')->group(function () {
+        Route::get('/', [StudentUserLanguageController::class, 'index']);
+        Route::post('/', [StudentUserLanguageController::class, 'store']);
+        Route::delete('/{languageId}', [StudentUserLanguageController::class, 'destroy']);
+        Route::patch('/{languageId}/set-primary', [StudentUserLanguageController::class, 'setPrimary']);
+    });
+
+    // User Settings Routes
+    Route::prefix('user/settings')->group(function () {
+        Route::get('/', [StudentUserSettingsController::class, 'getSettings']);
+        Route::get('/languages', [StudentUserSettingsController::class, 'getAvailableLanguages']);
+        Route::patch('/interface-language', [StudentUserSettingsController::class, 'updateInterfaceLanguage']);
+    });
+
+    // Learning Paths
+    Route::get('learning-paths', [StudentLearningPathController::class, 'index']);
+    Route::get('learning-paths/{learningPath}', [StudentLearningPathController::class, 'show']);
+    Route::get('learning-paths/{learningPath}/progress', [StudentLearningPathController::class, 'progress']);
+    Route::post('learning-paths/{learningPath}/enroll', [StudentLearningPathController::class, 'enroll']);
+    Route::get('learning-paths/by-level/{level}', [StudentLearningPathController::class, 'byLevel']);
+
+    // Units
+    Route::get('learning-paths/{learningPath}/units', [StudentUnitController::class, 'index']);
+    Route::get('units/{unit}', [StudentUnitController::class, 'show'])->middleware('sequential-learning');
+    Route::get('units/{unit}/progress', [StudentUnitController::class, 'progress']);
+
+    // Topics
+    Route::get('units/{unit}/topics', [StudentTopicController::class, 'index']);
+    Route::get('topics/{topic}', [StudentTopicController::class, 'show'])->middleware('sequential-learning');
+    Route::get('topics/{topic}/progress', [StudentTopicController::class, 'progress']);
+
+    // Lessons
+    Route::get('topics/{topic}/lessons', [StudentLessonController::class, 'index']);
+    Route::get('lessons/{lesson}', [StudentLessonController::class, 'show'])->middleware('sequential-learning');
+    Route::get('lessons/{lesson}/progress', [StudentLessonController::class, 'progress']);
+
+    // Exercises
+    Route::get('exercises', [StudentExerciseController::class, 'index']);
+    Route::get('exercises/{exercise}', [StudentExerciseController::class, 'show']);
+    Route::post('exercises/{exercise}/check', [StudentExerciseController::class, 'checkAnswer']);
+    Route::get('exercises/{exercise}/statistics', [StudentExerciseController::class, 'statistics']);
+
+    // Speaking Exercises (requires file upload)
+    Route::post('exercises/speaking/check', [StudentSpeakingExerciseController::class, 'checkAnswer']);
+
+    // Conversation Exercises
+    Route::post('exercises/conversation/answer', [StudentConversationExerciseController::class, 'submitAnswer']);
+    Route::post('exercises/conversation/progress', [StudentConversationExerciseController::class, 'trackProgress']);
+    Route::get('exercises/conversation/progress/{exerciseId}', [StudentConversationExerciseController::class, 'getProgress']);
+    Route::get('exercises/conversation/language/{languageId}', [StudentConversationExerciseController::class, 'getExercisesByLanguage']);
+
+    // Listening Exercises
+    Route::post('exercises/listening/check', [StudentListeningExerciseController::class, 'checkAnswer']);
+    Route::get('exercises/listening/language/{languageCode}', [StudentListeningExerciseController::class, 'getByLanguage']);
+
+    // Picture Exercises
+    Route::post('exercises/picture/check', [StudentPictureExerciseController::class, 'checkAnswer']);
+    Route::get('exercises/picture/language/{languageCode}', [StudentPictureExerciseController::class, 'getByLanguage']);
+
+    // Vocabulary
+    Route::prefix('vocabulary')->group(function () {
+        Route::get('/', [StudentVocabularyController::class, 'index']);
+        Route::get('/review', [StudentVocabularyController::class, 'reviewItems']);
+        Route::get('/mistakes', [StudentVocabularyController::class, 'mistakeItems']);
+        Route::get('/unit/{unitId}', [StudentVocabularyController::class, 'unitVocabulary']);
+        Route::post('/{vocabulary}/check', [StudentVocabularyController::class, 'checkTranslation']);
+        Route::get('/statistics', [StudentVocabularyController::class, 'statistics']);
+        Route::get('/{vocabulary}', [StudentVocabularyController::class, 'show']);
+    });
+
+    // Words
+    Route::prefix('words')->group(function () {
+        Route::get('/', [StudentWordController::class, 'index']);
+        Route::get('/{word}', [StudentWordController::class, 'show']);
+        Route::get('/{word}/translations', [StudentWordController::class, 'translations']);
+        Route::post('/batch', [StudentWordController::class, 'batch']);
+    });
+
+    // Guide Entries
+    Route::get('guide-entries', [StudentGuideController::class, 'index']);
+    Route::get('guide-entries/{guideEntry}', [StudentGuideController::class, 'show']);
+
+});

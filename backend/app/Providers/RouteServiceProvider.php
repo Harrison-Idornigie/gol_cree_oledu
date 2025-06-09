@@ -28,18 +28,37 @@ class RouteServiceProvider extends ServiceProvider
         });
 
         $this->routes(function () {
+            // API Routes
             Route::middleware('api')
                 ->prefix('api')
                 ->group(base_path('routes/api.php'));
 
+            // Authentication Routes
             Route::middleware('api')
                 ->prefix('api')
                 ->group(base_path('routes/auth.php'));
 
+            // Super Admin Routes
             Route::middleware('api')
                 ->prefix('api')
-                ->group(base_path('routes/admin.php'));
+                ->group(base_path('routes/super-admin.php'));
 
+            // Tenant Admin Routes
+            Route::middleware('api')
+                ->prefix('api')
+                ->group(base_path('routes/tenant-admin.php'));
+
+            // Team Routes
+            Route::middleware('api')
+                ->prefix('api')
+                ->group(base_path('routes/tenant-team.php'));
+
+            // Student Routes
+            Route::middleware('api')
+                ->prefix('api')
+                ->group(base_path('routes/tenant-students.php'));
+
+            // Web Routes
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));
         });

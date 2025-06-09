@@ -1,131 +1,52 @@
 <?php
-use App\Http\Controllers\API\ConversationExerciseController;
-use App\Http\Controllers\API\ExerciseController;
-use App\Http\Controllers\API\GuideController;
-use App\Http\Controllers\API\LanguageController;
-use App\Http\Controllers\API\LearningPathController;
-use App\Http\Controllers\API\LessonController;
-use App\Http\Controllers\API\ListeningExerciseController;
-use App\Http\Controllers\API\PictureExerciseController;
-use App\Http\Controllers\API\SpeakingExerciseController;
-use App\Http\Controllers\API\TopicController;
-use App\Http\Controllers\API\UnitController;
-use App\Http\Controllers\API\UserLanguageController;
-use App\Http\Controllers\API\UserProgressController;
-use App\Http\Controllers\API\UserSettingsController;
-use App\Http\Controllers\API\VocabularyController;
-use App\Http\Controllers\API\WordController;
+
 use Illuminate\Support\Facades\Route;
 
-// All Google Auth Routes are now in auth.php
+/**
+ * General API Routes
+ *
+ * These routes are for general API functionality that doesn't require
+ * specific role-based access or tenant isolation.
+ */
 
-// Routes that require authentication but not email verification
-Route::middleware(['auth:sanctum'])->group(function () {
-    // User Progress Routes - Allow users to track their own progress even without verification
-    Route::prefix('progress')->group(function () {
-        Route::get('/', [UserProgressController::class, 'index']);
-        Route::post('/{type}/{id}', [UserProgressController::class, 'store']);
-        Route::get('/{type}/{id}', [UserProgressController::class, 'show']);
-        Route::put('/{type}/{id}', [UserProgressController::class, 'update']);
+// Public API routes (no authentication required)
+Route::prefix('public')->group(function () {
+    // Health check
+    Route::get('health', function () {
+        return response()->json([
+            'status' => 'ok',
+            'timestamp' => now()->toISOString(),
+            'version' => config('app.version', '1.0.0')
+        ]);
+    });
+
+    // System information (limited)
+    Route::get('info', function () {
+        return response()->json([
+            'app_name' => config('app.name'),
+            'version' => config('app.version', '1.0.0'),
+            'environment' => app()->environment(),
+        ]);
     });
 });
 
-// Routes that require both authentication and email verification
-Route::middleware(['auth:sanctum', 'verified'])->group(function () {
-    // Learning Content Routes - Read-only access for regular users
-    // These routes should only provide access to published content
-
-    // Languages
-    Route::prefix('languages')->group(function () {
-        Route::get('/', [LanguageController::class, 'index']);
-        Route::get('/with-learning-paths', [LanguageController::class, 'withLearningPaths']);
-        Route::get('/{language}', [LanguageController::class, 'show']);
-        Route::get('/{language}/learning-paths', [LanguageController::class, 'learningPaths']);
-        Route::get('/{language}/proficiency-levels', [LanguageController::class, 'proficiencyLevels']);
-        Route::get('/{language}/progress', [LanguageController::class, 'userProgress']);
-        Route::get('/{language}/dashboard', [LanguageController::class, 'dashboard']);
+// Authenticated routes (no specific role required)
+Route::middleware(['auth:sanctum'])->group(function () {
+    // User profile routes that work across all roles
+    Route::get('profile', function () {
+        return response()->json(auth()->user());
     });
 
-    // User Selected Languages
-    Route::prefix('user/selected-languages')->group(function () {
-        Route::get('/', [UserLanguageController::class, 'index']);
-        Route::post('/', [UserLanguageController::class, 'store']);
-        Route::delete('/{languageId}', [UserLanguageController::class, 'destroy']);
-        Route::patch('/{languageId}/set-primary', [UserLanguageController::class, 'setPrimary']);
+    // Basic user settings
+    Route::get('user/basic-info', function () {
+        $user = auth()->user();
+        return response()->json([
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'role' => $user->role,
+            'tenant_id' => $user->tenant_id,
+            'email_verified_at' => $user->email_verified_at,
+        ]);
     });
-
-    // User Settings Routes
-    Route::prefix('user/settings')->group(function () {
-        Route::get('/', [UserSettingsController::class, 'getSettings']);
-        Route::get('/languages', [UserSettingsController::class, 'getAvailableLanguages']);
-        Route::patch('/interface-language', [UserSettingsController::class, 'updateInterfaceLanguage']);
-    });
-
-    // Learning Paths
-    Route::get('learning-paths', [LearningPathController::class, 'index']);
-    Route::get('learning-paths/{learningPath}', [LearningPathController::class, 'show']);
-    Route::get('learning-paths/{learningPath}/progress', [LearningPathController::class, 'progress']);
-    Route::post('learning-paths/{learningPath}/enroll', [LearningPathController::class, 'enroll']);
-    Route::get('learning-paths/by-level/{level}', [LearningPathController::class, 'byLevel']);
-
-    // Units
-    Route::get('learning-paths/{learningPath}/units', [UnitController::class, 'index']);
-    Route::get('units/{unit}', [UnitController::class, 'show'])->middleware('sequential-learning');
-    Route::get('units/{unit}/progress', [UnitController::class, 'progress']);
-
-    // Topics
-    Route::get('units/{unit}/topics', [TopicController::class, 'index']);
-    Route::get('topics/{topic}', [TopicController::class, 'show'])->middleware('sequential-learning');
-    Route::get('topics/{topic}/progress', [TopicController::class, 'progress']);
-
-    // Lessons
-    Route::get('topics/{topic}/lessons', [LessonController::class, 'index']);
-    Route::get('lessons/{lesson}', [LessonController::class, 'show'])->middleware('sequential-learning');
-    Route::get('lessons/{lesson}/progress', [LessonController::class, 'progress']);
-
-    // Exercises
-    Route::get('exercises', [ExerciseController::class, 'index']);
-    Route::get('exercises/{exercise}', [ExerciseController::class, 'show']);
-    Route::post('exercises/{exercise}/check', [ExerciseController::class, 'checkAnswer']);
-    Route::get('exercises/{exercise}/statistics', [ExerciseController::class, 'statistics']);
-
-    // Speaking Exercises (requires file upload)
-    Route::post('exercises/speaking/check', [SpeakingExerciseController::class, 'checkAnswer']);
-
-    // Conversation Exercises
-    Route::post('exercises/conversation/answer', [ConversationExerciseController::class, 'submitAnswer']);
-    Route::post('exercises/conversation/progress', [ConversationExerciseController::class, 'trackProgress']);
-    Route::get('exercises/conversation/progress/{exerciseId}', [ConversationExerciseController::class, 'getProgress']);
-    Route::get('exercises/conversation/language/{languageId}', [ConversationExerciseController::class, 'getExercisesByLanguage']);
-
-    // Listening Exercises
-    Route::post('exercises/listening/check', [ListeningExerciseController::class, 'checkAnswer']);
-    Route::get('exercises/listening/language/{languageCode}', [ListeningExerciseController::class, 'getByLanguage']);
-
-    // Picture Exercises
-    Route::post('exercises/picture/check', [PictureExerciseController::class, 'checkAnswer']);
-    Route::get('exercises/picture/language/{languageCode}', [PictureExerciseController::class, 'getByLanguage']);
-    // Vocabulary
-    Route::prefix('vocabulary')->group(function () {
-        Route::get('/', [VocabularyController::class, 'index']);
-        Route::get('/review', [VocabularyController::class, 'reviewItems']);
-        Route::get('/mistakes', [VocabularyController::class, 'mistakeItems']);
-        Route::get('/unit/{unitId}', [VocabularyController::class, 'unitVocabulary']);
-        Route::post('/{vocabulary}/check', [VocabularyController::class, 'checkTranslation']);
-        Route::get('/statistics', [VocabularyController::class, 'statistics']);
-        Route::get('/{vocabulary}', [VocabularyController::class, 'show']);
-    });
-
-    // Words
-    Route::prefix('words')->group(function () {
-        Route::get('/', [WordController::class, 'index']);
-        Route::get('/{word}', [WordController::class, 'show']);
-        Route::get('/{word}/translations', [WordController::class, 'translations']);
-        Route::post('/batch', [WordController::class, 'batch']);
-    });
-
-    // Guide Entries
-    Route::get('guide-entries', [GuideController::class, 'index']);
-    Route::get('guide-entries/{guideEntry}', [GuideController::class, 'show']);
-
 });

@@ -10,7 +10,7 @@ class AdminRolePermissionTest extends AdminTestCase
 {
     public function test_admin_can_list_roles()
     {
-        Role::create(['name' => 'teacher']);
+        Role::create(['name' => 'team']);
         Role::create(['name' => 'moderator']);
 
         $response = $this->actingAsAdmin()
@@ -24,7 +24,7 @@ class AdminRolePermissionTest extends AdminTestCase
                         'name' => 'admin'
                     ],
                     [
-                        'name' => 'teacher'
+                        'name' => 'team'
                     ],
                     [
                         'name' => 'moderator'

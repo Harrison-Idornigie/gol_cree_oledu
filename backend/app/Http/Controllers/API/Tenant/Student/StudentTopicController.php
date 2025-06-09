@@ -1,0 +1,81 @@
+<?php
+
+namespace App\Http\Controllers\API\Tenant\Student;
+
+use App\Http\Controllers\API\BaseAPIController;
+use App\Traits\BelongsToTenant;
+use App\Models\Topic;
+use App\Models\Unit;
+use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+
+/**
+ * Student Topic Controller
+ * 
+ * Handles topic access and progression for students.
+ * Access Level: Student
+ * Scope: Tenant-specific (read-only)
+ * 
+ * This controller allows students to access topics within units
+ * with sequential learning enforcement.
+ */
+class StudentTopicController extends BaseAPIController
+{
+    use BelongsToTenant;
+
+    /**
+     * Constructor - Apply student middleware
+     */
+    public function __construct()
+    {
+        $this->middleware(['auth:sanctum', 'verified', 'tenant', 'role:student']);
+    }
+
+    /**
+     * Display topics for a unit.
+     * 
+     * @param Request $request
+     * @param Unit $unit
+     * @return JsonResponse
+     */
+    public function index(Request $request, Unit $unit): JsonResponse
+    {
+        // TODO: Implement topics listing
+        // - All topics in the unit
+        // - Show accessibility based on sequential learning
+        // - Include progress and completion status
+        return $this->sendResponse([], 'Topics retrieved successfully.');
+    }
+
+    /**
+     * Display the specified topic.
+     * 
+     * @param Request $request
+     * @param Topic $topic
+     * @return JsonResponse
+     */
+    public function show(Request $request, Topic $topic): JsonResponse
+    {
+        // TODO: Implement topic details
+        // - Validate topic is accessible (sequential learning)
+        // - Include lessons and exercises structure
+        // - Show progress and next steps
+        return $this->sendResponse($topic, 'Topic retrieved successfully.');
+    }
+
+    /**
+     * Get student's progress in a topic.
+     * 
+     * @param Request $request
+     * @param Topic $topic
+     * @return JsonResponse
+     */
+    public function progress(Request $request, Topic $topic): JsonResponse
+    {
+        // TODO: Implement topic progress
+        // - Student's progress in the topic
+        // - Completed lessons and exercises
+        // - Next recommended content
+        return $this->sendResponse([], 'Topic progress retrieved successfully.');
+    }
+}

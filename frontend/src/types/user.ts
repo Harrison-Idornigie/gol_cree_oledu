@@ -1,4 +1,9 @@
 export enum UserRole {
+  SUPER_ADMIN = "super-admin",
+  TENANT_ADMIN = "tenant-admin",
+  TEAM = "team",
+  STUDENT = "student",
+  // Legacy support
   ADMIN = "admin",
   USER = "user",
 }
@@ -85,11 +90,45 @@ export interface UserSession {
 }
 
 export const isAdmin = (user: User | null): boolean => {
-  return user?.role === UserRole.ADMIN;
+  return user?.role === UserRole.ADMIN ||
+         user?.role === UserRole.SUPER_ADMIN ||
+         user?.role === UserRole.TENANT_ADMIN;
+};
+
+export const isSuperAdmin = (user: User | null): boolean => {
+  return user?.role === UserRole.SUPER_ADMIN;
+};
+
+export const isTenantAdmin = (user: User | null): boolean => {
+  return user?.role === UserRole.TENANT_ADMIN;
+};
+
+export const isTeam = (user: User | null): boolean => {
+  return user?.role === UserRole.TEAM;
+};
+
+export const isStudent = (user: User | null): boolean => {
+  return user?.role === UserRole.STUDENT || user?.role === UserRole.USER;
 };
 
 export const getDefaultRedirectPath = (user: User | null): string => {
-  return user?.role === UserRole.ADMIN ? "/admin" : "/learn";
+  if (!user) return "/login";
+
+  switch (user.role) {
+    case UserRole.SUPER_ADMIN:
+      return "/admin/super";
+    case UserRole.TENANT_ADMIN:
+      return "/admin/tenant";
+    case UserRole.TEAM:
+      return "/admin/team";
+    case UserRole.STUDENT:
+    case UserRole.USER:
+      return "/learn";
+    case UserRole.ADMIN: // Legacy support
+      return "/admin";
+    default:
+      return "/learn";
+  }
 };
 
 export const isEmailVerified = (user: User | null): boolean => {

@@ -74,13 +74,13 @@ class TenantRoleSeeder extends Seeder
             'is_system' => false,
         ]);
 
-        // Teacher
-        $teacher = Role::firstOrCreate([
-            'slug' => 'teacher',
+        // Team
+        $team = Role::firstOrCreate([
+            'slug' => 'team',
             'tenant_id' => $tenant->id,
         ], [
-            'name' => 'Teacher',
-            'description' => 'Teacher role for ' . $tenant->name,
+            'name' => 'Team',
+            'description' => 'Team role for ' . $tenant->name,
             'is_system' => false,
         ]);
 
@@ -95,13 +95,13 @@ class TenantRoleSeeder extends Seeder
         ]);
 
         // Create tenant-specific permissions
-        $this->createTenantPermissions($tenant, $tenantAdmin, $teacher, $student);
+        $this->createTenantPermissions($tenant, $tenantAdmin, $team, $student);
     }
 
     /**
      * Create tenant-specific permissions and assign to roles.
      */
-    private function createTenantPermissions(Tenant $tenant, Role $tenantAdmin, Role $teacher, Role $student): void
+    private function createTenantPermissions(Tenant $tenant, Role $tenantAdmin, Role $team, Role $student): void
     {
         // Define permissions with their role assignments
         $permissions = [
@@ -122,41 +122,41 @@ class TenantRoleSeeder extends Seeder
             // Content management permissions
             'manage-learning-paths' => [
                 'description' => 'Create, edit, and delete learning paths',
-                'roles' => [$tenantAdmin, $teacher],
+                'roles' => [$tenantAdmin, $team],
             ],
             'manage-units' => [
                 'description' => 'Create, edit, and delete units',
-                'roles' => [$tenantAdmin, $teacher],
+                'roles' => [$tenantAdmin, $team],
             ],
             'manage-lessons' => [
                 'description' => 'Create, edit, and delete lessons',
-                'roles' => [$tenantAdmin, $teacher],
+                'roles' => [$tenantAdmin, $team],
             ],
             'manage-exercises' => [
                 'description' => 'Create, edit, and delete exercises',
-                'roles' => [$tenantAdmin, $teacher],
+                'roles' => [$tenantAdmin, $team],
             ],
             'manage-vocabulary' => [
                 'description' => 'Manage vocabulary items',
-                'roles' => [$tenantAdmin, $teacher],
+                'roles' => [$tenantAdmin, $team],
             ],
             'manage-media' => [
                 'description' => 'Upload and manage media files',
-                'roles' => [$tenantAdmin, $teacher],
+                'roles' => [$tenantAdmin, $team],
             ],
             
             // View permissions
             'view-learning-paths' => [
                 'description' => 'View learning paths',
-                'roles' => [$tenantAdmin, $teacher, $student],
+                'roles' => [$tenantAdmin, $team, $student],
             ],
             'view-lessons' => [
                 'description' => 'View lessons',
-                'roles' => [$tenantAdmin, $teacher, $student],
+                'roles' => [$tenantAdmin, $team, $student],
             ],
             'view-exercises' => [
                 'description' => 'View and complete exercises',
-                'roles' => [$tenantAdmin, $teacher, $student],
+                'roles' => [$tenantAdmin, $team, $student],
             ],
             
             // Student-specific permissions
@@ -169,14 +169,14 @@ class TenantRoleSeeder extends Seeder
                 'roles' => [$student],
             ],
             
-            // Teacher-specific permissions
+            // Team-specific permissions
             'view-student-progress' => [
                 'description' => 'View student progress and analytics',
-                'roles' => [$tenantAdmin, $teacher],
+                'roles' => [$tenantAdmin, $team],
             ],
             'grade-exercises' => [
                 'description' => 'Grade student exercise submissions',
-                'roles' => [$tenantAdmin, $teacher],
+                'roles' => [$tenantAdmin, $team],
             ],
         ];
 
