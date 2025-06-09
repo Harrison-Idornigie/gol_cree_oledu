@@ -101,3 +101,86 @@ export interface ApiResponse<T> {
   data: T;
   message: string;
 }
+
+// Additional types for missing functionality
+export interface TenantUsage {
+  tenant_id: number;
+  tenant_name: string;
+  users_count: number;
+  active_users_count: number;
+  storage_used: number;
+  api_calls_count: number;
+  last_activity: string;
+}
+
+export interface PerformanceMetrics {
+  avg_response_time: number;
+  api_calls_per_minute: number;
+  error_rate: number;
+  database_performance: {
+    avg_query_time: number;
+    slow_queries_count: number;
+  };
+  cache_hit_rate: number;
+}
+
+export interface UsageTrends {
+  period: 'daily' | 'weekly' | 'monthly';
+  data: Array<{
+    date: string;
+    users_active: number;
+    api_calls: number;
+    storage_used: number;
+    new_tenants: number;
+  }>;
+}
+
+export interface SystemSettings {
+  maintenance_mode: boolean;
+  registration_enabled: boolean;
+  max_tenants: number;
+  default_storage_limit: number;
+  default_user_limit: number;
+  email_notifications: boolean;
+  backup_frequency: 'daily' | 'weekly' | 'monthly';
+  log_retention_days: number;
+  api_rate_limit: number;
+  session_timeout: number;
+}
+
+export interface MaintenanceMode {
+  enabled: boolean;
+  message?: string;
+  scheduled_start?: string;
+  scheduled_end?: string;
+  allowed_ips?: string[];
+}
+
+export interface UserSearchResult {
+  users: GlobalUser[];
+  total: number;
+  current_page: number;
+  last_page: number;
+  per_page: number;
+}
+
+export interface UserAuditTrail {
+  id: number;
+  user_id: number;
+  action: string;
+  description: string;
+  ip_address: string;
+  user_agent: string;
+  metadata: any;
+  created_at: string;
+}
+
+export interface ImpersonationSession {
+  id: string;
+  super_admin_id: number;
+  target_user_id: number;
+  target_tenant_id: number;
+  started_at: string;
+  expires_at: string;
+  is_active: boolean;
+}

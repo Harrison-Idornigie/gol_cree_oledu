@@ -113,6 +113,28 @@ export async function updateSystemSettings(settings: Partial<SystemSettings>) {
 }
 
 /**
+ * Get system health status
+ */
+export async function getSystemHealth() {
+  try {
+    const response = await axiosInstance.get<ApiResponse<HealthCheck>>(
+      '/api/super-admin/analytics/system-health'
+    );
+
+    return {
+      data: response.data.data,
+      error: null
+    };
+  } catch (error) {
+    console.error('Error fetching system health:', error);
+    return {
+      data: null,
+      error: getErrorMessage(error)
+    };
+  }
+}
+
+/**
  * Perform system health check
  */
 export async function performHealthCheck() {
@@ -261,7 +283,7 @@ export async function getSystemLogs(params?: {
       id: string;
       level: string;
       message: string;
-      context: any;
+      context: Record<string, unknown>;
       timestamp: string;
     }>>>(
       `/api/super-admin/system/logs?${searchParams.toString()}`
@@ -285,7 +307,7 @@ export async function getSystemLogs(params?: {
  */
 export async function updateSystemConfiguration(config: {
   key: string;
-  value: any;
+  value: string | number | boolean;
   description?: string;
 }) {
   try {

@@ -228,7 +228,7 @@ export async function exportAnalyticsData(params: {
     );
 
     return {
-      data: response.data,
+      data: response.data as Blob,
       error: null
     };
   } catch (error) {
