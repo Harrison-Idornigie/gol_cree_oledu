@@ -2,7 +2,7 @@
 
 import { revalidatePath } from 'next/cache';
 import axiosInstance from '@/lib/axios';
-import { AdminInvite, AdminInviteFormData, AdminUserListResponse, User, UserRole } from '@/types/tenant/user';
+import { AdminInvite, AdminInviteFormData, AdminUserListResponse, User, UserType } from '@/types/tenant/user';
 
 function getErrorMessage(error: unknown): string {
   if (error instanceof Error) return error.message;
@@ -25,7 +25,7 @@ export async function inviteAdmin(formData: AdminInviteFormData) {
   try {
     const response = await axiosInstance.post<{ invite: AdminInvite }>('/api/admin/invites', {
       ...formData,
-      role: UserRole.ADMIN
+      role: UserType.ADMIN
     });
     revalidatePath('/admin/users', 'page');
     return { data: response.data };
@@ -91,5 +91,5 @@ export async function acceptInvite(token: string) {
 
 // Helper function to check if a user is an admin
 export function checkIsAdmin(user?: User | null): boolean {
-  return user?.role === UserRole.ADMIN;
+  return user?.role === UserType.ADMIN;
 }

@@ -1,7 +1,7 @@
 import React, { ReactElement } from "react";
 import { render, RenderOptions } from "@testing-library/react";
 import { AuthProvider } from "@/app/providers/auth-provider";
-import { User, UserRole } from "@/types/tenant/user";
+import { User, UserType } from "@/types/tenant/user";
 import { vi } from "vitest";
 
 // Mock user data
@@ -9,7 +9,7 @@ export const mockUser: User = {
   id: 1,
   name: "Test User",
   email: "test@example.com",
-  role: UserRole.USER,
+  role: UserType.USER,
   is_active: true,
   created_at: "2023-01-01T00:00:00.000Z",
   updated_at: "2023-01-01T00:00:00.000Z",

@@ -1,10 +1,8 @@
-export enum UserRole {
+export enum UserType {
   SUPER_ADMIN = "super-admin",
   TENANT_ADMIN = "tenant-admin",
   TEAM = "team",
   STUDENT = "student",
-  // Legacy support
-  ADMIN = "admin",
   USER = "user",
 }
 
@@ -13,7 +11,7 @@ export interface User {
   name: string;
   email: string;
   avatar_url?: string;
-  role: UserRole;
+  role: UserType;
   is_active: boolean;
   created_at: string;
   updated_at: string;
@@ -24,7 +22,7 @@ export interface AdminInvite {
   id: number;
   email: string;
   token: string;
-  role: UserRole;
+  role: UserType;
   expires_at: string;
   created_at: string;
   updated_at: string;
@@ -33,7 +31,7 @@ export interface AdminInvite {
 
 export interface AdminInviteFormData {
   email: string;
-  role?: UserRole;
+  role?: UserType;
 }
 
 export interface UserData {
@@ -41,7 +39,7 @@ export interface UserData {
   name: string;
   email: string;
   avatar_url?: string;
-  role: UserRole;
+  role: UserType;
   email_verified_at: string | null;
 }
 
@@ -90,42 +88,40 @@ export interface UserSession {
 }
 
 export const isAdmin = (user: User | null): boolean => {
-  return user?.role === UserRole.ADMIN ||
-         user?.role === UserRole.SUPER_ADMIN ||
-         user?.role === UserRole.TENANT_ADMIN;
+  return user?.role === UserType.SUPER_ADMIN ||
+         user?.role === UserType.TENANT_ADMIN;
 };
 
 export const isSuperAdmin = (user: User | null): boolean => {
-  return user?.role === UserRole.SUPER_ADMIN;
+  return user?.role === UserType.SUPER_ADMIN;
 };
 
 export const isTenantAdmin = (user: User | null): boolean => {
-  return user?.role === UserRole.TENANT_ADMIN;
+  return user?.role === UserType.TENANT_ADMIN;
 };
 
 export const isTeam = (user: User | null): boolean => {
-  return user?.role === UserRole.TEAM;
+  return user?.role === UserType.TEAM;
 };
 
 export const isStudent = (user: User | null): boolean => {
-  return user?.role === UserRole.STUDENT || user?.role === UserRole.USER;
+  return user?.role === UserType.STUDENT || user?.role === UserType.USER;
 };
 
 export const getDefaultRedirectPath = (user: User | null): string => {
   if (!user) return "/login";
 
   switch (user.role) {
-    case UserRole.SUPER_ADMIN:
-      return "/admin/super";
-    case UserRole.TENANT_ADMIN:
-      return "/admin/tenant";
-    case UserRole.TEAM:
-      return "/admin/team";
-    case UserRole.STUDENT:
-    case UserRole.USER:
-      return "/student";
-    case UserRole.ADMIN: // Legacy support
-      return "/admin";
+    case UserType.SUPER_ADMIN:
+      return "/super"; // Super Admin portal
+    case UserType.TENANT_ADMIN:
+      return "/admin"; // Tenant Admin portal
+    case UserType.TEAM:
+      return "/team"; // Teacher/Team portal
+    case UserType.STUDENT:
+      return "/student"; // Student portal
+    case UserType.USER:
+      return "/login"; // Regular user, redirect to login
     default:
       return "/student";
   }

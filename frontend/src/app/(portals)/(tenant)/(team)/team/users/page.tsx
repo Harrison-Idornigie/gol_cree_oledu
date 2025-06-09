@@ -13,7 +13,7 @@ import {
   removeAdmin,
   resendInvite 
 } from '@/app/_actions/tenants/team/user-management-actions';
-import { AdminInvite, User, UserRole } from '@/types/tenant/user';
+import { AdminInvite, User, UserType } from '@/types/tenant/user';
 import { toast } from 'sonner';
 
 export default function AdminUsersPage() {
@@ -45,7 +45,7 @@ export default function AdminUsersPage() {
 
   const handleInviteSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const result = await inviteAdmin({ email, role: UserRole.ADMIN });
+    const result = await inviteAdmin({ email, role: UserType.ADMIN });
     if (result.error) {
       toast.error('Error', {
         description: result.error,

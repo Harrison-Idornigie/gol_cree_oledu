@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import axiosInstance from "@/lib/axios";
-import { UserRole } from "@/types/tenant/user";
+import { UserType, getDefaultRedirectPath } from "@/types/tenant/user";
 
 interface AuthResponse {
   error?: string;
@@ -13,7 +13,7 @@ interface AuthResponse {
     id: number;
     name: string;
     email: string;
-    role: UserRole;
+    role: UserType;
     email_verified_at?: string | null;
     avatar_url?: string | null;
     avatar?: string | null;
@@ -66,9 +66,8 @@ export async function login(formData: FormData) {
 
     revalidatePath("/login", "page");
 
-    // Add redirect path based on user role
-    const redirectPath =
-      response.data?.user?.role === "admin" ? "/admin" : "/student";
+    // Use proper role-based redirection
+    const redirectPath = getDefaultRedirectPath(response.data?.user || null);
     return { success: true, redirect: redirectPath };
   } catch (error) {
     return { error: getErrorMessage(error) };
@@ -90,9 +89,8 @@ export async function register(formData: FormData) {
 
     revalidatePath("/register", "page");
 
-    // Add redirect path based on user role, similar to login function
-    const redirectPath =
-      response.data?.user?.role === "admin" ? "/admin" : "/student";
+    // Use proper role-based redirection
+    const redirectPath = getDefaultRedirectPath(response.data?.user || null);
     return { ...response.data, redirect: redirectPath };
   } catch (error) {
     return { error: getErrorMessage(error) };

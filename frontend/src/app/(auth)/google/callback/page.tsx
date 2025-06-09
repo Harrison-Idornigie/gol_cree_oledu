@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { handleGoogleCallback } from "@/app/_actions/auth-actions";
+import { getDefaultRedirectPath } from "@/types/tenant/user";
 import { toast } from "sonner";
 
 // Define response type
@@ -51,9 +52,8 @@ export default function GoogleCallbackPage() {
         if (response.success && response.data) {
           // Token is already stored in HTTP-only cookie by the server action
 
-          // Determine redirect based on user role
-          const redirectPath =
-            response.data.user.role === "admin" ? "/admin" : "/student";
+          // Use proper role-based redirection
+          const redirectPath = getDefaultRedirectPath(response.data.user);
 
           // Use router for navigation to maintain Next.js routing
           // Add post_login parameter to indicate this is a post-login redirect

@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useAuth } from './providers/auth-provider';
-import { UserRole } from '@/types/tenant/user';
+import { UserType } from '@/types/tenant/user';
 
 export default function Home() {
   const { user, isLoading } = useAuth();
@@ -33,7 +33,7 @@ export default function Home() {
         <div className="space-y-4">
           {user ? (
             <Link 
-              href={user.role === UserRole.ADMIN ? '/admin' : '/student'}
+              href={user.role === UserType.ADMIN ? '/admin' : '/student'}
               className="w-full duo-button bg-[var(--duo-green)] border-[var(--duo-green-hover)] flex items-center justify-center"
             >
               Continue Learning

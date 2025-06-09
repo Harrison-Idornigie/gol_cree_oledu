@@ -1,11 +1,11 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import { UserRole } from '@/types/tenant/user';
+import { UserType } from '@/types/tenant/user';
 
 interface User {
   id: number;
   name: string;
   email: string;
-  role: UserRole;
+  role: UserType;
 }
 
 interface AuthContextType {

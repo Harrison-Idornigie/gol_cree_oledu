@@ -2,7 +2,7 @@
 
 import axiosInstance from "@/lib/axios";
 import { cookies } from "next/headers";
-import { UserRole } from "@/types/tenant/user";
+import { UserType } from "@/types/tenant/user";
 
 interface TokenExchangeResponse {
   success: boolean;
@@ -11,7 +11,7 @@ interface TokenExchangeResponse {
       id: number;
       name: string;
       email: string;
-      role: UserRole;
+      role: UserType;
     };
     token: string;
     redirect_url: string;
