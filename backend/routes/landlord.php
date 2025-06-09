@@ -7,9 +7,9 @@ use App\Http\Controllers\API\SuperAdmin\SystemUserController;
 use Illuminate\Support\Facades\Route;
 
 /**
- * Super Admin Routes
+ * Landlord Routes
  *
- * These routes are for super administrators who can manage multiple tenants
+ * These routes are for landlords who can manage multiple tenants
  * and have access to system-wide functionality.
  */
 

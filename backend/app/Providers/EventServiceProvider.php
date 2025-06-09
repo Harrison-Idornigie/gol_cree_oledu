@@ -5,6 +5,13 @@ namespace App\Providers;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use App\Events\Landlord\TenantCreated;
+use App\Events\Landlord\TenantDeleting;
+use App\Events\Landlord\TenantSeedingRequested;
+use App\Listeners\Landlord\CleanupTenantData;
+use App\Listeners\Landlord\SeedTenantRoles;
+use App\Listeners\Landlord\SeedTenantLanguages;
+use App\Listeners\Landlord\SeedTenantSettings;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -16,6 +23,21 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         Registered::class => [
             SendEmailVerificationNotification::class,
+        ],
+
+        // Tenant Management Events
+        TenantSeedingRequested::class => [
+            SeedTenantRoles::class,
+            SeedTenantLanguages::class,
+            SeedTenantSettings::class,
+        ],
+
+        TenantCreated::class => [
+            // Add any post-creation listeners here (notifications, integrations, etc.)
+        ],
+
+        TenantDeleting::class => [
+            CleanupTenantData::class,
         ],
     ];
 

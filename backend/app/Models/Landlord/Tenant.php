@@ -1,57 +1,54 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Landlord;
 
-use App\Models\Traits\HasAuditLog;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Stancl\Tenancy\Database\Models\Tenant as BaseTenant;
+use Stancl\Tenancy\Database\Concerns\HasDatabase;
+use Stancl\Tenancy\Database\Concerns\HasDomains;
 use Illuminate\Support\Str;
 
-class Tenant extends Model
+/**
+ * Custom Tenant Model
+ * 
+ * Extends Stancl's base tenant model to provide custom database naming
+ * and additional tenant management features.
+ */
+class Tenant extends BaseTenant
 {
-    use HasFactory, HasAuditLog;
+    use HasDatabase, HasDomains;
 
-    const AUDIT_AREA = 'tenants';
-
+    /**
+     * The attributes that are mass assignable.
+     */
     protected $fillable = [
+        'id',
         'name',
         'slug',
-        'domain',
-        'subdomain',
-        'custom_domain',
+        'database_name',
         'description',
+        'contact_email',
+        'contact_phone',
+        'address',
         'settings',
         'status',
-        'contact_info',
         'trial_ends_at',
         'subscription_ends_at',
     ];
 
+    /**
+     * The attributes that should be cast.
+     */
     protected $casts = [
         'settings' => 'array',
-        'contact_info' => 'array',
         'trial_ends_at' => 'datetime',
         'subscription_ends_at' => 'datetime',
     ];
 
-    protected $attributes = [
-        'status' => 'active',
-        'settings' => '{}',
-    ];
-
-    protected array $auditLogEvents = [
-        'created' => 'Created new tenant: :name',
-        'updated' => 'Updated tenant: :name',
-        'deleted' => 'Deleted tenant: :name',
-    ];
-
-    protected array $auditLogProperties = [
-        'name',
-        'slug',
-        'domain',
-        'status',
-        'settings',
+    /**
+     * The attributes that should be hidden.
+     */
+    protected $hidden = [
+        // Add any sensitive fields here
     ];
 
     /**
@@ -62,127 +59,106 @@ class Tenant extends Model
         parent::boot();
 
         static::creating(function ($tenant) {
+            // Generate custom ID if not provided
+            if (empty($tenant->id)) {
+                $tenant->id = static::generateCustomId($tenant);
+            }
+
+            // Generate slug if not provided
             if (empty($tenant->slug)) {
-                $tenant->slug = Str::slug($tenant->name);
+                $tenant->slug = static::generateSlug($tenant->name);
+            }
+
+            // Generate database name if not provided
+            if (empty($tenant->database_name)) {
+                $tenant->database_name = static::generateDatabaseName($tenant);
             }
         });
     }
 
     /**
-     * Get the users for this tenant.
+     * Generate a custom tenant ID
      */
-    public function users(): HasMany
+    protected static function generateCustomId($tenant): string
     {
-        return $this->hasMany(User::class);
+        // Use slug-based ID with fallback to incremental
+        $baseId = $tenant->slug ?: Str::slug($tenant->name);
+        
+        // Ensure uniqueness
+        $id = $baseId;
+        $counter = 1;
+        
+        while (static::where('id', $id)->exists()) {
+            $id = $baseId . '_' . $counter;
+            $counter++;
+        }
+        
+        return $id;
     }
 
     /**
-     * Get the learning paths for this tenant.
+     * Generate a URL-friendly slug
      */
-    public function learningPaths(): HasMany
+    protected static function generateSlug(string $name): string
     {
-        return $this->hasMany(LearningPath::class);
+        $slug = Str::slug($name);
+        
+        // Ensure uniqueness
+        $originalSlug = $slug;
+        $counter = 1;
+        
+        while (static::where('slug', $slug)->exists()) {
+            $slug = $originalSlug . '-' . $counter;
+            $counter++;
+        }
+        
+        return $slug;
     }
 
     /**
-     * Get the languages for this tenant.
+     * Generate database name based on tenant properties
      */
-    public function languages(): HasMany
+    protected static function generateDatabaseName($tenant): string
     {
-        return $this->hasMany(Language::class);
+        $prefix = config('tenancy.database.prefix', 'gol_tenant_');
+        $suffix = config('tenancy.database.suffix', '');
+        
+        // Use slug for database name (more readable than UUID)
+        $identifier = $tenant->slug ?: static::generateSlug($tenant->name);
+        
+        // Sanitize for database naming rules
+        $identifier = static::sanitizeForDatabase($identifier);
+        
+        return $prefix . $identifier . $suffix;
     }
 
     /**
-     * Get the roles for this tenant.
+     * Sanitize string for database name
      */
-    public function roles(): HasMany
+    protected static function sanitizeForDatabase(string $input): string
     {
-        return $this->hasMany(Role::class);
+        // Remove special characters, keep only alphanumeric and underscores
+        $sanitized = preg_replace('/[^a-zA-Z0-9_]/', '_', $input);
+        
+        // Ensure it starts with a letter
+        if (is_numeric(substr($sanitized, 0, 1))) {
+            $sanitized = 'tenant_' . $sanitized;
+        }
+        
+        // Limit length (MySQL database names max 64 chars)
+        return substr($sanitized, 0, 50);
     }
 
     /**
-     * Get the audit logs for this tenant.
+     * Get the database name for this tenant
      */
-    public function auditLogs(): HasMany
+    public function getDatabaseName(): string
     {
-        return $this->hasMany(AuditLog::class);
+        return $this->database_name ?: static::generateDatabaseName($this);
     }
 
     /**
-     * Check if tenant is active.
-     */
-    public function isActive(): bool
-    {
-        return $this->status === 'active';
-    }
-
-    /**
-     * Check if tenant is on trial.
-     */
-    public function isOnTrial(): bool
-    {
-        return $this->trial_ends_at && $this->trial_ends_at->isFuture();
-    }
-
-    /**
-     * Check if tenant subscription is active.
-     */
-    public function hasActiveSubscription(): bool
-    {
-        return $this->subscription_ends_at && $this->subscription_ends_at->isFuture();
-    }
-
-    /**
-     * Get tenant setting by key.
-     */
-    public function getSetting(string $key, $default = null)
-    {
-        return data_get($this->settings, $key, $default);
-    }
-
-    /**
-     * Set tenant setting.
-     */
-    public function setSetting(string $key, $value): void
-    {
-        $settings = $this->settings ?? [];
-        data_set($settings, $key, $value);
-        $this->settings = $settings;
-        $this->save();
-    }
-
-    /**
-     * Get tenant administrators.
-     */
-    public function administrators(): HasMany
-    {
-        return $this->users()->whereHas('roles', function ($query) {
-            $query->where('slug', 'tenant-admin');
-        });
-    }
-
-    /**
-     * Get tenant teams.
-     */
-    public function teams(): HasMany
-    {
-        return $this->users()->whereHas('roles', function ($query) {
-            $query->where('slug', 'team');
-        });
-    }
-
-    /**
-     * Get tenant students.
-     */
-    public function students(): HasMany
-    {
-        return $this->users()->whereHas('roles', function ($query) {
-            $query->where('slug', 'student');
-        });
-    }
-
-    /**
-     * Scope for active tenants.
+     * Scope for active tenants
      */
     public function scopeActive($query)
     {
@@ -190,90 +166,58 @@ class Tenant extends Model
     }
 
     /**
-     * Get tenant statistics.
+     * Scope for trial tenants
+     */
+    public function scopeOnTrial($query)
+    {
+        return $query->whereNotNull('trial_ends_at')
+                    ->where('trial_ends_at', '>', now());
+    }
+
+    /**
+     * Check if tenant is active
+     */
+    public function isActive(): bool
+    {
+        return $this->status === 'active';
+    }
+
+    /**
+     * Check if tenant is on trial
+     */
+    public function isOnTrial(): bool
+    {
+        return $this->trial_ends_at && $this->trial_ends_at->isFuture();
+    }
+
+    /**
+     * Get tenant statistics
      */
     public function getStatistics(): array
     {
+        // This will be populated when we integrate with your existing models
         return [
-            'total_users' => $this->users()->count(),
-            'total_students' => $this->students()->count(),
-            'total_teams' => $this->teams()->count(),
-            'total_learning_paths' => $this->learningPaths()->count(),
-            'published_learning_paths' => $this->learningPaths()->where('status', 'published')->count(),
-            'total_languages' => $this->languages()->count(),
+            'total_users' => 0,
+            'total_students' => 0,
+            'total_teachers' => 0,
+            'total_learning_paths' => 0,
+            'total_languages' => 0,
         ];
     }
 
     /**
-     * Get the primary URL for this tenant.
+     * Get the primary domain for this tenant
      */
-    public function getUrl(string $path = '', bool $secure = null): string
+    public function getPrimaryDomain(): ?string
     {
-        return \App\Helpers\TenantHelper::url($this, $path, $secure);
+        return $this->domains()->first()?->domain;
     }
 
     /**
-     * Get the subdomain URL for this tenant.
+     * Get all URLs for this tenant
      */
-    public function getSubdomainUrl(string $path = '', bool $secure = null): ?string
+    public function getUrls(): array
     {
-        return \App\Helpers\TenantHelper::subdomainUrl($this, $path, $secure);
-    }
-
-    /**
-     * Get the custom domain URL for this tenant.
-     */
-    public function getCustomDomainUrl(string $path = '', bool $secure = null): ?string
-    {
-        return \App\Helpers\TenantHelper::customDomainUrl($this, $path, $secure);
-    }
-
-    /**
-     * Get all available URLs for this tenant.
-     */
-    public function getAllUrls(string $path = '', bool $secure = null): array
-    {
-        return \App\Helpers\TenantHelper::getAllUrls($this, $path, $secure);
-    }
-
-    /**
-     * Check if tenant has custom domain configured.
-     */
-    public function hasCustomDomain(): bool
-    {
-        return !empty($this->custom_domain);
-    }
-
-    /**
-     * Check if tenant has subdomain configured.
-     */
-    public function hasSubdomain(): bool
-    {
-        return !empty($this->subdomain);
-    }
-
-    /**
-     * Get the preferred domain type for this tenant.
-     */
-    public function getPreferredDomainType(): string
-    {
-        if ($this->hasCustomDomain()) {
-            return 'custom_domain';
-        }
-
-        if ($this->hasSubdomain()) {
-            return 'subdomain';
-        }
-
-        return 'main_domain';
-    }
-
-    /**
-     * Validate domain configuration.
-     */
-    public function validateDomains(): array
-    {
-        $resolver = app(\App\Services\TenantResolutionService::class);
-        return $resolver->validateTenantDomains($this);
+        return $this->domains()->pluck('domain')->toArray();
     }
 }

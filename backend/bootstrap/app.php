@@ -3,7 +3,6 @@
 use App\Http\Middleware\CheckSequentialAccess;
 use App\Http\Middleware\EnsureEmailIsVerified;
 use App\Http\Middleware\RoleMiddleware;
-use App\Http\Middleware\TenantMiddleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -18,7 +17,7 @@ return Application::configure(basePath: dirname(__DIR__))
         then: function () {
             Route::middleware(['api'])
                 ->prefix('api')
-                ->group(base_path('routes/admin.php'));
+                ->group(base_path('routes/landlord.php'));
         },
     )
     ->withMiddleware(function (Middleware $middleware) {
@@ -26,7 +25,6 @@ return Application::configure(basePath: dirname(__DIR__))
             'role'                => RoleMiddleware::class,
             'verified'            => EnsureEmailIsVerified::class,
             'sequential-learning' => CheckSequentialAccess::class,
-            'tenant'              => TenantMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

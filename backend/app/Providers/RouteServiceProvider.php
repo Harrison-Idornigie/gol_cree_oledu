@@ -38,10 +38,10 @@ class RouteServiceProvider extends ServiceProvider
                 ->prefix('api')
                 ->group(base_path('routes/auth.php'));
 
-            // Super Admin Routes
+            // Landlord Routes
             Route::middleware('api')
                 ->prefix('api')
-                ->group(base_path('routes/super-admin.php'));
+                ->group(base_path('routes/landlord.php'));
 
             // Tenant Admin Routes
             Route::middleware('api')
