@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API\SuperAdmin;
+namespace App\Http\Controllers\API\Landlord;
 
 use App\Http\Controllers\API\BaseAPIController;
 use App\Models\Landlord\Tenant;

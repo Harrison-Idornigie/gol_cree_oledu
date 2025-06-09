@@ -1,9 +1,9 @@
 <?php
 
-use App\Http\Controllers\API\SuperAdmin\SystemTenantController;
-use App\Http\Controllers\API\SuperAdmin\SystemAnalyticsController;
-use App\Http\Controllers\API\SuperAdmin\SystemConfigurationController;
-use App\Http\Controllers\API\SuperAdmin\SystemUserController;
+use App\Http\Controllers\API\Landlord\SystemTenantController;
+// use App\Http\Controllers\API\Landlord\SystemAnalyticsController;
+// use App\Http\Controllers\API\Landlord\SystemConfigurationController;
+// use App\Http\Controllers\API\Landlord\SystemUserController;
 use Illuminate\Support\Facades\Route;
 
 /**
@@ -28,6 +28,8 @@ Route::prefix('super-admin')->middleware(['auth:sanctum', 'verified', 'role:supe
         Route::post('{tenant}/extend-subscription', [SystemTenantController::class, 'extendSubscription']);
     });
 
+    // TODO: Implement these controllers
+    /*
     // System-wide Analytics
     Route::prefix('analytics')->group(function () {
         Route::get('overview', [SystemAnalyticsController::class, 'systemOverview']);
@@ -56,5 +58,6 @@ Route::prefix('super-admin')->middleware(['auth:sanctum', 'verified', 'role:supe
         Route::patch('{user}/suspend', [SystemUserController::class, 'suspendUser']);
         Route::patch('{user}/activate', [SystemUserController::class, 'activateUser']);
     });
+    */
 
 });
