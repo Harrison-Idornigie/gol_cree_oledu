@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import {
   BarChart3,
   Building2,
-  Database,
+  
   Home,
   Settings,
   Shield,

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import SuperAdminSidebar from '@/components/super/SuperAdminSidebar';
-import AdminTopbar from '@/components/tenants/admin/AdminTopbar';
+import SuperAdminTopbar from '@/components/super/SuperAdminTopbar';
 
 interface SuperAdminLayoutProps {
   children: React.ReactNode;
@@ -21,8 +21,8 @@ export default function SuperAdminLayout({ children }: SuperAdminLayoutProps) {
           isSidebarCollapsed ? 'md:pl-20' : 'md:pl-72'
         }`}
       >
-        <AdminTopbar 
-          onToggleSidebar={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
+        <SuperAdminTopbar 
+          onSidebarToggle={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
           portalType="super-admin"
         />
       </div>
