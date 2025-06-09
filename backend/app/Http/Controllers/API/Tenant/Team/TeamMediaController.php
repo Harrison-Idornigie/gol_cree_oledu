@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\API\Tenant\Team;
 
 use App\Http\Controllers\API\BaseAPIController;
-use App\Traits\BelongsToTenant;
+use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 use App\Models\Media;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;

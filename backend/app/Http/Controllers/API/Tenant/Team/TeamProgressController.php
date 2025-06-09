@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\API\Tenant\Team;
 
 use App\Http\Controllers\API\BaseAPIController;
-use App\Traits\BelongsToTenant;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 
 /**
  * Team Progress Controller

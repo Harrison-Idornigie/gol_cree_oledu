@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\API\Tenant\Student;
 
 use App\Http\Controllers\API\BaseAPIController;
-use App\Traits\BelongsToTenant;
+use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 use App\Models\Lesson;
 use App\Models\Topic;
 use Illuminate\Http\Request;
