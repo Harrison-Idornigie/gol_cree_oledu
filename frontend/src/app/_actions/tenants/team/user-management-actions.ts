@@ -2,7 +2,7 @@
 
 import { revalidatePath } from 'next/cache';
 import axiosInstance from '@/lib/axios';
-import { AdminInvite, AdminInviteFormData, AdminUserListResponse, User, UserRole } from '@/types/user';
+import { AdminInvite, AdminInviteFormData, AdminUserListResponse, User, UserRole } from '@/types/tenant/user';
 
 function getErrorMessage(error: unknown): string {
   if (error instanceof Error) return error.message;

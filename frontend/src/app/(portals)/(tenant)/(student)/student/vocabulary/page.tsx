@@ -14,7 +14,7 @@ import {
   getUnitVocabulary,
   getMistakeVocabularyItems,
 } from "@/app/_actions/tenants/student/vocabulary-actions";
-import { VocabularyItem } from "@/types/vocabulary";
+import { VocabularyItem } from "@/types/tenant/vocabulary";
 
 export default function VocabularyReviewPage() {
   const searchParams = useSearchParams();

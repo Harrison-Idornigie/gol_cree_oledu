@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Progress } from '@/components/ui/progress';
 import { Volume2, ArrowRight, CheckCircle, XCircle, RefreshCw } from 'lucide-react';
-import { VocabularyItem } from '@/types/vocabulary';
+import { VocabularyItem } from '@/types/tenant/vocabulary';
 import { audioService } from '@/lib/services/audioService';
 
 interface FlashcardProps {

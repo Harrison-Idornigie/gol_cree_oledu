@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Eye, Edit, Trash2, Users, BookOpen, Globe } from 'lucide-react';
 import Link from 'next/link';
-import { Tenant } from '@/types/super-admin';
+import { Tenant } from '@/types/super/super-admin';
 
 interface TenantCardProps {
   tenant: Tenant;

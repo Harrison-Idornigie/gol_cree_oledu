@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
 import { AlertDialog } from '@/components/admin/AlertDialog';
 import { toast } from 'sonner';
-import { LessonFormData } from '@/types/lesson';
+import { LessonFormData } from '@/types/tenant/lesson';
 
 interface LessonFormProps {
   unitId: number;

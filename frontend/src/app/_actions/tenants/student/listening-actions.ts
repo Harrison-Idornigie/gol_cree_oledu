@@ -1,7 +1,7 @@
 'use server';
 
 import axiosInstance from '@/lib/axios';
-import { ApiResponse } from '@/types/learning-path';
+import { ApiResponse } from '@/types/tenant/learning-path';
 import { revalidatePath } from 'next/cache';
 
 /**

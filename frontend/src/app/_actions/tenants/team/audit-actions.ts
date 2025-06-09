@@ -1,5 +1,5 @@
-import { ActivityFilter, ActivityResponse } from '@/types/activity';
-import { AuditStatistics, APIResponse, PaginatedResponse } from '@/types/audit';
+import { ActivityFilter, ActivityResponse } from '@/types/tenant/activity';
+import { AuditStatistics, APIResponse, PaginatedResponse } from '@/types/tenant/audit';
 import axios from '@/lib/axios';
 
 export async function getActivities(

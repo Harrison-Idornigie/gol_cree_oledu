@@ -1,7 +1,7 @@
 import React, { ReactElement } from "react";
 import { render, RenderOptions } from "@testing-library/react";
 import { AuthProvider } from "@/app/providers/auth-provider";
-import { User, UserRole } from "@/types/user";
+import { User, UserRole } from "@/types/tenant/user";
 import { vi } from "vitest";
 
 // Mock user data

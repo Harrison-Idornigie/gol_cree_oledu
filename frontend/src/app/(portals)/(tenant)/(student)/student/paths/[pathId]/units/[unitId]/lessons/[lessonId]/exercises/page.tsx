@@ -12,8 +12,8 @@ import {
   getExercisesForLesson,
   getWordsForExercises,
 } from "@/app/_actions/tenants/student/exercise-actions";
-import { Exercise } from "@/types/exercises";
-import { WordData } from "@/types/vocabulary";
+import { Exercise } from "@/types/tenant/exercises";
+import { WordData } from "@/types/tenant/vocabulary";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 
 export default function ExercisePage() {

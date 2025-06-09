@@ -13,7 +13,7 @@ import {
   removeAdmin,
   resendInvite 
 } from '@/app/_actions/tenants/team/user-management-actions';
-import { AdminInvite, User, UserRole } from '@/types/user';
+import { AdminInvite, User, UserRole } from '@/types/tenant/user';
 import { toast } from 'sonner';
 
 export default function AdminUsersPage() {

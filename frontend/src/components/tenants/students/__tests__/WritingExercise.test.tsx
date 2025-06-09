@@ -1,7 +1,7 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import { vi, describe, it, expect, beforeEach } from "vitest";
 import WritingExercise from "../WritingExercise";
-import { WordData } from "@/types/vocabulary";
+import { WordData } from "@/types/tenant/vocabulary";
 
 // Mock the lucide-react icons
 vi.mock("lucide-react", () => ({

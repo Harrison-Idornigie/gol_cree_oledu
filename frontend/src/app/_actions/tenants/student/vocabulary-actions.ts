@@ -2,7 +2,7 @@
 
 import axiosInstance from "@/lib/axios";
 import { ApiResponse } from "@/lib/axios";
-import { VocabularyItem, WordData } from "@/types/vocabulary";
+import { VocabularyItem, WordData } from "@/types/tenant/vocabulary";
 
 interface VocabularyWord {
   id: number;

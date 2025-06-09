@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import axiosInstance from "@/lib/axios";
-import { UserRole } from "@/types/user";
+import { UserRole } from "@/types/tenant/user";
 
 interface AuthResponse {
   error?: string;

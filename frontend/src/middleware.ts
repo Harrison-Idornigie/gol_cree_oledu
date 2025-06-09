@@ -1,6 +1,6 @@
 import { type NextRequest } from "next/server";
 import { NextResponse } from "next/server";
-import { UserRole } from "./types/user";
+import { UserRole } from "./types/tenant/user";
 import axios from "axios";
 
 // Define response types for middleware

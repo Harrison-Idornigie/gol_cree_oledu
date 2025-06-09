@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import { UserRole } from '@/types/user';
+import { UserRole } from '@/types/tenant/user';
 
 interface User {
   id: number;

@@ -8,7 +8,7 @@ import Link from 'next/link';
 import { getTenants, deleteTenant } from '@/app/_actions/super/tenant-actions';
 import TenantFilters from './TenantFilters';
 import TenantList from './TenantList';
-import { Tenant } from '@/types/super-admin';
+import { Tenant } from '@/types/super/super-admin';
 
 export default function TenantManagement() {
   const [tenants, setTenants] = useState<Tenant[]>([]);

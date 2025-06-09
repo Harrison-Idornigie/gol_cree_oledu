@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import axiosInstance from "@/lib/axios";
-import { Lesson } from "@/types/lesson";
+import { Lesson } from "@/types/tenant/lesson";
 import { Section } from "@/types/section";
 
 interface APIResponse {

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { ActivityFilter as FilterType, ActivityImpact, ActivityCategory, ActivityType } from '@/types/activity';
+import { ActivityFilter as FilterType, ActivityImpact, ActivityCategory, ActivityType } from '@/types/tenant/activity';
 import { Button } from '@/components/ui/button';
 import {
   Select,

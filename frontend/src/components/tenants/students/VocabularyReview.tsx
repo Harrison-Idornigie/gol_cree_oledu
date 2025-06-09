@@ -5,7 +5,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { VocabularyItem } from '@/types/vocabulary';
+import { VocabularyItem } from '@/types/tenant/vocabulary';
 import Flashcard from './Flashcard';
 import { checkVocabularyTranslation } from '@/app/_actions/tenants/student/vocabulary-actions';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';

@@ -9,7 +9,7 @@ import { CheckCircle, XCircle, AlertCircle, Volume2 } from "lucide-react";
 import { getWordsForExercise } from "@/app/_actions/tenants/student/word-actions";
 import ClickableText from "./ClickableText";
 
-import { WordData } from "@/types/vocabulary";
+import { WordData } from "@/types/tenant/vocabulary";
 
 interface MultipleChoiceExerciseProps {
   question: string;

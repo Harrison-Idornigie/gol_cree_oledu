@@ -1,6 +1,6 @@
 'use client';
 
-import { ActivityItem, ActivityImpact, IMPACT_CONFIG } from '@/types/activity';
+import { ActivityItem, ActivityImpact, IMPACT_CONFIG } from '@/types/tenant/activity';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import {

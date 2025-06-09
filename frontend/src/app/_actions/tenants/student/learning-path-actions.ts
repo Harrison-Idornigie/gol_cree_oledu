@@ -7,7 +7,7 @@ import {
   Language,
   LearningPath,
   UserProgress,
-} from "@/types/learning-path";
+} from "@/types/tenant/learning-path";
 
 // Get all learning paths with optional filters
 export async function getLearningPaths(filters?: {

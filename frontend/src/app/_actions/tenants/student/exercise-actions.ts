@@ -1,7 +1,7 @@
 "use server";
 
-import { Exercise } from "@/types/exercises";
-import { WordData } from "@/types/vocabulary";
+import { Exercise } from "@/types/tenant/exercises";
+import { WordData } from "@/types/tenant/vocabulary";
 import axiosInstance, { ApiResponse } from "@/lib/axios";
 
 interface ApiError {

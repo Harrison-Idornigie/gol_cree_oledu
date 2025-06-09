@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import TenantCard from './TenantCard';
-import { Tenant } from '@/types/super-admin';
+import { Tenant } from '@/types/super/super-admin';
 
 interface TenantListProps {
   tenants: Tenant[];

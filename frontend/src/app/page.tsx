@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useAuth } from './providers/auth-provider';
-import { UserRole } from '@/types/user';
+import { UserRole } from '@/types/tenant/user';
 
 export default function Home() {
   const { user, isLoading } = useAuth();

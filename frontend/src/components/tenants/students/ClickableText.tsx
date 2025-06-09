@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { WordData } from '@/types/vocabulary';
+import { WordData } from '@/types/tenant/vocabulary';
 import WordTooltip from './WordTooltip';
 
 interface ClickableTextProps {

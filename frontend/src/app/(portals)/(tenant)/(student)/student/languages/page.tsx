@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "@/hooks/use-toast";
-import { Language } from "@/types/learning-path";
+import { Language } from "@/types/tenant/learning-path";
 import {
   getAllLanguages,
   getSelectedLanguages,

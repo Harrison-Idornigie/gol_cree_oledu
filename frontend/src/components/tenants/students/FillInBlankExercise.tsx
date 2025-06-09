@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { AlertCircle, CheckCircle } from 'lucide-react';
-import { WordData } from '@/types/vocabulary';
+import { WordData } from '@/types/tenant/vocabulary';
 import ClickableText from './ClickableText';
 
 interface FillInBlankExerciseProps {

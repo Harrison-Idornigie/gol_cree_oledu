@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { middleware } from "./middleware";
-import { UserRole } from "./types/user";
+import { UserRole } from "./types/tenant/user";
 import { describe, it, expect, beforeEach, vi } from "vitest";
 
 // Mock fetch

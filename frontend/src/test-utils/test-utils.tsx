@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import { render, RenderOptions } from '@testing-library/react';
-import { User, UserRole } from '@/types/user';
+import { User, UserRole } from '@/types/tenant/user';
 
 // Mock user data
 export const mockUser: User = {

@@ -8,7 +8,7 @@ import { AlertDialog } from '@/components/admin/AlertDialog';
 import { getLesson } from '@/app/_actions/tenants/team/lesson-actions';
 import { deleteSection, updateSectionOrder, toggleSectionPublished } from '@/app/_actions/admin/section-actions';
 import { SectionType } from '@/types/section';
-import { Lesson, hasAssessmentQuiz } from '@/types/lesson';
+import { Lesson, hasAssessmentQuiz } from '@/types/tenant/lesson';
 
 interface ViewLessonPageProps {
   params: {

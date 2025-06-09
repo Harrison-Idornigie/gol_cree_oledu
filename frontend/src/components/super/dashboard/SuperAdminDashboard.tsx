@@ -8,7 +8,7 @@ import { getSystemOverview } from '@/app/_actions/super/analytics-actions';
 import SystemStatsCards from './SystemStatsCards';
 import QuickActionsPanel from './QuickActionsPanel';
 import RecentActivityFeed from './RecentActivityFeed';
-import { SystemStats } from '@/types/super-admin';
+import { SystemStats } from '@/types/super/super-admin';
 
 export default function SuperAdminDashboard() {
   const [stats, setStats] = useState<SystemStats>({

@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { CheckCircle, XCircle, Volume2 } from "lucide-react";
-import { WordData } from "@/types/vocabulary";
+import { WordData } from "@/types/tenant/vocabulary";
 import ClickableText from "./ClickableText";
 import {
   submitConversationAnswer,

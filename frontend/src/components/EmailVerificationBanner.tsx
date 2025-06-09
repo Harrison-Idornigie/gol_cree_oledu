@@ -6,7 +6,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { AlertCircle, CheckCircle2 } from 'lucide-react';
 import { resendVerificationEmail } from '@/app/_actions/auth-actions';
 import { toast } from 'sonner';
-import { User, isEmailVerified } from '@/types/user';
+import { User, isEmailVerified } from '@/types/tenant/user';
 
 interface EmailVerificationBannerProps {
   user: User | null;

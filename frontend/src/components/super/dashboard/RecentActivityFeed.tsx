@@ -3,7 +3,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { ActivityItem } from '@/types/super-admin';
+import { ActivityItem } from '@/types/super/super-admin';
 
 interface RecentActivityFeedProps {
   activities: ActivityItem[];
