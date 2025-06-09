@@ -17,7 +17,7 @@ class Lesson extends Model
     public const AUDIT_AREA = 'lessons';
 
     protected $fillable = [
-        'unit_id',
+        'topic_id',
         'title',
         'description',
         'order',
@@ -43,19 +43,27 @@ class Lesson extends Model
     ];
 
     /**
-     * Get the unit that owns the lesson.
+     * Get the topic that owns the lesson.
      */
-    public function unit(): BelongsTo
+    public function topic(): BelongsTo
     {
-        return $this->belongsTo(Unit::class);
+        return $this->belongsTo(Topic::class);
     }
 
     /**
-     * Get the learning path through the unit.
+     * Get the unit through the topic.
+     */
+    public function unit()
+    {
+        return $this->topic->unit();
+    }
+
+    /**
+     * Get the learning path through the topic and unit.
      */
     public function learningPath()
     {
-        return $this->unit->learningPath();
+        return $this->topic->unit->learningPath();
     }
 
     /**
@@ -123,12 +131,16 @@ class Lesson extends Model
             'exercises_count'  => $this->exercises()->count(),
             'vocabulary_count' => $this->vocabularyItems()->count(),
             'thumbnail'        => collect($this->getMedia('thumbnail'))->first()?->getUrl(),
-            'unit'             => [
-                'id'            => $this->unit->id,
-                'title'         => $this->unit->title,
-                'learning_path' => [
-                    'id'    => $this->unit->learningPath->id,
-                    'title' => $this->unit->learningPath->title,
+            'topic'            => [
+                'id'    => $this->topic->id,
+                'title' => $this->topic->title,
+                'unit'  => [
+                    'id'            => $this->topic->unit->id,
+                    'title'         => $this->topic->unit->title,
+                    'learning_path' => [
+                        'id'    => $this->topic->unit->learningPath->id,
+                        'title' => $this->topic->unit->learningPath->title,
+                    ],
                 ],
             ],
             'created_at'       => $this->created_at,
@@ -154,10 +166,10 @@ class Lesson extends Model
     /**
      * Import data from an export structure
      */
-    public static function importData(array $data, Unit $unit): self
+    public static function importData(array $data, Topic $topic): self
     {
         $lesson = static::create([
-            'unit_id'     => $unit->id,
+            'topic_id'    => $topic->id,
             'title'       => $data['title'],
             'description' => $data['description'],
             'order'       => $data['order'],
@@ -180,22 +192,22 @@ class Lesson extends Model
     }
 
     /**
-     * Get the next lesson in the unit
+     * Get the next lesson in the topic
      */
     public function getNextLesson(): ?self
     {
-        return static::where('unit_id', $this->unit_id)
+        return static::where('topic_id', $this->topic_id)
             ->where('order', '>', $this->order)
             ->orderBy('order')
             ->first();
     }
 
     /**
-     * Get the previous lesson in the unit
+     * Get the previous lesson in the topic
      */
     public function getPreviousLesson(): ?self
     {
-        return static::where('unit_id', $this->unit_id)
+        return static::where('topic_id', $this->topic_id)
             ->where('order', '<', $this->order)
             ->orderBy('order', 'desc')
             ->first();

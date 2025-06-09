@@ -1,20 +1,19 @@
 <?php
-
 namespace App\Http\Controllers\API\Admin;
 
 use App\Http\Controllers\API\BaseAPIController;
 use App\Http\Controllers\API\LessonController as BaseLessonController;
-use App\Models\Lesson;
-use App\Models\Unit;
 use App\Http\Requests\API\Lesson\StoreLessonRequest;
 use App\Http\Requests\API\Lesson\UpdateLessonRequest;
 use App\Models\AuditLog;
+use App\Models\Lesson;
+use App\Models\Topic;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class AdminLessonController extends BaseAPIController
 {
@@ -45,21 +44,19 @@ class AdminLessonController extends BaseAPIController
                 $query->where('status', $request->status);
             }
 
-            if ($request->has('unit_id')) {
-                $query->whereHas('units', function ($query) use ($request) {
-                    $query->where('units.id', $request->unit_id);
-                });
+            if ($request->has('topic_id')) {
+                $query->where('topic_id', $request->topic_id);
             }
 
             // Include relationships if requested
-            if ($request->has('with_sections')) {
-                $query->with(['sections' => function ($query) {
+            if ($request->has('with_exercises')) {
+                $query->with(['exercises' => function ($query) {
                     $query->orderBy('order');
                 }]);
             }
 
-            if ($request->has('with_units')) {
-                $query->with('units');
+            if ($request->has('with_topic')) {
+                $query->with('topic');
             }
 
             $perPage = $request->input('per_page', 15);
@@ -68,7 +65,7 @@ class AdminLessonController extends BaseAPIController
             return $this->sendPaginatedResponse($lessons);
         } catch (Exception $e) {
             Log::error('Error fetching lessons: ' . $e->getMessage(), [
-                'trace' => $e->getTraceAsString()
+                'trace' => $e->getTraceAsString(),
             ]);
             return $this->sendError('Failed to retrieve lessons', [], 500);
         }
@@ -83,18 +80,14 @@ class AdminLessonController extends BaseAPIController
             return DB::transaction(function () use ($request) {
                 $lesson = Lesson::create($request->validated());
 
-                // Attach to unit if specified
-                if ($request->has('unit_id')) {
+                // Set topic_id if not already set
+                if (! $lesson->topic_id && $request->has('topic_id')) {
                     try {
-                        $unit = Unit::findOrFail($request->unit_id);
-                        
-                        // Get the highest order in the unit
-                        $maxOrder = $unit->lessons()->max('order') ?? 0;
-                        
-                        // Attach with the next order
-                        $unit->lessons()->attach($lesson->id, ['order' => $maxOrder + 1]);
+                        $topic            = Topic::findOrFail($request->topic_id);
+                        $lesson->topic_id = $topic->id;
+                        $lesson->save();
                     } catch (ModelNotFoundException $e) {
-                        throw new Exception('Unit not found', 404);
+                        throw new Exception('Topic not found', 404);
                     }
                 }
 
@@ -111,7 +104,7 @@ class AdminLessonController extends BaseAPIController
             });
         } catch (Exception $e) {
             Log::error('Error creating lesson: ' . $e->getMessage(), [
-                'trace' => $e->getTraceAsString()
+                'trace' => $e->getTraceAsString(),
             ]);
             $statusCode = $e->getCode() >= 400 && $e->getCode() < 600 ? $e->getCode() : 500;
             return $this->sendError('Failed to create lesson: ' . $e->getMessage(), [], $statusCode);
@@ -126,14 +119,14 @@ class AdminLessonController extends BaseAPIController
     {
         try {
             // Load relationships if requested
-            if ($request->has('with_sections')) {
-                $lesson->load(['sections' => function ($query) {
+            if ($request->has('with_exercises')) {
+                $lesson->load(['exercises' => function ($query) {
                     $query->orderBy('order');
                 }]);
             }
 
-            if ($request->has('with_units')) {
-                $lesson->load('units');
+            if ($request->has('with_topic')) {
+                $lesson->load('topic');
             }
 
             if ($request->has('with_versions')) {
@@ -144,7 +137,7 @@ class AdminLessonController extends BaseAPIController
             return $this->sendResponse($lesson);
         } catch (Exception $e) {
             Log::error('Error fetching lesson: ' . $e->getMessage(), [
-                'trace' => $e->getTraceAsString()
+                'trace' => $e->getTraceAsString(),
             ]);
             return $this->sendError('Failed to retrieve lesson details', [], 500);
         }
@@ -170,7 +163,7 @@ class AdminLessonController extends BaseAPIController
             return $this->sendResponse($lesson, 'Lesson updated successfully.');
         } catch (Exception $e) {
             Log::error('Error updating lesson: ' . $e->getMessage(), [
-                'trace' => $e->getTraceAsString()
+                'trace' => $e->getTraceAsString(),
             ]);
             return $this->sendError('Failed to update lesson: ' . $e->getMessage(), [], 500);
         }
@@ -189,11 +182,10 @@ class AdminLessonController extends BaseAPIController
             }
 
             $data = $lesson->toArray();
-            
+
             DB::transaction(function () use ($lesson, $data) {
-                // Detach from all units
-                $lesson->units()->detach();
-                
+                // No need to detach from topic as it's a direct relationship
+
                 $lesson->delete();
 
                 // Log the deletion for audit trail
@@ -209,7 +201,7 @@ class AdminLessonController extends BaseAPIController
             return $this->sendNoContentResponse();
         } catch (Exception $e) {
             Log::error('Error deleting lesson: ' . $e->getMessage(), [
-                'trace' => $e->getTraceAsString()
+                'trace' => $e->getTraceAsString(),
             ]);
             return $this->sendError('Failed to delete lesson: ' . $e->getMessage(), [], 500);
         }
@@ -223,10 +215,10 @@ class AdminLessonController extends BaseAPIController
     {
         try {
             $request->validate([
-                'status' => ['required', 'string', 'in:draft,published,archived']
+                'status' => ['required', 'string', 'in:draft,published,archived'],
             ]);
 
-            $oldStatus = $lesson->status;
+            $oldStatus      = $lesson->status;
             $lesson->status = $request->status;
             $lesson->save();
 
@@ -242,39 +234,39 @@ class AdminLessonController extends BaseAPIController
             return $this->sendResponse($lesson, 'Lesson status updated successfully.');
         } catch (Exception $e) {
             Log::error('Error updating lesson status: ' . $e->getMessage(), [
-                'trace' => $e->getTraceAsString()
+                'trace' => $e->getTraceAsString(),
             ]);
             return $this->sendError('Failed to update lesson status: ' . $e->getMessage(), [], 500);
         }
     }
 
     /**
-     * Reorder sections within a lesson.
-     * Admin-specific method to reorder sections.
+     * Reorder exercises within a lesson.
+     * Admin-specific method to reorder exercises.
      */
-    public function reorderSections(Request $request, Lesson $lesson): JsonResponse
+    public function reorderExercises(Request $request, Lesson $lesson): JsonResponse
     {
         try {
             $request->validate([
-                'section_ids' => ['required', 'array'],
-                'section_ids.*' => ['exists:sections,id']
+                'exercise_ids'   => ['required', 'array'],
+                'exercise_ids.*' => ['exists:exercises,id'],
             ]);
 
-            $sectionIds = $request->section_ids;
-            
-            DB::transaction(function () use ($lesson, $sectionIds) {
-                // Update the order of each section
-                foreach ($sectionIds as $index => $sectionId) {
-                    $lesson->sections()->updateExistingPivot($sectionId, ['order' => $index + 1]);
+            $exerciseIds = $request->exercise_ids;
+
+            DB::transaction(function () use ($lesson, $exerciseIds) {
+                // Update the order of each exercise
+                foreach ($exerciseIds as $index => $exerciseId) {
+                    $lesson->exercises()->where('id', $exerciseId)->update(['order' => $index + 1]);
                 }
             });
-            
-            return $this->sendResponse($lesson->load('sections'), 'Sections reordered successfully.');
+
+            return $this->sendResponse($lesson->load('exercises'), 'Exercises reordered successfully.');
         } catch (Exception $e) {
-            Log::error('Error reordering sections: ' . $e->getMessage(), [
-                'trace' => $e->getTraceAsString()
+            Log::error('Error reordering exercises: ' . $e->getMessage(), [
+                'trace' => $e->getTraceAsString(),
             ]);
-            return $this->sendError('Failed to reorder sections: ' . $e->getMessage(), [], 500);
+            return $this->sendError('Failed to reorder exercises: ' . $e->getMessage(), [], 500);
         }
     }
 }

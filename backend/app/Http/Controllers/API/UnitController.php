@@ -29,13 +29,19 @@ class UnitController extends BaseAPIController
         $query = $learningPath->units()->orderBy('order');
 
         // Include relationships if requested
-        if ($request->has('with_lessons')) {
-            $query->with(['lessons' => function ($query) {
-                $query->orderBy('order');
+        if ($request->has('with_topics')) {
+            $query->with(['topics' => function ($query) {
+                $query->where('status', 'published')
+                    ->orderBy('order');
             }]);
         }
 
-    
+        if ($request->has('with_lessons')) {
+            $query->with(['topics.lessons' => function ($query) {
+                $query->where('status', 'published')
+                    ->orderBy('order');
+            }]);
+        }
 
         if ($request->has('with_guide')) {
             $query->with('guideBookEntries');
@@ -55,7 +61,7 @@ class UnitController extends BaseAPIController
         $unit = Unit::create($request->validated());
 
         if ($request->has('with_relationships')) {
-            $unit->load(['lessons',  'guideBookEntries']);
+            $unit->load(['lessons', 'guideBookEntries']);
         }
 
         return $this->sendCreatedResponse($unit, 'Unit created successfully.');
@@ -69,13 +75,19 @@ class UnitController extends BaseAPIController
         // Check if the unit is unlocked for the user
         $isUnlocked = $this->sequentialLearningService->isUnitUnlocked($unit);
 
-        if ($request->has('with_lessons')) {
-            $unit->load(['lessons' => function ($query) {
-                $query->orderBy('order');
+        if ($request->has('with_topics')) {
+            $unit->load(['topics' => function ($query) {
+                $query->where('status', 'published')
+                    ->orderBy('order');
             }]);
         }
 
-        
+        if ($request->has('with_lessons')) {
+            $unit->load(['topics.lessons' => function ($query) {
+                $query->where('status', 'published')
+                    ->orderBy('order');
+            }]);
+        }
 
         if ($request->has('with_guide')) {
             $unit->load('guideBookEntries');
@@ -170,27 +182,47 @@ class UnitController extends BaseAPIController
             ->where('user_id', $request->user()->id)
             ->first();
 
-        $lessonsProgress = $unit->lessons()
+        $topicsProgress = $unit->topics()
+            ->where('status', 'published')
             ->with(['progress' => function ($query) use ($request) {
                 $query->where('user_id', $request->user()->id);
             }])
             ->get()
-            ->map(function ($lesson) {
-                $progress = $lesson->progress->first();
+            ->map(function ($topic) use ($request) {
+                $progress = $topic->progress->first();
                 return [
-                    'lesson_id' => $lesson->id,
-                    'status'    => $progress ? $progress->status : 'not_started',
+                    'topic_id' => $topic->id,
+                    'status'   => $progress ? $progress->status : 'not_started',
+                    'level'    => $topic->getCurrentLevel($request->user()->id),
                 ];
             });
 
-        // Get unlocked lessons for this unit
+        // Get all lessons progress through topics
+        $lessonsProgress = collect();
+        $unit->topics()->where('status', 'published')->get()->each(function ($topic) use ($request, &$lessonsProgress) {
+            $topic->lessons()->where('status', 'published')->with(['progress' => function ($query) use ($request) {
+                $query->where('user_id', $request->user()->id);
+            }])->get()->each(function ($lesson) use (&$lessonsProgress) {
+                $progress = $lesson->progress->first();
+                $lessonsProgress->push([
+                    'lesson_id' => $lesson->id,
+                    'topic_id'  => $lesson->topic_id,
+                    'status'    => $progress ? $progress->status : 'not_started',
+                ]);
+            });
+        });
+
+        // Get unlocked topics and lessons for this unit
+        $unlockedTopics  = $this->sequentialLearningService->getUnlockedTopics($unit);
         $unlockedLessons = $this->sequentialLearningService->getUnlockedLessons($unit);
 
         return $this->sendResponse([
             'unit_progress'         => $progress ? $progress->status : 'not_started',
             'completion_percentage' => $unit->getCompletionPercentage($request->user()->id),
+            'topics_progress'       => $topicsProgress,
             'lessons_progress'      => $lessonsProgress,
             'is_unlocked'           => $this->sequentialLearningService->isUnitUnlocked($unit),
+            'unlocked_topics'       => $unlockedTopics,
             'unlocked_lessons'      => $unlockedLessons,
         ]);
     }

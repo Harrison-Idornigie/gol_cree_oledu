@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use App\Models\Traits\HasAuditLog;
@@ -23,13 +22,13 @@ class Unit extends Model
         'description',
         'order',
         'status',
-        'review_status'
+        'review_status',
     ];
 
     protected $casts = [
-        'order' => 'integer',
-        'status' => 'string',
-        'review_status' => 'string'
+        'order'         => 'integer',
+        'status'        => 'string',
+        'review_status' => 'string',
     ];
 
     /**
@@ -40,7 +39,7 @@ class Unit extends Model
         'description',
         'order',
         'status',
-        'review_status'
+        'review_status',
     ];
 
     /**
@@ -52,14 +51,22 @@ class Unit extends Model
     }
 
     /**
-     * Get the lessons for the unit.
+     * Get the topics for the unit.
      */
-    public function lessons(): HasMany
+    public function topics(): HasMany
     {
-        return $this->hasMany(Lesson::class)->orderBy('order');
+        return $this->hasMany(Topic::class)->orderBy('order');
     }
 
-    
+    /**
+     * Get the lessons for the unit through topics.
+     */
+    public function lessons()
+    {
+        return Lesson::whereHas('topic', function ($query) {
+            $query->where('unit_id', $this->id);
+        })->orderBy('order');
+    }
 
     /**
      * Get the guide book entries for the unit.
@@ -90,19 +97,31 @@ class Unit extends Model
      */
     public function getCompletionPercentage(int $userId): float
     {
-        $lessons = $this->lessons()->with(['progress' => function ($query) use ($userId) {
+        $topics = $this->topics()->with(['lessons.progress' => function ($query) use ($userId) {
             $query->where('user_id', $userId);
         }])->get();
 
-        if ($lessons->isEmpty()) {
+        if ($topics->isEmpty()) {
             return 0;
         }
 
-        $completedLessons = $lessons->filter(function ($lesson) {
-            return $lesson->progress->contains('status', 'completed');
-        })->count();
+        $totalLessons     = 0;
+        $completedLessons = 0;
 
-        return ($completedLessons / $lessons->count()) * 100;
+        foreach ($topics as $topic) {
+            foreach ($topic->lessons as $lesson) {
+                $totalLessons++;
+                if ($lesson->progress->contains('status', 'completed')) {
+                    $completedLessons++;
+                }
+            }
+        }
+
+        if ($totalLessons === 0) {
+            return 0;
+        }
+
+        return ($completedLessons / $totalLessons) * 100;
     }
 
     /**
@@ -111,19 +130,20 @@ class Unit extends Model
     public function getPreviewData(): array
     {
         return [
-            'id' => $this->id,
-            'title' => $this->title,
-            'description' => $this->description,
-            'order' => $this->order,
+            'id'            => $this->id,
+            'title'         => $this->title,
+            'description'   => $this->description,
+            'order'         => $this->order,
+            'topics_count'  => $this->topics()->count(),
             'lessons_count' => $this->lessons()->count(),
-             'has_guide' => $this->guideBookEntries()->exists(),
-            'thumbnail' => collect($this->getMedia('thumbnail'))->first()?->getUrl(),
+            'has_guide'     => $this->guideBookEntries()->exists(),
+            'thumbnail'     => collect($this->getMedia('thumbnail'))->first()?->getUrl(),
             'learning_path' => [
-                'id' => $this->learningPath->id,
-                'title' => $this->learningPath->title
+                'id'    => $this->learningPath->id,
+                'title' => $this->learningPath->title,
             ],
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at
+            'created_at'    => $this->created_at,
+            'updated_at'    => $this->updated_at,
         ];
     }
 
@@ -133,12 +153,12 @@ class Unit extends Model
     public function getExportData(): array
     {
         return [
-            'title' => $this->title,
-            'description' => $this->description,
-            'order' => $this->order,
-            'lessons' => $this->lessons->map->getExportData()->toArray(),
-             'guide_book_entries' => $this->guideBookEntries->map->getExportData()->toArray(),
-            'media' => $this->media->groupBy('collection_name')->toArray(),
+            'title'              => $this->title,
+            'description'        => $this->description,
+            'order'              => $this->order,
+            'topics'             => $this->topics->map->getExportData()->toArray(),
+            'guide_book_entries' => $this->guideBookEntries->map->getExportData()->toArray(),
+            'media'              => $this->media->groupBy('collection_name')->toArray(),
         ];
     }
 
@@ -149,22 +169,32 @@ class Unit extends Model
     {
         $unit = static::create([
             'learning_path_id' => $learningPath->id,
-            'title' => $data['title'],
-            'description' => $data['description'],
-            'order' => $data['order']
+            'title'            => $data['title'],
+            'description'      => $data['description'],
+            'order'            => $data['order'],
         ]);
 
-        foreach ($data['lessons'] ?? [] as $lessonData) {
-            Lesson::importData($lessonData, $unit);
-        }
+        foreach ($data['topics'] ?? [] as $topicData) {
+            $topic = Topic::create([
+                'unit_id'     => $unit->id,
+                'title'       => $topicData['title'],
+                'description' => $topicData['description'] ?? '',
+                'order'       => $topicData['order'] ?? 0,
+                'icon'        => $topicData['icon'] ?? null,
+                'color'       => $topicData['color'] ?? null,
+                'status'      => $topicData['status'] ?? 'draft',
+            ]);
 
-      
+            foreach ($topicData['lessons'] ?? [] as $lessonData) {
+                Lesson::importData($lessonData, $topic);
+            }
+        }
 
         foreach ($data['guide_book_entries'] ?? [] as $entryData) {
             GuideBookEntry::create([
                 'unit_id' => $unit->id,
-                'topic' => $entryData['topic'],
-                'content' => $entryData['content']
+                'topic'   => $entryData['topic'],
+                'content' => $entryData['content'],
             ]);
         }
 

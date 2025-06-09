@@ -4,7 +4,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Requests\API\Lesson\StoreLessonRequest;
 use App\Http\Requests\API\Lesson\UpdateLessonRequest;
 use App\Models\Lesson;
-use App\Models\Unit;
+use App\Models\Topic;
 use App\Models\VocabularyItem;
 use App\Services\SequentialLearningService;
 use Illuminate\Http\JsonResponse;
@@ -24,14 +24,17 @@ class LessonController extends BaseAPIController
     }
 
     /**
-     * Display a listing of lessons for a unit.
+     * Display a listing of lessons for a topic.
      */
-    public function index(Request $request, Unit $unit): JsonResponse
+    public function index(Request $request, Topic $topic): JsonResponse
     {
-        $query = $unit->lessons()->orderBy('order');
+        $query = $topic->lessons()->orderBy('order');
 
-        if ($request->has('with_sections')) {
-            $query->with(['sections' => function ($query) {
+        // Only show published lessons for students
+        $query->where('status', 'published');
+
+        if ($request->has('with_exercises')) {
+            $query->with(['exercises' => function ($query) {
                 $query->orderBy('order');
             }]);
         }
@@ -148,14 +151,14 @@ class LessonController extends BaseAPIController
      */
     public function destroy(Lesson $lesson): JsonResponse
     {
-        // Check if unit's learning path is published
-        if ($lesson->unit->learningPath->status === 'published') {
+        // Check if topic's unit's learning path is published
+        if ($lesson->topic->unit->learningPath->status === 'published') {
             return $this->sendError('Cannot delete a lesson from a published learning path.');
         }
 
         return DB::transaction(function () use ($lesson) {
             // Reorder remaining lessons
-            Lesson::where('unit_id', $lesson->unit_id)
+            Lesson::where('topic_id', $lesson->topic_id)
                 ->where('order', '>', $lesson->order)
                 ->decrement('order');
 
@@ -168,7 +171,7 @@ class LessonController extends BaseAPIController
     /**
      * Update the order of lessons.
      */
-    public function reorder(Request $request, Unit $unit): JsonResponse
+    public function reorder(Request $request, Topic $topic): JsonResponse
     {
         $request->validate([
             'lessons'   => ['required', 'array'],
@@ -178,9 +181,9 @@ class LessonController extends BaseAPIController
         $lessonIds = $request->lessons;
         $order     = 1;
 
-        // Verify all lessons belong to the unit
+        // Verify all lessons belong to the topic
         $lessons = Lesson::whereIn('id', $lessonIds)
-            ->where('unit_id', $unit->id)
+            ->where('topic_id', $topic->id)
             ->get();
 
         if ($lessons->count() !== count($lessonIds)) {
@@ -193,7 +196,7 @@ class LessonController extends BaseAPIController
         }
 
         return $this->sendResponse(
-            $unit->lessons()->orderBy('order')->get(),
+            $topic->lessons()->orderBy('order')->get(),
             'Lessons reordered successfully.'
         );
     }
@@ -207,24 +210,27 @@ class LessonController extends BaseAPIController
             ->where('user_id', $request->user()->id)
             ->first();
 
-        $sectionsProgress = $lesson->sections()
-            ->with(['progress' => function ($query) use ($request) {
+        $exercisesProgress = $lesson->exercises()
+            ->with(['attempts' => function ($query) use ($request) {
                 $query->where('user_id', $request->user()->id);
             }])
             ->get()
-            ->map(function ($section) {
-                $progress = $section->progress->first();
+            ->map(function ($exercise) {
+                $attempts  = $exercise->attempts;
+                $completed = $attempts->where('is_correct', true)->count() > 0;
                 return [
-                    'section_id' => $section->id,
-                    'status'     => $progress ? $progress->status : 'not_started',
+                    'exercise_id' => $exercise->id,
+                    'status'      => $completed ? 'completed' : 'not_started',
+                    'attempts'    => $attempts->count(),
                 ];
             });
 
         return $this->sendResponse([
-            'lesson_progress'   => $progress ? $progress->status : 'not_started',
-            'completed'         => $lesson->isCompletedByUser($request->user()->id),
-            'sections_progress' => $sectionsProgress,
-            'is_unlocked'       => $this->sequentialLearningService->isLessonUnlocked($lesson),
+            'lesson_progress'    => $progress ? $progress->status : 'not_started',
+            'completed'          => $lesson->isCompletedByUser($request->user()->id),
+            'exercises_progress' => $exercisesProgress,
+            'is_unlocked'        => $this->sequentialLearningService->isLessonUnlocked($lesson),
+            'topic_id'           => $lesson->topic_id,
         ]);
     }
 }

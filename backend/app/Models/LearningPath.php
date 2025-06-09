@@ -1,6 +1,7 @@
 <?php
 namespace App\Models;
 
+use App\Models\Traits\BelongsToTenant;
 use App\Models\Traits\HasAuditLog;
 use App\Models\Traits\HasMedia;
 use App\Models\Traits\HasVersions;
@@ -12,9 +13,9 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class LearningPath extends Model
 {
-    use HasFactory, HasVersions, HasAuditLog, HasMedia;
+    use HasFactory, HasVersions, HasAuditLog, HasMedia, BelongsToTenant;
 
-    const AUDIT_AREA = 'learning_paths';
+    public const AUDIT_AREA = 'learning_paths';
 
     protected $fillable = [
         'title',
@@ -23,6 +24,7 @@ class LearningPath extends Model
         'target_level',
         'status',
         'review_status',
+        'tenant_id',
     ];
 
     protected $casts = [

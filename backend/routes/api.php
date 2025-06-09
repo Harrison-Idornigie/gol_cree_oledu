@@ -7,9 +7,8 @@ use App\Http\Controllers\API\LearningPathController;
 use App\Http\Controllers\API\LessonController;
 use App\Http\Controllers\API\ListeningExerciseController;
 use App\Http\Controllers\API\PictureExerciseController;
-
-use App\Http\Controllers\API\SectionController;
 use App\Http\Controllers\API\SpeakingExerciseController;
+use App\Http\Controllers\API\TopicController;
 use App\Http\Controllers\API\UnitController;
 use App\Http\Controllers\API\UserLanguageController;
 use App\Http\Controllers\API\UserProgressController;
@@ -70,14 +69,20 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('learning-paths/by-level/{level}', [LearningPathController::class, 'byLevel']);
 
     // Units
-    Route::get('units', [UnitController::class, 'index']);
+    Route::get('learning-paths/{learningPath}/units', [UnitController::class, 'index']);
     Route::get('units/{unit}', [UnitController::class, 'show'])->middleware('sequential-learning');
+    Route::get('units/{unit}/progress', [UnitController::class, 'progress']);
+
+    // Topics
+    Route::get('units/{unit}/topics', [TopicController::class, 'index']);
+    Route::get('topics/{topic}', [TopicController::class, 'show'])->middleware('sequential-learning');
+    Route::get('topics/{topic}/progress', [TopicController::class, 'progress']);
 
     // Lessons
-    Route::get('lessons', [LessonController::class, 'index']);
+    Route::get('topics/{topic}/lessons', [LessonController::class, 'index']);
     Route::get('lessons/{lesson}', [LessonController::class, 'show'])->middleware('sequential-learning');
+    Route::get('lessons/{lesson}/progress', [LessonController::class, 'progress']);
 
-   
     // Exercises
     Route::get('exercises', [ExerciseController::class, 'index']);
     Route::get('exercises/{exercise}', [ExerciseController::class, 'show']);

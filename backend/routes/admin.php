@@ -13,8 +13,8 @@ use App\Http\Controllers\API\Admin\AdminLessonController;
 use App\Http\Controllers\API\Admin\AdminMediaController;
 use App\Http\Controllers\API\Admin\AdminProgressController;
 use App\Http\Controllers\API\Admin\AdminRoleController;
-use App\Http\Controllers\API\Admin\AdminSectionController;
 use App\Http\Controllers\API\Admin\AdminSentenceController;
+use App\Http\Controllers\API\Admin\AdminTopicController;
 use App\Http\Controllers\API\Admin\AdminUnitController;
 use App\Http\Controllers\API\Admin\AdminVocabularyController;
 use App\Http\Controllers\API\Admin\AdminWordController;
@@ -88,8 +88,8 @@ Route::prefix('admin')->middleware(['auth:sanctum', 'role:admin'])->group(functi
     // Content Management - Full CRUD operations for admins
     Route::apiResource('learning-paths', AdminLearningPathController::class);
     Route::apiResource('units', AdminUnitController::class);
+    Route::apiResource('topics', AdminTopicController::class);
     Route::apiResource('lessons', AdminLessonController::class);
-    Route::apiResource('sections', AdminSectionController::class);
     Route::apiResource('exercises', AdminExerciseController::class);
 
     Route::apiResource('vocabulary', AdminVocabularyController::class);
@@ -110,7 +110,16 @@ Route::prefix('admin')->middleware(['auth:sanctum', 'role:admin'])->group(functi
         Route::post('{unit}/approve-review', [AdminUnitController::class, 'approveReview']);
         Route::post('{unit}/reject-review', [AdminUnitController::class, 'rejectReview']);
         Route::patch('{unit}/status', [AdminUnitController::class, 'updateStatus']);
-        Route::post('{unit}/reorder-lessons', [AdminUnitController::class, 'reorderLessons']);
+        Route::post('{unit}/reorder-topics', [AdminUnitController::class, 'reorderTopics']);
+    });
+
+    // Review Workflow for Topics
+    Route::prefix('topics')->group(function () {
+        Route::post('{topic}/submit-for-review', [AdminTopicController::class, 'submitForReview']);
+        Route::post('{topic}/approve-review', [AdminTopicController::class, 'approveReview']);
+        Route::post('{topic}/reject-review', [AdminTopicController::class, 'rejectReview']);
+        Route::patch('{topic}/status', [AdminTopicController::class, 'updateStatus']);
+        Route::post('{topic}/reorder-lessons', [AdminTopicController::class, 'reorderLessons']);
     });
 
     // Review Workflow for Lessons
@@ -119,16 +128,7 @@ Route::prefix('admin')->middleware(['auth:sanctum', 'role:admin'])->group(functi
         Route::post('{lesson}/approve-review', [AdminLessonController::class, 'approveReview']);
         Route::post('{lesson}/reject-review', [AdminLessonController::class, 'rejectReview']);
         Route::patch('{lesson}/status', [AdminLessonController::class, 'updateStatus']);
-        Route::post('{lesson}/reorder-sections', [AdminLessonController::class, 'reorderSections']);
-    });
-
-    // Review Workflow for Sections
-    Route::prefix('sections')->group(function () {
-        Route::post('{section}/submit-for-review', [AdminSectionController::class, 'submitForReview']);
-        Route::post('{section}/approve-review', [AdminSectionController::class, 'approveReview']);
-        Route::post('{section}/reject-review', [AdminSectionController::class, 'rejectReview']);
-        Route::patch('{section}/status', [AdminSectionController::class, 'updateStatus']);
-        Route::post('{section}/reorder-exercises', [AdminSectionController::class, 'reorderExercises']);
+        Route::post('{lesson}/reorder-exercises', [AdminLessonController::class, 'reorderExercises']);
     });
 
     // Progress Management

@@ -1,6 +1,7 @@
 <?php
 namespace App\Models;
 
+use App\Models\Traits\BelongsToTenant;
 use App\Models\Traits\HasAuditLog;
 use App\Models\Traits\HasVersions;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -10,13 +11,14 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Language extends Model
 {
-    use HasFactory, HasAuditLog, HasVersions;
+    use HasFactory, HasAuditLog, HasVersions, BelongsToTenant;
 
     protected $fillable = [
         'code',
         'name',
         'native_name',
         'is_active',
+        'tenant_id',
     ];
 
     protected $casts = [

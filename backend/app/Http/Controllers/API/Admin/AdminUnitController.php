@@ -1,18 +1,17 @@
 <?php
-
 namespace App\Http\Controllers\API\Admin;
 
 use App\Http\Controllers\API\BaseAPIController;
 use App\Http\Controllers\API\UnitController as BaseUnitController;
-use App\Models\Unit;
-use App\Models\LearningPath;
 use App\Http\Requests\API\Unit\StoreUnitRequest;
 use App\Http\Requests\API\Unit\UpdateUnitRequest;
 use App\Models\AuditLog;
+use App\Models\LearningPath;
+use App\Models\Unit;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use Exception;
 
 class AdminUnitController extends BaseAPIController
 {
@@ -50,8 +49,14 @@ class AdminUnitController extends BaseAPIController
             }
 
             // Include relationships if requested
+            if ($request->has('with_topics')) {
+                $query->with(['topics' => function ($query) {
+                    $query->orderBy('order');
+                }]);
+            }
+
             if ($request->has('with_lessons')) {
-                $query->with(['lessons' => function ($query) {
+                $query->with(['topics.lessons' => function ($query) {
                     $query->orderBy('order');
                 }]);
             }
@@ -61,13 +66,13 @@ class AdminUnitController extends BaseAPIController
             }
 
             $perPage = $request->input('per_page', 15);
-            $units = $query->paginate($perPage);
+            $units   = $query->paginate($perPage);
 
             return $this->sendPaginatedResponse($units);
         } catch (Exception $e) {
             Log::error('Failed to fetch units: ' . $e->getMessage(), [
-                'trace' => $e->getTraceAsString(),
-                'request' => $request->all()
+                'trace'   => $e->getTraceAsString(),
+                'request' => $request->all(),
             ]);
             return $this->sendError('Failed to fetch units', ['error' => $e->getMessage()], 500);
         }
@@ -84,10 +89,10 @@ class AdminUnitController extends BaseAPIController
             // Attach to learning path if specified
             if ($request->has('learning_path_id')) {
                 $learningPath = LearningPath::findOrFail($request->learning_path_id);
-                
+
                 // Get the highest order in the learning path
                 $maxOrder = $learningPath->units()->max('order') ?? 0;
-                
+
                 // Attach with the next order
                 $learningPath->units()->attach($unit->id, ['order' => $maxOrder + 1]);
             }
@@ -105,7 +110,7 @@ class AdminUnitController extends BaseAPIController
         } catch (Exception $e) {
             Log::error('Failed to create unit: ' . $e->getMessage(), [
                 'trace' => $e->getTraceAsString(),
-                'data' => $request->validated()
+                'data'  => $request->validated(),
             ]);
             return $this->sendError('Failed to create unit', ['error' => $e->getMessage()], 500);
         }
@@ -119,8 +124,14 @@ class AdminUnitController extends BaseAPIController
     {
         try {
             // Load relationships if requested
+            if ($request->has('with_topics')) {
+                $unit->load(['topics' => function ($query) {
+                    $query->orderBy('order');
+                }]);
+            }
+
             if ($request->has('with_lessons')) {
-                $unit->load(['lessons' => function ($query) {
+                $unit->load(['topics.lessons' => function ($query) {
                     $query->orderBy('order');
                 }]);
             }
@@ -142,8 +153,8 @@ class AdminUnitController extends BaseAPIController
             return $this->sendResponse($unit);
         } catch (Exception $e) {
             Log::error('Failed to fetch unit: ' . $e->getMessage(), [
-                'trace' => $e->getTraceAsString(),
-                'unit_id' => $unit->id
+                'trace'   => $e->getTraceAsString(),
+                'unit_id' => $unit->id,
             ]);
             return $this->sendError('Failed to fetch unit', ['error' => $e->getMessage()], 500);
         }
@@ -169,9 +180,9 @@ class AdminUnitController extends BaseAPIController
             return $this->sendResponse($unit, 'Unit updated successfully.');
         } catch (Exception $e) {
             Log::error('Failed to update unit: ' . $e->getMessage(), [
-                'trace' => $e->getTraceAsString(),
+                'trace'   => $e->getTraceAsString(),
                 'unit_id' => $unit->id,
-                'data' => $request->validated()
+                'data'    => $request->validated(),
             ]);
             return $this->sendError('Failed to update unit', ['error' => $e->getMessage()], 500);
         }
@@ -190,10 +201,10 @@ class AdminUnitController extends BaseAPIController
             }
 
             $data = $unit->toArray();
-            
+
             // Detach from all learning paths
             $unit->learningPaths()->detach();
-            
+
             $unit->delete();
 
             // Log the deletion for audit trail
@@ -208,8 +219,8 @@ class AdminUnitController extends BaseAPIController
             return $this->sendNoContentResponse();
         } catch (Exception $e) {
             Log::error('Failed to delete unit: ' . $e->getMessage(), [
-                'trace' => $e->getTraceAsString(),
-                'unit_id' => $unit->id
+                'trace'   => $e->getTraceAsString(),
+                'unit_id' => $unit->id,
             ]);
             return $this->sendError('Failed to delete unit', ['error' => $e->getMessage()], 500);
         }
@@ -223,10 +234,10 @@ class AdminUnitController extends BaseAPIController
     {
         try {
             $request->validate([
-                'status' => ['required', 'string', 'in:draft,published,archived']
+                'status' => ['required', 'string', 'in:draft,published,archived'],
             ]);
 
-            $oldStatus = $unit->status;
+            $oldStatus    = $unit->status;
             $unit->status = $request->status;
             $unit->save();
 
@@ -242,41 +253,41 @@ class AdminUnitController extends BaseAPIController
             return $this->sendResponse($unit, 'Unit status updated successfully.');
         } catch (Exception $e) {
             Log::error('Failed to update unit status: ' . $e->getMessage(), [
-                'trace' => $e->getTraceAsString(),
+                'trace'   => $e->getTraceAsString(),
                 'unit_id' => $unit->id,
-                'status' => $request->status ?? null
+                'status'  => $request->status ?? null,
             ]);
             return $this->sendError('Failed to update unit status', ['error' => $e->getMessage()], 500);
         }
     }
 
     /**
-     * Reorder lessons within a unit.
-     * Admin-specific method to reorder lessons.
+     * Reorder topics within a unit.
+     * Admin-specific method to reorder topics.
      */
-    public function reorderLessons(Request $request, Unit $unit): JsonResponse
+    public function reorderTopics(Request $request, Unit $unit): JsonResponse
     {
         try {
             $request->validate([
-                'lesson_ids' => ['required', 'array'],
-                'lesson_ids.*' => ['exists:lessons,id']
+                'topic_ids'   => ['required', 'array'],
+                'topic_ids.*' => ['exists:topics,id'],
             ]);
 
-            $lessonIds = $request->lesson_ids;
-            
-            // Update the order of each lesson
-            foreach ($lessonIds as $index => $lessonId) {
-                $unit->lessons()->updateExistingPivot($lessonId, ['order' => $index + 1]);
+            $topicIds = $request->topic_ids;
+
+            // Update the order of each topic
+            foreach ($topicIds as $index => $topicId) {
+                $unit->topics()->where('id', $topicId)->update(['order' => $index + 1]);
             }
 
-            return $this->sendResponse($unit->load('lessons'), 'Lessons reordered successfully.');
+            return $this->sendResponse($unit->load('topics'), 'Topics reordered successfully.');
         } catch (Exception $e) {
-            Log::error('Failed to reorder lessons: ' . $e->getMessage(), [
-                'trace' => $e->getTraceAsString(),
-                'unit_id' => $unit->id,
-                'lesson_ids' => $request->lesson_ids ?? []
+            Log::error('Failed to reorder topics: ' . $e->getMessage(), [
+                'trace'     => $e->getTraceAsString(),
+                'unit_id'   => $unit->id,
+                'topic_ids' => $request->topic_ids ?? [],
             ]);
-            return $this->sendError('Failed to reorder lessons', ['error' => $e->getMessage()], 500);
+            return $this->sendError('Failed to reorder topics', ['error' => $e->getMessage()], 500);
         }
     }
 
@@ -298,7 +309,7 @@ class AdminUnitController extends BaseAPIController
             // Create a review record
             $review = $unit->reviews()->create([
                 'submitted_by' => $request->user()->id,
-                'status' => 'pending',
+                'status'       => 'pending',
                 'submitted_at' => now(),
             ]);
 
@@ -317,9 +328,9 @@ class AdminUnitController extends BaseAPIController
             return $this->sendResponse($unit, 'Unit submitted for review successfully.');
         } catch (Exception $e) {
             Log::error('Failed to submit unit for review: ' . $e->getMessage(), [
-                'trace' => $e->getTraceAsString(),
+                'trace'   => $e->getTraceAsString(),
                 'unit_id' => $unit->id,
-                'user_id' => $request->user() ? $request->user()->id : null
+                'user_id' => $request->user() ? $request->user()->id : null,
             ]);
             return $this->sendError('Failed to submit unit for review', ['error' => $e->getMessage()], 500);
         }
@@ -342,17 +353,17 @@ class AdminUnitController extends BaseAPIController
 
             // Get the latest pending review
             $review = $unit->reviews()->where('status', 'pending')->latest()->first();
-            
-            if (!$review) {
+
+            if (! $review) {
                 return $this->sendError('No pending review found for this unit.', ['error' => 'No pending review found for this unit.'], 404);
             }
 
             // Update the review
             $review->update([
-                'reviewed_by' => $request->user()->id,
-                'status' => 'approved',
+                'reviewed_by'    => $request->user()->id,
+                'status'         => 'approved',
                 'review_comment' => $request->review_comment,
-                'reviewed_at' => now(),
+                'reviewed_at'    => now(),
             ]);
 
             // Update the unit status
@@ -371,9 +382,9 @@ class AdminUnitController extends BaseAPIController
             return $this->sendResponse($unit, 'Unit review approved successfully.');
         } catch (Exception $e) {
             Log::error('Failed to approve unit review: ' . $e->getMessage(), [
-                'trace' => $e->getTraceAsString(),
+                'trace'   => $e->getTraceAsString(),
                 'unit_id' => $unit->id,
-                'user_id' => $request->user() ? $request->user()->id : null
+                'user_id' => $request->user() ? $request->user()->id : null,
             ]);
             return $this->sendError('Failed to approve unit review', ['error' => $e->getMessage()], 500);
         }
@@ -391,24 +402,24 @@ class AdminUnitController extends BaseAPIController
             }
 
             $request->validate([
-                'review_comment' => ['required', 'string', 'max:1000'],
+                'review_comment'   => ['required', 'string', 'max:1000'],
                 'rejection_reason' => ['required', 'string', 'in:content_issues,formatting_issues,accuracy_issues,other'],
             ]);
 
             // Get the latest pending review
             $review = $unit->reviews()->where('status', 'pending')->latest()->first();
-            
-            if (!$review) {
+
+            if (! $review) {
                 return $this->sendError('No pending review found for this unit.', ['error' => 'No pending review found for this unit.'], 404);
             }
 
             // Update the review
             $review->update([
-                'reviewed_by' => $request->user()->id,
-                'status' => 'rejected',
-                'review_comment' => $request->review_comment,
+                'reviewed_by'      => $request->user()->id,
+                'status'           => 'rejected',
+                'review_comment'   => $request->review_comment,
                 'rejection_reason' => $request->rejection_reason,
-                'reviewed_at' => now(),
+                'reviewed_at'      => now(),
             ]);
 
             // Update the unit status
@@ -422,18 +433,18 @@ class AdminUnitController extends BaseAPIController
                 $unit,
                 [],
                 [
-                    'review_id' => $review->id,
-                    'rejection_reason' => $request->rejection_reason
+                    'review_id'        => $review->id,
+                    'rejection_reason' => $request->rejection_reason,
                 ]
             );
 
             return $this->sendResponse($unit, 'Unit review rejected successfully.');
         } catch (Exception $e) {
             Log::error('Failed to reject unit review: ' . $e->getMessage(), [
-                'trace' => $e->getTraceAsString(),
-                'unit_id' => $unit->id,
-                'user_id' => $request->user() ? $request->user()->id : null,
-                'rejection_reason' => $request->rejection_reason ?? null
+                'trace'            => $e->getTraceAsString(),
+                'unit_id'          => $unit->id,
+                'user_id'          => $request->user() ? $request->user()->id : null,
+                'rejection_reason' => $request->rejection_reason ?? null,
             ]);
             return $this->sendError('Failed to reject unit review', ['error' => $e->getMessage()], 500);
         }

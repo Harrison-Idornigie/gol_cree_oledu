@@ -1,10 +1,12 @@
 <?php
 namespace App\Models;
 
+use App\Models\Traits\BelongsToTenant;
 use App\Notifications\ResetPasswordNotification;
 use App\Notifications\VerifyEmailNotification;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -13,7 +15,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, BelongsToTenant;
 
     protected $fillable = [
         'name',
@@ -24,6 +26,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'google_id',
         'avatar',
         'total_points',
+        'tenant_id',
     ];
 
     protected $hidden = [
@@ -165,6 +168,38 @@ class User extends Authenticatable implements MustVerifyEmail
     public function isAdmin(): bool
     {
         return $this->hasRole('admin');
+    }
+
+    /**
+     * Super Admin Role Check
+     */
+    public function isSuperAdmin(): bool
+    {
+        return $this->hasRole('super-admin');
+    }
+
+    /**
+     * Tenant Admin Role Check
+     */
+    public function isTenantAdmin(): bool
+    {
+        return $this->hasRole('tenant-admin');
+    }
+
+    /**
+     * Teacher Role Check
+     */
+    public function isTeacher(): bool
+    {
+        return $this->hasRole('teacher');
+    }
+
+    /**
+     * Student Role Check
+     */
+    public function isStudent(): bool
+    {
+        return $this->hasRole('student');
     }
 
     /**

@@ -4,6 +4,7 @@ namespace App\Services;
 use App\Models\Exercise;
 use App\Models\LearningPath;
 use App\Models\Lesson;
+use App\Models\Topic;
 use App\Models\Unit;
 use App\Models\UserProgress;
 use Illuminate\Support\Facades\Auth;
@@ -51,6 +52,35 @@ class SequentialLearningService
     }
 
     /**
+     * Check if a topic is unlocked for the current user
+     *
+     * @param Topic $topic The topic to check
+     * @return bool Whether the topic is unlocked
+     */
+    public function isTopicUnlocked(Topic $topic): bool
+    {
+        // First topic in a unit is unlocked if the unit is unlocked
+        $previousTopics = $topic->unit->topics()
+            ->where('order', '<', $topic->order)
+            ->orderBy('order')
+            ->get();
+
+        if ($previousTopics->isEmpty()) {
+            return $this->isUnitUnlocked($topic->unit);
+        }
+
+        // Check if the previous topic is completed
+        $previousTopic         = $previousTopics->last();
+        $previousTopicProgress = UserProgress::where([
+            'user_id'        => Auth::id(),
+            'trackable_type' => Topic::class,
+            'trackable_id'   => $previousTopic->id,
+        ])->first();
+
+        return $previousTopicProgress && $previousTopicProgress->isCompleted();
+    }
+
+    /**
      * Check if a lesson is unlocked for the current user
      *
      * @param Lesson $lesson The lesson to check
@@ -58,14 +88,19 @@ class SequentialLearningService
      */
     public function isLessonUnlocked(Lesson $lesson): bool
     {
-        // First lesson in a unit is unlocked if the unit is unlocked
-        $previousLessons = $lesson->unit->lessons()
+        // First check if the topic is unlocked
+        if (! $this->isTopicUnlocked($lesson->topic)) {
+            return false;
+        }
+
+        // First lesson in a topic is always unlocked if the topic is unlocked
+        $previousLessons = $lesson->topic->lessons()
             ->where('order', '<', $lesson->order)
             ->orderBy('order')
             ->get();
 
         if ($previousLessons->isEmpty()) {
-            return $this->isUnitUnlocked($lesson->unit);
+            return true;
         }
 
         // Check if the previous lesson is completed
@@ -150,20 +185,56 @@ class SequentialLearningService
     }
 
     /**
-     * Get all unlocked lessons for a unit
+     * Get all unlocked topics for a unit
      *
      * @param Unit $unit The unit
-     * @return array Array of lesson IDs that are unlocked
+     * @return array Array of topic IDs that are unlocked
      */
-    public function getUnlockedLessons(Unit $unit): array
+    public function getUnlockedTopics(Unit $unit): array
     {
         if (! $this->isUnitUnlocked($unit)) {
             return [];
         }
 
-        $lessons           = $unit->lessons()->orderBy('order')->get();
+        $topics            = $unit->topics()->orderBy('order')->get();
+        $unlockedTopicIds  = [];
+        $previousCompleted = true; // First topic is always unlocked if unit is unlocked
+
+        foreach ($topics as $topic) {
+            if ($previousCompleted) {
+                $unlockedTopicIds[] = $topic->id;
+
+                // Check if this topic is completed for next iteration
+                $topicProgress = UserProgress::where([
+                    'user_id'        => Auth::id(),
+                    'trackable_type' => Topic::class,
+                    'trackable_id'   => $topic->id,
+                ])->first();
+
+                $previousCompleted = $topicProgress && $topicProgress->isCompleted();
+            } else {
+                break; // Stop once we hit a locked topic
+            }
+        }
+
+        return $unlockedTopicIds;
+    }
+
+    /**
+     * Get all unlocked lessons for a topic
+     *
+     * @param Topic $topic The topic
+     * @return array Array of lesson IDs that are unlocked
+     */
+    public function getUnlockedLessonsForTopic(Topic $topic): array
+    {
+        if (! $this->isTopicUnlocked($topic)) {
+            return [];
+        }
+
+        $lessons           = $topic->lessons()->orderBy('order')->get();
         $unlockedLessonIds = [];
-        $previousCompleted = true; // First lesson is always unlocked if unit is unlocked
+        $previousCompleted = true; // First lesson is always unlocked if topic is unlocked
 
         foreach ($lessons as $lesson) {
             if ($previousCompleted) {
@@ -179,6 +250,34 @@ class SequentialLearningService
                 $previousCompleted = $lessonProgress && $lessonProgress->isCompleted();
             } else {
                 break; // Stop once we hit a locked lesson
+            }
+        }
+
+        return $unlockedLessonIds;
+    }
+
+    /**
+     * Get all unlocked lessons for a unit (through topics)
+     *
+     * @param Unit $unit The unit
+     * @return array Array of lesson IDs that are unlocked
+     */
+    public function getUnlockedLessons(Unit $unit): array
+    {
+        if (! $this->isUnitUnlocked($unit)) {
+            return [];
+        }
+
+        $unlockedTopics    = $this->getUnlockedTopics($unit);
+        $unlockedLessonIds = [];
+
+        foreach ($unlockedTopics as $topicId) {
+            $topic = Topic::find($topicId);
+            if ($topic) {
+                $unlockedLessonIds = array_merge(
+                    $unlockedLessonIds,
+                    $this->getUnlockedLessonsForTopic($topic)
+                );
             }
         }
 

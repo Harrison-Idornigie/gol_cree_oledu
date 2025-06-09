@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('lessons', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('unit_id')
+            $table->foreignId('topic_id')
                 ->constrained()
                 ->onDelete('cascade');
             $table->string('title');
@@ -20,7 +20,7 @@ return new class extends Migration
             $table->timestamps();
 
             // Add index for ordering
-            $table->index(['unit_id', 'order']);
+            $table->index(['topic_id', 'order']);
         });
     }
 
