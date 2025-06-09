@@ -18,6 +18,8 @@ class Tenant extends Model
         'name',
         'slug',
         'domain',
+        'subdomain',
+        'custom_domain',
         'description',
         'settings',
         'status',
@@ -200,5 +202,78 @@ class Tenant extends Model
             'published_learning_paths' => $this->learningPaths()->where('status', 'published')->count(),
             'total_languages' => $this->languages()->count(),
         ];
+    }
+
+    /**
+     * Get the primary URL for this tenant.
+     */
+    public function getUrl(string $path = '', bool $secure = null): string
+    {
+        return \App\Helpers\TenantHelper::url($this, $path, $secure);
+    }
+
+    /**
+     * Get the subdomain URL for this tenant.
+     */
+    public function getSubdomainUrl(string $path = '', bool $secure = null): ?string
+    {
+        return \App\Helpers\TenantHelper::subdomainUrl($this, $path, $secure);
+    }
+
+    /**
+     * Get the custom domain URL for this tenant.
+     */
+    public function getCustomDomainUrl(string $path = '', bool $secure = null): ?string
+    {
+        return \App\Helpers\TenantHelper::customDomainUrl($this, $path, $secure);
+    }
+
+    /**
+     * Get all available URLs for this tenant.
+     */
+    public function getAllUrls(string $path = '', bool $secure = null): array
+    {
+        return \App\Helpers\TenantHelper::getAllUrls($this, $path, $secure);
+    }
+
+    /**
+     * Check if tenant has custom domain configured.
+     */
+    public function hasCustomDomain(): bool
+    {
+        return !empty($this->custom_domain);
+    }
+
+    /**
+     * Check if tenant has subdomain configured.
+     */
+    public function hasSubdomain(): bool
+    {
+        return !empty($this->subdomain);
+    }
+
+    /**
+     * Get the preferred domain type for this tenant.
+     */
+    public function getPreferredDomainType(): string
+    {
+        if ($this->hasCustomDomain()) {
+            return 'custom_domain';
+        }
+
+        if ($this->hasSubdomain()) {
+            return 'subdomain';
+        }
+
+        return 'main_domain';
+    }
+
+    /**
+     * Validate domain configuration.
+     */
+    public function validateDomains(): array
+    {
+        $resolver = app(\App\Services\TenantResolutionService::class);
+        return $resolver->validateTenantDomains($this);
     }
 }

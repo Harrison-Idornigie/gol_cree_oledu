@@ -54,6 +54,18 @@ return [
 
     'url' => env('APP_URL', 'http://localhost'),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Application Domain
+    |--------------------------------------------------------------------------
+    |
+    | This is the base domain for the application, used for subdomain-based
+    | tenant resolution. Subdomains will be extracted relative to this domain.
+    |
+    */
+
+    'domain' => env('APP_DOMAIN', 'localhost'),
+
     'asset_url' => env('ASSET_URL'),
 
     /*
