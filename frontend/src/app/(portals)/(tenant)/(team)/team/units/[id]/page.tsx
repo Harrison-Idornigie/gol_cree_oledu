@@ -1,7 +1,7 @@
 'use client';
 
 import UnitForm from '@/components/admin/forms/UnitForm';
-import { getUnit } from '@/app/_actions/admin/unit-actions';
+import { getUnit } from '@/app/_actions/tenants/team/unit-actions';
 import { useEffect, useState } from 'react';
 
 interface Unit {

@@ -100,7 +100,7 @@ export default function TopNavBar() {
                     <DropdownMenuLabel>My Account</DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem asChild>
-                      <a href="/learn/account">
+                      <a href="/student/account">
                         <User className="w-4 h-4 mr-2" />
                         Account Settings
                       </a>

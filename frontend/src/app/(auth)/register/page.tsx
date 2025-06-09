@@ -24,7 +24,7 @@ export default function RegisterPage() {
         router.refresh(); // Refresh to update auth state
 
         // Add post_login parameter to indicate this is a post-login redirect
-        const redirectPath = result.redirect || "/learn";
+        const redirectPath = result.redirect || "/student";
         const redirectUrl = new URL(redirectPath, window.location.origin);
         redirectUrl.searchParams.set("post_login", "true");
 

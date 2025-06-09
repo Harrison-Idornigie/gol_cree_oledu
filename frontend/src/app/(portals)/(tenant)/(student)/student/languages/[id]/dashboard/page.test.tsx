@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import LanguageDashboardPage from './page';
 import LanguageDashboard from '../../../LanguageDashboard';
-import { getLanguageDashboard } from '@/app/_actions/user/language-actions';
+import { getLanguageDashboard } from '@/app/_actions/tenants/student/language-actions';
 
 // Mock the server action
 jest.mock('@/app/_actions/user/language-actions', () => ({

@@ -5,7 +5,7 @@ import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { createUnit, updateUnit } from '@/app/_actions/admin/unit-actions';
+import { createUnit, updateUnit } from '@/app/_actions/tenants/team/unit-actions';
 
 interface UnitFormProps {
   learningPathId?: number;

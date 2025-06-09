@@ -10,13 +10,13 @@ export default function LearnSideBar() {
       <hr className="p-1" />
       <nav className="space-y-2">
         <Button variant="ghost" className="justify-start w-full" asChild>
-          <Link href="/learn" className="flex items-center">
+          <Link href="/student" className="flex items-center">
             <Home className="w-4 h-4 mr-2" />
             Learning Dashboard
           </Link>
         </Button>
         <Button variant="ghost" className="justify-start w-full" asChild>
-          <Link href="/learn/languages" className="flex items-center">
+          <Link href="/student/languages" className="flex items-center">
             <Globe className="w-4 h-4 mr-2" />
             Languages
           </Link>
@@ -28,13 +28,13 @@ export default function LearnSideBar() {
           </Link>
         </Button>
         <Button variant="ghost" className="justify-start w-full" asChild>
-          <Link href="/learn/profile" className="flex items-center">
+          <Link href="/student/profile" className="flex items-center">
             <BookOpen className="w-4 h-4 mr-2" />
             Profile
           </Link>
         </Button>
         <Button variant="ghost" className="justify-start w-full" asChild>
-          <Link href="/learn/account" className="flex items-center">
+          <Link href="/student/account" className="flex items-center">
             <User className="w-4 h-4 mr-2" />
             Account Settings
           </Link>

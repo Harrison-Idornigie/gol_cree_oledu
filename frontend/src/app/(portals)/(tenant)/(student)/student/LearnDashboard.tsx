@@ -41,9 +41,9 @@ import {
   getLanguagesWithLearningPaths,
   getLearningPathsByLanguage,
   getLearningPathsByLevel,
-} from "@/app/_actions/user/learning-path-actions";
-import { getSelectedLanguages } from "@/app/_actions/user/language-actions";
-import { Language, LearningPath } from "@/types/learning-path";
+} from "@/app/_actions/user/studenting-path-actions";
+import { getSelectedLanguages } from "@/app/_actions/tenants/student/language-actions";
+import { Language, LearningPath } from "@/types/studenting-path";
 import { toast } from "@/hooks/use-toast";
 
 // Modified API response interface with proper types
@@ -357,7 +357,7 @@ export default function Dashboard() {
           <div className="flex flex-wrap gap-3">
             {selectedLanguages.map((language) => (
               <div key={language.id} className="group relative">
-                <Link href={`/learn?language=${language.id}`} className="block">
+                <Link href={`/student?language=${language.id}`} className="block">
                   <div className="flex items-center gap-2 p-3 transition-colors border rounded-lg hover:bg-accent">
                     <Globe className="w-5 h-5 text-primary" />
                     <div>
@@ -373,7 +373,7 @@ export default function Dashboard() {
                 </Link>
                 <div className="absolute right-0 -bottom-2 z-10">
                   <Link
-                    href={`/learn/languages/${language.id}/dashboard`}
+                    href={`/student/languages/${language.id}/dashboard`}
                     className="inline-flex items-center justify-center h-6 px-2 text-xs font-medium text-white bg-primary rounded hover:bg-primary/90"
                   >
                     Dashboard

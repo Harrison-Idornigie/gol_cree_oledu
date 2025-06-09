@@ -6,7 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Star } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
-import { enrollInLearningPath } from "@/app/_actions/user/learning-path-actions";
+import { enrollInLearningPath } from "@/app/_actions/tenants/student/learning-path-actions";
 import { toast } from "@/hooks/use-toast";
 
 interface LearningPath {

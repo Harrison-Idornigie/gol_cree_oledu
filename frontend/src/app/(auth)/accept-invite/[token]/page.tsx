@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { acceptInvite } from '@/app/_actions/admin/user-management-actions';
+import { acceptInvite } from '@/app/_actions/tenants/team/user-management-actions';
 import { toast } from 'sonner';
 
 interface AcceptInvitePageProps {

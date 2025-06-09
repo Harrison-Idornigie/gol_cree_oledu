@@ -152,7 +152,7 @@ export async function middleware(request: NextRequest) {
 
     // Protected routes that require email verification
     const requiresVerification = [
-      "/learn/*",
+      "/student/*",
     ];
 
     // Check if the current route requires email verification
@@ -168,6 +168,32 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(
         new URL("/verification-notice", request.url)
       );
+    }
+
+    // Protect super admin routes
+    if (request.nextUrl.pathname.startsWith("/super")) {
+      if (userRole !== UserRole.SUPER_ADMIN) {
+        console.log("[Middleware] Redirecting non-super-admin user from /super to /");
+        return NextResponse.redirect(new URL("/", request.url));
+      }
+      console.log(
+        "[Middleware] Allowing super admin access to:",
+        request.nextUrl.pathname
+      );
+      return NextResponse.next();
+    }
+
+    // Protect super admin routes
+    if (request.nextUrl.pathname.startsWith("/super")) {
+      if (userRole !== UserRole.SUPER_ADMIN) {
+        console.log("[Middleware] Redirecting non-super-admin user from /super to /");
+        return NextResponse.redirect(new URL("/", request.url));
+      }
+      console.log(
+        "[Middleware] Allowing super admin access to:",
+        request.nextUrl.pathname
+      );
+      return NextResponse.next();
     }
 
     // Protect admin routes
@@ -191,6 +217,7 @@ export async function middleware(request: NextRequest) {
       "/register",
       "/forgot-password",
       "/reset-password",
+      "/accept-invite",
     ];
 
     // Check if the current page is a public page
@@ -206,9 +233,11 @@ export async function middleware(request: NextRequest) {
     if (isPublicPage) {
       // Determine the appropriate dashboard based on user role
       const redirectTo =
-        userRole === UserRole.ADMIN || userRole === "admin"
+        userRole === UserRole.SUPER_ADMIN
+          ? "/super"
+          : userRole === UserRole.ADMIN || userRole === "admin"
           ? "/admin"
-          : "/learn";
+          : "/student";
 
       // Check if this is a post-login redirect (has a special query parameter)
       const isPostLoginRedirect =

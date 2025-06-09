@@ -19,7 +19,7 @@ import {
   getAvailableInterfaceLanguages,
   getUserSettings,
   updateInterfaceLanguage,
-} from "@/app/_actions/user/settings-actions";
+} from "@/app/_actions/tenants/student/settings-actions";
 
 export default function AccountPage() {
   const [activeTab, setActiveTab] = useState("general");
@@ -172,7 +172,7 @@ export default function AccountPage() {
                 <p className="text-muted-foreground">
                   To manage the languages you are learning, visit the{" "}
                   <a
-                    href="/learn/languages"
+                    href="/student/languages"
                     className="text-primary hover:underline"
                   >
                     Language Selection

@@ -63,7 +63,7 @@ export default function VerificationNoticePage() {
 
       <div className="text-center">
         <Link 
-          href="/learn" 
+          href="/student" 
           className="font-bold text-[var(--duo-blue)] hover:text-[var(--duo-blue-hover)]"
         >
           Return to Dashboard

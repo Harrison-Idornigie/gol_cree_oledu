@@ -2,7 +2,7 @@
 
 //Placed in another folder to avoid unitid and id error
 
-import { createLesson } from '@/app/_actions/admin/lesson-actions';
+import { createLesson } from '@/app/_actions/tenants/team/lesson-actions';
 import LessonForm from '@/components/admin/forms/LessonForm';
 
 interface NewLessonPageProps {

@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/toast";
-import { createUnit, updateUnit, UnitData } from "@/app/_actions/admin/unit-actions";
+import { createUnit, updateUnit, UnitData } from "@/app/_actions/tenants/team/unit-actions";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 

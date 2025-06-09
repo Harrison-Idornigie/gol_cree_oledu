@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { getUnit } from "@/app/_actions/user/unit-actions";
+import { getUnit } from "@/app/_actions/tenants/student/unit-actions";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 
 export default function UnitVocabularyRedirect({ 
@@ -21,14 +21,14 @@ export default function UnitVocabularyRedirect({
         
         if (unit && unit.learning_path_id) {
           // Redirect to the nested path
-          router.push(`/learn/paths/${unit.learning_path_id}/units/${unitId}/vocabulary`);
+          router.push(`/student/paths/${unit.learning_path_id}/units/${unitId}/vocabulary`);
         } else {
           // If we can't find the learning path, redirect to the learn page
-          router.push("/learn");
+          router.push("/student");
         }
       } catch (error) {
         console.error("Error redirecting:", error);
-        router.push("/learn");
+        router.push("/student");
       }
     }
 

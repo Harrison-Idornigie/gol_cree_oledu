@@ -9,7 +9,7 @@ import {
   getUserSettings,
   getAvailableInterfaceLanguages,
   updateInterfaceLanguage,
-} from "@/app/_actions/user/settings-actions";
+} from "@/app/_actions/tenants/student/settings-actions";
 import { toast } from "@/hooks/use-toast";
 
 // Mock the server actions

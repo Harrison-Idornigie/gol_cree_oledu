@@ -2,8 +2,8 @@
 
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { getLearningPath } from '@/app/_actions/admin/learning-path-actions';
-import { getUnits } from '@/app/_actions/admin/unit-actions';
+import { getLearningPath } from '@/app/_actions/tenants/team/learning-path-actions';
+import { getUnits } from '@/app/_actions/tenants/team/unit-actions';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 

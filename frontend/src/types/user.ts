@@ -123,11 +123,11 @@ export const getDefaultRedirectPath = (user: User | null): string => {
       return "/admin/team";
     case UserRole.STUDENT:
     case UserRole.USER:
-      return "/learn";
+      return "/student";
     case UserRole.ADMIN: // Legacy support
       return "/admin";
     default:
-      return "/learn";
+      return "/student";
   }
 };
 

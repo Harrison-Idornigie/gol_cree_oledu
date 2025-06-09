@@ -196,10 +196,10 @@ export default function ExerciseContainer({
             You scored {calculateScore()}% on these exercises.
           </p>
           <div className="space-y-4">
-            <Link href={`/learn/path/${pathId}/lesson/${lessonId}`}>
+            <Link href={`/student/path/${pathId}/lesson/${lessonId}`}>
               <Button className="w-full">Back to Lesson</Button>
             </Link>
-            <Link href={`/learn/path/${pathId}`}>
+            <Link href={`/student/path/${pathId}`}>
               <Button variant="outline" className="w-full">
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Back to Learning Path
@@ -219,7 +219,7 @@ export default function ExerciseContainer({
             Exercise {currentExerciseIndex + 1} of {exercises.length}
           </p>
         </div>
-        <Link href={`/learn/path/${pathId}/lesson/${lessonId}`}>
+        <Link href={`/student/path/${pathId}/lesson/${lessonId}`}>
           <Button variant="ghost" size="sm">
             Exit
           </Button>

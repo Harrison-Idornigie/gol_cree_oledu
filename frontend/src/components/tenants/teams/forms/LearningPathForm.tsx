@@ -5,7 +5,7 @@ import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { createLearningPath, updateLearningPath } from '@/app/_actions/admin/learning-path-actions';
+import { createLearningPath, updateLearningPath } from '@/app/_actions/tenants/team/learning-path-actions';
 
 interface LearningPathFormProps {
   initialData?: {

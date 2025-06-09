@@ -6,7 +6,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { CheckCircle, XCircle, AlertCircle, Volume2 } from "lucide-react";
-import { getWordsForExercise } from "@/app/_actions/user/word-actions";
+import { getWordsForExercise } from "@/app/_actions/tenants/student/word-actions";
 import ClickableText from "./ClickableText";
 
 import { WordData } from "@/types/vocabulary";

@@ -70,7 +70,7 @@ export async function updateInterfaceLanguage(languageCode: string) {
 
     // Revalidate relevant paths
     revalidatePath("/account");
-    revalidatePath("/learn");
+    revalidatePath("/student");
     revalidatePath("/profile");
 
     return {

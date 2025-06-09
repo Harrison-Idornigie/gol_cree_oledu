@@ -12,7 +12,7 @@ import {
   revokeInvite, 
   removeAdmin,
   resendInvite 
-} from '@/app/_actions/admin/user-management-actions';
+} from '@/app/_actions/tenants/team/user-management-actions';
 import { AdminInvite, User, UserRole } from '@/types/user';
 import { toast } from 'sonner';
 

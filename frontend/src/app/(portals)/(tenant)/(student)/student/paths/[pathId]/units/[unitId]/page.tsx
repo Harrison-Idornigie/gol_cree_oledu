@@ -8,7 +8,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Progress } from "@/components/ui/progress";
 import Link from "next/link";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
-import { getUnit, getUnitProgress } from "@/app/_actions/user/unit-actions";
+import { getUnit, getUnitProgress } from "@/app/_actions/tenants/student/unit-actions";
 import { useSequentialLearning } from "@/hooks/useSequentialLearning";
 import { LockedContent } from "@/components/ui/locked-content";
 
@@ -76,7 +76,7 @@ export default function UnitPage({
       <LockedContent
         title="Unit Locked"
         message={accessError || "You need to complete previous units before accessing this unit."}
-        redirectPath={`/learn/paths/${pathId}`}
+        redirectPath={`/student/paths/${pathId}`}
         redirectLabel="Back to Learning Path"
       />
     );
@@ -97,7 +97,7 @@ export default function UnitPage({
           <CardContent className="p-6 text-center">
             <p className="mb-4 text-red-500">{error || "Unit not found"}</p>
             <Button asChild>
-              <Link href={`/learn/paths/${pathId}`}>
+              <Link href={`/student/paths/${pathId}`}>
                 Back to Learning Path
               </Link>
             </Button>
@@ -113,7 +113,7 @@ export default function UnitPage({
     <div className="container px-4 py-6 md:px-6 md:py-8">
       <div className="mb-6">
         <Button variant="ghost" size="sm" className="mb-4" asChild>
-          <Link href={`/learn/paths/${pathId}`}>
+          <Link href={`/student/paths/${pathId}`}>
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Learning Path
           </Link>
@@ -186,7 +186,7 @@ export default function UnitPage({
                     disabled={!isLessonUnlocked}
                     asChild
                   >
-                    <Link href={`/learn/paths/${pathId}/units/${unitId}/lessons/${lesson.id}`}>
+                    <Link href={`/student/paths/${pathId}/units/${unitId}/lessons/${lesson.id}`}>
                       {isLessonCompleted ? "Review Lesson" : "Start Lesson"}
                     </Link>
                   </Button>
@@ -212,7 +212,7 @@ export default function UnitPage({
           </CardHeader>
           <CardFooter>
             <Button className="w-full" asChild>
-              <Link href={`/learn/paths/${pathId}/units/${unitId}/vocabulary`}>
+              <Link href={`/student/paths/${pathId}/units/${unitId}/vocabulary`}>
                 Practice Vocabulary
               </Link>
             </Button>
@@ -241,7 +241,7 @@ export default function UnitPage({
                     className="w-full" 
                     asChild
                   >
-                    <Link href={`/learn/paths/${pathId}/units/${unitId}/quizzes/${quiz.id}`}>
+                    <Link href={`/student/paths/${pathId}/units/${unitId}/quizzes/${quiz.id}`}>
                       Take Quiz
                     </Link>
                   </Button>

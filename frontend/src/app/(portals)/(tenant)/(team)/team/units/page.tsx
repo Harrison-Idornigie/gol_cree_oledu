@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useEffect, useState } from "react";
-import { getUnits, deleteUnit, toggleUnitStatus } from "@/app/_actions/admin/unit-actions";
+import { getUnits, deleteUnit, toggleUnitStatus } from "@/app/_actions/tenants/team/unit-actions";
 import { useRouter } from "next/navigation";
 import { AlertDialog } from "@/components/admin/AlertDialog";
 import Link from "next/link";

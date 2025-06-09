@@ -27,7 +27,7 @@ import {
   Volume2,
 } from "lucide-react";
 import Link from "next/link";
-import { getLanguageDashboard } from "@/app/_actions/user/language-actions";
+import { getLanguageDashboard } from "@/app/_actions/tenants/student/language-actions";
 import { toast } from "@/hooks/use-toast";
 
 interface LanguageDashboardProps {
@@ -84,7 +84,7 @@ export default function LanguageDashboard({
         <p className="mb-6 text-muted-foreground">
           We couldn't load the dashboard for this language.
         </p>
-        <Button onClick={() => router.push("/learn")}>
+        <Button onClick={() => router.push("/student")}>
           Return to Learning Dashboard
         </Button>
       </div>
@@ -104,7 +104,7 @@ export default function LanguageDashboard({
       <div className="mb-8">
         <div className="flex items-center gap-2 mb-2">
           <Link
-            href="/learn"
+            href="/student"
             className="text-muted-foreground hover:text-foreground"
           >
             Learning Dashboard
@@ -368,7 +368,7 @@ export default function LanguageDashboard({
                 Start learning to see your activities here.
               </p>
               <Button asChild>
-                <Link href={`/learn?language=${language.id}`}>
+                <Link href={`/student?language=${language.id}`}>
                   Start Learning
                 </Link>
               </Button>
@@ -426,10 +426,10 @@ export default function LanguageDashboard({
                       <Link
                         href={
                           recommendation.type === "learning_path"
-                            ? `/learn/paths/${recommendation.id}`
+                            ? `/student/paths/${recommendation.id}`
                             : recommendation.type === "lesson"
-                            ? `/learn/lessons/${recommendation.id}`
-                            : `/learn/quizzes/${recommendation.id}`
+                            ? `/student/lessons/${recommendation.id}`
+                            : `/student/quizzes/${recommendation.id}`
                         }
                       >
                         {recommendation.type === "learning_path"
@@ -453,7 +453,7 @@ export default function LanguageDashboard({
                 Complete more activities to get personalized recommendations.
               </p>
               <Button asChild>
-                <Link href={`/learn?language=${language.id}`}>
+                <Link href={`/student?language=${language.id}`}>
                   Browse Learning Paths
                 </Link>
               </Button>
@@ -509,7 +509,7 @@ export default function LanguageDashboard({
 
             <div className="mt-4 space-y-2">
               <Button variant="outline" className="w-full" asChild>
-                <Link href={`/learn/vocabulary?language=${language.id}`}>
+                <Link href={`/student/vocabulary?language=${language.id}`}>
                   Practice Vocabulary
                 </Link>
               </Button>
@@ -522,7 +522,7 @@ export default function LanguageDashboard({
                   asChild
                 >
                   <Link
-                    href={`/learn/vocabulary?language=${language.id}&type=mistakes`}
+                    href={`/student/vocabulary?language=${language.id}&type=mistakes`}
                   >
                     Practice Mistakes
                   </Link>
@@ -535,7 +535,7 @@ export default function LanguageDashboard({
                   asChild
                 >
                   <Link
-                    href={`/learn/vocabulary?language=${language.id}&type=all`}
+                    href={`/student/vocabulary?language=${language.id}&type=all`}
                   >
                     View All Words
                   </Link>

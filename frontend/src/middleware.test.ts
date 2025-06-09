@@ -100,13 +100,13 @@ describe("Middleware", () => {
   it("redirects unverified users from protected routes to verification notice", async () => {
     const request = {
       nextUrl: {
-        pathname: "/learn/lessons/1",
-        href: "http://localhost:3000/learn/lessons/1",
+        pathname: "/student/lessons/1",
+        href: "http://localhost:3000/student/lessons/1",
       },
       headers: {
         get: vi.fn().mockReturnValue("auth_token=123"),
       },
-      url: "http://localhost:3000/learn/lessons/1",
+      url: "http://localhost:3000/student/lessons/1",
     } as unknown as NextRequest;
 
     // Mock successful auth response for unverified user
@@ -133,13 +133,13 @@ describe("Middleware", () => {
   it("allows verified users to access protected routes", async () => {
     const request = {
       nextUrl: {
-        pathname: "/learn/lessons/1",
-        href: "http://localhost:3000/learn/lessons/1",
+        pathname: "/student/lessons/1",
+        href: "http://localhost:3000/student/lessons/1",
       },
       headers: {
         get: vi.fn().mockReturnValue("auth_token=123"),
       },
-      url: "http://localhost:3000/learn/lessons/1",
+      url: "http://localhost:3000/student/lessons/1",
     } as unknown as NextRequest;
 
     // Mock successful auth response for verified user

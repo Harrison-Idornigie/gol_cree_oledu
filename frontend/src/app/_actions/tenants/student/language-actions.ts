@@ -103,7 +103,7 @@ export async function selectLanguage(languageId: number) {
 
     // Revalidate relevant paths
     revalidatePath("/languages");
-    revalidatePath("/learn");
+    revalidatePath("/student");
     revalidatePath("/profile");
 
     return {
@@ -140,7 +140,7 @@ export async function unselectLanguage(languageId: number) {
 
     // Revalidate relevant paths
     revalidatePath("/languages");
-    revalidatePath("/learn");
+    revalidatePath("/student");
     revalidatePath("/profile");
 
     return {

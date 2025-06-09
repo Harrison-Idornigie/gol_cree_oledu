@@ -3,7 +3,7 @@
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { useState, useEffect } from 'react';
-import { getLearningPaths, toggleLearningPathStatus, deleteLearningPath } from '@/app/_actions/admin/learning-path-actions';
+import { getLearningPaths, toggleLearningPathStatus, deleteLearningPath } from '@/app/_actions/tenants/team/learning-path-actions';
 import Link from 'next/link';
 import { AlertDialog } from '@/components/admin/AlertDialog';
 import { useRouter } from 'next/navigation';

@@ -13,7 +13,7 @@ import {
   getVocabularyReviewItems,
   getUnitVocabulary,
   getMistakeVocabularyItems,
-} from "@/app/_actions/user/vocabulary-actions";
+} from "@/app/_actions/tenants/student/vocabulary-actions";
 import { VocabularyItem } from "@/types/vocabulary";
 
 export default function VocabularyReviewPage() {
@@ -71,7 +71,7 @@ export default function VocabularyReviewPage() {
         <Button variant="ghost" size="sm" className="mb-4" asChild>
           <Link
             href={
-              languageId ? `/learn/languages/${languageId}/dashboard` : "/learn"
+              languageId ? `/student/languages/${languageId}/dashboard` : "/student"
             }
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
@@ -128,7 +128,7 @@ export default function VocabularyReviewPage() {
                     "You haven't learned any vocabulary items yet."}
                 </p>
                 <Button asChild>
-                  <Link href="/learn">Explore Learning Paths</Link>
+                  <Link href="/student">Explore Learning Paths</Link>
                 </Button>
               </CardContent>
             </Card>

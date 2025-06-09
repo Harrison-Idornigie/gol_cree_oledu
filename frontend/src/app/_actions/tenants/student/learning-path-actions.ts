@@ -153,8 +153,8 @@ export async function enrollInLearningPath(pathId: number) {
     );
 
     // Revalidate the learning path page to reflect enrollment
-    revalidatePath(`/learn/path/${pathId}`);
-    revalidatePath("/learn");
+    revalidatePath(`/student/path/${pathId}`);
+    revalidatePath("/student");
 
     return {
       data: response.data.data,

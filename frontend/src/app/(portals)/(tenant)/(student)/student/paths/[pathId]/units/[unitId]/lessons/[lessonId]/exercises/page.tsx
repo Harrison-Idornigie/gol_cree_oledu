@@ -11,7 +11,7 @@ import ExerciseContainer from "@/components/tenants/students/ExerciseContainer";
 import {
   getExercisesForLesson,
   getWordsForExercises,
-} from "@/app/_actions/user/exercise-actions";
+} from "@/app/_actions/tenants/student/exercise-actions";
 import { Exercise } from "@/types/exercises";
 import { WordData } from "@/types/vocabulary";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
@@ -91,7 +91,7 @@ export default function ExercisePage() {
           accessError ||
           "You need to complete previous lessons before accessing this exercise."
         }
-        redirectPath={`/learn/path/${pathId}`}
+        redirectPath={`/student/path/${pathId}`}
         redirectLabel="Back to Learning Path"
       />
     );
@@ -111,7 +111,7 @@ export default function ExercisePage() {
     return (
       <div className="p-6 text-center">
         <p className="text-red-500">{error}</p>
-        <Link href={`/learn/path/${pathId}`}>
+        <Link href={`/student/path/${pathId}`}>
           <Button className="mt-4">Back to Learning Path</Button>
         </Link>
       </div>
@@ -131,7 +131,7 @@ export default function ExercisePage() {
     <div className="min-h-screen bg-background">
       <header className="sticky z-10 border-b top-[65px] bg-background">
         <div className="container flex items-center h-16 px-4 md:px-6">
-          <Link href={`/learn/path/${pathId}/lesson/${lessonId}`}>
+          <Link href={`/student/path/${pathId}/lesson/${lessonId}`}>
             <Button variant="ghost" size="icon" className="mr-2">
               <ArrowLeft className="w-5 h-5" />
               <span className="sr-only">Back to Lesson</span>
@@ -154,7 +154,7 @@ export default function ExercisePage() {
           ) : (
             <div className="p-6 text-center">
               <p>No exercises available for this lesson.</p>
-              <Link href={`/learn/path/${pathId}/lesson/${lessonId}`}>
+              <Link href={`/student/path/${pathId}/lesson/${lessonId}`}>
                 <Button className="mt-4">Back to Lesson</Button>
               </Link>
             </div>

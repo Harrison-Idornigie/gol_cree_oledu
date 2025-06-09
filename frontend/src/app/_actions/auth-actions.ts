@@ -68,7 +68,7 @@ export async function login(formData: FormData) {
 
     // Add redirect path based on user role
     const redirectPath =
-      response.data?.user?.role === "admin" ? "/admin" : "/learn";
+      response.data?.user?.role === "admin" ? "/admin" : "/student";
     return { success: true, redirect: redirectPath };
   } catch (error) {
     return { error: getErrorMessage(error) };
@@ -92,7 +92,7 @@ export async function register(formData: FormData) {
 
     // Add redirect path based on user role, similar to login function
     const redirectPath =
-      response.data?.user?.role === "admin" ? "/admin" : "/learn";
+      response.data?.user?.role === "admin" ? "/admin" : "/student";
     return { ...response.data, redirect: redirectPath };
   } catch (error) {
     return { error: getErrorMessage(error) };

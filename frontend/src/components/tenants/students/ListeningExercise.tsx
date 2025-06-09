@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { CheckCircle, XCircle, Volume2, Loader2 } from 'lucide-react';
 import { WordData } from '@/types/vocabulary';
-import { submitListeningTranscript } from '@/app/_actions/user/listening-actions';
+import { submitListeningTranscript } from '@/app/_actions/tenants/student/listening-actions';
 
 interface ListeningExerciseProps {
   exercise: {

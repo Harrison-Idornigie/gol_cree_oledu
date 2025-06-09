@@ -78,7 +78,7 @@ export default function UnitModal({
                 key={lesson.id}
                 onClick={() =>
                   !isLessonLocked(lesson) &&
-                  router.push(`/learn/path/${unit.id}/lesson/${lesson.id}`)
+                  router.push(`/student/path/${unit.id}/lesson/${lesson.id}`)
                 }
                 className={`w-full p-4 bg-white border rounded-lg transition-all flex items-center justify-between gap-4 ${
                   isLessonLocked(lesson)
@@ -134,7 +134,7 @@ export default function UnitModal({
             <span className="font-bold">Level {unit.level}</span>
           </div>
           <button
-            onClick={() => router.push(`/learn/practice/${unit.id}`)}
+            onClick={() => router.push(`/student/practice/${unit.id}`)}
             className="duo-button bg-[var(--duo-green)] text-white"
           >
             Practice Unit

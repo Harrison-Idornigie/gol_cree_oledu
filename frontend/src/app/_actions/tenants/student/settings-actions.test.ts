@@ -127,7 +127,7 @@ describe("settings-actions", () => {
         }
       );
       expect(revalidatePath).toHaveBeenCalledWith("/account");
-      expect(revalidatePath).toHaveBeenCalledWith("/learn");
+      expect(revalidatePath).toHaveBeenCalledWith("/student");
       expect(revalidatePath).toHaveBeenCalledWith("/profile");
       expect(result).toEqual({
         success: true,

@@ -243,7 +243,7 @@ export default function LearnPathOverview() {
   // Get the path data or redirect if not found
   const path = pathData[pathId];
   if (!path) {
-    router.push("/learn");
+    router.push("/student");
     return null;
   }
 
@@ -252,7 +252,7 @@ export default function LearnPathOverview() {
       <header className="sticky z-10 bg-green-400 border-b top-[65px]">
         <div className="container flex items-center justify-between h-16 px-4 md:px-6">
           <div className="flex items-center gap-2">
-            <Link href="/learn">
+            <Link href="/student">
               <Button variant="ghost" size="icon" className="mr-2">
                 <ArrowLeft className="w-5 h-5" />
                 <span className="sr-only">Back to Dashboard</span>
@@ -308,7 +308,7 @@ export default function LearnPathOverview() {
                       return (
                         <Link
                           key={lesson.id}
-                          href={`/learn/path/${pathId}/lesson/${lesson.id}`}
+                          href={`/student/path/${pathId}/lesson/${lesson.id}`}
                           className={`flex items-center justify-between rounded-md border p-3 transition-colors ${
                             lesson.completed
                               ? "bg-muted/30"

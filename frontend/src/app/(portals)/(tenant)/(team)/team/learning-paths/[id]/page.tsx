@@ -1,7 +1,7 @@
 'use client';
 
 import LearningPathForm from '@/components/admin/forms/LearningPathForm';
-import { getLearningPath } from '@/app/_actions/admin/learning-path-actions';
+import { getLearningPath } from '@/app/_actions/tenants/team/learning-path-actions';
 import { useEffect, useState } from 'react';
 
 interface LearningPath {

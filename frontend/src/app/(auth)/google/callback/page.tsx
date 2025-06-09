@@ -53,7 +53,7 @@ export default function GoogleCallbackPage() {
 
           // Determine redirect based on user role
           const redirectPath =
-            response.data.user.role === "admin" ? "/admin" : "/learn";
+            response.data.user.role === "admin" ? "/admin" : "/student";
 
           // Use router for navigation to maintain Next.js routing
           // Add post_login parameter to indicate this is a post-login redirect

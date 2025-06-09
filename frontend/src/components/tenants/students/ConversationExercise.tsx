@@ -13,7 +13,7 @@ import {
   submitConversationAnswer,
   trackConversationProgress,
   getConversationProgress,
-} from "@/app/_actions/user/conversation-actions";
+} from "@/app/_actions/tenants/student/conversation-actions";
 
 interface ConversationStep {
   type: "dialogue" | "question" | "choice";

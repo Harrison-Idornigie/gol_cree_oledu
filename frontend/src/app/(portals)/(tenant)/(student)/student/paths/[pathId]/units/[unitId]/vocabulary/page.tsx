@@ -12,9 +12,9 @@ import {
   getVocabularyReviewItems,
   getUnitVocabulary,
   getMistakeVocabularyItems,
-} from "@/app/_actions/user/vocabulary-actions";
+} from "@/app/_actions/tenants/student/vocabulary-actions";
 import { VocabularyItem } from "@/types/vocabulary";
-import { getUnit } from "@/app/_actions/user/unit-actions";
+import { getUnit } from "@/app/_actions/tenants/student/unit-actions";
 
 export default function UnitVocabularyReviewPage({
   params,
@@ -84,7 +84,7 @@ export default function UnitVocabularyReviewPage({
     <div className="container px-4 py-6 md:px-6 md:py-8">
       <div className="mb-6">
         <Button variant="ghost" size="sm" className="mb-4" asChild>
-          <Link href={`/learn/paths/${pathId}/units/${unitId}`}>
+          <Link href={`/student/paths/${pathId}/units/${unitId}`}>
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Unit
           </Link>
@@ -138,7 +138,7 @@ export default function UnitVocabularyReviewPage({
                     "You haven't made any mistakes with vocabulary in this unit yet."}
                 </p>
                 <Button asChild>
-                  <Link href={`/learn/paths/${pathId}/units/${unitId}`}>
+                  <Link href={`/student/paths/${pathId}/units/${unitId}`}>
                     Return to Unit
                   </Link>
                 </Button>

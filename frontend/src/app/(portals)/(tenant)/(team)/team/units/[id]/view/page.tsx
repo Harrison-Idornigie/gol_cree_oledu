@@ -2,13 +2,13 @@
 
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { getUnit } from '@/app/_actions/admin/unit-actions';
-import { getLessons } from '@/app/_actions/admin/lesson-actions';
+import { getUnit } from '@/app/_actions/tenants/team/unit-actions';
+import { getLessons } from '@/app/_actions/tenants/team/lesson-actions';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { AlertDialog } from '@/components/admin/AlertDialog';
 import { useRouter } from 'next/navigation';
-import { deleteUnit } from '@/app/_actions/admin/unit-actions';
+import { deleteUnit } from '@/app/_actions/tenants/team/unit-actions';
 
 interface Unit {
   id: number;

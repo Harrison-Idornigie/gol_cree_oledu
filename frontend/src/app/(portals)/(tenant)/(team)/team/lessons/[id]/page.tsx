@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { getLesson, updateLesson } from '@/app/_actions/admin/lesson-actions';
+import { getLesson, updateLesson } from '@/app/_actions/tenants/team/lesson-actions';
 import LessonForm from '@/components/admin/forms/LessonForm';
 import { LessonFormData } from '@/types/lesson';
 

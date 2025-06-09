@@ -153,7 +153,7 @@ export default function LessonPage() {
           error ||
           "You need to complete previous lessons before accessing this one."
         }
-        redirectPath={`/learn/path/${pathId}`}
+        redirectPath={`/student/path/${pathId}`}
         redirectLabel="Back to Learning Path"
       />
     );
@@ -178,7 +178,7 @@ export default function LessonPage() {
       <header className="sticky z-10 border-b top-[65px] bg-background">
         <div className="container flex items-center justify-between h-16 px-4 md:px-6">
           <div className="flex items-center gap-2">
-            <Link href={`/learn/path/${lesson.levelId}`}>
+            <Link href={`/student/path/${lesson.levelId}`}>
               <Button variant="ghost" size="icon" className="mr-2">
                 <ArrowLeft className="w-5 h-5" />
                 <span className="sr-only">Back to Level</span>
@@ -298,7 +298,7 @@ export default function LessonPage() {
                 </Button>
 
                 {currentPage === lesson.content.sections.length ? (
-                  <Link href={`/learn/path/${lesson.levelId}`}>
+                  <Link href={`/student/path/${lesson.levelId}`}>
                     <Button>
                       Complete Lesson
                       <Check className="w-4 h-4 ml-2" />

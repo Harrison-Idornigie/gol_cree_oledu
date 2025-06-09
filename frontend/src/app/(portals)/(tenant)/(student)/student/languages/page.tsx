@@ -29,7 +29,7 @@ import {
   getSelectedLanguages,
   selectLanguage,
   unselectLanguage,
-} from "@/app/_actions/user/language-actions";
+} from "@/app/_actions/tenants/student/language-actions";
 
 export default function LanguagesPage() {
   const [languages, setLanguages] = useState<Language[]>([]);
@@ -304,7 +304,7 @@ export default function LanguagesPage() {
                   </CardContent>
                   <CardFooter className="flex justify-between">
                     <Button variant="outline" size="sm" asChild>
-                      <a href={`/learn?language=${language.id}`}>
+                      <a href={`/student?language=${language.id}`}>
                         <BookOpen className="w-4 h-4 mr-2" />
                         Start Learning
                       </a>

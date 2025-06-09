@@ -54,8 +54,8 @@ export async function trackConversationProgress(
     });
 
     // Revalidate paths that might show progress
-    revalidatePath('/learn');
-    revalidatePath('/learn/paths');
+    revalidatePath('/student');
+    revalidatePath('/student/paths');
 
     return {
       success: true,
