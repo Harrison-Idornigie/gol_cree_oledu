@@ -11,7 +11,7 @@ import {
   ChevronRight,
   Volume2,
 } from "lucide-react";
- import MultipleChoiceExercise from "@/components/learn/MultipleChoiceExercise";
+ import MultipleChoiceExercise from "@/components/tenants/students/MultipleChoiceExercise";
 import { useSequentialLearning } from "@/hooks/useSequentialLearning";
 import { LockedContent } from "@/components/ui/locked-content";
 

@@ -14,6 +14,7 @@ import {
 
 interface AdminTopbarProps {
   onSidebarToggle?: () => void;
+  portalType?: 'super-admin' | 'tenant-admin' | 'team' | 'default';
 }
 
 export default function AdminTopbar({ onSidebarToggle }: AdminTopbarProps) {

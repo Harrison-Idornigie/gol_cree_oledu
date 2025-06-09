@@ -7,7 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Link from "next/link";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
-import VocabularyReview from "@/components/learn/VocabularyReview";
+import VocabularyReview from "@/components/tenants/students/VocabularyReview";
 import {
   getVocabularyReviewItems,
   getUnitVocabulary,

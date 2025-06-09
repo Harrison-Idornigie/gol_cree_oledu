@@ -1,20 +1,20 @@
 'use client';
 
 import { useState } from 'react';
-import TenantAdminSidebar from '@/components/admin/TenantAdminSidebar';
-import AdminTopbar from '@/components/admin/AdminTopbar';
+import SuperAdminSidebar from '@/components/super/SuperAdminSidebar';
+import AdminTopbar from '@/components/tenants/admin/AdminTopbar';
 
-interface TenantAdminLayoutProps {
+interface SuperAdminLayoutProps {
   children: React.ReactNode;
 }
 
-export default function TenantAdminLayout({ children }: TenantAdminLayoutProps) {
+export default function SuperAdminLayout({ children }: SuperAdminLayoutProps) {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
   return (
     <div className="min-h-screen">
       <div className="fixed inset-y-0 z-50 hidden h-full w-72 flex-col md:flex">
-        <TenantAdminSidebar />
+        <SuperAdminSidebar />
       </div>
       <div
         className={`fixed top-0 z-50 w-full flex-col md:pl-72 ${
@@ -23,7 +23,7 @@ export default function TenantAdminLayout({ children }: TenantAdminLayoutProps) 
       >
         <AdminTopbar 
           onToggleSidebar={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
-          portalType="tenant-admin"
+          portalType="super-admin"
         />
       </div>
       <div

@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useSequentialLearning } from "@/hooks/useSequentialLearning";
 import { LockedContent } from "@/components/ui/locked-content";
-import ExerciseContainer from "@/components/learn/ExerciseContainer";
+import ExerciseContainer from "@/components/tenants/students/ExerciseContainer";
 import {
   getExercisesForLesson,
   getWordsForExercises,
