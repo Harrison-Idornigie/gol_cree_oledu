@@ -1,5 +1,10 @@
 import { type NextRequest } from "next/server";
 import { NextResponse } from "next/server";
+import {
+  extractTenantFromPath,
+  isTenantPath,
+  isCentralPath
+} from "@/types/tenant/user";
 
 // Function to extract auth token from cookie string
 function extractAuthToken(cookieHeader: string | null): string | null {
@@ -24,11 +29,13 @@ function hasValidToken(cookieHeader: string | null): boolean {
 }
 
 export async function middleware(request: NextRequest) {
+  const pathname = request.nextUrl.pathname;
+
   // Skip middleware for API routes and static files
   if (
-    request.nextUrl.pathname.startsWith("/api") ||
-    request.nextUrl.pathname.startsWith("/_next") ||
-    request.nextUrl.pathname.includes(".")
+    pathname.startsWith("/api") ||
+    pathname.startsWith("/_next") ||
+    pathname.includes(".")
   ) {
     return NextResponse.next();
   }
@@ -36,47 +43,76 @@ export async function middleware(request: NextRequest) {
   // Check if user has a valid token (simple check, no API call)
   const isAuthenticated = hasValidToken(request.headers.get("cookie"));
 
-  // Define protected routes that require authentication
-  const protectedRoutes = ["/admin", "/super", "/student", "/team"];
-  const isProtectedRoute = protectedRoutes.some((route) =>
-    request.nextUrl.pathname.startsWith(route)
-  );
+  // Extract tenant context from path
+  const { tenantSlug, role } = extractTenantFromPath(pathname);
+  const isValidTenantPath = isTenantPath(pathname);
+  const isCentralRoute = isCentralPath(pathname);
 
-  // If not authenticated and trying to access protected routes
-  if (!isAuthenticated && isProtectedRoute) {
+  // Handle tenant-specific paths: /{tenant-slug}/{role}/*
+  if (isValidTenantPath) {
+    // Require authentication for all tenant paths
+    if (!isAuthenticated) {
+      return NextResponse.redirect(new URL("/login", request.url));
+    }
+
+    // TODO: Add tenant validation and user role checking here
+    // For now, allow access to valid tenant paths
+    return NextResponse.next();
+  }
+
+  // Handle central/landlord routes
+  if (isCentralRoute) {
+    // Super admin routes require authentication
+    if (pathname.startsWith("/super")) {
+      if (!isAuthenticated) {
+        return NextResponse.redirect(new URL("/login", request.url));
+      }
+      // TODO: Add super admin role validation
+      return NextResponse.next();
+    }
+
+    // Public auth routes (login, register, etc.)
+    const publicAuthRoutes = ["/login", "/register", "/forgot-password", "/reset-password"];
+    const isPublicAuthRoute = publicAuthRoutes.some(route =>
+      pathname === route || pathname.startsWith(`${route}/`)
+    );
+
+    if (isPublicAuthRoute) {
+      // Redirect authenticated users away from auth pages
+      if (isAuthenticated) {
+        // TODO: Redirect to appropriate tenant dashboard based on user context
+        return NextResponse.redirect(new URL("/login", request.url));
+      }
+      return NextResponse.next();
+    }
+
+    return NextResponse.next();
+  }
+
+  // Handle root path and other unmatched paths
+  if (pathname === "/") {
+    if (isAuthenticated) {
+      // TODO: Redirect to user's appropriate tenant dashboard
+      // For now, redirect to login to handle role-based routing
+      return NextResponse.redirect(new URL("/login", request.url));
+    }
+    // Redirect unauthenticated users to login
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
-  // Define public pages that authenticated users should be redirected from
-  const publicPages = [
-    "/",
-    "/login",
-    "/register",
-    "/forgot-password",
-    "/reset-password",
-  ];
-  const isPublicPage = publicPages.some(
-    (page) =>
-      request.nextUrl.pathname === page ||
-      request.nextUrl.pathname.startsWith(`${page}/`)
+  // Handle legacy routes that don't follow tenant path structure
+  const legacyProtectedRoutes = ["/admin", "/team", "/student"];
+  const isLegacyProtectedRoute = legacyProtectedRoutes.some(route =>
+    pathname.startsWith(route)
   );
 
-  // If authenticated user is trying to access a public page, redirect to dashboard
-  // Note: Role-based routing will be handled by the actual pages/components
-  if (isAuthenticated && isPublicPage) {
-    // Check if this is a post-login redirect
-    const isPostLoginRedirect = request.nextUrl.searchParams.has("post_login");
-
-    if (!isPostLoginRedirect) {
-      // Default redirect to login page for authenticated users
-      // Note: Proper role-based routing is handled by the login action
+  if (isLegacyProtectedRoute) {
+    if (!isAuthenticated) {
       return NextResponse.redirect(new URL("/login", request.url));
-    } else {
-      // Remove the post_login parameter
-      const url = new URL(request.url);
-      url.searchParams.delete("post_login");
-      return NextResponse.redirect(url);
     }
+    // TODO: Redirect to proper tenant-based path
+    // For now, allow access to maintain backward compatibility
+    return NextResponse.next();
   }
 
   return NextResponse.next();

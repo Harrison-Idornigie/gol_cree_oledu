@@ -248,6 +248,119 @@ class GoogleController extends BaseAPIController
     }
 
     /**
+     * Handle tenant-specific Google OAuth callback
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function handleTenantGoogleCallback(Request $request): JsonResponse
+    {
+        try {
+            $validated = $request->validate([
+                'code' => 'required|string',
+                'state' => 'nullable|string',
+                'tenant_slug' => 'nullable|string|exists:tenants,slug',
+            ]);
+
+            $googleUser = Socialite::driver('google')
+                ->stateless()
+                ->user();
+
+            // Validate Google user data
+            if (empty($googleUser->getId()) || empty($googleUser->getEmail())) {
+                return $this->sendError('Invalid user data from Google', [], 400);
+            }
+
+            // If tenant_slug is provided, validate user belongs to that tenant
+            if (!empty($validated['tenant_slug'])) {
+                $tenant = \App\Models\Landlord\Tenant::where('slug', $validated['tenant_slug'])->first();
+                if (!$tenant) {
+                    return $this->sendError('Organization not found', [], 404);
+                }
+
+                // Switch to tenant context to check user
+                tenancy()->initialize($tenant);
+
+                $user = \App\Models\User::where('email', $googleUser->getEmail())->first();
+
+                if (!$user) {
+                    return $this->sendError('No account found for this email in the specified organization', [], 404);
+                }
+
+                if (!$user->is_active) {
+                    return $this->sendError('Your account is not authorized to access this organization', [], 403);
+                }
+            } else {
+                // Find user in any tenant (for backward compatibility)
+                $user = $this->findUserInAnyTenant($googleUser->getEmail());
+
+                if (!$user) {
+                    return $this->sendError('No account found for this email', [], 404);
+                }
+            }
+
+            // Update user's Google ID if not set
+            if (empty($user->google_id)) {
+                $user->update(['google_id' => $googleUser->getId()]);
+            }
+
+            // Generate auth token
+            $token = $user->createToken('auth-token')->plainTextToken;
+
+            // Get tenant information
+            $tenant = tenant();
+
+            return $this->sendResponse([
+                'token' => $token,
+                'user' => [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'role' => $user->role,
+                    'email_verified_at' => $user->email_verified_at,
+                    'tenant_id' => $tenant->id,
+                    'tenant' => [
+                        'id' => $tenant->id,
+                        'name' => $tenant->name,
+                        'slug' => $tenant->slug,
+                        'status' => $tenant->status ?? 'active',
+                    ]
+                ],
+            ], 'Authentication successful');
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return $this->sendError('Validation error', $e->errors(), 422);
+        } catch (Exception $e) {
+            Log::error('Tenant Google OAuth error: ' . $e->getMessage(), [
+                'trace' => $e->getTraceAsString(),
+            ]);
+            return $this->sendError('Authentication failed', [], 500);
+        }
+    }
+
+    /**
+     * Find user in any tenant by email
+     *
+     * @param string $email
+     * @return \App\Models\User|null
+     */
+    protected function findUserInAnyTenant(string $email): ?\App\Models\User
+    {
+        $tenants = \App\Models\Landlord\Tenant::where('status', 'active')->get();
+
+        foreach ($tenants as $tenant) {
+            tenancy()->initialize($tenant);
+
+            $user = \App\Models\User::where('email', $email)->first();
+            if ($user && $user->is_active) {
+                return $user;
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * Set code verifier for PKCE on Google provider
      * Note: This is a workaround since Laravel Socialite doesn't directly support PKCE
      *

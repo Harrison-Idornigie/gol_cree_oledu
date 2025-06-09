@@ -163,7 +163,7 @@ export default function RegisterPage() {
         </div>
       </form>
 
-      <div className="text-center">
+      <div className="text-center space-y-2">
         <p className="text-sm text-gray-600">
           Already have an account?{" "}
           <Link
@@ -171,6 +171,15 @@ export default function RegisterPage() {
             className="font-bold text-[var(--duo-blue)] hover:text-[var(--duo-blue-hover)]"
           >
             Sign in
+          </Link>
+        </p>
+        <p className="text-sm text-gray-600">
+          Want to create an organization?{" "}
+          <Link
+            href="/register-org"
+            className="font-bold text-[var(--duo-blue)] hover:text-[var(--duo-blue-hover)]"
+          >
+            Organization Setup
           </Link>
         </p>
       </div>

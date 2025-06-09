@@ -6,6 +6,7 @@ use App\Http\Controllers\API\Auth\LoginController;
 use App\Http\Controllers\API\Auth\LogoutController;
 use App\Http\Controllers\API\Auth\RegisterController;
 use App\Http\Controllers\API\Auth\ResetPasswordController;
+use App\Http\Controllers\API\Auth\TenantRegistrationController;
 use App\Http\Controllers\API\Auth\VerificationController;
 use Illuminate\Support\Facades\Route;
 
@@ -43,7 +44,12 @@ Route::group([
     Route::get('google/callback', [GoogleController::class, 'handleGoogleCallback'])->name('google.callback');
     Route::get('google/url', [GoogleController::class, 'getAuthUrl']);
     Route::post('google/callback', [GoogleController::class, 'handleGoogleCallback'])->name('google.callback.post');
+    Route::post('google/tenant-callback', [GoogleController::class, 'handleTenantGoogleCallback'])->name('google.tenant.callback');
 
     // Token exchange endpoint for mobile apps and other clients
     Route::post('google/token', [GoogleController::class, 'exchangeToken'])->name('google.token.exchange');
+
+    // Tenant registration routes
+    Route::post('register-tenant-admin', [TenantRegistrationController::class, 'registerTenantAdmin']);
+    Route::get('validate-tenant-slug/{slug}', [TenantRegistrationController::class, 'validateSlug']);
 });

@@ -1,28 +1,56 @@
-import { createContext, useContext, useEffect, useState } from 'react';
-import { UserType } from '@/types/tenant/user';
+'use client';
 
-interface User {
-  id: number;
-  name: string;
-  email: string;
-  role: UserType;
-}
+import { createContext, useContext, useEffect, useState } from 'react';
+import { UserType, User, TenantInfo, extractTenantFromPath } from '@/types/tenant/user';
 
 interface AuthContextType {
   user: User | null;
   setUser: (user: User | null) => void;
   isLoading: boolean;
+  currentTenant: TenantInfo | null;
+  currentRole: string | null;
+  isValidTenantPath: boolean;
 }
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
   setUser: () => {},
   isLoading: true,
+  currentTenant: null,
+  currentRole: null,
+  isValidTenantPath: false,
 });
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [currentTenant, setCurrentTenant] = useState<TenantInfo | null>(null);
+  const [currentRole, setCurrentRole] = useState<string | null>(null);
+  const [isValidTenantPath, setIsValidTenantPath] = useState(false);
+
+  // Update tenant context when URL changes
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const { tenantSlug, role } = extractTenantFromPath(window.location.pathname);
+      setCurrentRole(role);
+      setIsValidTenantPath(!!(tenantSlug && role));
+
+      // Set current tenant from user data or URL
+      if (user?.tenant) {
+        setCurrentTenant(user.tenant);
+      } else if (tenantSlug) {
+        // If we have a tenant slug but no user tenant data, create minimal tenant info
+        setCurrentTenant({
+          id: '',
+          name: '',
+          slug: tenantSlug,
+          status: 'active'
+        });
+      } else {
+        setCurrentTenant(null);
+      }
+    }
+  }, [user]);
 
   useEffect(() => {
     const initializeAuth = () => {
@@ -47,7 +75,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, setUser, isLoading }}>
+    <AuthContext.Provider value={{
+      user,
+      setUser,
+      isLoading,
+      currentTenant,
+      currentRole,
+      isValidTenantPath
+    }}>
       {children}
     </AuthContext.Provider>
   );

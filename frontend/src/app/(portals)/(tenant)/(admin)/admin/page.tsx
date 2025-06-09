@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Users, BookOpen, TrendingUp, Settings, Plus } from 'lucide-react';
 import Link from 'next/link';
+import { useTenant, useTenantUrl } from '@/app/providers/tenant-provider';
 
 interface AdminStats {
   totalUsers: number;
@@ -26,6 +27,9 @@ export default function TenantAdminDashboard() {
   });
   const [loading, setLoading] = useState(true);
 
+  const { currentTenant, isLoading: tenantLoading } = useTenant();
+  const buildTenantUrl = useTenantUrl();
+
   useEffect(() => {
     // TODO: Fetch admin stats from API
     // For now, using mock data
@@ -42,7 +46,7 @@ export default function TenantAdminDashboard() {
     }, 1000);
   }, []);
 
-  if (loading) {
+  if (loading || tenantLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-lg">Loading dashboard...</div>
@@ -55,20 +59,22 @@ export default function TenantAdminDashboard() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Tenant Admin Dashboard</h1>
+          <h1 className="text-3xl font-bold tracking-tight">
+            {currentTenant?.name || 'Organization'} Dashboard
+          </h1>
           <p className="text-muted-foreground">
             Manage your organization's language learning platform
           </p>
         </div>
         <div className="flex gap-2">
           <Button asChild>
-            <Link href="/admin/users/invite">
+            <Link href={buildTenantUrl('admin', '/users/invite')}>
               <Plus className="mr-2 h-4 w-4" />
               Invite Users
             </Link>
           </Button>
           <Button variant="outline" asChild>
-            <Link href="/admin/settings">
+            <Link href={buildTenantUrl('admin', '/settings')}>
               <Settings className="mr-2 h-4 w-4" />
               Settings
             </Link>
@@ -142,10 +148,10 @@ export default function TenantAdminDashboard() {
           </CardHeader>
           <CardContent className="space-y-2">
             <Button asChild className="w-full">
-              <Link href="/admin/users">View All Users</Link>
+              <Link href={buildTenantUrl('admin', '/users')}>View All Users</Link>
             </Button>
             <Button variant="outline" asChild className="w-full">
-              <Link href="/admin/users/invite">Invite New Users</Link>
+              <Link href={buildTenantUrl('admin', '/users/invite')}>Invite New Users</Link>
             </Button>
           </CardContent>
         </Card>
@@ -159,10 +165,10 @@ export default function TenantAdminDashboard() {
           </CardHeader>
           <CardContent className="space-y-2">
             <Button asChild className="w-full">
-              <Link href="/admin/content">Manage Content</Link>
+              <Link href={buildTenantUrl('admin', '/content')}>Manage Content</Link>
             </Button>
             <Button variant="outline" asChild className="w-full">
-              <Link href="/admin/content/create">Create New Content</Link>
+              <Link href={buildTenantUrl('admin', '/content/create')}>Create New Content</Link>
             </Button>
           </CardContent>
         </Card>
@@ -176,10 +182,10 @@ export default function TenantAdminDashboard() {
           </CardHeader>
           <CardContent className="space-y-2">
             <Button asChild className="w-full">
-              <Link href="/admin/analytics">View Analytics</Link>
+              <Link href={buildTenantUrl('admin', '/analytics')}>View Analytics</Link>
             </Button>
             <Button variant="outline" asChild className="w-full">
-              <Link href="/admin/reports">Generate Reports</Link>
+              <Link href={buildTenantUrl('admin', '/reports')}>Generate Reports</Link>
             </Button>
           </CardContent>
         </Card>

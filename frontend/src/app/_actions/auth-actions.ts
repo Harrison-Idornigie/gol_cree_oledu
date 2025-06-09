@@ -20,8 +20,25 @@ interface AuthResponse {
     points?: number;
     created_at?: string;
     updated_at?: string;
+    tenant_id?: string;
+    tenant?: {
+      id: string;
+      name: string;
+      slug: string;
+      status: string;
+    };
   };
   token?: string;
+}
+
+interface TenantRegistrationData {
+  organizationName: string;
+  organizationSlug?: string;
+  organizationDescription?: string;
+  adminName: string;
+  adminEmail: string;
+  password: string;
+  passwordConfirmation: string;
 }
 
 interface GoogleUrlResponse {
@@ -204,5 +221,111 @@ export async function getGoogleAuthUrl(): Promise<string> {
     return response.data.url;
   } catch (error) {
     throw new Error(getErrorMessage(error));
+  }
+}
+
+// Tenant-specific auth actions
+export async function registerTenantAdmin(data: TenantRegistrationData) {
+  try {
+    // Generate slug if not provided
+    const tenantSlug = data.organizationSlug ||
+      data.organizationName
+        .toLowerCase()
+        .replace(/[^a-z0-9\s-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .replace(/^-|-$/g, '')
+        .substring(0, 50);
+
+    const response = await axiosInstance.post<AuthResponse>("/auth/register-tenant-admin", {
+      tenant: {
+        name: data.organizationName,
+        slug: tenantSlug,
+        description: data.organizationDescription || '',
+      },
+      admin: {
+        name: data.adminName,
+        email: data.adminEmail,
+        password: data.password,
+        password_confirmation: data.passwordConfirmation,
+      }
+    });
+
+    if (response.data?.token) {
+      await setCookie(response.data.token);
+    }
+
+    revalidatePath("/register", "page");
+
+    // Build tenant-specific redirect path
+    const redirectPath = response.data?.user?.tenant?.slug
+      ? `/${response.data.user.tenant.slug}/admin`
+      : "/admin";
+
+    return {
+      success: true,
+      redirect: redirectPath,
+      data: response.data
+    };
+  } catch (error) {
+    return { error: getErrorMessage(error) };
+  }
+}
+
+export async function handleTenantGoogleCallback(code: string, state?: string, tenantSlug?: string) {
+  try {
+    const response = await axiosInstance.post<AuthResponse>(
+      "/auth/google/tenant-callback",
+      { code, state, tenant_slug: tenantSlug }
+    );
+
+    if (response.data?.token) {
+      await setCookie(response.data.token);
+    }
+
+    revalidatePath("/", "layout");
+
+    // Build tenant-specific redirect path
+    if (response.data?.user?.tenant?.slug) {
+      const userTenantSlug = response.data.user.tenant.slug;
+      const userRole = response.data.user.role;
+
+      let redirectPath = `/${userTenantSlug}/student`; // Default
+
+      switch (userRole) {
+        case UserType.TENANT_ADMIN:
+          redirectPath = `/${userTenantSlug}/admin`;
+          break;
+        case UserType.TEAM:
+          redirectPath = `/${userTenantSlug}/team`;
+          break;
+        case UserType.STUDENT:
+        case UserType.USER:
+          redirectPath = `/${userTenantSlug}/student`;
+          break;
+      }
+
+      return { ...response.data, redirect: redirectPath };
+    }
+
+    return response.data;
+  } catch (error) {
+    throw new Error(getErrorMessage(error));
+  }
+}
+
+// Tenant slug validation
+export async function validateTenantSlug(slug: string) {
+  try {
+    const response = await axiosInstance.get<{available: boolean; error?: string}>(`/auth/validate-tenant-slug/${slug}`);
+    return {
+      available: response.data.available || false,
+      error: response.data.error || null
+    };
+  } catch {
+    return {
+      available: false,
+      error: "Unable to validate slug availability"
+    };
   }
 }
