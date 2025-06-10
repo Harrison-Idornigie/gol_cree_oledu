@@ -1,0 +1,77 @@
+import { FullConfig } from '@playwright/test';
+import { execSync } from 'child_process';
+import { DatabaseHelper } from './database-helpers';
+
+/**
+ * Global setup for E2E tests
+ * 
+ * This runs once before all tests and prepares the testing environment:
+ * - Sets up test database
+ * - Runs migrations
+ * - Creates necessary test data
+ * - Ensures backend is ready
+ */
+async function globalSetup(config: FullConfig) {
+  console.log('🚀 Starting E2E test environment setup...');
+
+  try {
+    // 1. Setup backend test environment
+    console.log('📦 Setting up backend test environment...');
+    
+    // Copy test environment file
+    execSync('cd ../backend && cp .env.example .env.testing', { stdio: 'inherit' });
+    
+    // Set test-specific environment variables
+    execSync('cd ../backend && php artisan config:clear --env=testing', { stdio: 'inherit' });
+    
+    // Run migrations for central database
+    console.log('🗄️  Running central database migrations...');
+    execSync('cd ../backend && php artisan migrate:fresh --env=testing --force', { stdio: 'inherit' });
+    
+    // Seed basic data if needed
+    console.log('🌱 Seeding basic test data...');
+    execSync('cd ../backend && php artisan db:seed --class=RoleSeeder --env=testing --force', { stdio: 'inherit' });
+
+    // 2. Initialize database helper
+    const dbHelper = new DatabaseHelper();
+    await dbHelper.initialize();
+
+    // 3. Verify backend is accessible
+    console.log('🔍 Verifying backend accessibility...');
+    const backendUrl = process.env.BACKEND_URL || 'http://localhost:8000';
+    
+    try {
+      const response = await fetch(`${backendUrl}/up`);
+      if (!response.ok) {
+        throw new Error(`Backend health check failed: ${response.status}`);
+      }
+      console.log('✅ Backend is accessible');
+    } catch (error) {
+      console.warn('⚠️  Backend health check failed, but continuing with tests');
+      console.warn('   Make sure Laravel server is running: php artisan serve');
+    }
+
+    // 4. Verify frontend is accessible
+    console.log('🔍 Verifying frontend accessibility...');
+    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
+    
+    try {
+      const response = await fetch(frontendUrl);
+      if (!response.ok) {
+        throw new Error(`Frontend health check failed: ${response.status}`);
+      }
+      console.log('✅ Frontend is accessible');
+    } catch (error) {
+      console.warn('⚠️  Frontend health check failed, but continuing with tests');
+      console.warn('   Make sure Next.js server is running: npm run dev');
+    }
+
+    console.log('✅ E2E test environment setup completed successfully!');
+
+  } catch (error) {
+    console.error('❌ Failed to setup E2E test environment:', error);
+    throw error;
+  }
+}
+
+export default globalSetup;
