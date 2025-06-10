@@ -61,7 +61,7 @@ export class DatabaseHelper {
    */
   async tenantExists(slug: string): Promise<boolean> {
     try {
-      const result = this.executeArtisan(`tinker --execute="echo App\\Models\\Landlord\\Tenant::where('slug', '${slug}')->exists() ? 'true' : 'false';"`);
+      const result = this.executeArtisan(`tinker --execute="echo App\\\\Models\\\\Landlord\\\\Tenant::where('slug', '${slug}')->exists() ? 'true' : 'false';"`);
       return result.trim() === 'true';
     } catch (error) {
       console.error(`Failed to check tenant existence: ${slug}`, error);
@@ -74,7 +74,7 @@ export class DatabaseHelper {
    */
   async getTenant(slug: string): Promise<any | null> {
     try {
-      const result = this.executeArtisan(`tinker --execute="$tenant = App\\Models\\Landlord\\Tenant::where('slug', '${slug}')->first(); echo $tenant ? json_encode($tenant->toArray()) : 'null';"`);
+      const result = this.executeArtisan(`tinker --execute="\\$tenant = App\\\\Models\\\\Landlord\\\\Tenant::where('slug', '${slug}')->first(); echo \\$tenant ? json_encode(\\$tenant->toArray()) : 'null';"`);
       const trimmed = result.trim();
       return trimmed === 'null' ? null : JSON.parse(trimmed);
     } catch (error) {
@@ -96,16 +96,8 @@ export class DatabaseHelper {
       }
 
       // Try to access tenant database by running a simple query
-      const result = this.executeArtisan(`tinker --execute="
-        $tenant = App\\Models\\Landlord\\Tenant::where('slug', '${tenantSlug}')->first();
-        if ($tenant) {
-          $tenant->run(function() {
-            echo App\\Models\\User::count();
-          });
-        } else {
-          echo 'tenant_not_found';
-        }
-      "`);
+      // Fix: Use proper PHP syntax with escaped quotes and single-line format
+      const result = this.executeArtisan(`tinker --execute="\\$tenant = App\\\\Models\\\\Landlord\\\\Tenant::where('slug', '${tenantSlug}')->first(); if (\\$tenant) { \\$tenant->run(function() { echo App\\\\Models\\\\User::count(); }); } else { echo 'tenant_not_found'; }"`);
 
       const trimmed = result.trim();
       return trimmed !== 'tenant_not_found' && !isNaN(parseInt(trimmed));
@@ -120,17 +112,8 @@ export class DatabaseHelper {
    */
   async verifyTenantAdmin(tenantSlug: string, adminEmail: string): Promise<boolean> {
     try {
-      const result = this.executeArtisan(`tinker --execute="
-        $tenant = App\\Models\\Landlord\\Tenant::where('slug', '${tenantSlug}')->first();
-        if ($tenant) {
-          $tenant->run(function() {
-            $user = App\\Models\\User::where('email', '${adminEmail}')->first();
-            echo $user ? 'found' : 'not_found';
-          });
-        } else {
-          echo 'tenant_not_found';
-        }
-      "`);
+      // Fix: Use proper PHP syntax with escaped quotes and single-line format
+      const result = this.executeArtisan(`tinker --execute="\\$tenant = App\\\\Models\\\\Landlord\\\\Tenant::where('slug', '${tenantSlug}')->first(); if (\\$tenant) { \\$tenant->run(function() { \\$user = App\\\\Models\\\\User::where('email', '${adminEmail}')->first(); echo \\$user ? 'found' : 'not_found'; }); } else { echo 'tenant_not_found'; }"`);
 
       return result.trim() === 'found';
     } catch (error) {
@@ -147,15 +130,8 @@ export class DatabaseHelper {
       console.log(`🗑️  Cleaning up tenant: ${tenantSlug}`);
       
       // Delete tenant (this should cascade to tenant database via Stancl events)
-      this.executeArtisan(`tinker --execute="
-        $tenant = App\\Models\\Landlord\\Tenant::where('slug', '${tenantSlug}')->first();
-        if ($tenant) {
-          $tenant->delete();
-          echo 'deleted';
-        } else {
-          echo 'not_found';
-        }
-      "`);
+      // Fix: Use proper PHP syntax with escaped quotes and single-line format
+      this.executeArtisan(`tinker --execute="\\$tenant = App\\\\Models\\\\Landlord\\\\Tenant::where('slug', '${tenantSlug}')->first(); if (\\$tenant) { \\$tenant->delete(); echo 'deleted'; } else { echo 'not_found'; }"`);
 
       // Remove from our tracking list
       this.createdTenants = this.createdTenants.filter(slug => slug !== tenantSlug);
@@ -178,10 +154,8 @@ export class DatabaseHelper {
       }
 
       // Clean up any remaining test tenants that match our prefix
-      this.executeArtisan(`tinker --execute="
-        App\\Models\\Landlord\\Tenant::where('slug', 'like', '${this.testTenantPrefix}%')->delete();
-        echo 'cleanup_complete';
-      "`);
+      // Fix: Use proper PHP syntax with escaped quotes and single-line format
+      this.executeArtisan(`tinker --execute="App\\\\Models\\\\Landlord\\\\Tenant::where('slug', 'like', '${this.testTenantPrefix}%')->delete(); echo 'cleanup_complete';"`);
 
       this.createdTenants = [];
       

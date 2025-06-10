@@ -236,6 +236,8 @@ export async function getGoogleAuthUrl(): Promise<string> {
 // Tenant-specific auth actions
 export async function registerTenantAdmin(data: TenantRegistrationData) {
   try {
+    console.log('📤 Sending registration request to API...');
+
     // Let backend handle slug generation and validation
     const response = await axiosInstance.post<AuthResponse>("/auth/register-tenant-admin", {
       tenant: {
@@ -251,7 +253,17 @@ export async function registerTenantAdmin(data: TenantRegistrationData) {
       }
     });
 
+    console.log('📥 API response received:', {
+      status: response.status,
+      hasData: !!response.data,
+      hasToken: !!response.data?.token,
+      hasUser: !!response.data?.user,
+      hasTenant: !!response.data?.user?.tenant,
+      tenantSlug: response.data?.user?.tenant?.slug
+    });
+
     if (response.data?.token) {
+      console.log('🍪 Setting authentication cookie...');
       await setCookie(response.data.token);
     }
 
@@ -262,12 +274,22 @@ export async function registerTenantAdmin(data: TenantRegistrationData) {
       ? `/${response.data.user.tenant.slug}/admin`
       : "/admin";
 
+    console.log('🎯 Built redirect path:', redirectPath);
+
     return {
       success: true,
       redirect: redirectPath,
       data: response.data
     };
   } catch (error) {
+    console.error('💥 Registration error:', error);
+    if (error.response) {
+      console.error('📋 Error response:', {
+        status: error.response.status,
+        data: error.response.data,
+        headers: error.response.headers
+      });
+    }
     return { error: getErrorMessage(error) };
   }
 }

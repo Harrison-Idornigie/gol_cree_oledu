@@ -29,19 +29,37 @@ export default function RegisterOrganizationPage() {
         passwordConfirmation: formData.get("passwordConfirmation") as string,
       };
 
+      console.log('🚀 Starting tenant registration with data:', {
+        ...data,
+        password: '[REDACTED]',
+        passwordConfirmation: '[REDACTED]'
+      });
+
       const result = await registerTenantAdmin(data);
-      
+
+      console.log('📡 Registration result:', {
+        success: result?.success,
+        error: result?.error,
+        redirect: result?.redirect,
+        hasData: !!result?.data
+      });
+
       if (result?.error) {
+        console.error('❌ Registration failed:', result.error);
         setError(result.error);
-      } else if (result.success) {
+      } else if (result?.success) {
+        console.log('✅ Registration successful, preparing redirect...');
         router.refresh();
-        
+
         const redirectPath = result.redirect || "/admin";
         const redirectUrl = new URL(redirectPath, window.location.origin);
         redirectUrl.searchParams.set("post_login", "true");
 
-        console.log(`Organization registration successful, redirecting to: ${redirectPath}`);
+        console.log(`🔄 Redirecting to: ${redirectPath}`);
         router.push(redirectUrl.pathname + redirectUrl.search);
+      } else {
+        console.error('⚠️ Unexpected result structure:', result);
+        setError('Registration completed but received unexpected response');
       }
     } catch {
       setError("Failed to create organization");

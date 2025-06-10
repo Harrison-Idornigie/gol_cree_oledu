@@ -26,7 +26,7 @@ async function globalSetup(config: FullConfig) {
     
     // Run landlord migrations and seeding for central database
     console.log('🏢 Running landlord migrations and seeding...');
-    execSync('cd ../backend && php artisan migrate:landlord --fresh --seed --force --env=testing', { stdio: 'inherit' });
+    execSync('cd ../backend && php artisan migrate:landlord --fresh --seed --force --no-interaction --env=testing', { stdio: 'inherit' });
 
     // 2. Initialize database helper
     const dbHelper = new DatabaseHelper();

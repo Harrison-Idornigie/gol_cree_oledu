@@ -60,6 +60,19 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
+  // Check if this looks like a tenant path but is invalid
+  const pathSegments = pathname.split('/').filter(Boolean);
+  if (pathSegments.length >= 2) {
+    const [potentialTenant, potentialRole] = pathSegments;
+    const validRoles = ['admin', 'team', 'student'];
+
+    // If it looks like a tenant path but is invalid, show 404
+    if (potentialTenant && potentialRole && validRoles.includes(potentialRole)) {
+      // This looks like a tenant path but tenant validation failed
+      return NextResponse.rewrite(new URL("/not-found", request.url));
+    }
+  }
+
   // Handle central/landlord routes
   if (isCentralRoute) {
     // Super admin routes require authentication

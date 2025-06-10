@@ -1,2 +1,294 @@
-<testsuites id="" name="" tests="0" failures="0" skipped="0" errors="0" time="4.45615">
+<testsuites id="" name="" tests="7" failures="7" skipped="0" errors="0" time="204.28160200000002">
+<testsuite name="tenant-registration.spec.ts" timestamp="2025-06-10T07:00:46.596Z" hostname="chromium" tests="1" failures="1" skipped="0" time="23.451" errors="0">
+<testcase name="Tenant Registration E2E Flow › Successful Registration Flow › should complete full tenant registration with valid data" classname="tenant-registration.spec.ts" time="23.451">
+<failure message="tenant-registration.spec.ts:47:9 should complete full tenant registration with valid data" type="FAILURE">
+<![CDATA[  [chromium] › tenant-registration.spec.ts:47:9 › Tenant Registration E2E Flow › Successful Registration Flow › should complete full tenant registration with valid data 
+
+    Error: Timed out 10000ms waiting for expect(locator).toHaveURL(expected)
+
+    Locator: locator(':root')
+    Expected pattern: /\/e2e-test-1749538859055-kp7he2\/admin/
+    Received string:  "http://localhost:3000/register-org"
+    Call log:
+      - expect.toHaveURL with timeout 10000ms
+      - waiting for locator(':root')
+        13 × locator resolved to <html lang="en">…</html>
+           - unexpected value "http://localhost:3000/register-org"
+
+
+      58 |       
+      59 |       // Wait for redirect to tenant dashboard
+    > 60 |       await expect(page).toHaveURL(new RegExp(`/${testData.organizationSlug}/admin`));
+         |                          ^
+      61 |       
+      62 |       // Verify we're on the tenant dashboard
+      63 |       await expect(page.locator('h1')).toContainText('Dashboard');
+        at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/tenant-registration.spec.ts:60:26
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/tenant-registration-Tenant-3bda2-egistration-with-valid-data-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/tenant-registration-Tenant-3bda2-egistration-with-valid-data-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/tenant-registration-Tenant-3bda2-egistration-with-valid-data-chromium/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[🗑️  Cleaning up all test tenants...
+🗑️  Cleaning up tenant: e2e-test-1749538859055-kp7he2
+
+[[ATTACHMENT|test-results/tenant-registration-Tenant-3bda2-egistration-with-valid-data-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|test-results/tenant-registration-Tenant-3bda2-egistration-with-valid-data-chromium/video.webm]]
+
+[[ATTACHMENT|test-results/tenant-registration-Tenant-3bda2-egistration-with-valid-data-chromium/error-context.md]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="tenant-registration.spec.ts" timestamp="2025-06-10T07:00:46.596Z" hostname="firefox" tests="1" failures="1" skipped="0" time="32.316" errors="0">
+<testcase name="Tenant Registration E2E Flow › Successful Registration Flow › should complete full tenant registration with valid data" classname="tenant-registration.spec.ts" time="32.316">
+<failure message="tenant-registration.spec.ts:47:9 should complete full tenant registration with valid data" type="FAILURE">
+<![CDATA[  [firefox] › tenant-registration.spec.ts:47:9 › Tenant Registration E2E Flow › Successful Registration Flow › should complete full tenant registration with valid data 
+
+    Error: Timed out 10000ms waiting for expect(locator).toHaveURL(expected)
+
+    Locator: locator(':root')
+    Expected pattern: /\/e2e-test-1749538898304-ekhvp4\/admin/
+    Received string:  "http://localhost:3000/register-org"
+    Call log:
+      - expect.toHaveURL with timeout 10000ms
+      - waiting for locator(':root')
+        13 × locator resolved to <html lang="en">…</html>
+           - unexpected value "http://localhost:3000/register-org"
+
+
+      58 |       
+      59 |       // Wait for redirect to tenant dashboard
+    > 60 |       await expect(page).toHaveURL(new RegExp(`/${testData.organizationSlug}/admin`));
+         |                          ^
+      61 |       
+      62 |       // Verify we're on the tenant dashboard
+      63 |       await expect(page.locator('h1')).toContainText('Dashboard');
+        at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/tenant-registration.spec.ts:60:26
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/tenant-registration-Tenant-3bda2-egistration-with-valid-data-firefox/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/tenant-registration-Tenant-3bda2-egistration-with-valid-data-firefox/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/tenant-registration-Tenant-3bda2-egistration-with-valid-data-firefox/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[🗑️  Cleaning up all test tenants...
+🗑️  Cleaning up tenant: e2e-test-1749538898304-ekhvp4
+
+[[ATTACHMENT|test-results/tenant-registration-Tenant-3bda2-egistration-with-valid-data-firefox/test-failed-1.png]]
+
+[[ATTACHMENT|test-results/tenant-registration-Tenant-3bda2-egistration-with-valid-data-firefox/video.webm]]
+
+[[ATTACHMENT|test-results/tenant-registration-Tenant-3bda2-egistration-with-valid-data-firefox/error-context.md]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="tenant-registration.spec.ts" timestamp="2025-06-10T07:00:46.596Z" hostname="webkit" tests="1" failures="1" skipped="0" time="0.04" errors="0">
+<testcase name="Tenant Registration E2E Flow › Successful Registration Flow › should complete full tenant registration with valid data" classname="tenant-registration.spec.ts" time="0.04">
+<failure message="tenant-registration.spec.ts:47:9 should complete full tenant registration with valid data" type="FAILURE">
+<![CDATA[  [webkit] › tenant-registration.spec.ts:47:9 › Tenant Registration E2E Flow › Successful Registration Flow › should complete full tenant registration with valid data 
+
+    Error: browserType.launch: 
+    ╔══════════════════════════════════════════════════════╗
+    ║ Host system is missing dependencies to run browsers. ║
+    ║ Please install them with the following command:      ║
+    ║                                                      ║
+    ║     sudo npx playwright install-deps                 ║
+    ║                                                      ║
+    ║ Alternatively, use apt:                              ║
+    ║     sudo apt-get install libevent-2.1-7t64\          ║
+    ║         libgstreamer-plugins-bad1.0-0\               ║
+    ║         libflite1\                                   ║
+    ║         libavif16\                                   ║
+    ║         gstreamer1.0-libav                           ║
+    ║                                                      ║
+    ║ <3 Playwright Team                                   ║
+    ╚══════════════════════════════════════════════════════╝
+
+    Error Context: ../test-results/tenant-registration-Tenant-3bda2-egistration-with-valid-data-webkit/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[🗑️  Cleaning up all test tenants...
+
+[[ATTACHMENT|test-results/tenant-registration-Tenant-3bda2-egistration-with-valid-data-webkit/error-context.md]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="tenant-registration.spec.ts" timestamp="2025-06-10T07:00:46.596Z" hostname="Mobile Chrome" tests="1" failures="1" skipped="0" time="16.822" errors="0">
+<testcase name="Tenant Registration E2E Flow › Successful Registration Flow › should complete full tenant registration with valid data" classname="tenant-registration.spec.ts" time="16.822">
+<failure message="tenant-registration.spec.ts:47:9 should complete full tenant registration with valid data" type="FAILURE">
+<![CDATA[  [Mobile Chrome] › tenant-registration.spec.ts:47:9 › Tenant Registration E2E Flow › Successful Registration Flow › should complete full tenant registration with valid data 
+
+    Error: Timed out 10000ms waiting for expect(locator).toHaveURL(expected)
+
+    Locator: locator(':root')
+    Expected pattern: /\/e2e-test-1749538929307-93zkn7\/admin/
+    Received string:  "http://localhost:3000/register-org"
+    Call log:
+      - expect.toHaveURL with timeout 10000ms
+      - waiting for locator(':root')
+        14 × locator resolved to <html lang="en">…</html>
+           - unexpected value "http://localhost:3000/register-org"
+
+
+      58 |       
+      59 |       // Wait for redirect to tenant dashboard
+    > 60 |       await expect(page).toHaveURL(new RegExp(`/${testData.organizationSlug}/admin`));
+         |                          ^
+      61 |       
+      62 |       // Verify we're on the tenant dashboard
+      63 |       await expect(page.locator('h1')).toContainText('Dashboard');
+        at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/tenant-registration.spec.ts:60:26
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/tenant-registration-Tenant-3bda2-egistration-with-valid-data-Mobile-Chrome/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/tenant-registration-Tenant-3bda2-egistration-with-valid-data-Mobile-Chrome/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/tenant-registration-Tenant-3bda2-egistration-with-valid-data-Mobile-Chrome/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[🗑️  Cleaning up all test tenants...
+🗑️  Cleaning up tenant: e2e-test-1749538929307-93zkn7
+
+[[ATTACHMENT|test-results/tenant-registration-Tenant-3bda2-egistration-with-valid-data-Mobile-Chrome/test-failed-1.png]]
+
+[[ATTACHMENT|test-results/tenant-registration-Tenant-3bda2-egistration-with-valid-data-Mobile-Chrome/video.webm]]
+
+[[ATTACHMENT|test-results/tenant-registration-Tenant-3bda2-egistration-with-valid-data-Mobile-Chrome/error-context.md]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="tenant-registration.spec.ts" timestamp="2025-06-10T07:00:46.596Z" hostname="Mobile Safari" tests="1" failures="1" skipped="0" time="0.018" errors="0">
+<testcase name="Tenant Registration E2E Flow › Successful Registration Flow › should complete full tenant registration with valid data" classname="tenant-registration.spec.ts" time="0.018">
+<failure message="tenant-registration.spec.ts:47:9 should complete full tenant registration with valid data" type="FAILURE">
+<![CDATA[  [Mobile Safari] › tenant-registration.spec.ts:47:9 › Tenant Registration E2E Flow › Successful Registration Flow › should complete full tenant registration with valid data 
+
+    Error: browserType.launch: 
+    ╔══════════════════════════════════════════════════════╗
+    ║ Host system is missing dependencies to run browsers. ║
+    ║ Please install them with the following command:      ║
+    ║                                                      ║
+    ║     sudo npx playwright install-deps                 ║
+    ║                                                      ║
+    ║ Alternatively, use apt:                              ║
+    ║     sudo apt-get install libevent-2.1-7t64\          ║
+    ║         libgstreamer-plugins-bad1.0-0\               ║
+    ║         libflite1\                                   ║
+    ║         libavif16\                                   ║
+    ║         gstreamer1.0-libav                           ║
+    ║                                                      ║
+    ║ <3 Playwright Team                                   ║
+    ╚══════════════════════════════════════════════════════╝
+
+    Error Context: ../test-results/tenant-registration-Tenant-3bda2-egistration-with-valid-data-Mobile-Safari/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[🗑️  Cleaning up all test tenants...
+
+[[ATTACHMENT|test-results/tenant-registration-Tenant-3bda2-egistration-with-valid-data-Mobile-Safari/error-context.md]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="tenant-registration.spec.ts" timestamp="2025-06-10T07:00:46.596Z" hostname="Microsoft Edge" tests="1" failures="1" skipped="0" time="0.028" errors="0">
+<testcase name="Tenant Registration E2E Flow › Successful Registration Flow › should complete full tenant registration with valid data" classname="tenant-registration.spec.ts" time="0.028">
+<failure message="tenant-registration.spec.ts:47:9 should complete full tenant registration with valid data" type="FAILURE">
+<![CDATA[  [Microsoft Edge] › tenant-registration.spec.ts:47:9 › Tenant Registration E2E Flow › Successful Registration Flow › should complete full tenant registration with valid data 
+
+    Error: browserType.launch: Chromium distribution 'msedge' is not found at /opt/microsoft/msedge/msedge
+    Run "npx playwright install msedge"
+
+    Error Context: ../test-results/tenant-registration-Tenant-3bda2-egistration-with-valid-data-Microsoft-Edge/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[🗑️  Cleaning up all test tenants...
+
+[[ATTACHMENT|test-results/tenant-registration-Tenant-3bda2-egistration-with-valid-data-Microsoft-Edge/error-context.md]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="tenant-registration.spec.ts" timestamp="2025-06-10T07:00:46.596Z" hostname="Google Chrome" tests="1" failures="1" skipped="0" time="47.559" errors="0">
+<testcase name="Tenant Registration E2E Flow › Successful Registration Flow › should complete full tenant registration with valid data" classname="tenant-registration.spec.ts" time="47.559">
+<failure message="tenant-registration.spec.ts:47:9 should complete full tenant registration with valid data" type="FAILURE">
+<![CDATA[  [Google Chrome] › tenant-registration.spec.ts:47:9 › Tenant Registration E2E Flow › Successful Registration Flow › should complete full tenant registration with valid data 
+
+    TimeoutError: page.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('button[type="submit"]')
+        - locator resolved to <button disabled type="submit" class="w-full duo-button">Create Organization</button>
+      - attempting click action
+        2 × waiting for element to be visible, enabled and stable
+          - element is not enabled
+        - retrying click action
+        - waiting 20ms
+        2 × waiting for element to be visible, enabled and stable
+          - element is not enabled
+        - retrying click action
+          - waiting 100ms
+        19 × waiting for element to be visible, enabled and stable
+           - element is not enabled
+         - retrying click action
+           - waiting 500ms
+
+
+      52 |       
+      53 |       // Submit the form
+    > 54 |       await page.click(FORM_SELECTORS.submitButton);
+         |                  ^
+      55 |       
+      56 |       // Wait for submission to complete
+      57 |       await expect(page.locator('text=Creating Organization...')).toBeVisible();
+        at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/tenant-registration.spec.ts:54:18
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/tenant-registration-Tenant-3bda2-egistration-with-valid-data-Google-Chrome/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/tenant-registration-Tenant-3bda2-egistration-with-valid-data-Google-Chrome/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/tenant-registration-Tenant-3bda2-egistration-with-valid-data-Google-Chrome/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[🗑️  Cleaning up all test tenants...
+🗑️  Cleaning up tenant: e2e-test-1749539004189-8ek220
+
+[[ATTACHMENT|test-results/tenant-registration-Tenant-3bda2-egistration-with-valid-data-Google-Chrome/test-failed-1.png]]
+
+[[ATTACHMENT|test-results/tenant-registration-Tenant-3bda2-egistration-with-valid-data-Google-Chrome/video.webm]]
+
+[[ATTACHMENT|test-results/tenant-registration-Tenant-3bda2-egistration-with-valid-data-Google-Chrome/error-context.md]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
 </testsuites>

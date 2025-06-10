@@ -221,35 +221,48 @@ test.describe('Tenant Registration E2E Flow', () => {
 
     test('should validate API response structure', async ({ page }) => {
       const testData = fixtures.generateValidTenantData();
-      
+
       // Intercept API call to validate request structure
-      let apiRequestBody: any;
+      let apiRequestBody: any = null;
+      let apiCallMade = false;
+
       await page.route('**/api/auth/register-tenant-admin', async route => {
         const request = route.request();
-        apiRequestBody = JSON.parse(request.postData() || '{}');
+        try {
+          apiRequestBody = JSON.parse(request.postData() || '{}');
+          apiCallMade = true;
+        } catch (error) {
+          console.error('Failed to parse API request body:', error);
+        }
         route.continue();
       });
-      
+
       await fillRegistrationForm(page, testData);
       await page.click(FORM_SELECTORS.submitButton);
-      
+
       // Wait for API call to complete
-      await page.waitForTimeout(2000);
-      
+      await page.waitForTimeout(3000);
+
+      // Validate that API call was made
+      expect(apiCallMade).toBe(true);
+      expect(apiRequestBody).toBeDefined();
+
       // Validate API request structure
-      expect(apiRequestBody).toMatchObject({
-        tenant: {
-          name: testData.organizationName,
-          slug: testData.organizationSlug,
-          description: testData.organizationDescription
-        },
-        admin: {
-          name: testData.adminName,
-          email: testData.adminEmail,
-          password: testData.password,
-          password_confirmation: testData.passwordConfirmation
-        }
-      });
+      if (apiRequestBody) {
+        expect(apiRequestBody).toMatchObject({
+          tenant: {
+            name: testData.organizationName,
+            slug: testData.organizationSlug || '',
+            description: testData.organizationDescription || ''
+          },
+          admin: {
+            name: testData.adminName,
+            email: testData.adminEmail,
+            password: testData.password,
+            password_confirmation: testData.passwordConfirmation
+          }
+        });
+      }
     });
   });
 

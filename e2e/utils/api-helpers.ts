@@ -103,7 +103,22 @@ export class ApiHelper {
       }
     });
 
-    const responseData = await response.json();
+    let responseData;
+    try {
+      const responseText = await response.text();
+      if (process.env.DEBUG_API_CALLS === 'true') {
+        console.log(`📡 API Response ${response.status}`, responseText);
+      }
+      responseData = JSON.parse(responseText);
+    } catch (error) {
+      console.error('Failed to parse JSON response:', error);
+      return {
+        success: false,
+        data: undefined,
+        error: 'Invalid JSON response from server',
+        response
+      };
+    }
 
     return {
       success: response.ok,
