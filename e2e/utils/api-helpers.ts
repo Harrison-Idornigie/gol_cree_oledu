@@ -106,8 +106,10 @@ export class ApiHelper {
     let responseData;
     try {
       const responseText = await response.text();
-      if (process.env.DEBUG_API_CALLS === 'true') {
-        console.log(`📡 API Response ${response.status}`, responseText);
+      // Always log the response for debugging
+      console.log(`📡 API Response ${response.status}:`, responseText.substring(0, 500) + (responseText.length > 500 ? '...' : ''));
+      if (responseText.length > 12500) {
+        console.log(`⚠️  Response is very long (${responseText.length} chars), showing end:`, responseText.substring(12500));
       }
       responseData = JSON.parse(responseText);
     } catch (error) {

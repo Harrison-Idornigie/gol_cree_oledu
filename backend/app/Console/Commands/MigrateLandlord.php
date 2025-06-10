@@ -41,11 +41,11 @@ class MigrateLandlord extends Command
 
             if ($this->option('fresh')) {
                 $this->warn('⚠️  This will drop all landlord tables!');
-                if (!$this->confirm('Are you sure you want to continue?')) {
+                if (!$this->option('no-interaction') && !$this->confirm('Are you sure you want to continue?')) {
                     $this->info('Migration cancelled.');
                     return 1;
                 }
-                
+
                 Artisan::call('migrate:fresh', $options);
             } else {
                 Artisan::call('migrate', $options);

@@ -64,11 +64,11 @@ class MigrateTenants extends Command
 
             if ($this->option('fresh')) {
                 $this->warn('⚠️  This will drop all tables for this tenant!');
-                if (!$this->confirm("Are you sure you want to continue for tenant {$tenant->id}?")) {
+                if (!$this->option('no-interaction') && !$this->confirm("Are you sure you want to continue for tenant {$tenant->id}?")) {
                     $this->info('Migration cancelled.');
                     return 1;
                 }
-                
+
                 Artisan::call('tenants:migrate-fresh', $options);
             } else {
                 Artisan::call('tenants:migrate', $options);
@@ -112,11 +112,11 @@ class MigrateTenants extends Command
 
             if ($this->option('fresh')) {
                 $this->warn('⚠️  This will drop all tables for ALL tenants!');
-                if (!$this->confirm('Are you sure you want to continue?')) {
+                if (!$this->option('no-interaction') && !$this->confirm('Are you sure you want to continue?')) {
                     $this->info('Migration cancelled.');
                     return 1;
                 }
-                
+
                 Artisan::call('tenants:migrate-fresh', $options);
             } else {
                 Artisan::call('tenants:migrate', $options);
