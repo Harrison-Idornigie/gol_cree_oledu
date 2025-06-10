@@ -135,23 +135,25 @@ class InitializeTenancyByPathOrDomain
     {
         $path = $request->path();
 
+        // Define central route patterns that should never have tenant context
         $centralRoutes = [
             'api/public/',
             'api/super-admin/',
-            'api/auth/register-tenant-admin',
-            'api/auth/validate-tenant-slug/',
+            'api/health',
+            'api/info',
         ];
 
+        // Check exact central route patterns
         foreach ($centralRoutes as $centralRoute) {
             if (str_starts_with($path, $centralRoute)) {
                 return true;
             }
         }
 
-        // Allow auth routes to work in both contexts
-        // If it's an auth route without tenant slug, treat as central
-        if (str_starts_with($path, 'api/auth/') && !preg_match('/^api\/([^\/]+)\/auth\//', $path)) {
-            return false; // Let it try tenant identification, but don't force central
+        // All routes starting with api/auth/ are central (SSO-like behavior)
+        // This ensures tenant registration, login, etc. work without tenant context
+        if (str_starts_with($path, 'api/auth/')) {
+            return true;
         }
 
         return false;

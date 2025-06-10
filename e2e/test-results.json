@@ -188,7 +188,7 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "failed",
-                      "duration": 939,
+                      "duration": 1471,
                       "error": {
                         "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m",
                         "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n    at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/tenant-isolation.spec.ts:44:41",
@@ -217,15 +217,15 @@
                           "text": "🗑️  Cleaning up all test tenants...\n"
                         },
                         {
-                          "text": "🗑️  Cleaning up tenant: e2e-test-1749566279996-ho38k7\n"
+                          "text": "🗑️  Cleaning up tenant: e2e-test-1749574116196-2vb02h\n"
                         },
                         {
-                          "text": "🗑️  Cleaning up tenant: e2e-test-1749566279996-6np5bt\n"
+                          "text": "🗑️  Cleaning up tenant: e2e-test-1749574116196-ib7fy2\n"
                         }
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-10T14:37:59.459Z",
+                      "startTime": "2025-06-10T16:48:35.458Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -258,6 +258,3864 @@
               "file": "tenant-isolation.spec.ts",
               "line": 30,
               "column": 7
+            },
+            {
+              "title": "should prevent cross-tenant API access",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 1684,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n    at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/tenant-isolation.spec.ts:71:32",
+                        "location": {
+                          "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/tenant-isolation.spec.ts",
+                          "column": 32,
+                          "line": 71
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 69 |\u001b[39m     \u001b[36mconst\u001b[39m tenant2Reg \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m apiHelper\u001b[33m.\u001b[39mregisterTenantAdmin(tenant2Data)\u001b[33m;\u001b[39m\n \u001b[90m 70 |\u001b[39m     \n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 71 |\u001b[39m     expect(tenant1Reg\u001b[33m.\u001b[39msuccess)\u001b[33m.\u001b[39mtoBe(\u001b[36mtrue\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 72 |\u001b[39m     expect(tenant2Reg\u001b[33m.\u001b[39msuccess)\u001b[33m.\u001b[39mtoBe(\u001b[36mtrue\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 73 |\u001b[39m\n \u001b[90m 74 |\u001b[39m     \u001b[90m// Get token for tenant 1\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/tenant-isolation.spec.ts",
+                            "column": 32,
+                            "line": 71
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n\n\u001b[0m \u001b[90m 69 |\u001b[39m     \u001b[36mconst\u001b[39m tenant2Reg \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m apiHelper\u001b[33m.\u001b[39mregisterTenantAdmin(tenant2Data)\u001b[33m;\u001b[39m\n \u001b[90m 70 |\u001b[39m     \n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 71 |\u001b[39m     expect(tenant1Reg\u001b[33m.\u001b[39msuccess)\u001b[33m.\u001b[39mtoBe(\u001b[36mtrue\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 72 |\u001b[39m     expect(tenant2Reg\u001b[33m.\u001b[39msuccess)\u001b[33m.\u001b[39mtoBe(\u001b[36mtrue\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 73 |\u001b[39m\n \u001b[90m 74 |\u001b[39m     \u001b[90m// Get token for tenant 1\u001b[39m\u001b[0m\n\u001b[2m    at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/tenant-isolation.spec.ts:71:32\u001b[22m"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "📡 API Response 500: {\"success\":false,\"message\":\"Registration failed\",\"errors\":{\"error\":\"An unexpected error occurred\"}}\n"
+                        },
+                        {
+                          "text": "📡 API Response 500: {\"success\":false,\"message\":\"Registration failed\",\"errors\":{\"error\":\"An unexpected error occurred\"}}\n"
+                        },
+                        {
+                          "text": "🗑️  Cleaning up all test tenants...\n"
+                        },
+                        {
+                          "text": "🗑️  Cleaning up tenant: e2e-test-1749574121526-b4oy9o\n"
+                        },
+                        {
+                          "text": "🗑️  Cleaning up tenant: e2e-test-1749574121526-zb9mys\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-10T16:48:40.918Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/tenant-isolation-Tenant-Is-9cdfb-ent-cross-tenant-API-access-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/tenant-isolation-Tenant-Is-9cdfb-ent-cross-tenant-API-access-chromium/video.webm"
+                        },
+                        {
+                          "name": "_error-context-0",
+                          "contentType": "text/markdown",
+                          "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/tenant-isolation-Tenant-Is-9cdfb-ent-cross-tenant-API-access-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/tenant-isolation.spec.ts",
+                        "column": 32,
+                        "line": 71
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "7d8e83e4ff540a62ed2c-ce6ac693ec970b881a7d",
+              "file": "tenant-isolation.spec.ts",
+              "line": 62,
+              "column": 7
+            },
+            {
+              "title": "should handle invalid tenant slugs gracefully",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 13473,
+                      "error": {
+                        "message": "Error: \u001b[31mTimed out 10000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('text=404')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - expect.toBeVisible with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=404')\u001b[22m\n",
+                        "stack": "Error: \u001b[31mTimed out 10000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('text=404')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - expect.toBeVisible with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=404')\u001b[22m\n\n    at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/tenant-isolation.spec.ts:93:44",
+                        "location": {
+                          "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/tenant-isolation.spec.ts",
+                          "column": 44,
+                          "line": 93
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 91 |\u001b[39m     \n \u001b[90m 92 |\u001b[39m     \u001b[90m// Should show 404 or redirect to error page\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 93 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'text=404'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                            \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 94 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 95 |\u001b[39m\n \u001b[90m 96 |\u001b[39m   test(\u001b[32m'should validate tenant status before allowing access'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/tenant-isolation.spec.ts",
+                            "column": 44,
+                            "line": 93
+                          },
+                          "message": "Error: \u001b[31mTimed out 10000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('text=404')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - expect.toBeVisible with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=404')\u001b[22m\n\n\n\u001b[0m \u001b[90m 91 |\u001b[39m     \n \u001b[90m 92 |\u001b[39m     \u001b[90m// Should show 404 or redirect to error page\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 93 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'text=404'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                            \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 94 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 95 |\u001b[39m\n \u001b[90m 96 |\u001b[39m   test(\u001b[32m'should validate tenant status before allowing access'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\u001b[0m\n\u001b[2m    at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/tenant-isolation.spec.ts:93:44\u001b[22m"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "🗑️  Cleaning up all test tenants...\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-10T16:48:46.810Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/tenant-isolation-Tenant-Is-8aa70-lid-tenant-slugs-gracefully-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/tenant-isolation-Tenant-Is-8aa70-lid-tenant-slugs-gracefully-chromium/video.webm"
+                        },
+                        {
+                          "name": "_error-context-0",
+                          "contentType": "text/markdown",
+                          "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/tenant-isolation-Tenant-Is-8aa70-lid-tenant-slugs-gracefully-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/tenant-isolation.spec.ts",
+                        "column": 44,
+                        "line": 93
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "7d8e83e4ff540a62ed2c-9365cd3f6e73be57ee87",
+              "file": "tenant-isolation.spec.ts",
+              "line": 88,
+              "column": 7
+            },
+            {
+              "title": "should validate tenant status before allowing access",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 1218,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n    at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/tenant-isolation.spec.ts:101:34",
+                        "location": {
+                          "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/tenant-isolation.spec.ts",
+                          "column": 34,
+                          "line": 101
+                        },
+                        "snippet": "\u001b[0m \u001b[90m  99 |\u001b[39m     \u001b[90m// Register tenant\u001b[39m\n \u001b[90m 100 |\u001b[39m     \u001b[36mconst\u001b[39m registration \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m apiHelper\u001b[33m.\u001b[39mregisterTenantAdmin(testData)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 101 |\u001b[39m     expect(registration\u001b[33m.\u001b[39msuccess)\u001b[33m.\u001b[39mtoBe(\u001b[36mtrue\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                  \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 102 |\u001b[39m     \n \u001b[90m 103 |\u001b[39m     \u001b[90m// Verify tenant is active and accessible\u001b[39m\n \u001b[90m 104 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m`/${testData.organizationSlug}/admin`\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/tenant-isolation.spec.ts",
+                            "column": 34,
+                            "line": 101
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n\n\u001b[0m \u001b[90m  99 |\u001b[39m     \u001b[90m// Register tenant\u001b[39m\n \u001b[90m 100 |\u001b[39m     \u001b[36mconst\u001b[39m registration \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m apiHelper\u001b[33m.\u001b[39mregisterTenantAdmin(testData)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 101 |\u001b[39m     expect(registration\u001b[33m.\u001b[39msuccess)\u001b[33m.\u001b[39mtoBe(\u001b[36mtrue\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                  \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 102 |\u001b[39m     \n \u001b[90m 103 |\u001b[39m     \u001b[90m// Verify tenant is active and accessible\u001b[39m\n \u001b[90m 104 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m`/${testData.organizationSlug}/admin`\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/tenant-isolation.spec.ts:101:34\u001b[22m"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "📡 API Response 500: {\"success\":false,\"message\":\"Registration failed\",\"errors\":{\"error\":\"An unexpected error occurred\"}}\n"
+                        },
+                        {
+                          "text": "🗑️  Cleaning up all test tenants...\n"
+                        },
+                        {
+                          "text": "🗑️  Cleaning up tenant: e2e-test-1749574143897-nsmcey\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-10T16:49:03.032Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/tenant-isolation-Tenant-Is-3a6f4-atus-before-allowing-access-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/tenant-isolation-Tenant-Is-3a6f4-atus-before-allowing-access-chromium/video.webm"
+                        },
+                        {
+                          "name": "_error-context-0",
+                          "contentType": "text/markdown",
+                          "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/tenant-isolation-Tenant-Is-3a6f4-atus-before-allowing-access-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/tenant-isolation.spec.ts",
+                        "column": 34,
+                        "line": 101
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "7d8e83e4ff540a62ed2c-a856bf246bec4fd7a656",
+              "file": "tenant-isolation.spec.ts",
+              "line": 96,
+              "column": 7
+            },
+            {
+              "title": "should maintain session isolation between browser contexts",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 14132,
+                      "error": {
+                        "message": "Error: \u001b[31mTimed out 10000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('text=Test School District')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - expect.toBeVisible with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=Test School District')\u001b[22m\n",
+                        "stack": "Error: \u001b[31mTimed out 10000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('text=Test School District')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - expect.toBeVisible with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=Test School District')\u001b[22m\n\n    at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/tenant-isolation.spec.ts:131:73",
+                        "location": {
+                          "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/tenant-isolation.spec.ts",
+                          "column": 73,
+                          "line": 131
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 129 |\u001b[39m\n \u001b[90m 130 |\u001b[39m     \u001b[90m// Verify each context maintains its own session\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 131 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page1\u001b[33m.\u001b[39mlocator(\u001b[32m`text=${tenant1Data.organizationName}`\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                                                         \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 132 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page2\u001b[33m.\u001b[39mlocator(\u001b[32m`text=${tenant2Data.organizationName}`\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m 133 |\u001b[39m\n \u001b[90m 134 |\u001b[39m     \u001b[90m// Cleanup\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/tenant-isolation.spec.ts",
+                            "column": 73,
+                            "line": 131
+                          },
+                          "message": "Error: \u001b[31mTimed out 10000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('text=Test School District')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - expect.toBeVisible with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=Test School District')\u001b[22m\n\n\n\u001b[0m \u001b[90m 129 |\u001b[39m\n \u001b[90m 130 |\u001b[39m     \u001b[90m// Verify each context maintains its own session\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 131 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page1\u001b[33m.\u001b[39mlocator(\u001b[32m`text=${tenant1Data.organizationName}`\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                                                         \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 132 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page2\u001b[33m.\u001b[39mlocator(\u001b[32m`text=${tenant2Data.organizationName}`\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m 133 |\u001b[39m\n \u001b[90m 134 |\u001b[39m     \u001b[90m// Cleanup\u001b[39m\u001b[0m\n\u001b[2m    at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/tenant-isolation.spec.ts:131:73\u001b[22m"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "📡 API Response 500: {\"success\":false,\"message\":\"Registration failed\",\"errors\":{\"error\":\"An unexpected error occurred\"}}\n"
+                        },
+                        {
+                          "text": "📡 API Response 500: {\"success\":false,\"message\":\"Registration failed\",\"errors\":{\"error\":\"An unexpected error occurred\"}}\n"
+                        },
+                        {
+                          "text": "🗑️  Cleaning up all test tenants...\n"
+                        },
+                        {
+                          "text": "🗑️  Cleaning up tenant: e2e-test-1749574148186-hmdk3r\n"
+                        },
+                        {
+                          "text": "🗑️  Cleaning up tenant: e2e-test-1749574148187-mqsmjt\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-10T16:49:07.799Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/tenant-isolation-Tenant-Is-334b3-on-between-browser-contexts-chromium/test-failed-2.png"
+                        },
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/tenant-isolation-Tenant-Is-334b3-on-between-browser-contexts-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "_error-context-0",
+                          "contentType": "text/markdown",
+                          "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/tenant-isolation-Tenant-Is-334b3-on-between-browser-contexts-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/tenant-isolation.spec.ts",
+                        "column": 73,
+                        "line": 131
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "7d8e83e4ff540a62ed2c-5d83e87dc7076298031c",
+              "file": "tenant-isolation.spec.ts",
+              "line": 111,
+              "column": 7
+            },
+            {
+              "title": "should handle concurrent tenant registrations",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 1566,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n    at forEach (/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/tenant-isolation.spec.ts:152:30)\n    at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/tenant-isolation.spec.ts:151:13",
+                        "location": {
+                          "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/tenant-isolation.spec.ts",
+                          "column": 30,
+                          "line": 152
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 150 |\u001b[39m     \u001b[90m// All registrations should succeed\u001b[39m\n \u001b[90m 151 |\u001b[39m     results\u001b[33m.\u001b[39mforEach(result \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 152 |\u001b[39m       expect(result\u001b[33m.\u001b[39msuccess)\u001b[33m.\u001b[39mtoBe(\u001b[36mtrue\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 153 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 154 |\u001b[39m\n \u001b[90m 155 |\u001b[39m     \u001b[90m// Verify all tenants were created in database\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/tenant-isolation.spec.ts",
+                            "column": 30,
+                            "line": 152
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n\n\u001b[0m \u001b[90m 150 |\u001b[39m     \u001b[90m// All registrations should succeed\u001b[39m\n \u001b[90m 151 |\u001b[39m     results\u001b[33m.\u001b[39mforEach(result \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 152 |\u001b[39m       expect(result\u001b[33m.\u001b[39msuccess)\u001b[33m.\u001b[39mtoBe(\u001b[36mtrue\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 153 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 154 |\u001b[39m\n \u001b[90m 155 |\u001b[39m     \u001b[90m// Verify all tenants were created in database\u001b[39m\u001b[0m\n\u001b[2m    at forEach (/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/tenant-isolation.spec.ts:152:30)\u001b[22m\n\u001b[2m    at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/tenant-isolation.spec.ts:151:13\u001b[22m"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "📡 API Response 500: {\"success\":false,\"message\":\"Registration failed\",\"errors\":{\"error\":\"An unexpected error occurred\"}}\n"
+                        },
+                        {
+                          "text": "📡 API Response 500: {\"success\":false,\"message\":\"Registration failed\",\"errors\":{\"error\":\"An unexpected error occurred\"}}\n"
+                        },
+                        {
+                          "text": "📡 API Response 500: {\"success\":false,\"message\":\"Registration failed\",\"errors\":{\"error\":\"An unexpected error occurred\"}}\n"
+                        },
+                        {
+                          "text": "🗑️  Cleaning up all test tenants...\n"
+                        },
+                        {
+                          "text": "🗑️  Cleaning up tenant: e2e-test-1749574166813-hnh205\n"
+                        },
+                        {
+                          "text": "🗑️  Cleaning up tenant: e2e-test-1749574166814-alyczb\n"
+                        },
+                        {
+                          "text": "🗑️  Cleaning up tenant: e2e-test-1749574166814-vdphib\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-10T16:49:26.117Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/tenant-isolation-Tenant-Is-19ba7-urrent-tenant-registrations-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/tenant-isolation-Tenant-Is-19ba7-urrent-tenant-registrations-chromium/video.webm"
+                        },
+                        {
+                          "name": "_error-context-0",
+                          "contentType": "text/markdown",
+                          "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/tenant-isolation-Tenant-Is-19ba7-urrent-tenant-registrations-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/tenant-isolation.spec.ts",
+                        "column": 30,
+                        "line": 152
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "7d8e83e4ff540a62ed2c-253c4bb6d30bff56dc63",
+              "file": "tenant-isolation.spec.ts",
+              "line": 139,
+              "column": 7
+            },
+            {
+              "title": "should prevent SQL injection in tenant identification",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 13979,
+                      "error": {
+                        "message": "TimeoutError: page.waitForResponse: Timeout 10000ms exceeded while waiting for event \"response\"",
+                        "stack": "TimeoutError: page.waitForResponse: Timeout 10000ms exceeded while waiting for event \"response\"\n    at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/tenant-isolation.spec.ts:169:33",
+                        "location": {
+                          "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/tenant-isolation.spec.ts",
+                          "column": 33,
+                          "line": 169
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 167 |\u001b[39m     \n \u001b[90m 168 |\u001b[39m     \u001b[90m// Should return 404 or proper error, not execute SQL\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 169 |\u001b[39m     \u001b[36mconst\u001b[39m response \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForResponse(response \u001b[33m=>\u001b[39m \n \u001b[90m     |\u001b[39m                                 \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 170 |\u001b[39m       response\u001b[33m.\u001b[39murl()\u001b[33m.\u001b[39mincludes(encodeURIComponent(maliciousSlug))\n \u001b[90m 171 |\u001b[39m     )\u001b[33m;\u001b[39m\n \u001b[90m 172 |\u001b[39m     \u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/tenant-isolation.spec.ts",
+                            "column": 33,
+                            "line": 169
+                          },
+                          "message": "TimeoutError: page.waitForResponse: Timeout 10000ms exceeded while waiting for event \"response\"\n\n\u001b[0m \u001b[90m 167 |\u001b[39m     \n \u001b[90m 168 |\u001b[39m     \u001b[90m// Should return 404 or proper error, not execute SQL\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 169 |\u001b[39m     \u001b[36mconst\u001b[39m response \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForResponse(response \u001b[33m=>\u001b[39m \n \u001b[90m     |\u001b[39m                                 \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 170 |\u001b[39m       response\u001b[33m.\u001b[39murl()\u001b[33m.\u001b[39mincludes(encodeURIComponent(maliciousSlug))\n \u001b[90m 171 |\u001b[39m     )\u001b[33m;\u001b[39m\n \u001b[90m 172 |\u001b[39m     \u001b[0m\n\u001b[2m    at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/tenant-isolation.spec.ts:169:33\u001b[22m"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "🗑️  Cleaning up all test tenants...\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-10T16:49:32.315Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/tenant-isolation-Tenant-Is-696b1-on-in-tenant-identification-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/tenant-isolation-Tenant-Is-696b1-on-in-tenant-identification-chromium/video.webm"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/tenant-isolation.spec.ts",
+                        "column": 33,
+                        "line": 169
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "7d8e83e4ff540a62ed2c-fe6b476c676a8cf33d98",
+              "file": "tenant-isolation.spec.ts",
+              "line": 162,
+              "column": 7
+            },
+            {
+              "title": "should handle special characters in tenant slugs safely",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 7,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 28320,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🗑️  Cleaning up all test tenants...\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-10T16:49:49.163Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "7d8e83e4ff540a62ed2c-55b7474e9530fd8679f6",
+              "file": "tenant-isolation.spec.ts",
+              "line": 181,
+              "column": 7
+            },
+            {
+              "title": "should maintain data isolation between tenants",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "7d8e83e4ff540a62ed2c-5935645105bb70947767",
+              "file": "tenant-isolation.spec.ts",
+              "line": 30,
+              "column": 7
+            },
+            {
+              "title": "should prevent cross-tenant API access",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "7d8e83e4ff540a62ed2c-02f31b4d08cb002c26c6",
+              "file": "tenant-isolation.spec.ts",
+              "line": 62,
+              "column": 7
+            },
+            {
+              "title": "should handle invalid tenant slugs gracefully",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "7d8e83e4ff540a62ed2c-49c59e0d0dce0cc2196e",
+              "file": "tenant-isolation.spec.ts",
+              "line": 88,
+              "column": 7
+            },
+            {
+              "title": "should validate tenant status before allowing access",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "7d8e83e4ff540a62ed2c-c911f421b6107e22a7cd",
+              "file": "tenant-isolation.spec.ts",
+              "line": 96,
+              "column": 7
+            },
+            {
+              "title": "should maintain session isolation between browser contexts",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "7d8e83e4ff540a62ed2c-3ee7ba4f2d9b8c33c2cd",
+              "file": "tenant-isolation.spec.ts",
+              "line": 111,
+              "column": 7
+            },
+            {
+              "title": "should handle concurrent tenant registrations",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "7d8e83e4ff540a62ed2c-c2a2f31cdf1da16d7e68",
+              "file": "tenant-isolation.spec.ts",
+              "line": 139,
+              "column": 7
+            },
+            {
+              "title": "should prevent SQL injection in tenant identification",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "7d8e83e4ff540a62ed2c-6f776d7168e2d80eafe3",
+              "file": "tenant-isolation.spec.ts",
+              "line": 162,
+              "column": 7
+            },
+            {
+              "title": "should handle special characters in tenant slugs safely",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "7d8e83e4ff540a62ed2c-e3fc256e4ae9933fffa4",
+              "file": "tenant-isolation.spec.ts",
+              "line": 181,
+              "column": 7
+            },
+            {
+              "title": "should maintain data isolation between tenants",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "7d8e83e4ff540a62ed2c-217279f6507136ad8b48",
+              "file": "tenant-isolation.spec.ts",
+              "line": 30,
+              "column": 7
+            },
+            {
+              "title": "should prevent cross-tenant API access",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "7d8e83e4ff540a62ed2c-c262c5f7e590fcd28c16",
+              "file": "tenant-isolation.spec.ts",
+              "line": 62,
+              "column": 7
+            },
+            {
+              "title": "should handle invalid tenant slugs gracefully",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "7d8e83e4ff540a62ed2c-f2dc644aff39059f9f4d",
+              "file": "tenant-isolation.spec.ts",
+              "line": 88,
+              "column": 7
+            },
+            {
+              "title": "should validate tenant status before allowing access",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "7d8e83e4ff540a62ed2c-6e7fe570aa9b3b18adcf",
+              "file": "tenant-isolation.spec.ts",
+              "line": 96,
+              "column": 7
+            },
+            {
+              "title": "should maintain session isolation between browser contexts",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "7d8e83e4ff540a62ed2c-89700671859964347334",
+              "file": "tenant-isolation.spec.ts",
+              "line": 111,
+              "column": 7
+            },
+            {
+              "title": "should handle concurrent tenant registrations",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "7d8e83e4ff540a62ed2c-aa38e0fd6d1508ef90df",
+              "file": "tenant-isolation.spec.ts",
+              "line": 139,
+              "column": 7
+            },
+            {
+              "title": "should prevent SQL injection in tenant identification",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "7d8e83e4ff540a62ed2c-30b58a3b2ca202b45683",
+              "file": "tenant-isolation.spec.ts",
+              "line": 162,
+              "column": 7
+            },
+            {
+              "title": "should handle special characters in tenant slugs safely",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "7d8e83e4ff540a62ed2c-46cfd8b79240fcd5d65b",
+              "file": "tenant-isolation.spec.ts",
+              "line": 181,
+              "column": 7
+            },
+            {
+              "title": "should maintain data isolation between tenants",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "7d8e83e4ff540a62ed2c-0a4c8fde911e84b729ef",
+              "file": "tenant-isolation.spec.ts",
+              "line": 30,
+              "column": 7
+            },
+            {
+              "title": "should prevent cross-tenant API access",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "7d8e83e4ff540a62ed2c-aae7facf9919c4dd729c",
+              "file": "tenant-isolation.spec.ts",
+              "line": 62,
+              "column": 7
+            },
+            {
+              "title": "should handle invalid tenant slugs gracefully",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "7d8e83e4ff540a62ed2c-d05698962468a6b8087b",
+              "file": "tenant-isolation.spec.ts",
+              "line": 88,
+              "column": 7
+            },
+            {
+              "title": "should validate tenant status before allowing access",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "7d8e83e4ff540a62ed2c-56a189197c480638dc08",
+              "file": "tenant-isolation.spec.ts",
+              "line": 96,
+              "column": 7
+            },
+            {
+              "title": "should maintain session isolation between browser contexts",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "7d8e83e4ff540a62ed2c-412c5e9e4356dbb28cdd",
+              "file": "tenant-isolation.spec.ts",
+              "line": 111,
+              "column": 7
+            },
+            {
+              "title": "should handle concurrent tenant registrations",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "7d8e83e4ff540a62ed2c-1b8be37a8078d2591d48",
+              "file": "tenant-isolation.spec.ts",
+              "line": 139,
+              "column": 7
+            },
+            {
+              "title": "should prevent SQL injection in tenant identification",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "7d8e83e4ff540a62ed2c-9bf228cb733520498446",
+              "file": "tenant-isolation.spec.ts",
+              "line": 162,
+              "column": 7
+            },
+            {
+              "title": "should handle special characters in tenant slugs safely",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "7d8e83e4ff540a62ed2c-0377c9c33a619d7b7ccb",
+              "file": "tenant-isolation.spec.ts",
+              "line": 181,
+              "column": 7
+            },
+            {
+              "title": "should maintain data isolation between tenants",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "7d8e83e4ff540a62ed2c-b915659c05bea3ab351e",
+              "file": "tenant-isolation.spec.ts",
+              "line": 30,
+              "column": 7
+            },
+            {
+              "title": "should prevent cross-tenant API access",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "7d8e83e4ff540a62ed2c-0b3bbea16c554f787804",
+              "file": "tenant-isolation.spec.ts",
+              "line": 62,
+              "column": 7
+            },
+            {
+              "title": "should handle invalid tenant slugs gracefully",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "7d8e83e4ff540a62ed2c-1fffa0ba6cc3575b1a5e",
+              "file": "tenant-isolation.spec.ts",
+              "line": 88,
+              "column": 7
+            },
+            {
+              "title": "should validate tenant status before allowing access",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "7d8e83e4ff540a62ed2c-9cd3b0d9661ab4febb4d",
+              "file": "tenant-isolation.spec.ts",
+              "line": 96,
+              "column": 7
+            },
+            {
+              "title": "should maintain session isolation between browser contexts",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "7d8e83e4ff540a62ed2c-865748c2a68c1cdc8b11",
+              "file": "tenant-isolation.spec.ts",
+              "line": 111,
+              "column": 7
+            },
+            {
+              "title": "should handle concurrent tenant registrations",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "7d8e83e4ff540a62ed2c-591cb8a66bc6e7035e7c",
+              "file": "tenant-isolation.spec.ts",
+              "line": 139,
+              "column": 7
+            },
+            {
+              "title": "should prevent SQL injection in tenant identification",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "7d8e83e4ff540a62ed2c-04e1bfe0d76594fd685b",
+              "file": "tenant-isolation.spec.ts",
+              "line": 162,
+              "column": 7
+            },
+            {
+              "title": "should handle special characters in tenant slugs safely",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "7d8e83e4ff540a62ed2c-408e8a1035e5a751fdba",
+              "file": "tenant-isolation.spec.ts",
+              "line": 181,
+              "column": 7
+            },
+            {
+              "title": "should maintain data isolation between tenants",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Microsoft Edge",
+                  "projectName": "Microsoft Edge",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "7d8e83e4ff540a62ed2c-6d0687ada5c9029e84dc",
+              "file": "tenant-isolation.spec.ts",
+              "line": 30,
+              "column": 7
+            },
+            {
+              "title": "should prevent cross-tenant API access",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Microsoft Edge",
+                  "projectName": "Microsoft Edge",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "7d8e83e4ff540a62ed2c-797dfaf214b8e901b833",
+              "file": "tenant-isolation.spec.ts",
+              "line": 62,
+              "column": 7
+            },
+            {
+              "title": "should handle invalid tenant slugs gracefully",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Microsoft Edge",
+                  "projectName": "Microsoft Edge",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "7d8e83e4ff540a62ed2c-f265b867d68a076f8e5d",
+              "file": "tenant-isolation.spec.ts",
+              "line": 88,
+              "column": 7
+            },
+            {
+              "title": "should validate tenant status before allowing access",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Microsoft Edge",
+                  "projectName": "Microsoft Edge",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "7d8e83e4ff540a62ed2c-4cb6162e111d71bf3323",
+              "file": "tenant-isolation.spec.ts",
+              "line": 96,
+              "column": 7
+            },
+            {
+              "title": "should maintain session isolation between browser contexts",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Microsoft Edge",
+                  "projectName": "Microsoft Edge",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "7d8e83e4ff540a62ed2c-dd52f738e4ddd577285c",
+              "file": "tenant-isolation.spec.ts",
+              "line": 111,
+              "column": 7
+            },
+            {
+              "title": "should handle concurrent tenant registrations",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Microsoft Edge",
+                  "projectName": "Microsoft Edge",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "7d8e83e4ff540a62ed2c-bb3c445396541f286265",
+              "file": "tenant-isolation.spec.ts",
+              "line": 139,
+              "column": 7
+            },
+            {
+              "title": "should prevent SQL injection in tenant identification",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Microsoft Edge",
+                  "projectName": "Microsoft Edge",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "7d8e83e4ff540a62ed2c-82dc72c991a9850c5cb8",
+              "file": "tenant-isolation.spec.ts",
+              "line": 162,
+              "column": 7
+            },
+            {
+              "title": "should handle special characters in tenant slugs safely",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Microsoft Edge",
+                  "projectName": "Microsoft Edge",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "7d8e83e4ff540a62ed2c-8df7191cd4dc93c56a6f",
+              "file": "tenant-isolation.spec.ts",
+              "line": 181,
+              "column": 7
+            },
+            {
+              "title": "should maintain data isolation between tenants",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Google Chrome",
+                  "projectName": "Google Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "7d8e83e4ff540a62ed2c-aa0214ee71fb58297dc8",
+              "file": "tenant-isolation.spec.ts",
+              "line": 30,
+              "column": 7
+            },
+            {
+              "title": "should prevent cross-tenant API access",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Google Chrome",
+                  "projectName": "Google Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "7d8e83e4ff540a62ed2c-4578f99151b733c0b30c",
+              "file": "tenant-isolation.spec.ts",
+              "line": 62,
+              "column": 7
+            },
+            {
+              "title": "should handle invalid tenant slugs gracefully",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Google Chrome",
+                  "projectName": "Google Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "7d8e83e4ff540a62ed2c-9b33c874977ab5edaf72",
+              "file": "tenant-isolation.spec.ts",
+              "line": 88,
+              "column": 7
+            },
+            {
+              "title": "should validate tenant status before allowing access",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Google Chrome",
+                  "projectName": "Google Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "7d8e83e4ff540a62ed2c-41b3297e13bf3283b154",
+              "file": "tenant-isolation.spec.ts",
+              "line": 96,
+              "column": 7
+            },
+            {
+              "title": "should maintain session isolation between browser contexts",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Google Chrome",
+                  "projectName": "Google Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "7d8e83e4ff540a62ed2c-21e28c7e091d49a225ac",
+              "file": "tenant-isolation.spec.ts",
+              "line": 111,
+              "column": 7
+            },
+            {
+              "title": "should handle concurrent tenant registrations",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Google Chrome",
+                  "projectName": "Google Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "7d8e83e4ff540a62ed2c-5205d87697f3da60f6ba",
+              "file": "tenant-isolation.spec.ts",
+              "line": 139,
+              "column": 7
+            },
+            {
+              "title": "should prevent SQL injection in tenant identification",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Google Chrome",
+                  "projectName": "Google Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "7d8e83e4ff540a62ed2c-4be51894ad7b52fe428c",
+              "file": "tenant-isolation.spec.ts",
+              "line": 162,
+              "column": 7
+            },
+            {
+              "title": "should handle special characters in tenant slugs safely",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Google Chrome",
+                  "projectName": "Google Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "7d8e83e4ff540a62ed2c-de77fd17c2046bb99d85",
+              "file": "tenant-isolation.spec.ts",
+              "line": 181,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "tenant-registration.spec.ts",
+      "file": "tenant-registration.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Tenant Registration E2E Flow",
+          "file": "tenant-registration.spec.ts",
+          "line": 21,
+          "column": 6,
+          "specs": [],
+          "suites": [
+            {
+              "title": "Successful Registration Flow",
+              "file": "tenant-registration.spec.ts",
+              "line": 46,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "should complete full tenant registration with valid data",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 7,
+                          "parallelIndex": 0,
+                          "status": "failed",
+                          "duration": 14771,
+                          "error": {
+                            "message": "Error: \u001b[31mTimed out 10000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/e2e-test-1749574220349-xkkuh7\\/admin/\u001b[39m\nReceived string:  \u001b[31m\"http://localhost:3000/register-org\"\u001b[39m\nCall log:\n\u001b[2m  - expect.toHaveURL with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m    13 × locator resolved to <html lang=\"en\">…</html>\u001b[22m\n\u001b[2m       - unexpected value \"http://localhost:3000/register-org\"\u001b[22m\n",
+                            "stack": "Error: \u001b[31mTimed out 10000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/e2e-test-1749574220349-xkkuh7\\/admin/\u001b[39m\nReceived string:  \u001b[31m\"http://localhost:3000/register-org\"\u001b[39m\nCall log:\n\u001b[2m  - expect.toHaveURL with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m    13 × locator resolved to <html lang=\"en\">…</html>\u001b[22m\n\u001b[2m       - unexpected value \"http://localhost:3000/register-org\"\u001b[22m\n\n    at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/tenant-registration.spec.ts:60:26",
+                            "location": {
+                              "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/tenant-registration.spec.ts",
+                              "column": 26,
+                              "line": 60
+                            },
+                            "snippet": "\u001b[0m \u001b[90m 58 |\u001b[39m       \n \u001b[90m 59 |\u001b[39m       \u001b[90m// Wait for redirect to tenant dashboard\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 60 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page)\u001b[33m.\u001b[39mtoHaveURL(\u001b[36mnew\u001b[39m \u001b[33mRegExp\u001b[39m(\u001b[32m`/${testData.organizationSlug}/admin`\u001b[39m))\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                          \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 61 |\u001b[39m       \n \u001b[90m 62 |\u001b[39m       \u001b[90m// Verify we're on the tenant dashboard\u001b[39m\n \u001b[90m 63 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'h1'\u001b[39m))\u001b[33m.\u001b[39mtoContainText(\u001b[32m'Dashboard'\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/tenant-registration.spec.ts",
+                                "column": 26,
+                                "line": 60
+                              },
+                              "message": "Error: \u001b[31mTimed out 10000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/e2e-test-1749574220349-xkkuh7\\/admin/\u001b[39m\nReceived string:  \u001b[31m\"http://localhost:3000/register-org\"\u001b[39m\nCall log:\n\u001b[2m  - expect.toHaveURL with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m    13 × locator resolved to <html lang=\"en\">…</html>\u001b[22m\n\u001b[2m       - unexpected value \"http://localhost:3000/register-org\"\u001b[22m\n\n\n\u001b[0m \u001b[90m 58 |\u001b[39m       \n \u001b[90m 59 |\u001b[39m       \u001b[90m// Wait for redirect to tenant dashboard\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 60 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page)\u001b[33m.\u001b[39mtoHaveURL(\u001b[36mnew\u001b[39m \u001b[33mRegExp\u001b[39m(\u001b[32m`/${testData.organizationSlug}/admin`\u001b[39m))\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                          \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 61 |\u001b[39m       \n \u001b[90m 62 |\u001b[39m       \u001b[90m// Verify we're on the tenant dashboard\u001b[39m\n \u001b[90m 63 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'h1'\u001b[39m))\u001b[33m.\u001b[39mtoContainText(\u001b[32m'Dashboard'\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/tenant-registration.spec.ts:60:26\u001b[22m"
+                            }
+                          ],
+                          "stdout": [
+                            {
+                              "text": "🗑️  Cleaning up all test tenants...\n"
+                            },
+                            {
+                              "text": "🗑️  Cleaning up tenant: e2e-test-1749574220349-xkkuh7\n"
+                            }
+                          ],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-06-10T16:50:18.510Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "screenshot",
+                              "contentType": "image/png",
+                              "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/tenant-registration-Tenant-3bda2-egistration-with-valid-data-chromium/test-failed-1.png"
+                            },
+                            {
+                              "name": "video",
+                              "contentType": "video/webm",
+                              "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/tenant-registration-Tenant-3bda2-egistration-with-valid-data-chromium/video.webm"
+                            },
+                            {
+                              "name": "_error-context-0",
+                              "contentType": "text/markdown",
+                              "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/tenant-registration-Tenant-3bda2-egistration-with-valid-data-chromium/error-context.md"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/tenant-registration.spec.ts",
+                            "column": 26,
+                            "line": 60
+                          }
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-6893cde486e6703a8c25",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 47,
+                  "column": 9
+                },
+                {
+                  "title": "should auto-generate slug when not provided",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 8,
+                          "parallelIndex": 0,
+                          "status": "failed",
+                          "duration": 16209,
+                          "error": {
+                            "message": "Error: \u001b[31mTimed out 10000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/springfield-elementary-school\\/admin/\u001b[39m\nReceived string:  \u001b[31m\"http://localhost:3000/register-org\"\u001b[39m\nCall log:\n\u001b[2m  - expect.toHaveURL with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m    13 × locator resolved to <html lang=\"en\">…</html>\u001b[22m\n\u001b[2m       - unexpected value \"http://localhost:3000/register-org\"\u001b[22m\n",
+                            "stack": "Error: \u001b[31mTimed out 10000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/springfield-elementary-school\\/admin/\u001b[39m\nReceived string:  \u001b[31m\"http://localhost:3000/register-org\"\u001b[39m\nCall log:\n\u001b[2m  - expect.toHaveURL with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m    13 × locator resolved to <html lang=\"en\">…</html>\u001b[22m\n\u001b[2m       - unexpected value \"http://localhost:3000/register-org\"\u001b[22m\n\n    at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/tenant-registration.spec.ts:97:26",
+                            "location": {
+                              "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/tenant-registration.spec.ts",
+                              "column": 26,
+                              "line": 97
+                            },
+                            "snippet": "\u001b[0m \u001b[90m  95 |\u001b[39m       \u001b[90m// Submit and verify success\u001b[39m\n \u001b[90m  96 |\u001b[39m       \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[33mFORM_SELECTORS\u001b[39m\u001b[33m.\u001b[39msubmitButton)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m  97 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page)\u001b[33m.\u001b[39mtoHaveURL(\u001b[36mnew\u001b[39m \u001b[33mRegExp\u001b[39m(\u001b[32m'/springfield-elementary-school/admin'\u001b[39m))\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                          \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m  98 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m  99 |\u001b[39m\n \u001b[90m 100 |\u001b[39m     test(\u001b[32m'should handle slug validation and availability checking'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\u001b[0m"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/tenant-registration.spec.ts",
+                                "column": 26,
+                                "line": 97
+                              },
+                              "message": "Error: \u001b[31mTimed out 10000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/springfield-elementary-school\\/admin/\u001b[39m\nReceived string:  \u001b[31m\"http://localhost:3000/register-org\"\u001b[39m\nCall log:\n\u001b[2m  - expect.toHaveURL with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m    13 × locator resolved to <html lang=\"en\">…</html>\u001b[22m\n\u001b[2m       - unexpected value \"http://localhost:3000/register-org\"\u001b[22m\n\n\n\u001b[0m \u001b[90m  95 |\u001b[39m       \u001b[90m// Submit and verify success\u001b[39m\n \u001b[90m  96 |\u001b[39m       \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[33mFORM_SELECTORS\u001b[39m\u001b[33m.\u001b[39msubmitButton)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m  97 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page)\u001b[33m.\u001b[39mtoHaveURL(\u001b[36mnew\u001b[39m \u001b[33mRegExp\u001b[39m(\u001b[32m'/springfield-elementary-school/admin'\u001b[39m))\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                          \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m  98 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m  99 |\u001b[39m\n \u001b[90m 100 |\u001b[39m     test(\u001b[32m'should handle slug validation and availability checking'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\u001b[0m\n\u001b[2m    at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/tenant-registration.spec.ts:97:26\u001b[22m"
+                            }
+                          ],
+                          "stdout": [
+                            {
+                              "text": "🗑️  Cleaning up all test tenants...\n"
+                            },
+                            {
+                              "text": "🗑️  Cleaning up tenant: e2e-test-1749574238392-g5qhel\n"
+                            }
+                          ],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-06-10T16:50:36.181Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "screenshot",
+                              "contentType": "image/png",
+                              "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/tenant-registration-Tenant-49a98-rate-slug-when-not-provided-chromium/test-failed-1.png"
+                            },
+                            {
+                              "name": "video",
+                              "contentType": "video/webm",
+                              "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/tenant-registration-Tenant-49a98-rate-slug-when-not-provided-chromium/video.webm"
+                            },
+                            {
+                              "name": "_error-context-0",
+                              "contentType": "text/markdown",
+                              "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/tenant-registration-Tenant-49a98-rate-slug-when-not-provided-chromium/error-context.md"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/tenant-registration.spec.ts",
+                            "column": 26,
+                            "line": 97
+                          }
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-d459a22793807718b8dc",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 78,
+                  "column": 9
+                },
+                {
+                  "title": "should handle slug validation and availability checking",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 9,
+                          "parallelIndex": 0,
+                          "status": "interrupted",
+                          "duration": 10566,
+                          "error": {
+                            "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/e2e-test-1749574261572-sz9ei3\\/admin/\u001b[39m\nReceived string:  \u001b[31m\"http://localhost:3000/register-org\"\u001b[39m\nCall log:\n\u001b[2m  - expect.toHaveURL with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m    8 × locator resolved to <html lang=\"en\">…</html>\u001b[22m\n\u001b[2m      - unexpected value \"http://localhost:3000/register-org\"\u001b[22m\n",
+                            "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/e2e-test-1749574261572-sz9ei3\\/admin/\u001b[39m\nReceived string:  \u001b[31m\"http://localhost:3000/register-org\"\u001b[39m\nCall log:\n\u001b[2m  - expect.toHaveURL with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m    8 × locator resolved to <html lang=\"en\">…</html>\u001b[22m\n\u001b[2m      - unexpected value \"http://localhost:3000/register-org\"\u001b[22m\n\n    at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/tenant-registration.spec.ts:123:26",
+                            "location": {
+                              "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/tenant-registration.spec.ts",
+                              "column": 26,
+                              "line": 123
+                            },
+                            "snippet": "\u001b[0m \u001b[90m 121 |\u001b[39m       \n \u001b[90m 122 |\u001b[39m       \u001b[90m// Verify successful registration\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 123 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page)\u001b[33m.\u001b[39mtoHaveURL(\u001b[36mnew\u001b[39m \u001b[33mRegExp\u001b[39m(\u001b[32m`/${testData.organizationSlug}/admin`\u001b[39m))\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                          \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 124 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 125 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 126 |\u001b[39m\u001b[0m"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/tenant-registration.spec.ts",
+                                "column": 26,
+                                "line": 123
+                              },
+                              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/e2e-test-1749574261572-sz9ei3\\/admin/\u001b[39m\nReceived string:  \u001b[31m\"http://localhost:3000/register-org\"\u001b[39m\nCall log:\n\u001b[2m  - expect.toHaveURL with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m    8 × locator resolved to <html lang=\"en\">…</html>\u001b[22m\n\u001b[2m      - unexpected value \"http://localhost:3000/register-org\"\u001b[22m\n\n\n\u001b[0m \u001b[90m 121 |\u001b[39m       \n \u001b[90m 122 |\u001b[39m       \u001b[90m// Verify successful registration\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 123 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page)\u001b[33m.\u001b[39mtoHaveURL(\u001b[36mnew\u001b[39m \u001b[33mRegExp\u001b[39m(\u001b[32m`/${testData.organizationSlug}/admin`\u001b[39m))\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                          \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 124 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 125 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 126 |\u001b[39m\u001b[0m\n\u001b[2m    at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/tenant-registration.spec.ts:123:26\u001b[22m"
+                            }
+                          ],
+                          "stdout": [
+                            {
+                              "text": "🗑️  Cleaning up all test tenants...\n"
+                            },
+                            {
+                              "text": "🗑️  Cleaning up tenant: e2e-test-1749574261572-sz9ei3\n"
+                            }
+                          ],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-06-10T16:50:58.097Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "screenshot",
+                              "contentType": "image/png",
+                              "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/tenant-registration-Tenant-7138c-n-and-availability-checking-chromium/test-failed-1.png"
+                            },
+                            {
+                              "name": "video",
+                              "contentType": "video/webm",
+                              "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/tenant-registration-Tenant-7138c-n-and-availability-checking-chromium/video.webm"
+                            },
+                            {
+                              "name": "_error-context-0",
+                              "contentType": "text/markdown",
+                              "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/tenant-registration-Tenant-7138c-n-and-availability-checking-chromium/error-context.md"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/tenant-registration.spec.ts",
+                            "column": 26,
+                            "line": 123
+                          }
+                        }
+                      ],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-0404a2472d5d1497fab7",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 100,
+                  "column": 9
+                },
+                {
+                  "title": "should complete full tenant registration with valid data",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "firefox",
+                      "projectName": "firefox",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-43dea710ab78ea0c754b",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 47,
+                  "column": 9
+                },
+                {
+                  "title": "should auto-generate slug when not provided",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "firefox",
+                      "projectName": "firefox",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-4db6016b4f6f2f055fd6",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 78,
+                  "column": 9
+                },
+                {
+                  "title": "should handle slug validation and availability checking",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "firefox",
+                      "projectName": "firefox",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-cbbebcf026602b16c65a",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 100,
+                  "column": 9
+                },
+                {
+                  "title": "should complete full tenant registration with valid data",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "webkit",
+                      "projectName": "webkit",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-1d5f4fb7beaa9ef20f25",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 47,
+                  "column": 9
+                },
+                {
+                  "title": "should auto-generate slug when not provided",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "webkit",
+                      "projectName": "webkit",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-1ef22be72ad071310616",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 78,
+                  "column": 9
+                },
+                {
+                  "title": "should handle slug validation and availability checking",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "webkit",
+                      "projectName": "webkit",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-05ce41884d1a469bcc75",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 100,
+                  "column": 9
+                },
+                {
+                  "title": "should complete full tenant registration with valid data",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Chrome",
+                      "projectName": "Mobile Chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-2167ae770aa7c1a6f674",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 47,
+                  "column": 9
+                },
+                {
+                  "title": "should auto-generate slug when not provided",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Chrome",
+                      "projectName": "Mobile Chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-23ce66db9a655e2626db",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 78,
+                  "column": 9
+                },
+                {
+                  "title": "should handle slug validation and availability checking",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Chrome",
+                      "projectName": "Mobile Chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-771cc54992af764a0035",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 100,
+                  "column": 9
+                },
+                {
+                  "title": "should complete full tenant registration with valid data",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Safari",
+                      "projectName": "Mobile Safari",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-81804490df9e2ff36dde",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 47,
+                  "column": 9
+                },
+                {
+                  "title": "should auto-generate slug when not provided",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Safari",
+                      "projectName": "Mobile Safari",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-58f2aee781d8c1738df6",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 78,
+                  "column": 9
+                },
+                {
+                  "title": "should handle slug validation and availability checking",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Safari",
+                      "projectName": "Mobile Safari",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-f3db9f6c761176559ee0",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 100,
+                  "column": 9
+                },
+                {
+                  "title": "should complete full tenant registration with valid data",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Microsoft Edge",
+                      "projectName": "Microsoft Edge",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-1f2ea89481874c7c110c",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 47,
+                  "column": 9
+                },
+                {
+                  "title": "should auto-generate slug when not provided",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Microsoft Edge",
+                      "projectName": "Microsoft Edge",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-c775a20d33ceb88e018a",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 78,
+                  "column": 9
+                },
+                {
+                  "title": "should handle slug validation and availability checking",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Microsoft Edge",
+                      "projectName": "Microsoft Edge",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-d11e3bb50214767ce31c",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 100,
+                  "column": 9
+                },
+                {
+                  "title": "should complete full tenant registration with valid data",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Google Chrome",
+                      "projectName": "Google Chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-908627f63e288cf855d5",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 47,
+                  "column": 9
+                },
+                {
+                  "title": "should auto-generate slug when not provided",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Google Chrome",
+                      "projectName": "Google Chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-d387b82d41017649c192",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 78,
+                  "column": 9
+                },
+                {
+                  "title": "should handle slug validation and availability checking",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Google Chrome",
+                      "projectName": "Google Chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-0780436d5a6b7a06e72d",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 100,
+                  "column": 9
+                }
+              ]
+            },
+            {
+              "title": "Form Validation",
+              "file": "tenant-registration.spec.ts",
+              "line": 127,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "should show validation errors for missing required fields",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-7890d016409c69834623",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 128,
+                  "column": 9
+                },
+                {
+                  "title": "should validate email format",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-5e67d959f294049b5aea",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 143,
+                  "column": 9
+                },
+                {
+                  "title": "should validate password confirmation match",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-b9257e38638092a07592",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 154,
+                  "column": 9
+                },
+                {
+                  "title": "should validate slug format",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-d24394b2d068e6d87e12",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 165,
+                  "column": 9
+                },
+                {
+                  "title": "should show validation errors for missing required fields",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "firefox",
+                      "projectName": "firefox",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-530882ebadb9443de61f",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 128,
+                  "column": 9
+                },
+                {
+                  "title": "should validate email format",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "firefox",
+                      "projectName": "firefox",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-b80982d50a33ce8d1bea",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 143,
+                  "column": 9
+                },
+                {
+                  "title": "should validate password confirmation match",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "firefox",
+                      "projectName": "firefox",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-43f3e7b6b9f7aea3de5d",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 154,
+                  "column": 9
+                },
+                {
+                  "title": "should validate slug format",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "firefox",
+                      "projectName": "firefox",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-d4381f9fa53781b7f6f6",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 165,
+                  "column": 9
+                },
+                {
+                  "title": "should show validation errors for missing required fields",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "webkit",
+                      "projectName": "webkit",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-c56b3a5b478440c4767b",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 128,
+                  "column": 9
+                },
+                {
+                  "title": "should validate email format",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "webkit",
+                      "projectName": "webkit",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-dac73e01cb414cfa0649",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 143,
+                  "column": 9
+                },
+                {
+                  "title": "should validate password confirmation match",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "webkit",
+                      "projectName": "webkit",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-bb6db74bf67ca3bab6c8",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 154,
+                  "column": 9
+                },
+                {
+                  "title": "should validate slug format",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "webkit",
+                      "projectName": "webkit",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-e754bc1b33ff8bc9fddf",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 165,
+                  "column": 9
+                },
+                {
+                  "title": "should show validation errors for missing required fields",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Chrome",
+                      "projectName": "Mobile Chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-56470b9585bf0c71e9f4",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 128,
+                  "column": 9
+                },
+                {
+                  "title": "should validate email format",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Chrome",
+                      "projectName": "Mobile Chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-b7535e5cdb556e22b418",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 143,
+                  "column": 9
+                },
+                {
+                  "title": "should validate password confirmation match",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Chrome",
+                      "projectName": "Mobile Chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-5bea72f43685a23ca25c",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 154,
+                  "column": 9
+                },
+                {
+                  "title": "should validate slug format",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Chrome",
+                      "projectName": "Mobile Chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-96d206e7c1cc400a7ff1",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 165,
+                  "column": 9
+                },
+                {
+                  "title": "should show validation errors for missing required fields",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Safari",
+                      "projectName": "Mobile Safari",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-21bd2c64a650991b5c78",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 128,
+                  "column": 9
+                },
+                {
+                  "title": "should validate email format",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Safari",
+                      "projectName": "Mobile Safari",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-c116e1657eacdbf8abfa",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 143,
+                  "column": 9
+                },
+                {
+                  "title": "should validate password confirmation match",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Safari",
+                      "projectName": "Mobile Safari",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-40e61d4a2197c51d564f",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 154,
+                  "column": 9
+                },
+                {
+                  "title": "should validate slug format",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Safari",
+                      "projectName": "Mobile Safari",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-d661c4edbf0431d18a0a",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 165,
+                  "column": 9
+                },
+                {
+                  "title": "should show validation errors for missing required fields",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Microsoft Edge",
+                      "projectName": "Microsoft Edge",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-28d976df1a855f909c68",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 128,
+                  "column": 9
+                },
+                {
+                  "title": "should validate email format",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Microsoft Edge",
+                      "projectName": "Microsoft Edge",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-db7cf6c7546e53cb4937",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 143,
+                  "column": 9
+                },
+                {
+                  "title": "should validate password confirmation match",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Microsoft Edge",
+                      "projectName": "Microsoft Edge",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-b85c8c0d7c1229c81c8b",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 154,
+                  "column": 9
+                },
+                {
+                  "title": "should validate slug format",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Microsoft Edge",
+                      "projectName": "Microsoft Edge",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-c815019605d9381e26a0",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 165,
+                  "column": 9
+                },
+                {
+                  "title": "should show validation errors for missing required fields",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Google Chrome",
+                      "projectName": "Google Chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-e4f90c7597f55674f6b1",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 128,
+                  "column": 9
+                },
+                {
+                  "title": "should validate email format",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Google Chrome",
+                      "projectName": "Google Chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-59bae2974d41abec74cf",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 143,
+                  "column": 9
+                },
+                {
+                  "title": "should validate password confirmation match",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Google Chrome",
+                      "projectName": "Google Chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-ef28e7d00145b850cd01",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 154,
+                  "column": 9
+                },
+                {
+                  "title": "should validate slug format",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Google Chrome",
+                      "projectName": "Google Chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-f4704799cfd8998b55ed",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 165,
+                  "column": 9
+                }
+              ]
+            },
+            {
+              "title": "Duplicate Slug Handling",
+              "file": "tenant-registration.spec.ts",
+              "line": 177,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "should prevent registration with duplicate slug",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-9b1777b8977666c422ff",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 178,
+                  "column": 9
+                },
+                {
+                  "title": "should prevent registration with duplicate slug",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "firefox",
+                      "projectName": "firefox",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-ee538c5fcadb987038ae",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 178,
+                  "column": 9
+                },
+                {
+                  "title": "should prevent registration with duplicate slug",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "webkit",
+                      "projectName": "webkit",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-c27c1956d1a775656edb",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 178,
+                  "column": 9
+                },
+                {
+                  "title": "should prevent registration with duplicate slug",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Chrome",
+                      "projectName": "Mobile Chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-3f935de727cad42dc026",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 178,
+                  "column": 9
+                },
+                {
+                  "title": "should prevent registration with duplicate slug",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Safari",
+                      "projectName": "Mobile Safari",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-0956d6d2523b8291c851",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 178,
+                  "column": 9
+                },
+                {
+                  "title": "should prevent registration with duplicate slug",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Microsoft Edge",
+                      "projectName": "Microsoft Edge",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-fa3d78829df5190db087",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 178,
+                  "column": 9
+                },
+                {
+                  "title": "should prevent registration with duplicate slug",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Google Chrome",
+                      "projectName": "Google Chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-12c506048f1add3a9b62",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 178,
+                  "column": 9
+                }
+              ]
+            },
+            {
+              "title": "API Integration",
+              "file": "tenant-registration.spec.ts",
+              "line": 199,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "should handle API errors gracefully",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-dc9958df26d994e891da",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 200,
+                  "column": 9
+                },
+                {
+                  "title": "should validate API response structure",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-1d579e65ed0c8e7cfbcb",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 222,
+                  "column": 9
+                },
+                {
+                  "title": "should handle API errors gracefully",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "firefox",
+                      "projectName": "firefox",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-025569af85b096a4cac9",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 200,
+                  "column": 9
+                },
+                {
+                  "title": "should validate API response structure",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "firefox",
+                      "projectName": "firefox",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-0b422366f4abbdff488c",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 222,
+                  "column": 9
+                },
+                {
+                  "title": "should handle API errors gracefully",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "webkit",
+                      "projectName": "webkit",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-cb75bba8642fe45fed74",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 200,
+                  "column": 9
+                },
+                {
+                  "title": "should validate API response structure",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "webkit",
+                      "projectName": "webkit",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-679bb1afa04c81b4cfec",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 222,
+                  "column": 9
+                },
+                {
+                  "title": "should handle API errors gracefully",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Chrome",
+                      "projectName": "Mobile Chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-7c4f04c295ec011a1013",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 200,
+                  "column": 9
+                },
+                {
+                  "title": "should validate API response structure",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Chrome",
+                      "projectName": "Mobile Chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-77e6493a980b2faee2fd",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 222,
+                  "column": 9
+                },
+                {
+                  "title": "should handle API errors gracefully",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Safari",
+                      "projectName": "Mobile Safari",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-2e7b1ac7dedff4fcec28",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 200,
+                  "column": 9
+                },
+                {
+                  "title": "should validate API response structure",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Safari",
+                      "projectName": "Mobile Safari",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-c0517c1b9d97c0f97975",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 222,
+                  "column": 9
+                },
+                {
+                  "title": "should handle API errors gracefully",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Microsoft Edge",
+                      "projectName": "Microsoft Edge",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-02c08cf97f0b24e99669",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 200,
+                  "column": 9
+                },
+                {
+                  "title": "should validate API response structure",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Microsoft Edge",
+                      "projectName": "Microsoft Edge",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-a099cfa227762338a07a",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 222,
+                  "column": 9
+                },
+                {
+                  "title": "should handle API errors gracefully",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Google Chrome",
+                      "projectName": "Google Chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-1a1ea879d2b2a2a71544",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 200,
+                  "column": 9
+                },
+                {
+                  "title": "should validate API response structure",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Google Chrome",
+                      "projectName": "Google Chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-9c09c089ed69e076c2e2",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 222,
+                  "column": 9
+                }
+              ]
+            },
+            {
+              "title": "Tenant Path-Based Access",
+              "file": "tenant-registration.spec.ts",
+              "line": 269,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "should enable access via path-based tenant identification",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-6c1a0c5cd98a7e04fe99",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 270,
+                  "column": 9
+                },
+                {
+                  "title": "should redirect to correct tenant context after registration",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-1820b85c148038d26af6",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 289,
+                  "column": 9
+                },
+                {
+                  "title": "should enable access via path-based tenant identification",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "firefox",
+                      "projectName": "firefox",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-068d14235373a1dee9e3",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 270,
+                  "column": 9
+                },
+                {
+                  "title": "should redirect to correct tenant context after registration",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "firefox",
+                      "projectName": "firefox",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-17a50c3ac04ed4fa8b96",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 289,
+                  "column": 9
+                },
+                {
+                  "title": "should enable access via path-based tenant identification",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "webkit",
+                      "projectName": "webkit",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-b69d00de05e3b8d60637",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 270,
+                  "column": 9
+                },
+                {
+                  "title": "should redirect to correct tenant context after registration",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "webkit",
+                      "projectName": "webkit",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-0ef29d51b94380385c44",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 289,
+                  "column": 9
+                },
+                {
+                  "title": "should enable access via path-based tenant identification",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Chrome",
+                      "projectName": "Mobile Chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-eebd5a652cd2e741b37a",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 270,
+                  "column": 9
+                },
+                {
+                  "title": "should redirect to correct tenant context after registration",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Chrome",
+                      "projectName": "Mobile Chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-614f53206aa504909e8a",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 289,
+                  "column": 9
+                },
+                {
+                  "title": "should enable access via path-based tenant identification",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Safari",
+                      "projectName": "Mobile Safari",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-3c560d025088a7afc711",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 270,
+                  "column": 9
+                },
+                {
+                  "title": "should redirect to correct tenant context after registration",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Safari",
+                      "projectName": "Mobile Safari",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-c0cc7c94d7ddf5ba6c43",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 289,
+                  "column": 9
+                },
+                {
+                  "title": "should enable access via path-based tenant identification",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Microsoft Edge",
+                      "projectName": "Microsoft Edge",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-802989dd5d09454de2cf",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 270,
+                  "column": 9
+                },
+                {
+                  "title": "should redirect to correct tenant context after registration",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Microsoft Edge",
+                      "projectName": "Microsoft Edge",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-08232f38425aaaf8bfb2",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 289,
+                  "column": 9
+                },
+                {
+                  "title": "should enable access via path-based tenant identification",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Google Chrome",
+                      "projectName": "Google Chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-c47621a9f4a7ee5fa54b",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 270,
+                  "column": 9
+                },
+                {
+                  "title": "should redirect to correct tenant context after registration",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Google Chrome",
+                      "projectName": "Google Chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-890f379ecb1814e993aa",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 289,
+                  "column": 9
+                }
+              ]
+            },
+            {
+              "title": "Edge Cases and Performance",
+              "file": "tenant-registration.spec.ts",
+              "line": 308,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "should handle special characters in organization names",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-058f5e2c4dc1c6d467fb",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 309,
+                  "column": 9
+                },
+                {
+                  "title": "should handle maximum length inputs",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-09c5b338c79a808a5128",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 323,
+                  "column": 9
+                },
+                {
+                  "title": "should complete registration within reasonable time",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-e776c03786a3bc90dd33",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 333,
+                  "column": 9
+                },
+                {
+                  "title": "should handle special characters in organization names",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "firefox",
+                      "projectName": "firefox",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-f70cae8e69096d18d815",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 309,
+                  "column": 9
+                },
+                {
+                  "title": "should handle maximum length inputs",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "firefox",
+                      "projectName": "firefox",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-1952d42e544d8be8eeb3",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 323,
+                  "column": 9
+                },
+                {
+                  "title": "should complete registration within reasonable time",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "firefox",
+                      "projectName": "firefox",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-c24f7b97587fe3e512d3",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 333,
+                  "column": 9
+                },
+                {
+                  "title": "should handle special characters in organization names",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "webkit",
+                      "projectName": "webkit",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-64550744937afa72aa3a",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 309,
+                  "column": 9
+                },
+                {
+                  "title": "should handle maximum length inputs",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "webkit",
+                      "projectName": "webkit",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-023935c2952521ba67b6",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 323,
+                  "column": 9
+                },
+                {
+                  "title": "should complete registration within reasonable time",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "webkit",
+                      "projectName": "webkit",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-018b123a90b8880fab41",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 333,
+                  "column": 9
+                },
+                {
+                  "title": "should handle special characters in organization names",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Chrome",
+                      "projectName": "Mobile Chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-2766a5be3306b5d20886",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 309,
+                  "column": 9
+                },
+                {
+                  "title": "should handle maximum length inputs",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Chrome",
+                      "projectName": "Mobile Chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-0a1f055fff32f08cba2d",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 323,
+                  "column": 9
+                },
+                {
+                  "title": "should complete registration within reasonable time",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Chrome",
+                      "projectName": "Mobile Chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-602fdb67119b127d12d4",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 333,
+                  "column": 9
+                },
+                {
+                  "title": "should handle special characters in organization names",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Safari",
+                      "projectName": "Mobile Safari",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-cd7587639a89d2757641",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 309,
+                  "column": 9
+                },
+                {
+                  "title": "should handle maximum length inputs",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Safari",
+                      "projectName": "Mobile Safari",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-4153bddf6bec8229d5f0",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 323,
+                  "column": 9
+                },
+                {
+                  "title": "should complete registration within reasonable time",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Safari",
+                      "projectName": "Mobile Safari",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-3092be447cf9379ee406",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 333,
+                  "column": 9
+                },
+                {
+                  "title": "should handle special characters in organization names",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Microsoft Edge",
+                      "projectName": "Microsoft Edge",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-d481e4cba438f24120f2",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 309,
+                  "column": 9
+                },
+                {
+                  "title": "should handle maximum length inputs",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Microsoft Edge",
+                      "projectName": "Microsoft Edge",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-67c8a84d8a324333e4e2",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 323,
+                  "column": 9
+                },
+                {
+                  "title": "should complete registration within reasonable time",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Microsoft Edge",
+                      "projectName": "Microsoft Edge",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-328287434b35ddd4ab37",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 333,
+                  "column": 9
+                },
+                {
+                  "title": "should handle special characters in organization names",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Google Chrome",
+                      "projectName": "Google Chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-0b99928082e8612221c2",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 309,
+                  "column": 9
+                },
+                {
+                  "title": "should handle maximum length inputs",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Google Chrome",
+                      "projectName": "Google Chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-0b1bbf712be12f35164f",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 323,
+                  "column": 9
+                },
+                {
+                  "title": "should complete registration within reasonable time",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Google Chrome",
+                      "projectName": "Google Chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "28aaa28cd53a4eadf08a-ed631da2fd77f46c8980",
+                  "file": "tenant-registration.spec.ts",
+                  "line": 333,
+                  "column": 9
+                }
+              ]
             }
           ]
         }
@@ -266,11 +4124,11 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2025-06-10T14:37:55.606Z",
-    "duration": 6923.411,
-    "expected": 0,
-    "skipped": 0,
-    "unexpected": 1,
+    "startTime": "2025-06-10T16:48:28.063Z",
+    "duration": 163343.21899999998,
+    "expected": 1,
+    "skipped": 151,
+    "unexpected": 9,
     "flaky": 0
   }
 }

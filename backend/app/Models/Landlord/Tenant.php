@@ -13,7 +13,7 @@ use Illuminate\Support\Str;
  * Extends Stancl's base tenant model to provide custom database naming
  * and additional tenant management features.
  */
-class Tenant extends BaseTenant
+class Tenant extends BaseTenant implements \Stancl\Tenancy\Contracts\TenantWithDatabase
 {
     use HasDatabase, HasDomains;
 
@@ -51,6 +51,47 @@ class Tenant extends BaseTenant
         // Add any sensitive fields here
     ];
 
+
+    /**
+     * Get the custom columns that should NOT be stored in the data JSON column.
+     * These columns have their own dedicated database columns.
+     */
+    public static function getCustomColumns(): array
+    {
+        return [
+            'id',
+            'name',
+            'slug',
+            'database_name',
+            'description',
+            'contact_email',
+            'contact_phone',
+            'address',
+            'settings',
+            'status',
+            'trial_ends_at',
+            'subscription_ends_at',
+            'created_at',
+            'updated_at',
+        ];
+    }
+
+    /**
+     * Override to disable auto-incrementing since we use string IDs
+     */
+    public function getIncrementing()
+    {
+        return false;
+    }
+
+    /**
+     * Override to specify the key type as string
+     */
+    public function getKeyType()
+    {
+        return 'string';
+    }
+
     /**
      * Boot the model.
      */
@@ -59,14 +100,14 @@ class Tenant extends BaseTenant
         parent::boot();
 
         static::creating(function ($tenant) {
-            // Generate custom ID if not provided
-            if (empty($tenant->id)) {
-                $tenant->id = static::generateCustomId($tenant);
-            }
-
-            // Generate slug if not provided
+            // Generate slug first if not provided
             if (empty($tenant->slug)) {
                 $tenant->slug = static::generateSlug($tenant->name);
+            }
+
+            // Generate custom ID if not provided (after slug is set)
+            if (empty($tenant->id)) {
+                $tenant->id = static::generateCustomId($tenant);
             }
 
             // Generate database name if not provided
@@ -81,18 +122,23 @@ class Tenant extends BaseTenant
      */
     protected static function generateCustomId($tenant): string
     {
-        // Use slug-based ID with fallback to incremental
+        // Use slug-based ID with fallback to name-based slug
         $baseId = $tenant->slug ?: Str::slug($tenant->name);
-        
+
+        // Fallback to UUID if no name is available
+        if (empty($baseId)) {
+            return Str::uuid()->toString();
+        }
+
         // Ensure uniqueness
         $id = $baseId;
         $counter = 1;
-        
+
         while (static::where('id', $id)->exists()) {
             $id = $baseId . '_' . $counter;
             $counter++;
         }
-        
+
         return $id;
     }
 

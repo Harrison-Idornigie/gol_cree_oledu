@@ -1,8 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import AdminSidebar from '@/components/admin/AdminSidebar';
-import AdminTopbar from '@/components/admin/AdminTopbar';
+import AdminSidebar from '@/components/tenants/admin/AdminSidebar';
+import AdminTopbar from '@/components/tenants/admin/AdminTopbar';
 
 interface AdminLayoutProps {
   children: React.ReactNode;
@@ -21,7 +21,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
           isSidebarCollapsed ? 'md:pl-20' : 'md:pl-72'
         }`}
       >
-        <AdminTopbar onToggleSidebar={() => setIsSidebarCollapsed(!isSidebarCollapsed)} />
+        <AdminTopbar onSidebarToggle={() => setIsSidebarCollapsed(!isSidebarCollapsed)} />
       </div>
       <div
         className={`pb-20 pt-16 min-h-screen ${

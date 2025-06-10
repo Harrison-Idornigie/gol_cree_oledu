@@ -6,14 +6,14 @@ namespace App\Providers;
 
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\ServiceProvider;
 use Stancl\JobPipeline\JobPipeline;
 use Stancl\Tenancy\Events;
 use Stancl\Tenancy\Jobs;
 use Stancl\Tenancy\Listeners;
 use Stancl\Tenancy\Middleware;
+use Stancl\Tenancy\TenancyServiceProvider as BaseTenancyServiceProvider;
 
-class TenancyServiceProvider extends ServiceProvider
+class TenancyServiceProvider extends BaseTenancyServiceProvider
 {
     // By default, no namespace is used to support the callable array syntax.
     public static string $controllerNamespace = '';
@@ -92,13 +92,15 @@ class TenancyServiceProvider extends ServiceProvider
         ];
     }
 
-    public function register()
+    public function register(): void
     {
-        //
+        parent::register();
     }
 
-    public function boot()
+    public function boot(): void
     {
+        parent::boot();
+
         $this->bootEvents();
         $this->mapRoutes();
 

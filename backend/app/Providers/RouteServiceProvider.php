@@ -27,43 +27,7 @@ class RouteServiceProvider extends ServiceProvider
             return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
         });
 
-        $this->routes(function () {
-            // Central API Routes (no tenant context)
-            Route::middleware('api')
-                ->prefix('api')
-                ->group(base_path('routes/api.php'));
-
-            // Central Authentication Routes (no tenant context)
-            Route::middleware('api')
-                ->prefix('api')
-                ->group(base_path('routes/auth.php'));
-
-            // Landlord Routes (no tenant context)
-            Route::middleware('api')
-                ->prefix('api')
-                ->group(base_path('routes/landlord.php'));
-
-            // Tenant-scoped API Routes with hybrid tenant identification
-            Route::middleware(['api', \App\Http\Middleware\Tenant\InitializeTenancyByPathOrDomain::class])
-                ->prefix('api/{tenant}')
-                ->group(function () {
-                    // Tenant-scoped Authentication Routes
-                    // These routes work with tenant context when accessed via api/{tenant}/auth/*
-                    require base_path('routes/auth.php');
-
-                    // Tenant Admin Routes
-                    require base_path('routes/tenant-admin.php');
-
-                    // Team Routes
-                    require base_path('routes/tenant-team.php');
-
-                    // Student Routes
-                    require base_path('routes/tenant-students.php');
-                });
-
-            // Web Routes
-            Route::middleware('web')
-                ->group(base_path('routes/web.php'));
-        });
+        // Route registration is now handled in bootstrap/app.php
+        // This keeps the RouteServiceProvider clean and focused on configuration
     }
 }

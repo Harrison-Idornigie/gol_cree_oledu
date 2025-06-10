@@ -18,10 +18,28 @@ class CreateTenantsTable extends Migration
         Schema::create('tenants', function (Blueprint $table) {
             $table->string('id')->primary();
 
-            // your custom columns may go here
+            // Custom fields for better tenant management
+            $table->string('name');
+            $table->string('slug')->unique();
+            $table->string('database_name')->nullable();
+            $table->text('description')->nullable();
+            $table->string('contact_email')->nullable();
+            $table->string('contact_phone')->nullable();
+            $table->text('address')->nullable();
+            $table->json('settings')->nullable();
+            $table->enum('status', ['active', 'inactive', 'suspended', 'trial'])->default('trial');
+            $table->timestamp('trial_ends_at')->nullable();
+            $table->timestamp('subscription_ends_at')->nullable();
 
             $table->timestamps();
             $table->json('data')->nullable();
+
+            // Add indexes for performance
+            $table->index('slug');
+            $table->index('database_name');
+            $table->index('status');
+            $table->index('trial_ends_at');
+            $table->index('subscription_ends_at');
         });
     }
 

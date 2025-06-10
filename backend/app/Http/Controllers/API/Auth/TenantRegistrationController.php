@@ -40,7 +40,7 @@ class TenantRegistrationController extends BaseAPIController
 
                 // Admin user data
                 'admin.name' => 'required|string|max:255',
-                'admin.email' => 'required|email|max:255|unique:users,email',
+                'admin.email' => 'required|email|max:255|unique:central_users,email',
                 'admin.password' => 'required|string|min:8',
                 'admin.password_confirmation' => 'required|string|same:admin.password',
             ]);
