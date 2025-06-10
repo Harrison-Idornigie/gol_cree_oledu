@@ -21,9 +21,11 @@ use Illuminate\Support\Facades\Route;
  *
  * These routes are for teams who can create and manage content
  * within their tenant space.
+ *
+ * URL Pattern: api/{tenant-slug}/team/*
  */
 
-Route::prefix('team')->middleware(['auth:sanctum', 'verified', 'tenant', 'role:team'])->group(function () {
+Route::prefix('team')->middleware(['auth:sanctum', 'verified', 'role:team'])->group(function () {
 
     // Language Management
     Route::prefix('languages')->group(function () {

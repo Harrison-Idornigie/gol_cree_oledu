@@ -1,0 +1,151 @@
+<?php
+
+namespace App\Http\Middleware\Tenant;
+
+use Closure;
+use Illuminate\Http\Request;
+use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
+use Stancl\Tenancy\Resolvers\DomainTenantResolver;
+use Stancl\Tenancy\Resolvers\PathTenantResolver;
+use Stancl\Tenancy\Tenancy;
+use Stancl\Tenancy\Exceptions\TenantCouldNotBeIdentifiedException;
+use App\Models\Landlord\Tenant;
+
+/**
+ * Hybrid Tenant Identification Middleware
+ * 
+ * This middleware implements a hybrid tenant identification system that:
+ * 1. First attempts to identify tenant from URL path (api/{tenant-slug}/...)
+ * 2. Falls back to domain-based identification if path-based fails
+ * 3. Maintains backward compatibility with existing domain-based routes
+ */
+class InitializeTenancyByPathOrDomain
+{
+    protected $tenancy;
+    protected $domainMiddleware;
+
+    public function __construct(Tenancy $tenancy)
+    {
+        $this->tenancy = $tenancy;
+        $this->domainMiddleware = new InitializeTenancyByDomain($tenancy);
+    }
+
+    /**
+     * Handle an incoming request.
+     */
+    public function handle(Request $request, Closure $next)
+    {
+        // Skip tenant identification for central/landlord routes
+        if ($this->isCentralRoute($request)) {
+            return $next($request);
+        }
+
+        // Attempt path-based tenant identification first
+        $tenant = $this->identifyTenantFromPath($request);
+        
+        if ($tenant) {
+            // Initialize tenancy with path-identified tenant
+            $this->tenancy->initialize($tenant);
+            
+            // Store tenant slug in request for controllers to access
+            $request->merge(['tenant_slug' => $tenant->slug]);
+            
+            return $next($request);
+        }
+
+        // Fall back to domain-based identification
+        try {
+            return $this->domainMiddleware->handle($request, $next);
+        } catch (TenantCouldNotBeIdentifiedException $e) {
+            // If both methods fail, return appropriate error
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Tenant could not be identified from path or domain.',
+                    'error' => 'tenant_not_found'
+                ], 404);
+            }
+            
+            throw $e;
+        }
+    }
+
+    /**
+     * Identify tenant from URL path
+     */
+    protected function identifyTenantFromPath(Request $request): ?Tenant
+    {
+        $path = $request->path();
+
+        // Check if path matches pattern: api/{tenant-slug}/...
+        // This covers both api/{tenant-slug}/auth/* and api/{tenant-slug}/student/* etc.
+        if (preg_match('/^api\/([^\/]+)\//', $path, $matches)) {
+            $tenantSlug = $matches[1];
+
+            // Skip if this looks like a non-tenant API route
+            if ($this->isNonTenantApiRoute($tenantSlug)) {
+                return null;
+            }
+
+            // Find tenant by slug
+            $tenant = Tenant::where('slug', $tenantSlug)
+                           ->where('status', 'active')
+                           ->first();
+
+            if ($tenant) {
+                // Add tenant slug to route parameters for controllers
+                if ($request->route()) {
+                    $request->route()->setParameter('tenant', $tenantSlug);
+                }
+                return $tenant;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Check if this is a central/landlord route that shouldn't have tenant context
+     */
+    protected function isCentralRoute(Request $request): bool
+    {
+        $path = $request->path();
+
+        $centralRoutes = [
+            'api/public/',
+            'api/super-admin/',
+            'api/auth/register-tenant-admin',
+            'api/auth/validate-tenant-slug/',
+        ];
+
+        foreach ($centralRoutes as $centralRoute) {
+            if (str_starts_with($path, $centralRoute)) {
+                return true;
+            }
+        }
+
+        // Allow auth routes to work in both contexts
+        // If it's an auth route without tenant slug, treat as central
+        if (str_starts_with($path, 'api/auth/') && !preg_match('/^api\/([^\/]+)\/auth\//', $path)) {
+            return false; // Let it try tenant identification, but don't force central
+        }
+
+        return false;
+    }
+
+    /**
+     * Check if the slug looks like a non-tenant API route
+     */
+    protected function isNonTenantApiRoute(string $slug): bool
+    {
+        $nonTenantRoutes = [
+            'public',
+            'super-admin',
+            'auth',
+            'health',
+            'info'
+        ];
+        
+        return in_array($slug, $nonTenantRoutes);
+    }
+}

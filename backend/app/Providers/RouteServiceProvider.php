@@ -28,35 +28,34 @@ class RouteServiceProvider extends ServiceProvider
         });
 
         $this->routes(function () {
-            // API Routes
+            // Central API Routes (no tenant context)
             Route::middleware('api')
                 ->prefix('api')
                 ->group(base_path('routes/api.php'));
 
-            // Authentication Routes
+            // Central Authentication Routes (no tenant context)
             Route::middleware('api')
                 ->prefix('api')
                 ->group(base_path('routes/auth.php'));
 
-            // Landlord Routes
+            // Landlord Routes (no tenant context)
             Route::middleware('api')
                 ->prefix('api')
                 ->group(base_path('routes/landlord.php'));
 
-            // Tenant Admin Routes
-            Route::middleware('api')
-                ->prefix('api')
-                ->group(base_path('routes/tenant-admin.php'));
+            // Tenant-scoped API Routes with hybrid tenant identification
+            Route::middleware(['api', \App\Http\Middleware\Tenant\InitializeTenancyByPathOrDomain::class])
+                ->prefix('api/{tenant}')
+                ->group(function () {
+                    // Tenant Admin Routes
+                    require base_path('routes/tenant-admin.php');
 
-            // Team Routes
-            Route::middleware('api')
-                ->prefix('api')
-                ->group(base_path('routes/tenant-team.php'));
+                    // Team Routes
+                    require base_path('routes/tenant-team.php');
 
-            // Student Routes
-            Route::middleware('api')
-                ->prefix('api')
-                ->group(base_path('routes/tenant-students.php'));
+                    // Student Routes
+                    require base_path('routes/tenant-students.php');
+                });
 
             // Web Routes
             Route::middleware('web')

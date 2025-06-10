@@ -14,11 +14,7 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__ . '/../routes/console.php',
         health: '/up',
         api: __DIR__ . '/../routes/api.php',
-        then: function () {
-            Route::middleware(['api'])
-                ->prefix('api')
-                ->group(base_path('routes/landlord.php'));
-        },
+        // Route registration is now handled in RouteServiceProvider
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([

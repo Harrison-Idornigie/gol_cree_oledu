@@ -16,6 +16,7 @@ use App\Http\Controllers\API\Tenant\Student\StudentUserProgressController;
 use App\Http\Controllers\API\Tenant\Student\StudentUserSettingsController;
 use App\Http\Controllers\API\Tenant\Student\StudentVocabularyController;
 use App\Http\Controllers\API\Tenant\Student\StudentWordController;
+use App\Http\Controllers\API\Tenant\TenantTestController;
 use Illuminate\Support\Facades\Route;
 
 /**
@@ -23,10 +24,12 @@ use Illuminate\Support\Facades\Route;
  *
  * These routes are for students who can access learning content
  * within their tenant space.
+ *
+ * URL Pattern: api/{tenant-slug}/student/*
  */
 
 // Routes that require authentication but not email verification
-Route::prefix('student')->middleware(['auth:sanctum', 'tenant'])->group(function () {
+Route::prefix('student')->middleware(['auth:sanctum'])->group(function () {
     // User Progress Routes - Allow users to track their own progress even without verification
     Route::prefix('progress')->group(function () {
         Route::get('/', [StudentUserProgressController::class, 'index']);
@@ -37,7 +40,7 @@ Route::prefix('student')->middleware(['auth:sanctum', 'tenant'])->group(function
 });
 
 // Routes that require both authentication and email verification
-Route::prefix('student')->middleware(['auth:sanctum', 'verified', 'tenant', 'role:student'])->group(function () {
+Route::prefix('student')->middleware(['auth:sanctum', 'verified', 'role:student'])->group(function () {
     // Learning Content Routes - Read-only access for regular users
     // These routes should only provide access to published content
 
@@ -136,3 +139,6 @@ Route::prefix('student')->middleware(['auth:sanctum', 'verified', 'tenant', 'rol
     Route::get('guide-entries/{guideEntry}', [StudentGuideController::class, 'show']);
 
 });
+
+// Test route for tenant identification (can be removed after testing)
+Route::get('test/tenant-context', [TenantTestController::class, 'testTenantContext']);

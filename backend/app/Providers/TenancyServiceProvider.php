@@ -134,6 +134,10 @@ class TenancyServiceProvider extends ServiceProvider
             // Even higher priority than the initialization middleware
             Middleware\PreventAccessFromCentralDomains::class,
 
+            // Our custom hybrid middleware
+            \App\Http\Middleware\Tenant\InitializeTenancyByPathOrDomain::class,
+
+            // Keep original middleware for backward compatibility
             Middleware\InitializeTenancyByDomain::class,
             Middleware\InitializeTenancyBySubdomain::class,
             Middleware\InitializeTenancyByDomainOrSubdomain::class,

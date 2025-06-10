@@ -10,12 +10,24 @@ use App\Http\Controllers\API\Auth\TenantRegistrationController;
 use App\Http\Controllers\API\Auth\VerificationController;
 use Illuminate\Support\Facades\Route;
 
+/**
+ * Authentication Routes
+ *
+ * These routes work in both central and tenant contexts:
+ * - Central: api/auth/*
+ * - Tenant: api/{tenant-slug}/auth/* (when accessed through tenant middleware)
+ *
+ * The hybrid tenant middleware will automatically identify tenant context
+ * when the URL includes a tenant slug, making these routes work seamlessly
+ * in both scenarios.
+ */
+
 Route::group([
     'prefix'     => 'auth',
     'as'         => 'auth.',
-    'middleware' => 'api',
+    'middleware' => ['api', \App\Http\Middleware\Tenant\InitializeTenancyByPathOrDomain::class],
 ], function () {
-    // Authentication routes
+    // Authentication routes (work in both central and tenant contexts)
     Route::post('login', [LoginController::class, 'login']);
     Route::post('register', [RegisterController::class, 'register']);
 

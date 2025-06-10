@@ -14,9 +14,11 @@ use Illuminate\Support\Facades\Route;
  *
  * These routes are for tenant administrators who can manage their district's
  * content, users, and settings within their tenant space.
+ *
+ * URL Pattern: api/{tenant-slug}/tenant-admin/*
  */
 
-Route::prefix('tenant-admin')->middleware(['auth:sanctum', 'verified', 'tenant', 'role:tenant-admin'])->group(function () {
+Route::prefix('tenant-admin')->middleware(['auth:sanctum', 'verified', 'role:tenant-admin'])->group(function () {
 
     // Dashboard & Analytics
     Route::get('dashboard', [TenantAdminDashboardController::class, 'index']);
