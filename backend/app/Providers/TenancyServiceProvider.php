@@ -120,12 +120,12 @@ class TenancyServiceProvider extends ServiceProvider
 
     protected function mapRoutes()
     {
-        $this->app->booted(function () {
-            if (file_exists(base_path('routes/tenant.php'))) {
-                Route::namespace(static::$controllerNamespace)
-                    ->group(base_path('routes/tenant.php'));
-            }
-        });
+        // Tenant routes are now handled by RouteServiceProvider under api/{tenant} prefix
+        // This method is kept for backward compatibility but routes/tenant.php
+        // is no longer loaded here to prevent conflicts with the main RouteServiceProvider
+
+        // If you need additional tenant routes that should be loaded by Stancl's
+        // automatic tenant context switching, you can add them here with proper middleware
     }
 
     protected function makeTenancyMiddlewareHighestPriority()

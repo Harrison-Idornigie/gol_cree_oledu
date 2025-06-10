@@ -4,11 +4,8 @@ namespace App\Http\Middleware\Tenant;
 
 use Closure;
 use Illuminate\Http\Request;
-use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use Stancl\Tenancy\Resolvers\DomainTenantResolver;
-use Stancl\Tenancy\Resolvers\PathTenantResolver;
 use Stancl\Tenancy\Tenancy;
-use Stancl\Tenancy\Exceptions\TenantCouldNotBeIdentifiedException;
 use App\Models\Landlord\Tenant;
 
 /**
@@ -22,12 +19,12 @@ use App\Models\Landlord\Tenant;
 class InitializeTenancyByPathOrDomain
 {
     protected $tenancy;
-    protected $domainMiddleware;
+    protected $domainResolver;
 
-    public function __construct(Tenancy $tenancy)
+    public function __construct(Tenancy $tenancy, DomainTenantResolver $domainResolver)
     {
         $this->tenancy = $tenancy;
-        $this->domainMiddleware = new InitializeTenancyByDomain($tenancy);
+        $this->domainResolver = $domainResolver;
     }
 
     /**
@@ -55,18 +52,45 @@ class InitializeTenancyByPathOrDomain
 
         // Fall back to domain-based identification
         try {
-            return $this->domainMiddleware->handle($request, $next);
-        } catch (TenantCouldNotBeIdentifiedException $e) {
-            // If both methods fail, return appropriate error
-            if ($request->expectsJson()) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Tenant could not be identified from path or domain.',
-                    'error' => 'tenant_not_found'
-                ], 404);
+            $tenant = $this->identifyTenantFromDomain($request);
+            if ($tenant) {
+                $this->tenancy->initialize($tenant);
+                return $next($request);
             }
-            
-            throw $e;
+        } catch (\Exception) {
+            // Log domain identification error but continue to error handling
+        }
+
+        // If both methods fail, return appropriate error
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Tenant could not be identified from path or domain.',
+                'error' => 'tenant_not_found'
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Tenant could not be identified from path or domain.',
+            'error' => 'tenant_not_found'
+        ], 404);
+    }
+
+    /**
+     * Identify tenant from domain
+     */
+    protected function identifyTenantFromDomain(Request $request): ?Tenant
+    {
+        try {
+            $resolvedTenant = $this->domainResolver->resolve($request);
+            if ($resolvedTenant instanceof Tenant) {
+                return $resolvedTenant;
+            }
+            // If it's a different tenant model, find our model by ID
+            return Tenant::find($resolvedTenant->id);
+        } catch (\Exception) {
+            return null;
         }
     }
 
