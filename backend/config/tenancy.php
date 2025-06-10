@@ -7,7 +7,7 @@ use App\Models\Landlord\Tenant;
 
 return [
     'tenant_model' => Tenant::class,
-    'id_generator' => null, // Use custom ID generation
+    'id_generator' => Stancl\Tenancy\UUIDGenerator::class,
 
     'domain_model' => Domain::class,
 

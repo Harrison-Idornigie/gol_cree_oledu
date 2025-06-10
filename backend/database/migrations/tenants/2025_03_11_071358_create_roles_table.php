@@ -10,6 +10,7 @@ return new class extends Migration
     {
         Schema::create('roles', function (Blueprint $table) {
             $table->id();
+            $table->string('tenant_id')->nullable()->comment('Reference to tenant in landlord database');
             $table->string('name')->unique();
             $table->string('slug')->unique();
             $table->text('description')->nullable();
@@ -18,6 +19,8 @@ return new class extends Migration
             $table->json('metadata')->nullable()
                 ->comment('Additional role configuration');
             $table->timestamps();
+
+            $table->index(['tenant_id', 'slug']);
         });
     }
 

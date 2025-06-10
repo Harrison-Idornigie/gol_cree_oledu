@@ -21,7 +21,6 @@ class Tenant extends BaseTenant implements \Stancl\Tenancy\Contracts\TenantWithD
      * The attributes that are mass assignable.
      */
     protected $fillable = [
-        'id',
         'name',
         'slug',
         'database_name',
@@ -105,12 +104,7 @@ class Tenant extends BaseTenant implements \Stancl\Tenancy\Contracts\TenantWithD
                 $tenant->slug = static::generateSlug($tenant->name);
             }
 
-            // Generate custom ID if not provided (after slug is set)
-            if (empty($tenant->id)) {
-                $tenant->id = static::generateCustomId($tenant);
-            }
-
-            // Generate database name if not provided
+            // Let Stancl handle ID generation, but generate database name
             if (empty($tenant->database_name)) {
                 $tenant->database_name = static::generateDatabaseName($tenant);
             }

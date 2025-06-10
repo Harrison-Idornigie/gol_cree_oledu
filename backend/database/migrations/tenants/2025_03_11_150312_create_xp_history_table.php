@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('xp_history', function (Blueprint $table) {
             $table->id();
+            $table->string('tenant_id')->nullable()->comment('Reference to tenant in landlord database');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->integer('amount');
             $table->string('source');

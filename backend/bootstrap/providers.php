@@ -3,7 +3,8 @@
 return [
     App\Providers\AppServiceProvider::class,
     App\Providers\TelescopeServiceProvider::class,
-    App\Providers\RouteServiceProvider::class,
+    Stancl\Tenancy\TenancyServiceProvider::class,
     App\Providers\TenancyServiceProvider::class,
+    App\Providers\RouteServiceProvider::class,
     Nwidart\Modules\LaravelModulesServiceProvider::class,
 ];

@@ -10,6 +10,7 @@ return new class extends Migration
     {
         Schema::create('exercise_attempts', function (Blueprint $table) {
             $table->id();
+            $table->string('tenant_id')->nullable()->comment('Reference to tenant in landlord database');
             $table->foreignId('exercise_id')->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->boolean('is_correct');

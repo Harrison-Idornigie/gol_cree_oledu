@@ -14,6 +14,7 @@ return new class extends Migration
         // Achievements system
         Schema::create('achievements', function (Blueprint $table) {
             $table->id();
+            $table->string('tenant_id')->nullable()->comment('Reference to tenant in landlord database');
             $table->string('name')->unique();
             $table->text('description');
             $table->json('requirements');
@@ -24,6 +25,7 @@ return new class extends Migration
 
         Schema::create('user_achievements', function (Blueprint $table) {
             $table->id();
+            $table->string('tenant_id')->nullable()->comment('Reference to tenant in landlord database');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('achievement_id')->constrained()->onDelete('cascade');
             $table->timestamp('earned_at');
@@ -34,6 +36,7 @@ return new class extends Migration
         // XP and Rewards system
         Schema::create('xp_rules', function (Blueprint $table) {
             $table->id();
+            $table->string('tenant_id')->nullable()->comment('Reference to tenant in landlord database');
             $table->string('action')->unique(); // e.g., 'lesson_completion', 'perfect_score'
             $table->integer('base_xp');
             $table->json('multipliers')->nullable();
@@ -44,6 +47,7 @@ return new class extends Migration
         // Leagues system
         Schema::create('leagues', function (Blueprint $table) {
             $table->id();
+            $table->string('tenant_id')->nullable()->comment('Reference to tenant in landlord database');
             $table->string('name')->unique();
             $table->integer('tier');
             $table->json('requirements');
@@ -54,6 +58,7 @@ return new class extends Migration
 
         Schema::create('league_memberships', function (Blueprint $table) {
             $table->id();
+            $table->string('tenant_id')->nullable()->comment('Reference to tenant in landlord database');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('league_id')->constrained()->onDelete('cascade');
             $table->integer('current_rank')->nullable();
@@ -66,6 +71,7 @@ return new class extends Migration
         // Streak system
         Schema::create('streak_rules', function (Blueprint $table) {
             $table->id();
+            $table->string('tenant_id')->nullable()->comment('Reference to tenant in landlord database');
             $table->integer('freeze_cost');
             $table->integer('repair_window_hours');
             $table->json('bonus_schedule');
@@ -75,6 +81,7 @@ return new class extends Migration
 
         Schema::create('user_streaks', function (Blueprint $table) {
             $table->id();
+            $table->string('tenant_id')->nullable()->comment('Reference to tenant in landlord database');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->integer('current_streak');
             $table->integer('longest_streak');
@@ -87,6 +94,7 @@ return new class extends Migration
         // Daily Goals system
         Schema::create('daily_goals', function (Blueprint $table) {
             $table->id();
+            $table->string('tenant_id')->nullable()->comment('Reference to tenant in landlord database');
             $table->string('name');
             $table->integer('xp_target');
             $table->json('rewards');
@@ -96,6 +104,7 @@ return new class extends Migration
 
         Schema::create('user_daily_goals', function (Blueprint $table) {
             $table->id();
+            $table->string('tenant_id')->nullable()->comment('Reference to tenant in landlord database');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('daily_goal_id')->constrained()->onDelete('cascade');
             $table->date('date');
@@ -108,6 +117,7 @@ return new class extends Migration
         // Bonus Events system
         Schema::create('bonus_events', function (Blueprint $table) {
             $table->id();
+            $table->string('tenant_id')->nullable()->comment('Reference to tenant in landlord database');
             $table->string('name');
             $table->text('description');
             $table->timestamp('start_date');

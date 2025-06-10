@@ -75,9 +75,9 @@ class SystemTenantController extends BaseAPIController
             'subscription_ends_at' => 'nullable|date|after:trial_ends_at',
             'status' => 'nullable|in:active,inactive,suspended',
 
-            // Admin user data
+            // Admin user data - check central_users table since tenant DB doesn't exist yet
             'admin_name' => 'required|string|max:255',
-            'admin_email' => 'required|email|max:255|unique:users,email',
+            'admin_email' => 'required|email|max:255|unique:central_users,email',
             'admin_password' => 'required|string|min:8|confirmed',
             'admin_interface_language' => 'nullable|string|in:en,es,fr,de',
         ]);

@@ -3,16 +3,22 @@
 namespace App\Http\Controllers\API\Admin;
 
 use App\Http\Controllers\API\BaseAPIController;
-use App\Models\Tenant;
-use App\Models\User;
-use App\Models\Role;
+use App\Models\Landlord\Tenant;
+use App\Services\Landlord\TenantService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
+use Exception;
 
 class AdminTenantController extends BaseAPIController
 {
+    protected TenantService $tenantService;
+
+    public function __construct(TenantService $tenantService)
+    {
+        $this->tenantService = $tenantService;
+    }
+
     /**
      * Display a listing of tenants (Super Admin only).
      */
@@ -64,17 +70,16 @@ class AdminTenantController extends BaseAPIController
             'contact_info' => 'nullable|array',
             'trial_ends_at' => 'nullable|date',
             'subscription_ends_at' => 'nullable|date',
-            
-            // Admin user creation
+
+            // Admin user creation - check central_users table since tenant DB doesn't exist yet
             'admin_name' => 'required|string|max:255',
-            'admin_email' => 'required|email|unique:users,email',
+            'admin_email' => 'required|email|unique:central_users,email',
             'admin_password' => 'required|string|min:8',
         ]);
 
-        DB::beginTransaction();
         try {
-            // Create tenant
-            $tenant = Tenant::create([
+            // Prepare tenant data
+            $tenantData = [
                 'name' => $validated['name'],
                 'slug' => $validated['slug'],
                 'domain' => $validated['domain'],
@@ -83,37 +88,21 @@ class AdminTenantController extends BaseAPIController
                 'contact_info' => $validated['contact_info'] ?? [],
                 'trial_ends_at' => $validated['trial_ends_at'],
                 'subscription_ends_at' => $validated['subscription_ends_at'],
-            ]);
+            ];
 
-            // Create tenant admin role if it doesn't exist
-            $tenantAdminRole = Role::firstOrCreate([
-                'slug' => 'tenant-admin',
-                'tenant_id' => $tenant->id,
-            ], [
-                'name' => 'Tenant Administrator',
-                'description' => 'Administrator for ' . $tenant->name,
-                'is_system' => false,
-            ]);
-
-            // Create tenant admin user
-            $adminUser = User::create([
+            // Prepare admin user data
+            $adminData = [
                 'name' => $validated['admin_name'],
                 'email' => $validated['admin_email'],
-                'password' => Hash::make($validated['admin_password']),
-                'tenant_id' => $tenant->id,
-                'email_verified_at' => now(),
-            ]);
+                'password' => $validated['admin_password'],
+            ];
 
-            // Assign tenant admin role
-            $adminUser->roles()->attach($tenantAdminRole);
+            // Use TenantService to create tenant with proper database initialization
+            $result = $this->tenantService->createTenant($tenantData, $adminData);
 
-            DB::commit();
+            return $this->sendResponse($result, 'Tenant created successfully.');
 
-            $tenant->load(['users', 'learningPaths', 'languages']);
-            return $this->sendResponse($tenant, 'Tenant created successfully.');
-
-        } catch (\Exception $e) {
-            DB::rollBack();
+        } catch (Exception $e) {
             return $this->sendError('Failed to create tenant.', ['error' => $e->getMessage()]);
         }
     }

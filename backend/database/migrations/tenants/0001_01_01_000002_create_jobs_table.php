@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('jobs', function (Blueprint $table) {
             $table->id();
+            $table->string('tenant_id')->nullable()->comment('Reference to tenant in landlord database');
             $table->string('queue')->index();
             $table->longText('payload');
             $table->unsignedTinyInteger('attempts');
@@ -23,6 +24,7 @@ return new class extends Migration
 
         Schema::create('job_batches', function (Blueprint $table) {
             $table->string('id')->primary();
+            $table->string('tenant_id')->nullable()->comment('Reference to tenant in landlord database');
             $table->string('name');
             $table->integer('total_jobs');
             $table->integer('pending_jobs');
@@ -36,6 +38,7 @@ return new class extends Migration
 
         Schema::create('failed_jobs', function (Blueprint $table) {
             $table->id();
+            $table->string('tenant_id')->nullable()->comment('Reference to tenant in landlord database');
             $table->string('uuid')->unique();
             $table->text('connection');
             $table->text('queue');

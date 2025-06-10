@@ -10,6 +10,7 @@ return new class extends Migration
     {
         Schema::create('user_feedback', function (Blueprint $table) {
             $table->id();
+            $table->string('tenant_id')->nullable()->comment('Reference to tenant in landlord database');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->morphs('content');
             $table->text('message');

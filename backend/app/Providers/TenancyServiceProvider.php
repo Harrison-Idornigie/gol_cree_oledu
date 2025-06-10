@@ -109,6 +109,12 @@ class TenancyServiceProvider extends BaseTenancyServiceProvider
     public function register(): void
     {
         parent::register();
+
+        // Ensure the UniqueIdentifierGenerator is properly bound
+        $this->app->singleton(
+            \Stancl\Tenancy\Contracts\UniqueIdentifierGenerator::class,
+            \Stancl\Tenancy\UUIDGenerator::class
+        );
     }
 
     public function boot(): void

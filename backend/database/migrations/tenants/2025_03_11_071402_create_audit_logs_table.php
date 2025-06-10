@@ -10,6 +10,7 @@ return new class extends Migration
     {
         Schema::create('audit_logs', function (Blueprint $table) {
             $table->id();
+            $table->string('tenant_id')->nullable()->comment('Reference to tenant in landlord database');
             $table->foreignId('user_id')
                 ->nullable()
                 ->constrained()
@@ -36,6 +37,7 @@ return new class extends Migration
             $table->timestamps();
 
             // Add indexes for efficient queries
+            $table->index(['tenant_id', 'performed_at']);
             $table->index('action');
             $table->index('area');
             $table->index('performed_at');

@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('user_languages', function (Blueprint $table) {
             $table->id();
+            $table->string('tenant_id')->nullable()->comment('Reference to tenant in landlord database');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('language_id')->constrained()->onDelete('cascade');
             $table->boolean('is_primary')->default(false);

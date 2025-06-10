@@ -10,6 +10,7 @@ return new class extends Migration
     {
         Schema::create('vocabulary_items', function (Blueprint $table) {
             $table->id();
+            $table->string('tenant_id')->nullable()->comment('Reference to tenant in landlord database');
             $table->foreignId('lesson_id')
                 ->constrained()
                 ->onDelete('cascade');

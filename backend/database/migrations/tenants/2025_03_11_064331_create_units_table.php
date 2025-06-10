@@ -10,6 +10,7 @@ return new class extends Migration
     {
         Schema::create('units', function (Blueprint $table) {
             $table->id();
+            $table->string('tenant_id')->nullable()->comment('Reference to tenant in landlord database');
             $table->foreignId('learning_path_id')
                 ->constrained()
                 ->onDelete('cascade');
@@ -21,6 +22,7 @@ return new class extends Migration
 
             // Add index for ordering
             $table->index(['learning_path_id', 'order']);
+            $table->index(['tenant_id', 'status']);
         });
     }
 

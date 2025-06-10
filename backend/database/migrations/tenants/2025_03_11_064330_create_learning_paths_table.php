@@ -10,6 +10,7 @@ return new class extends Migration
     {
         Schema::create('learning_paths', function (Blueprint $table) {
             $table->id();
+            $table->string('tenant_id')->nullable()->comment('Reference to tenant in landlord database');
             $table->string('title');
             $table->foreignId('language_id')
                 ->nullable()
@@ -20,6 +21,8 @@ return new class extends Migration
             $table->string('target_level');
             $table->enum('status', ['draft', 'published', 'archived'])->default('draft');
             $table->timestamps();
+
+            $table->index(['tenant_id', 'status']);
         });
     }
 

@@ -14,6 +14,7 @@ return new class extends Migration
         // Word management
         Schema::create('words', function (Blueprint $table) {
             $table->id();
+            $table->string('tenant_id')->nullable()->comment('Reference to tenant in landlord database');
             $table->foreignId('language_id')->constrained();
             $table->string('text');
             $table->string('pronunciation_key')->nullable(); // IPA or similar
@@ -22,10 +23,12 @@ return new class extends Migration
             $table->timestamps();
 
             $table->unique(['language_id', 'text', 'part_of_speech']);
+            $table->index(['tenant_id', 'language_id']);
         });
 
         Schema::create('word_translations', function (Blueprint $table) {
             $table->id();
+            $table->string('tenant_id')->nullable()->comment('Reference to tenant in landlord database');
             $table->foreignId('word_id')->constrained()->onDelete('cascade');
             $table->foreignId('language_id')->constrained(); // Target language
             $table->string('text');

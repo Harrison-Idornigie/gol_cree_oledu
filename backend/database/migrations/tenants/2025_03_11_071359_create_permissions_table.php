@@ -10,6 +10,7 @@ return new class extends Migration
     {
         Schema::create('permissions', function (Blueprint $table) {
             $table->id();
+            $table->string('tenant_id')->nullable()->comment('Reference to tenant in landlord database');
             $table->string('name')->unique();
             $table->string('slug')->unique();
             $table->string('group')

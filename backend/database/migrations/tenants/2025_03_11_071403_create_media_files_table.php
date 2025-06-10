@@ -10,6 +10,7 @@ return new class extends Migration
     {
         Schema::create('media_files', function (Blueprint $table) {
             $table->id();
+            $table->string('tenant_id')->nullable()->comment('Reference to tenant in landlord database');
             $table->morphs('mediable');
             $table->foreignId('user_id')
                 ->constrained()

@@ -10,6 +10,7 @@ return new class extends Migration
     {
         Schema::create('admin_invites', function (Blueprint $table) {
             $table->id();
+            $table->string('tenant_id')->nullable()->comment('Reference to tenant in landlord database');
             $table->string('email')->unique();
             $table->string('token')->unique();
             $table->foreignId('invited_by')->constrained('users');

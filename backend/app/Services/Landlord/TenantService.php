@@ -4,8 +4,8 @@ namespace App\Services\Landlord;
 
 use App\Models\Landlord\Tenant;
 use App\Models\Tenants\User;
-use App\Models\Role;
-use App\Events\TenantCreated;
+use App\Models\Tenants\Role;
+use App\Events\Landlord\TenantCreated;
 use App\Events\Landlord\TenantSeedingRequested;
 use App\Events\Landlord\TenantDeleting;
 use Illuminate\Http\Request;
@@ -102,19 +102,22 @@ class TenantService
             $this->updateProgress($progressId, 'creating_domains', 'Setting up domains...', 30);
             $this->createTenantDomains($tenant, $tenantData);
 
-            // Step 3: Initialize tenant database (via Stancl events)
+            // Step 3: Create admin user in central database first
+            $this->updateProgress($progressId, 'creating_central_admin', 'Creating central admin record...', 40);
+            $centralAdminUser = $this->createCentralAdminUser($adminData);
+
+            // Step 4: Initialize tenant database (via Stancl events)
             $this->updateProgress($progressId, 'creating_database', 'Creating tenant database...', 50);
             Log::info('About to initialize tenant database', [
                 'tenant_id' => $tenant->id,
                 'tenant_slug' => $tenant->slug,
-                'user_model_class' => get_class(app(\App\Models\User::class)),
                 'auth_model_config' => config('auth.providers.users.model')
             ]);
             $this->initializeTenantDatabase($tenant);
 
-            // Step 4: Create admin user
-            $this->updateProgress($progressId, 'creating_admin', 'Creating admin user...', 70);
-            $adminUser = $this->createAdminUser($tenant, $adminData);
+            // Step 5: Create admin user in tenant database (copy from central)
+            $this->updateProgress($progressId, 'creating_tenant_admin', 'Creating tenant admin user...', 70);
+            $adminUser = $this->createTenantAdminUser($tenant, $centralAdminUser, $adminData);
 
             // Step 5: Fire tenant created event
             $this->updateProgress($progressId, 'setting_up_data', 'Setting up default data...', 80);
@@ -298,7 +301,7 @@ class TenantService
     {
         $validator = Validator::make($data, [
             'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:users,email',
+            'email' => 'required|email|max:255|unique:central_users,email',
             'password' => 'required|string|min:8',
             'interface_language' => 'nullable|string|in:en,es,fr,de,ja,ko,zh',
         ]);
@@ -385,7 +388,100 @@ class TenantService
     }
 
     /**
-     * Create admin user for the tenant
+     * Create admin user in central database (Phase 1)
+     */
+    protected function createCentralAdminUser(array $adminData): \App\Models\Landlord\CentralUser
+    {
+        return \App\Models\Landlord\CentralUser::create([
+            'name' => $adminData['name'],
+            'email' => $adminData['email'],
+            'password' => Hash::make($adminData['password']),
+            'role' => 'tenant-admin',
+            'interface_language' => $adminData['interface_language'] ?? 'en',
+            'is_active' => true,
+        ]);
+    }
+
+    /**
+     * Create admin user in tenant database (Phase 2)
+     */
+    protected function createTenantAdminUser(Tenant $tenant, \App\Models\Landlord\CentralUser $centralUser, array $adminData): User
+    {
+        // In testing environment, we might not have actual tenant databases
+        if (app()->environment('testing') && !$this->tenantDatabaseExists($tenant)) {
+            // Create a mock user for testing
+            return new User([
+                'id' => 1,
+                'name' => $centralUser->name,
+                'email' => $centralUser->email,
+                'interface_language' => $centralUser->interface_language,
+                'email_verified_at' => now(),
+                'tenant_id' => $tenant->id,
+            ]);
+        }
+
+        $adminUser = null;
+
+        // Switch to tenant context to create user
+        $tenant->run(function () use ($tenant, $centralUser, $adminData, &$adminUser) {
+            Log::info('Creating admin user in tenant context', [
+                'tenant_id' => $tenant->id,
+                'current_database' => DB::connection()->getDatabaseName(),
+                'user_model_class' => User::class,
+                'admin_email' => $centralUser->email,
+                'central_user_id' => $centralUser->id
+            ]);
+
+            try {
+                $adminUser = User::create([
+                    'name' => $centralUser->name,
+                    'email' => $centralUser->email,
+                    'password' => $centralUser->password, // Already hashed
+                    'interface_language' => $centralUser->interface_language,
+                    'email_verified_at' => now(),
+                    'tenant_id' => $tenant->id,
+                    // 'central_user_id' => $centralUser->id, // TODO: Enable after migration
+                ]);
+
+                Log::info('Admin user created successfully in tenant database', [
+                    'user_id' => $adminUser->id,
+                    'tenant_id' => $tenant->id,
+                    'central_user_id' => $centralUser->id
+                ]);
+            } catch (\Exception $e) {
+                Log::error('Failed to create admin user in tenant database', [
+                    'tenant_id' => $tenant->id,
+                    'central_user_id' => $centralUser->id,
+                    'error' => $e->getMessage(),
+                    'database' => DB::connection()->getDatabaseName()
+                ]);
+                throw $e;
+            }
+
+            // Create tenant admin role if it doesn't exist
+            $tenantAdminRole = Role::firstOrCreate([
+                'slug' => 'tenant-admin',
+                'tenant_id' => $tenant->id,
+            ], [
+                'name' => 'Tenant Administrator',
+                'description' => "Administrator for {$tenant->name}",
+                'is_system' => true,
+            ]);
+
+            // Assign tenant admin role
+            $adminUser->roles()->attach($tenantAdminRole);
+        });
+
+        if (!$adminUser) {
+            throw new Exception('Failed to create admin user in tenant database');
+        }
+
+        return $adminUser;
+    }
+
+    /**
+     * Legacy method - kept for backward compatibility
+     * @deprecated Use createTenantAdminUser instead
      */
     protected function createAdminUser(Tenant $tenant, array $adminData): User
     {

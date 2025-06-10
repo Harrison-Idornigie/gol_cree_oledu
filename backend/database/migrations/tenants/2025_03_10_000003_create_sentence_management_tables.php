@@ -14,15 +14,19 @@ return new class extends Migration
         // Sentence management
         Schema::create('sentences', function (Blueprint $table) {
             $table->id();
+            $table->string('tenant_id')->nullable()->comment('Reference to tenant in landlord database');
             $table->foreignId('language_id')->constrained();
             $table->text('text');
             $table->string('pronunciation_key')->nullable();
             $table->json('metadata')->nullable(); // Difficulty level, tags, etc.
             $table->timestamps();
+
+            $table->index(['tenant_id', 'language_id']);
         });
 
         Schema::create('sentence_translations', function (Blueprint $table) {
             $table->id();
+            $table->string('tenant_id')->nullable()->comment('Reference to tenant in landlord database');
             $table->foreignId('sentence_id')->constrained()->onDelete('cascade');
             $table->foreignId('language_id')->constrained(); // Target language
             $table->text('text');
