@@ -35,32 +35,33 @@ class TenantRegistrationController extends BaseAPIController
             $validated = $request->validate([
                 // Tenant data
                 'tenant.name' => 'required|string|max:255',
-                'tenant.slug' => 'nullable|string|max:50|unique:tenants,slug|regex:/^[a-z0-9][a-z0-9-]*[a-z0-9]$/',
+                'tenant.slug' => 'nullable|string|max:50',
                 'tenant.description' => 'nullable|string|max:1000',
-                
+
                 // Admin user data
                 'admin.name' => 'required|string|max:255',
-                'admin.email' => 'required|email|max:255',
+                'admin.email' => 'required|email|max:255|unique:users,email',
                 'admin.password' => 'required|string|min:8',
                 'admin.password_confirmation' => 'required|string|same:admin.password',
             ]);
 
-            // Generate slug if not provided
+            // Generate slug if not provided or clean the provided one
             if (empty($validated['tenant']['slug'])) {
                 $validated['tenant']['slug'] = $this->generateSlugFromName($validated['tenant']['name']);
+            } else {
+                // Clean and validate the provided slug
+                $validated['tenant']['slug'] = $this->cleanSlug($validated['tenant']['slug']);
+                if (!$this->isValidSlug($validated['tenant']['slug'])) {
+                    return $this->sendError('Invalid organization slug format', [
+                        'tenant.slug' => ['Organization slug must be 3-50 characters, contain only lowercase letters, numbers, and hyphens, and start/end with alphanumeric characters']
+                    ], 422);
+                }
             }
 
-            // Validate generated slug
-            if (!$this->isValidSlug($validated['tenant']['slug'])) {
-                return $this->sendError('Invalid organization slug format', [
-                    'slug' => ['Organization slug must contain only lowercase letters, numbers, and hyphens']
-                ], 422);
-            }
-
-            // Check slug availability
+            // Check slug availability (after cleaning/generation)
             if (Tenant::where('slug', $validated['tenant']['slug'])->exists()) {
-                return $this->sendError('Organization slug already exists', [
-                    'slug' => ['This organization slug is already taken']
+                return $this->sendError('Organization slug already taken', [
+                    'tenant.slug' => ['This organization slug is already taken. Please choose a different one.']
                 ], 422);
             }
 
@@ -162,6 +163,30 @@ class TenantRegistrationController extends BaseAPIController
     }
 
     /**
+     * Clean a provided slug
+     *
+     * @param string $slug
+     * @return string
+     */
+    protected function cleanSlug(string $slug): string
+    {
+        // Convert to lowercase and remove invalid characters
+        $slug = strtolower($slug);
+        $slug = preg_replace('/[^a-z0-9-]/', '', $slug);
+
+        // Remove leading/trailing hyphens
+        $slug = preg_replace('/^-+|-+$/', '', $slug);
+
+        // Replace multiple consecutive hyphens with single hyphen
+        $slug = preg_replace('/-+/', '-', $slug);
+
+        // Limit length
+        $slug = substr($slug, 0, 50);
+
+        return $slug;
+    }
+
+    /**
      * Generate slug from organization name
      *
      * @param string $name
@@ -170,13 +195,10 @@ class TenantRegistrationController extends BaseAPIController
     protected function generateSlugFromName(string $name): string
     {
         $slug = Str::slug($name, '-');
-        
-        // Ensure it starts and ends with alphanumeric
-        $slug = preg_replace('/^-+|-+$/', '', $slug);
-        
-        // Limit length
-        $slug = substr($slug, 0, 50);
-        
+
+        // Clean the generated slug
+        $slug = $this->cleanSlug($slug);
+
         // Ensure it's not empty and has valid format
         if (empty($slug) || !$this->isValidSlug($slug)) {
             $slug = 'org-' . Str::random(8);
@@ -186,7 +208,7 @@ class TenantRegistrationController extends BaseAPIController
         $originalSlug = $slug;
         $counter = 1;
         while (Tenant::where('slug', $slug)->exists()) {
-            $slug = $originalSlug . '-' . $counter;
+            $slug = "{$originalSlug}-{$counter}";
             $counter++;
         }
 
@@ -229,6 +251,10 @@ class TenantRegistrationController extends BaseAPIController
     protected function isValidSlug(string $slug): bool
     {
         // Must be 3-50 characters, start and end with alphanumeric, contain only lowercase letters, numbers, and hyphens
-        return preg_match('/^[a-z0-9][a-z0-9-]{1,48}[a-z0-9]$/', $slug) === 1;
+        if (strlen($slug) < 3 || strlen($slug) > 50) {
+            return false;
+        }
+
+        return preg_match('/^[a-z0-9][a-z0-9-]*[a-z0-9]$/', $slug) === 1;
     }
 }

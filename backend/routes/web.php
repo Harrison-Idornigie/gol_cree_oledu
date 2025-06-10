@@ -10,22 +10,7 @@ use Illuminate\Support\Facades\Route;
  */
 
 Route::get('/', function () {
-    // Check if request expects JSON (API client)
-    if (request()->expectsJson() || request()->is('api/*')) {
-        return response()->json([
-            'message' => 'Welcome to the GOL 2025 API!',
-            'version' => config('app.version', '1.0.0'),
-            'status' => 'operational',
-            'endpoints' => [
-                'api' => url('/api'),
-                'health' => url('/api/public/health'),
-                'docs' => url('/docs'), // If you have API documentation
-            ]
-        ]);
-    }
-
-    // Return HTML landing page for browser requests
-    return view('welcome');
+    return 'Hello World! Laravel is working correctly.';
 })->name('home');
 
 // Health check endpoint for web context

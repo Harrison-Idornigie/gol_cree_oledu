@@ -26,7 +26,8 @@ function transformUrlWithTenant(url: string, tenantSlug: string | null): string 
   if (url.match(/^\/api\/[a-z0-9-]+\//) ||
       url.startsWith('/api/public/') ||
       url.startsWith('/api/super-admin/') ||
-      url.startsWith('/api/auth/register-tenant-admin')) {
+      url.startsWith('/api/auth/register-tenant-admin') ||
+      url.startsWith('/api/auth/validate-tenant-slug/')) {
     return url;
   }
 
@@ -148,10 +149,25 @@ axiosInstance.interceptors.response.use(
       }
 
       // Extract error message from our BaseAPIController format
-      const errorMessage =
-        error.response?.data?.message ||
-        error.response?.data?.error ||
-        error.message;
+      let errorMessage = error.response?.data?.message || error.message;
+
+      // If there are validation errors, format them nicely
+      if (error.response?.data?.errors) {
+        const validationErrors = error.response.data.errors;
+        const errorMessages = [];
+
+        for (const [, messages] of Object.entries(validationErrors)) {
+          if (Array.isArray(messages)) {
+            errorMessages.push(...messages);
+          } else {
+            errorMessages.push(String(messages));
+          }
+        }
+
+        if (errorMessages.length > 0) {
+          errorMessage = errorMessages.join('. ');
+        }
+      }
 
       throw new Error(errorMessage);
     }

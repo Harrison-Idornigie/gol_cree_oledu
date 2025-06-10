@@ -236,20 +236,11 @@ export async function getGoogleAuthUrl(): Promise<string> {
 // Tenant-specific auth actions
 export async function registerTenantAdmin(data: TenantRegistrationData) {
   try {
-    // Generate slug if not provided
-    const tenantSlug = data.organizationSlug ||
-      data.organizationName
-        .toLowerCase()
-        .replace(/[^a-z0-9\s-]/g, '')
-        .replace(/\s+/g, '-')
-        .replace(/-+/g, '-')
-        .replace(/^-|-$/g, '')
-        .substring(0, 50);
-
+    // Let backend handle slug generation and validation
     const response = await axiosInstance.post<AuthResponse>("/auth/register-tenant-admin", {
       tenant: {
         name: data.organizationName,
-        slug: tenantSlug,
+        slug: data.organizationSlug || '', // Send empty string if not provided, backend will generate
         description: data.organizationDescription || '',
       },
       admin: {

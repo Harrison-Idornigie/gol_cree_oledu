@@ -50,15 +50,10 @@ export default function RegisterOrganizationPage() {
     }
   };
 
-  // Debounced slug validation
+  // Debounced slug validation - only check availability, let backend handle format validation
   const validateSlugWithDelay = useCallback(async (slug: string) => {
     if (slug.length < 3) {
       setSlugAvailable(null);
-      return;
-    }
-
-    if (!/^[a-z0-9][a-z0-9-]*[a-z0-9]$/.test(slug)) {
-      setSlugAvailable(false);
       return;
     }
 
@@ -74,6 +69,7 @@ export default function RegisterOrganizationPage() {
   }, []);
 
   const handleSlugChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // Basic input sanitization only - let backend handle validation
     const value = e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, '');
     e.target.value = value;
 
