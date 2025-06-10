@@ -1,15 +1,16 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Tenants;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 
 class Review extends Model
 {
-    use HasFactory;
+    use HasFactory, BelongsToTenant;
 
     /**
      * The attributes that are mass assignable.

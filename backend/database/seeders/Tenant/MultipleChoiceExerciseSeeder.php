@@ -1,10 +1,10 @@
 <?php
-namespace Database\Seeders;
+namespace Database\Seeders\Tenant;
 
-use App\Models\Exercise;
-use App\Models\Language;
-use App\Models\Section;
-use App\Models\Word;
+use App\Models\Tenants\Exercise;
+use App\Models\Tenants\Language;
+use App\Models\Tenants\Section;
+use App\Models\Tenants\Word;
 use Illuminate\Support\Str;
 
 class MultipleChoiceExerciseSeeder extends BaseExerciseSeeder

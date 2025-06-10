@@ -1,10 +1,10 @@
 <?php
 
-namespace Database\Seeders;
+namespace Database\Seeders\Tenant;
 
-use App\Models\Permission;
-use App\Models\Role;
-use App\Models\Tenant;
+use App\Models\Tenants\Permission;
+use App\Models\Tenants\Role;
+use App\Models\Landlord\Tenant;
 use Illuminate\Database\Seeder;
 
 class TenantRoleSeeder extends Seeder

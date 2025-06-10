@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\API\Auth;
 
 use App\Http\Controllers\API\BaseAPIController;
-use App\Models\User;
+use App\Models\Tenants\User;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;

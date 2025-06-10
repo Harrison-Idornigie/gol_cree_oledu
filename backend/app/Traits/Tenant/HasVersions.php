@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Models\Traits;
+namespace App\Traits\Tenant;
 
-use App\Models\ContentVersion;
+use App\Models\Tenants\ContentVersion;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Facades\Auth;
 

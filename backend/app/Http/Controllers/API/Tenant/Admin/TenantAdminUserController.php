@@ -4,8 +4,7 @@ namespace App\Http\Controllers\API\Tenant\Admin;
 
 use App\Http\Controllers\API\BaseAPIController;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
-use App\Models\User;
-use App\Models\Invite;
+use App\Models\Tenants\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 

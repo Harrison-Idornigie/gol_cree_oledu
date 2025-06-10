@@ -3,7 +3,7 @@
 namespace Tests\Feature\Auth;
 
 use Tests\TestCase;
-use App\Models\User;
+use App\Models\Tenants\User;
 use Laravel\Sanctum\Sanctum;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;

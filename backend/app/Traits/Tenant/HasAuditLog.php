@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Models\Traits;
+namespace App\Traits\Tenant;
 
-use App\Models\AuditLog;
+use App\Models\Tenants\AuditLog;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 

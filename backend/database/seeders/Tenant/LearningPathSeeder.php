@@ -1,9 +1,9 @@
 <?php
-namespace Database\Seeders;
+namespace Database\Seeders\Tenant;
 
-use App\Models\Language;
-use App\Models\LearningPath;
-use App\Models\User;
+use App\Models\Tenants\Language;
+use App\Models\Tenants\LearningPath;
+use App\Models\Tenants\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Auth;
 

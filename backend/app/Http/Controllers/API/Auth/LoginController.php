@@ -1,9 +1,9 @@
 <?php
 namespace App\Http\Controllers\API\Auth;
 
-use App\Helpers\TenantHelper;
+use App\Helpers\Tenants\TenantHelper;
 use App\Http\Controllers\API\BaseAPIController;
-use App\Models\User;
+use App\Models\Tenants\User;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;

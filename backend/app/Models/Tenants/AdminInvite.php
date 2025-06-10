@@ -1,12 +1,14 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Tenants;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 
 class AdminInvite extends Model
 {
+    use BelongsToTenant;
     protected $fillable = [
         'email',
         'token',

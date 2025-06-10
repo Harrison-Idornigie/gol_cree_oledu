@@ -1,11 +1,10 @@
 <?php
-namespace Database\Seeders;
+namespace Database\Seeders\Tenant;
 
-use App\Models\Language;
-use App\Models\User;
-use App\Models\Word;
-use App\Models\WordTranslation;
-use Illuminate\Console\Command;
+use App\Models\Tenants\Language;
+use App\Models\Tenants\User;
+use App\Models\Tenants\Word;
+use App\Models\Tenants\WordTranslation;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;

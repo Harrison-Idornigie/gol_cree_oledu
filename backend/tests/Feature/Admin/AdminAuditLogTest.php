@@ -4,7 +4,7 @@ namespace Tests\Feature\Admin;
 
 use App\Models\LearningPath;
 use App\Models\AuditLog;
-use App\Models\User;
+use App\Models\Tenants\User;
 
 class AdminAuditLogTest extends AdminTestCase
 {

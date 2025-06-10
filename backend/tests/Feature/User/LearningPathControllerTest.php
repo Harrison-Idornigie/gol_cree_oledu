@@ -3,7 +3,7 @@ namespace Tests\Feature\User;
 
 use App\Models\Language;
 use App\Models\LearningPath;
-use App\Models\User;
+use App\Models\Tenants\User;
 use App\Models\UserProgress;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;

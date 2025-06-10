@@ -1,9 +1,9 @@
 <?php
 
-namespace Database\Factories;
+namespace Database\Factories\Tenant;
 
-use App\Models\LearningPath;
-use App\Models\Unit;
+use App\Models\Tenants\LearningPath;
+use App\Models\Tenants\Unit;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class UnitFactory extends Factory

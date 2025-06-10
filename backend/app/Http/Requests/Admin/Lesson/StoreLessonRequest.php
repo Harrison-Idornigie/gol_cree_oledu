@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\API\Unit;
+namespace App\Http\Requests\Admin\Lesson;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class StoreUnitRequest extends FormRequest
+class StoreLessonRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,10 +21,10 @@ class StoreUnitRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'learning_path_id' => [
+            'unit_id' => [
                 'required',
                 'integer',
-                Rule::exists('learning_paths', 'id')
+                Rule::exists('units', 'id')
             ],
             'title' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string'],
@@ -32,9 +32,13 @@ class StoreUnitRequest extends FormRequest
                 'required',
                 'integer',
                 'min:1',
-                Rule::unique('units')
-                    ->where('learning_path_id', $this->learning_path_id)
+                Rule::unique('lessons')
+                    ->where('unit_id', $this->unit_id)
             ],
+            'vocabulary_items' => ['sometimes', 'array'],
+            'vocabulary_items.*.word' => ['required_with:vocabulary_items', 'string', 'max:255'],
+            'vocabulary_items.*.translation' => ['required_with:vocabulary_items', 'string', 'max:255'],
+            'vocabulary_items.*.example' => ['sometimes', 'string'],
         ];
     }
 
@@ -44,14 +48,16 @@ class StoreUnitRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'learning_path_id.required' => 'The learning path is required.',
-            'learning_path_id.exists' => 'The selected learning path does not exist.',
-            'title.required' => 'A unit title is required.',
+            'unit_id.required' => 'The unit is required.',
+            'unit_id.exists' => 'The selected unit does not exist.',
+            'title.required' => 'A lesson title is required.',
             'title.max' => 'The title cannot be longer than 255 characters.',
-            'description.required' => 'A description of the unit is required.',
-            'order.required' => 'The unit order is required.',
-            'order.unique' => 'This order number is already taken in this learning path.',
+            'description.required' => 'A description of the lesson is required.',
+            'order.required' => 'The lesson order is required.',
+            'order.unique' => 'This order number is already taken in this unit.',
             'order.min' => 'The order must be at least 1.',
+            'vocabulary_items.*.word.required_with' => 'Each vocabulary item must have a word.',
+            'vocabulary_items.*.translation.required_with' => 'Each vocabulary item must have a translation.',
         ];
     }
 
@@ -69,15 +75,15 @@ class StoreUnitRequest extends FormRequest
     }
 
     /**
-     * Get the next available order number for the learning path
+     * Get the next available order number for the unit
      */
     private function getNextOrder(): int
     {
-        if (!$this->has('learning_path_id')) {
+        if (!$this->has('unit_id')) {
             return 1;
         }
 
-        return \App\Models\Unit::where('learning_path_id', $this->learning_path_id)
+        return \App\Models\Tenants\Lesson::where('unit_id', $this->unit_id)
             ->max('order') + 1;
     }
 }

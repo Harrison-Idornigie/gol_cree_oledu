@@ -1,8 +1,8 @@
 <?php
-namespace Database\Factories;
+namespace Database\Factories\Tenant;
 
-use App\Models\Language;
-use App\Models\Word;
+use App\Models\Tenants\Language;
+use App\Models\Tenants\Word;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class WordFactory extends Factory

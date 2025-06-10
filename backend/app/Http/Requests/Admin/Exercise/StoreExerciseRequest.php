@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\API\Exercise;
+namespace App\Http\Requests\Admin\Exercise;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateExerciseRequest extends FormRequest
+class StoreExerciseRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,12 +24,12 @@ class UpdateExerciseRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'sometimes|required|string|max:255',
+            'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'instructions' => 'sometimes|required|string',
-            'type' => 'sometimes|required|string|in:multiple_choice,fill_in_blank,matching,short_answer,long_answer',
-            'difficulty' => 'sometimes|required|string|in:beginner,intermediate,advanced',
-            'status' => 'sometimes|required|string|in:draft,published,archived',
+            'instructions' => 'required|string',
+            'type' => 'required|string|in:multiple_choice,fill_in_blank,matching,short_answer,long_answer',
+            'difficulty' => 'required|string|in:beginner,intermediate,advanced',
+            'status' => 'required|string|in:draft,published,archived',
             'section_id' => 'nullable|exists:sections,id',
             'order' => 'nullable|integer|min:1',
             'options' => 'nullable|array',

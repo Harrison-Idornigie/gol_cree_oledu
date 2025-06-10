@@ -1,10 +1,10 @@
 <?php
 
-namespace Database\Factories;
+namespace Database\Factories\Tenant;
 
-use App\Models\Language;
-use App\Models\Word;
-use App\Models\WordTranslation;
+use App\Models\Tenants\Language;
+use App\Models\Tenants\Word;
+use App\Models\Tenants\WordTranslation;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class WordTranslationFactory extends Factory

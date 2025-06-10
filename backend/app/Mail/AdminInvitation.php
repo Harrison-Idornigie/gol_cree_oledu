@@ -2,7 +2,7 @@
 
 namespace App\Mail;
 
-use App\Models\AdminInvite;
+use App\Models\Tenants\AdminInvite;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;

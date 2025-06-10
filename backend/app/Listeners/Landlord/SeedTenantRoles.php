@@ -3,8 +3,8 @@
 namespace App\Listeners\Landlord;
 
 use App\Events\Landlord\TenantSeedingRequested;
-use App\Models\Role;
-use App\Models\Permission;
+use App\Models\Tenants\Role;
+use App\Models\Tenants\Permission;
 use Illuminate\Support\Facades\Log;
 use Exception;
 

@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Tenants;
 
-use App\Models\Traits\{HasVersions, HasAuditLog};
+use App\Traits\Tenant\{HasVersions, HasAuditLog};
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\Pivot;
+use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 
 class SentenceWord extends Pivot
 {
-    use HasFactory, HasAuditLog, HasVersions;
+    use HasFactory, HasAuditLog, HasVersions, BelongsToTenant;
 
     public $incrementing = true;
     protected $table = 'sentence_words';

@@ -1,12 +1,14 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Tenants;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 
 class ContentVersion extends Model
 {
+    use BelongsToTenant;
     protected $fillable = [
         'version_number',
         'content',

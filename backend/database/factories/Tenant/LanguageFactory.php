@@ -1,7 +1,7 @@
 <?php
-namespace Database\Factories;
+namespace Database\Factories\Tenant;
 
-use App\Models\Language;
+use App\Models\Tenants\Language;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class LanguageFactory extends Factory

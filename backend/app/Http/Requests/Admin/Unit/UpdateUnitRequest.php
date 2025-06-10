@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\API\Unit;
+namespace App\Http\Requests\Admin\Unit;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -77,12 +77,12 @@ class UpdateUnitRequest extends FormRequest
 
         if ($newOrder > $currentOrder) {
             // Moving down: decrement orders between current and new
-            \App\Models\Unit::where('learning_path_id', $learningPathId)
+            \App\Models\Tenants\Unit::where('learning_path_id', $learningPathId)
                 ->whereBetween('order', [$currentOrder + 1, $newOrder])
                 ->decrement('order');
         } else {
             // Moving up: increment orders between new and current
-            \App\Models\Unit::where('learning_path_id', $learningPathId)
+            \App\Models\Tenants\Unit::where('learning_path_id', $learningPathId)
                 ->whereBetween('order', [$newOrder, $currentOrder - 1])
                 ->increment('order');
         }

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Models\Traits;
+namespace App\Traits\Tenant;
 
-use App\Models\MediaFile;
+use App\Models\Tenants\MediaFile;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Http\UploadedFile;

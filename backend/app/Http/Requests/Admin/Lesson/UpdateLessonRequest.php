@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\API\Lesson;
+namespace App\Http\Requests\Admin\Lesson;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -90,12 +90,12 @@ class UpdateLessonRequest extends FormRequest
 
         if ($newOrder > $currentOrder) {
             // Moving down: decrement orders between current and new
-            \App\Models\Lesson::where('unit_id', $unitId)
+            \App\Models\Tenants\Lesson::where('unit_id', $unitId)
                 ->whereBetween('order', [$currentOrder + 1, $newOrder])
                 ->decrement('order');
         } else {
             // Moving up: increment orders between new and current
-            \App\Models\Lesson::where('unit_id', $unitId)
+            \App\Models\Tenants\Lesson::where('unit_id', $unitId)
                 ->whereBetween('order', [$newOrder, $currentOrder - 1])
                 ->increment('order');
         }

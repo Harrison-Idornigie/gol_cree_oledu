@@ -4,7 +4,7 @@ namespace App\Http\Controllers\API\Tenant\Team;
 
 use App\Http\Controllers\API\BaseAPIController;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
-use App\Models\Exercise;
+use App\Models\Tenants\Exercise;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Helpers;
+namespace App\Helpers\Tenants;
 
 use App\Models\Landlord\Tenant;
 use Illuminate\Support\Facades\Request;

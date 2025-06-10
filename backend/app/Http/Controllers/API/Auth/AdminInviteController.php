@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\API\Auth;
 
 use App\Http\Controllers\API\BaseAPIController;
-use App\Models\AdminInvite;
+use App\Models\Tenants\AdminInvite;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;

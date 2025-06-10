@@ -1,8 +1,8 @@
 <?php
 
-namespace Database\Seeders;
+namespace Database\Seeders\Tenant;
 
-use App\Models\User;
+use App\Models\Tenants\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;

@@ -3,7 +3,7 @@
 namespace Tests\Feature\Admin;
 
 use App\Models\AdminInvite;
-use App\Models\User;
+use App\Models\Tenants\User;
 use Illuminate\Support\Facades\Mail;
 
 class AdminInviteTest extends AdminTestCase

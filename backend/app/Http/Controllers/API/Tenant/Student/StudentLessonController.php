@@ -4,8 +4,8 @@ namespace App\Http\Controllers\API\Tenant\Student;
 
 use App\Http\Controllers\API\BaseAPIController;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
-use App\Models\Lesson;
-use App\Models\Topic;
+use App\Models\Tenants\Lesson;
+use App\Models\Tenants\Topic;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 

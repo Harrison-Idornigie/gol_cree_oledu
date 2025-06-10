@@ -1,12 +1,14 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Tenants;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 
 class XpHistory extends Model
 {
+    use BelongsToTenant;
     protected $table = 'xp_history';
 
     protected $fillable = [

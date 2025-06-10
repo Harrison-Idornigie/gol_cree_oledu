@@ -1,15 +1,16 @@
 <?php
-namespace App\Models;
+namespace App\Models\Tenants;
 
-use App\Models\Traits\HasAuditLog;
-use App\Models\Traits\HasMedia;
-use App\Models\Traits\HasVersions;
-use App\Models\Traits\BelongsToTenant;
+use App\Services\ExerciseTypeService;
+use App\Traits\Tenant\HasAuditLog;
+use App\Traits\Tenant\HasMedia;
+use App\Traits\Tenant\HasVersions;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 
 class Exercise extends Model
 {
@@ -161,7 +162,7 @@ class Exercise extends Model
     {
         // This method is kept for backward compatibility
         // Use app(ExerciseTypeService::class)->checkAnswer($this, $userAnswer) instead
-        return app(\App\Services\ExerciseTypeService::class)->checkAnswer($this, $userAnswer);
+        return app(ExerciseTypeService::class)->checkAnswer($this, $userAnswer);
     }
 
     /**
@@ -173,7 +174,7 @@ class Exercise extends Model
     {
         // This method is kept for backward compatibility
         // Use app(ExerciseTypeService::class)->getHint($this) instead
-        return app(\App\Services\ExerciseTypeService::class)->getHint($this);
+        return app(ExerciseTypeService::class)->getHint($this);
     }
 
     /**

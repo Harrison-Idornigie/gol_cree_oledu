@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Middleware;
+namespace App\Http\Middleware\Tenant;
 
-use App\Models\Lesson;
-use App\Models\Section;
-use App\Models\Unit;
-use App\Services\SequentialLearningService;
+use App\Models\Tenants\Lesson;
+use App\Models\Tenants\Section;
+use App\Models\Tenants\Unit;
+use App\Services\Tenants\SequentialLearningService;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;

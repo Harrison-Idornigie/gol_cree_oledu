@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Models\LearningPath;
 use App\Models\AuditLog;
-use App\Models\User;
+use App\Models\Tenants\User;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;

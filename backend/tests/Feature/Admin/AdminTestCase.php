@@ -3,7 +3,7 @@
 namespace Tests\Feature\Admin;
 
 use App\Models\Role;
-use App\Models\User;
+use App\Models\Tenants\User;
 use App\Models\UserStreak;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;

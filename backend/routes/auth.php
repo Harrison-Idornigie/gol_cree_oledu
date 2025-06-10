@@ -28,7 +28,7 @@ use Illuminate\Support\Facades\Route;
 Route::group([
     'prefix'     => 'auth',
     'as'         => 'auth.',
-    'middleware' => ['api', \App\Http\Middleware\Tenant\InitializeTenancyByPathOrDomain::class],
+    // 'middleware' => ['api', \App\Http\Middleware\Tenant\InitializeTenancyByPathOrDomain::class],
 ], function () {
     // Authentication routes (work in both central and tenant contexts)
     Route::post('login', [LoginController::class, 'login']);

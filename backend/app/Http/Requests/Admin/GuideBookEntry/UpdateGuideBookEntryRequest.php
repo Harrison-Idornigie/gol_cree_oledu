@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\API\GuideBookEntry;
+namespace App\Http\Requests\Admin\GuideBookEntry;
 
 use Illuminate\Foundation\Http\FormRequest;
 

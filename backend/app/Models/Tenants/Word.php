@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Tenants;
 
-use App\Models\Traits\{HasVersions, HasAuditLog, BelongsToTenant};
+use App\Traits\Tenant\{HasVersions, HasAuditLog, };
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\{BelongsTo, HasMany, BelongsToMany};
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 
 class Word extends Model implements HasMedia
 {

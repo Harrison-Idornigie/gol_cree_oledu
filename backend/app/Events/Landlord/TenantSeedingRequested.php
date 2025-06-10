@@ -3,7 +3,7 @@
 namespace App\Events\Landlord;
 
 use App\Models\Landlord\Tenant;
-use App\Models\User;
+use App\Models\Tenants\User;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;

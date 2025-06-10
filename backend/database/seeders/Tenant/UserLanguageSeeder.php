@@ -1,12 +1,11 @@
 <?php
 
-namespace Database\Seeders;
+namespace Database\Seeders\Tenant;
 
-use App\Models\Language;
-use App\Models\User;
-use App\Models\UserLanguage;
+use App\Models\Tenants\Language;
+use App\Models\Tenants\User;
+use App\Models\Tenants\UserLanguage;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class UserLanguageSeeder extends Seeder
 {

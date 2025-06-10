@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\API\Auth;
 
-use App\Helpers\TenantHelper;
+use App\Helpers\Tenants\TenantHelper;
 use App\Http\Controllers\API\BaseAPIController;
 use Illuminate\Http\Request;
 

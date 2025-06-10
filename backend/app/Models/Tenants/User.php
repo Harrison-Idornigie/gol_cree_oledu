@@ -1,7 +1,6 @@
 <?php
-namespace App\Models;
+namespace App\Models\Tenants;
 
-use App\Models\Traits\BelongsToTenant;
 use App\Notifications\ResetPasswordNotification;
 use App\Notifications\VerifyEmailNotification;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -12,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 
 class User extends Authenticatable implements MustVerifyEmail
 {

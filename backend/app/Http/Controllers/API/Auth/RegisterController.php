@@ -2,8 +2,8 @@
 namespace App\Http\Controllers\API\Auth;
 
 use App\Http\Controllers\API\BaseAPIController;
-use App\Models\AdminInvite;
-use App\Models\User;
+use App\Models\Tenants\AdminInvite;
+use App\Models\Tenants\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;

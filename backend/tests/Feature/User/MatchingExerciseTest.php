@@ -7,7 +7,7 @@ use App\Models\LearningPath;
 use App\Models\Lesson;
 use App\Models\Section;
 use App\Models\Unit;
-use App\Models\User;
+use App\Models\Tenants\User;
 use App\Models\UserProgress;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;

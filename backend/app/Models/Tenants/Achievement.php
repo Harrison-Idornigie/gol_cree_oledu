@@ -1,17 +1,18 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Tenants;
 
-use App\Models\Traits\HasMedia;
-use App\Models\Traits\HasAuditLog;
-use App\Models\Traits\HasVersions;
+use App\Traits\Tenant\HasMedia;
+use App\Traits\Tenant\HasAuditLog;
+use App\Traits\Tenant\HasVersions;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 
 class Achievement extends Model
 {
-    use HasFactory, HasMedia, HasAuditLog, HasVersions;
+    use HasFactory, HasMedia, HasAuditLog, HasVersions, BelongsToTenant;
 
     const AUDIT_AREA = 'achievements';
 

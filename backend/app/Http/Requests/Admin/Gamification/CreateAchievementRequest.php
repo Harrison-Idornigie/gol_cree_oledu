@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Admin\Gamification;
 
-use App\Models\Achievement;
+use App\Models\Tenants\Achievement;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CreateAchievementRequest extends FormRequest

@@ -1,18 +1,19 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Tenants;
 
-use App\Models\Traits\HasAuditLog;
-use App\Models\Traits\HasMedia;
-use App\Models\Traits\HasVersions;
+use App\Traits\Tenant\HasAuditLog;
+use App\Traits\Tenant\HasMedia;
+use App\Traits\Tenant\HasVersions;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Str;
+use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 
 class VocabularyItem extends Model
 {
-    use HasFactory, HasVersions, HasAuditLog, HasMedia;
+    use HasFactory, HasVersions, HasAuditLog, HasMedia, BelongsToTenant;
 
     const AUDIT_AREA = 'vocabulary';
 

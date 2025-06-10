@@ -60,8 +60,22 @@ class TenancyServiceProvider extends BaseTenancyServiceProvider
             Events\DomainDeleted::class => [],
 
             // Database events
-            Events\DatabaseCreated::class => [],
-            Events\DatabaseMigrated::class => [],
+            Events\DatabaseCreated::class => [
+                function (Events\DatabaseCreated $event) {
+                    \Log::info('Tenant database created successfully', [
+                        'tenant_id' => $event->tenant->id,
+                        'database_name' => $event->tenant->database_name ?? $event->tenant->id
+                    ]);
+                }
+            ],
+            Events\DatabaseMigrated::class => [
+                function (Events\DatabaseMigrated $event) {
+                    \Log::info('Tenant database migrated successfully', [
+                        'tenant_id' => $event->tenant->id,
+                        'database_name' => $event->tenant->database_name ?? $event->tenant->id
+                    ]);
+                }
+            ],
             Events\DatabaseSeeded::class => [],
             Events\DatabaseRolledBack::class => [],
             Events\DatabaseDeleted::class => [],

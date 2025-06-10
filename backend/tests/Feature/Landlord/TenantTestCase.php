@@ -3,7 +3,7 @@
 namespace Tests\Feature\Landlord;
 
 use App\Models\Landlord\Tenant;
-use App\Models\User;
+use App\Models\Tenants\User;
 use App\Models\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;

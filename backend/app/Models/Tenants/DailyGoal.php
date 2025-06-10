@@ -1,16 +1,17 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Tenants;
 
-use App\Models\Traits\HasAuditLog;
-use App\Models\Traits\HasVersions;
+use App\Traits\Tenant\HasAuditLog;
+use App\Traits\Tenant\HasVersions;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 
 class DailyGoal extends Model
 {
-    use HasFactory, HasAuditLog, HasVersions;
+    use HasFactory, HasAuditLog, HasVersions, BelongsToTenant;
 
     const AUDIT_AREA = 'daily_goals';
 

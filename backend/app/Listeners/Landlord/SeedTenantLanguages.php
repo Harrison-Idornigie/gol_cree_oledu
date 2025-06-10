@@ -3,7 +3,7 @@
 namespace App\Listeners\Landlord;
 
 use App\Events\Landlord\TenantSeedingRequested;
-use App\Models\Language;
+use App\Models\Tenants\Language;
 use Illuminate\Support\Facades\Log;
 use Exception;
 

@@ -4,7 +4,7 @@ namespace Tests\Feature\Admin;
 
 use App\Models\Role;
 use App\Models\Permission;
-use App\Models\User;
+use App\Models\Tenants\User;
 
 class AdminRolePermissionTest extends AdminTestCase
 {

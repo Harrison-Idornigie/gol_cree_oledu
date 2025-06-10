@@ -1,15 +1,16 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Tenants;
 
-use App\Models\Traits\{HasVersions, HasAuditLog};
+use App\Traits\Tenant\{HasVersions, HasAuditLog};
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 
 class LanguagePair extends Model
 {
-    use HasFactory, HasAuditLog, HasVersions;
+    use HasFactory, HasAuditLog, HasVersions, BelongsToTenant;
 
     protected $fillable = [
         'source_language_id',

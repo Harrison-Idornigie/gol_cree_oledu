@@ -1,16 +1,17 @@
 <?php
-namespace App\Models;
+namespace App\Models\Tenants;
 
-use App\Models\Exercise;
-use App\Models\Traits\HasAuditLog;
+use App\Models\Tenants\Exercise;
+use App\Traits\Tenant\HasAuditLog;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 
 class UserProgress extends Model
 {
-    use HasFactory, HasAuditLog;
+    use HasFactory, HasAuditLog, BelongsToTenant;
 
     public const AUDIT_AREA = 'user_progress';
 

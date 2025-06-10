@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\API\SuperAdmin;
+namespace App\Http\Controllers\API\Landlord;
 
 use App\Http\Controllers\API\BaseAPIController;
-use App\Models\User;
+use App\Models\Tenants\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 

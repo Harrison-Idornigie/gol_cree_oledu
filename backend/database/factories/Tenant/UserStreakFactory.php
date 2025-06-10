@@ -1,9 +1,9 @@
 <?php
 
-namespace Database\Factories;
+namespace Database\Factories\Tenant;
 
-use App\Models\UserStreak;
-use App\Models\User;
+use App\Models\Tenants\UserStreak;
+use App\Models\Tenants\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class UserStreakFactory extends Factory

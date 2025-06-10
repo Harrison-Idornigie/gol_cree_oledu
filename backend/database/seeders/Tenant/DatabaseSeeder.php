@@ -1,8 +1,7 @@
 <?php
-namespace Database\Seeders;
+namespace Database\Seeders\Tenant;
 
-use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Tenants\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -27,7 +26,6 @@ class DatabaseSeeder extends Seeder
             LanguageSeeder::class,
             WordSeeder::class, // Add vocabulary words
             LearningPathSeeder::class,
-            SuperAdminSeeder::class,
             UserLanguageSeeder::class,
 
             // Exercise seeders

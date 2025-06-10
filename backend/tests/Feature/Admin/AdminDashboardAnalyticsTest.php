@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Admin;
 
-use App\Models\User;
+use App\Models\Tenants\User;
 use App\Models\LearningPath;
 use App\Models\Unit;
 use App\Models\Lesson;

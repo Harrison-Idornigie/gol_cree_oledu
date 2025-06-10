@@ -1,7 +1,7 @@
 <?php
 namespace Tests\Feature\Auth;
 
-use App\Models\User;
+use App\Models\Tenants\User;
 use App\Notifications\ResetPasswordNotification;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;

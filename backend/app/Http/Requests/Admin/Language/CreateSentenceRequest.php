@@ -4,7 +4,7 @@ namespace App\Http\Requests\Admin\Language;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
-use App\Models\Word;
+use App\Models\Tenants\Word;
 
 class CreateSentenceRequest extends FormRequest
 {

@@ -1,8 +1,8 @@
 <?php
-namespace Database\Factories;
+namespace Database\Factories\Tenant;
 
-use App\Models\Lesson;
-use App\Models\Unit;
+use App\Models\Tenants\Lesson;
+use App\Models\Tenants\Unit;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class LessonFactory extends Factory

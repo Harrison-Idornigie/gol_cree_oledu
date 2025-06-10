@@ -1,13 +1,13 @@
 <?php
 
-namespace Database\Factories;
+namespace Database\Factories\Tenant;
 
-use App\Models\Role;
+use App\Models\Tenants\Role;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Role>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Tenants\Role>
  */
 class RoleFactory extends Factory
 {

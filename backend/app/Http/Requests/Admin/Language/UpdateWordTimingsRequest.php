@@ -4,7 +4,7 @@ namespace App\Http\Requests\Admin\Language;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
-use App\Models\Sentence;
+use App\Models\Tenants\Sentence;
 
 class UpdateWordTimingsRequest extends FormRequest
 {

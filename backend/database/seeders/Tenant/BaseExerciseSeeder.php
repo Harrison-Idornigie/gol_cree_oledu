@@ -1,13 +1,13 @@
 <?php
 
-namespace Database\Seeders;
+namespace Database\Seeders\Tenant;
 
-use App\Models\Exercise;
-use App\Models\Language;
-use App\Models\Lesson;
-use App\Models\Section;
-use App\Models\User;
-use App\Models\Word;
+use App\Models\Tenants\Exercise;
+use App\Models\Tenants\Language;
+use App\Models\Tenants\Lesson;
+use App\Models\Tenants\Section;
+use App\Models\Tenants\User;
+use App\Models\Tenants\Word;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;

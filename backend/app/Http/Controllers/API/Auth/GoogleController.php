@@ -2,8 +2,8 @@
 namespace App\Http\Controllers\API\Auth;
 
 use App\Http\Controllers\API\BaseAPIController;
-use App\Models\Role;
-use App\Models\User;
+use App\Models\Tenants\Role;
+use App\Models\Tenants\User;
 use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
@@ -145,7 +145,7 @@ class GoogleController extends BaseAPIController
                         ]);
 
                         // Assign role if using role-based permissions
-                        if (class_exists('\App\Models\Role')) {
+                        if (class_exists('\App\Models\Tenants\Role')) {
                             $roleName = $isAdminEmail ? 'admin' : 'user';
                             $role     = Role::where('slug', $roleName)->first();
                             if ($role) {
@@ -281,7 +281,7 @@ class GoogleController extends BaseAPIController
                 // Switch to tenant context to check user
                 tenancy()->initialize($tenant);
 
-                $user = \App\Models\User::where('email', $googleUser->getEmail())->first();
+                $user = \App\Models\Tenants\User::where('email', $googleUser->getEmail())->first();
 
                 if (!$user) {
                     return $this->sendError('No account found for this email in the specified organization', [], 404);
@@ -342,16 +342,16 @@ class GoogleController extends BaseAPIController
      * Find user in any tenant by email
      *
      * @param string $email
-     * @return \App\Models\User|null
+     * @return \App\Models\Tenants\User|null
      */
-    protected function findUserInAnyTenant(string $email): ?\App\Models\User
+    protected function findUserInAnyTenant(string $email): ?\App\Models\Tenants\User
     {
         $tenants = \App\Models\Landlord\Tenant::where('status', 'active')->get();
 
         foreach ($tenants as $tenant) {
             tenancy()->initialize($tenant);
 
-            $user = \App\Models\User::where('email', $email)->first();
+            $user = \App\Models\Tenants\User::where('email', $email)->first();
             if ($user && $user->is_active) {
                 return $user;
             }
@@ -566,7 +566,7 @@ class GoogleController extends BaseAPIController
                         ]);
 
                         // Assign role if using role-based permissions
-                        if (class_exists('\App\Models\Role')) {
+                        if (class_exists('\App\Models\Tenants\Role')) {
                             $roleName = $isAdminEmail ? 'admin' : 'user';
                             $role     = Role::where('slug', $roleName)->first();
                             if ($role) {
@@ -628,7 +628,7 @@ class GoogleController extends BaseAPIController
             $frontendUrl = Config::get('services.frontend.url', 'http://localhost:3000');
 
             // Add redirect URL based on user role and client type
-            $redirectPath = $user->role === 'admin' ? '/admin' : '/learn';
+            $redirectPath = $user->role === 'admin' ? '/admin' : '/student';
 
             // For mobile apps, we might use a different redirect scheme
             if (in_array($clientType, ['ios', 'android'])) {

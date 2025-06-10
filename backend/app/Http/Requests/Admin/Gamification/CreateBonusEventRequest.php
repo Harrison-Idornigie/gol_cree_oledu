@@ -142,7 +142,7 @@ class CreateBonusEventRequest extends FormRequest
      */
     protected function validateOverlappingEvents($validator): void
     {
-        $overlapping = \App\Models\BonusEvent::query()
+        $overlapping = \App\Models\Tenants\BonusEvent::query()
             ->where('is_active', true)
             ->where(function ($query) {
                 $query->whereBetween('start_date', [$this->start_date, $this->end_date])
