@@ -8,6 +8,7 @@ use App\Services\Landlord\TenantService;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
@@ -63,13 +64,17 @@ class TenantRegistrationController extends BaseAPIController
                 ], 422);
             }
 
+            // Generate progress ID for tracking
+            $progressId = 'tenant_' . uniqid();
+
             DB::beginTransaction();
 
             try {
-                // Create tenant and admin user
+                // Create tenant and admin user with progress tracking
                 $result = $this->tenantService->createTenant(
                     $validated['tenant'],
-                    $validated['admin']
+                    $validated['admin'],
+                    $progressId
                 );
 
                 $tenant = $result['tenant'];
@@ -88,11 +93,12 @@ class TenantRegistrationController extends BaseAPIController
 
                 return $this->sendCreatedResponse([
                     'token' => $token,
+                    'progress_id' => $progressId,
                     'user' => [
                         'id' => $adminUser->id,
                         'name' => $adminUser->name,
                         'email' => $adminUser->email,
-                        'role' => $adminUser->role,
+                        'role' => 'tenant-admin', // Set the correct role
                         'email_verified_at' => $adminUser->email_verified_at,
                         'tenant_id' => $tenant->id,
                         'tenant' => [
@@ -185,6 +191,33 @@ class TenantRegistrationController extends BaseAPIController
         }
 
         return $slug;
+    }
+
+    /**
+     * Check tenant creation progress
+     *
+     * @param Request $request
+     * @param string $progressId
+     * @return JsonResponse
+     */
+    public function checkProgress(Request $request, string $progressId): JsonResponse
+    {
+        try {
+            $progressData = Cache::get("tenant_creation_progress:{$progressId}");
+
+            if (!$progressData) {
+                return $this->sendError('Progress not found', [], 404);
+            }
+
+            return $this->sendResponse($progressData, 'Progress retrieved successfully');
+
+        } catch (Exception $e) {
+            Log::error('Progress check error: ' . $e->getMessage(), [
+                'progress_id' => $progressId,
+                'trace' => $e->getTraceAsString(),
+            ]);
+            return $this->sendError('Failed to check progress', ['error' => 'An unexpected error occurred'], 500);
+        }
     }
 
     /**

@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers\API\Auth;
 
+use App\Helpers\TenantHelper;
 use App\Http\Controllers\API\BaseAPIController;
 use App\Models\User;
 use Exception;
@@ -28,10 +29,24 @@ class LoginController extends BaseAPIController
             $user  = User::where('email', $request->email)->firstOrFail();
             $token = $user->createToken('auth-token')->plainTextToken;
 
-            return $this->sendResponse([
+            // Prepare response data
+            $userData = [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'role' => $user->role,
+                'email_verified_at' => $user->email_verified_at,
+            ];
+
+            // Add tenant context if available
+            $userData = TenantHelper::addTenantContextToUser($userData);
+
+            $responseData = [
                 'token' => $token,
-                'user'  => $user,
-            ], 'Successfully logged in');
+                'user'  => $userData,
+            ];
+
+            return $this->sendResponse($responseData, 'Successfully logged in');
         } catch (ValidationException $e) {
             return $this->sendError('Validation error', $e->errors(), 422);
         } catch (ModelNotFoundException $e) {

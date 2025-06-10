@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\Auth;
 
+use App\Helpers\TenantHelper;
 use App\Http\Controllers\API\BaseAPIController;
 use Illuminate\Http\Request;
 
@@ -16,13 +17,25 @@ class UserController extends BaseAPIController
     public function me(Request $request)
     {
         $user = $request->user();
-        
+
         if (!$user) {
             return $this->sendError('Unauthenticated', [], 401);
         }
-        
+
+        // Prepare user data
+        $userData = [
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'role' => $user->role,
+            'email_verified_at' => $user->email_verified_at,
+        ];
+
+        // Add tenant context if available
+        $userData = TenantHelper::addTenantContextToUser($userData);
+
         return $this->sendResponse([
-            'user' => $user
+            'user' => $userData
         ]);
     }
 }

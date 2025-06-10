@@ -47,6 +47,10 @@ class RouteServiceProvider extends ServiceProvider
             Route::middleware(['api', \App\Http\Middleware\Tenant\InitializeTenancyByPathOrDomain::class])
                 ->prefix('api/{tenant}')
                 ->group(function () {
+                    // Tenant-scoped Authentication Routes
+                    // These routes work with tenant context when accessed via api/{tenant}/auth/*
+                    require base_path('routes/auth.php');
+
                     // Tenant Admin Routes
                     require base_path('routes/tenant-admin.php');
 

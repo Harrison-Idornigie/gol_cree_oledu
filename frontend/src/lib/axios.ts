@@ -5,9 +5,53 @@ const axiosInstance = axios.create({
   withCredentials: true,
 });
 
-// Request interceptor to add auth token
+// Helper function to extract tenant slug from current URL
+function getCurrentTenantSlug(): string | null {
+  if (typeof window === "undefined") return null;
+
+  const pathSegments = window.location.pathname.replace(/^\//, '').split('/');
+  if (pathSegments.length < 2) return null;
+
+  const [tenantSlug, role] = pathSegments;
+  const validRoles = ['admin', 'team', 'student'];
+
+  return /^[a-z0-9-]+$/.test(tenantSlug) && validRoles.includes(role) ? tenantSlug : null;
+}
+
+// Helper function to transform URL to include tenant context
+function transformUrlWithTenant(url: string, tenantSlug: string | null): string {
+  if (!tenantSlug || !url.startsWith('/')) return url;
+
+  // Skip if URL already has tenant context or is a central route
+  if (url.match(/^\/api\/[a-z0-9-]+\//) ||
+      url.startsWith('/api/public/') ||
+      url.startsWith('/api/super-admin/') ||
+      url.startsWith('/api/auth/register-tenant-admin')) {
+    return url;
+  }
+
+  // Transform /api/auth/* to /api/{tenant}/auth/*
+  if (url.startsWith('/api/auth/')) {
+    return url.replace('/api/auth/', `/api/${tenantSlug}/auth/`);
+  }
+
+  // Transform other API routes to include tenant context
+  if (url.startsWith('/api/')) {
+    return url.replace('/api/', `/api/${tenantSlug}/`);
+  }
+
+  return url;
+}
+
+// Request interceptor to add auth token and tenant context
 axiosInstance.interceptors.request.use(
   async (config) => {
+    // Add tenant context to URL if needed
+    const tenantSlug = getCurrentTenantSlug();
+    if (config.url && tenantSlug) {
+      config.url = transformUrlWithTenant(config.url, tenantSlug);
+    }
+
     // In server components, we can get the token from the cookie directly
     if (typeof window === "undefined") {
       try {
@@ -15,13 +59,13 @@ axiosInstance.interceptors.request.use(
         // This is a more reliable way to get the token in server components
         const { cookies } = await import("next/headers");
         const cookieStore = await cookies();
-        
+
         // Get the token and make sure it's properly decoded
         let token = cookieStore.get("auth_token")?.value;
         if (token) {
           // Ensure the token is properly decoded
           token = decodeURIComponent(token);
-          
+
           if (config.headers) {
             // Set the Authorization header with the Bearer token
             config.headers.Authorization = `Bearer ${token}`;
@@ -49,6 +93,8 @@ axiosInstance.interceptors.request.use(
         console.log("[Client] No auth token found in cookies");
       }
     }
+
+    console.log(`[${typeof window === "undefined" ? "Server" : "Client"}] API Request:`, config.method?.toUpperCase(), config.url);
     return config;
   },
   (error) => {

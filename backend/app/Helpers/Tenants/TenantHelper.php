@@ -2,7 +2,7 @@
 
 namespace App\Helpers;
 
-use App\Models\Tenant;
+use App\Models\Landlord\Tenant;
 use Illuminate\Support\Facades\Request;
 
 /**
@@ -114,7 +114,7 @@ class TenantHelper
 
     /**
      * Get tenant from custom domain
-     * 
+     *
      * @param string $domain
      * @return Tenant|null
      */
@@ -123,6 +123,47 @@ class TenantHelper
         return Tenant::where('custom_domain', $domain)
                     ->where('status', 'active')
                     ->first();
+    }
+
+    /**
+     * Get standardized tenant data for API responses
+     *
+     * @param Tenant|null $tenant
+     * @return array|null
+     */
+    public static function getApiData(?Tenant $tenant = null): ?array
+    {
+        $tenant = $tenant ?? self::current();
+
+        if (!$tenant) {
+            return null;
+        }
+
+        return [
+            'id' => $tenant->id,
+            'name' => $tenant->name,
+            'slug' => $tenant->slug,
+            'status' => $tenant->status ?? 'active',
+        ];
+    }
+
+    /**
+     * Add tenant context to user data for API responses
+     *
+     * @param array $userData
+     * @param Tenant|null $tenant
+     * @return array
+     */
+    public static function addTenantContextToUser(array $userData, ?Tenant $tenant = null): array
+    {
+        $tenant = $tenant ?? self::current();
+
+        if ($tenant) {
+            $userData['tenant_id'] = $tenant->id;
+            $userData['tenant'] = self::getApiData($tenant);
+        }
+
+        return $userData;
     }
 
     /**

@@ -5,10 +5,11 @@ namespace App\Services\Landlord;
 use App\Models\Landlord\Tenant;
 use App\Models\User;
 use App\Models\Role;
-use App\Events\Landlord\TenantCreated;
+use App\Events\TenantCreated;
 use App\Events\Landlord\TenantSeedingRequested;
 use App\Events\Landlord\TenantDeleting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
@@ -77,7 +78,7 @@ class TenantService
     /**
      * Create a new tenant with complete setup
      */
-    public function createTenant(array $tenantData, array $adminData): Tenant
+    public function createTenant(array $tenantData, array $adminData, ?string $progressId = null): array
     {
         // Validate input data
         $this->validateTenantData($tenantData);
@@ -87,25 +88,34 @@ class TenantService
         try {
             Log::info('Starting tenant creation process', [
                 'tenant_name' => $tenantData['name'],
-                'admin_email' => $adminData['email']
+                'admin_email' => $adminData['email'],
+                'progress_id' => $progressId
             ]);
 
+            $this->updateProgress($progressId, 'validating', 'Validating tenant data...', 10);
+
             // Step 1: Create the tenant record
+            $this->updateProgress($progressId, 'creating_tenant', 'Creating organization record...', 20);
             $tenant = $this->createTenantRecord($tenantData);
-            
+
             // Step 2: Create domains if provided
+            $this->updateProgress($progressId, 'creating_domains', 'Setting up domains...', 30);
             $this->createTenantDomains($tenant, $tenantData);
-            
+
             // Step 3: Initialize tenant database (via Stancl events)
+            $this->updateProgress($progressId, 'creating_database', 'Creating tenant database...', 50);
             $this->initializeTenantDatabase($tenant);
-            
+
             // Step 4: Create admin user
+            $this->updateProgress($progressId, 'creating_admin', 'Creating admin user...', 70);
             $adminUser = $this->createAdminUser($tenant, $adminData);
-            
+
             // Step 5: Fire tenant created event
+            $this->updateProgress($progressId, 'setting_up_data', 'Setting up default data...', 80);
             event(new TenantCreated($tenant, $adminUser));
-            
+
             // Step 6: Fire seeding event for modular setup
+            $this->updateProgress($progressId, 'seeding_data', 'Seeding initial content...', 90);
             event(new TenantSeedingRequested($tenant, $adminUser, [
                 'seed_roles' => true,
                 'seed_languages' => true,
@@ -114,28 +124,64 @@ class TenantService
 
             DB::commit();
 
+            $this->updateProgress($progressId, 'completed', 'Organization created successfully!', 100);
+
             Log::info('Tenant creation completed successfully', [
                 'tenant_id' => $tenant->id,
                 'tenant_name' => $tenant->name,
-                'admin_user_id' => $adminUser->id
+                'admin_user_id' => $adminUser->id,
+                'progress_id' => $progressId
             ]);
 
-            return $tenant->load(['domains', 'users']);
+            return [
+                'tenant' => $tenant->load(['domains', 'users']),
+                'admin_user' => $adminUser
+            ];
 
         } catch (Exception $e) {
             DB::rollBack();
-            
+
+            $this->updateProgress($progressId, 'failed', 'Failed to create organization: ' . $e->getMessage(), 0, $e->getMessage());
+
             Log::error('Tenant creation failed', [
                 'tenant_name' => $tenantData['name'] ?? 'unknown',
                 'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
+                'trace' => $e->getTraceAsString(),
+                'progress_id' => $progressId
             ]);
 
             // Cleanup any partially created resources
             $this->cleanupFailedTenantCreation($tenantData);
-            
+
             throw new Exception('Failed to create tenant: ' . $e->getMessage(), 0, $e);
         }
+    }
+
+    /**
+     * Update progress for tenant creation
+     */
+    protected function updateProgress(?string $progressId, string $stage, string $message, int $percentage, ?string $error = null): void
+    {
+        if (!$progressId) {
+            return;
+        }
+
+        $progressData = [
+            'stage' => $stage,
+            'message' => $message,
+            'percentage' => $percentage,
+            'timestamp' => now()->toISOString(),
+        ];
+
+        if ($error) {
+            $progressData['error'] = $error;
+        }
+
+        // Store progress in cache with 10-minute expiration
+        Cache::put("tenant_creation_progress:{$progressId}", $progressData, 600);
+
+        // Optionally broadcast progress via WebSocket/SSE
+        // broadcast(new TenantCreationProgress($progressId, $progressData));
     }
 
     /**
@@ -350,6 +396,8 @@ class TenantService
             ]);
         }
 
+        $adminUser = null;
+
         // Switch to tenant context to create user
         $tenant->run(function () use ($tenant, $adminData, &$adminUser) {
             $adminUser = User::create([
@@ -374,6 +422,10 @@ class TenantService
             // Assign tenant admin role
             $adminUser->roles()->attach($tenantAdminRole);
         });
+
+        if (!$adminUser) {
+            throw new Exception('Failed to create admin user');
+        }
 
         return $adminUser;
     }

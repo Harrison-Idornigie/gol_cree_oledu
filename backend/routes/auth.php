@@ -20,6 +20,9 @@ use Illuminate\Support\Facades\Route;
  * The hybrid tenant middleware will automatically identify tenant context
  * when the URL includes a tenant slug, making these routes work seamlessly
  * in both scenarios.
+ *
+ * When accessed via tenant URLs (api/{tenant}/auth/*), the tenant context
+ * is automatically initialized and available in controllers.
  */
 
 Route::group([
@@ -64,4 +67,5 @@ Route::group([
     // Tenant registration routes
     Route::post('register-tenant-admin', [TenantRegistrationController::class, 'registerTenantAdmin']);
     Route::get('validate-tenant-slug/{slug}', [TenantRegistrationController::class, 'validateSlug']);
+    Route::get('tenant-creation-progress/{progressId}', [TenantRegistrationController::class, 'checkProgress']);
 });

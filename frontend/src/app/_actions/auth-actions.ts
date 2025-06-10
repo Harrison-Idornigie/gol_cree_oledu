@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import axiosInstance from "@/lib/axios";
-import { UserType, getDefaultRedirectPath } from "@/types/tenant/user";
+import { UserType, getDefaultRedirectPath, User } from "@/types/tenant/user";
 
 interface AuthResponse {
   error?: string;
@@ -20,6 +20,7 @@ interface AuthResponse {
     points?: number;
     created_at?: string;
     updated_at?: string;
+    is_active?: boolean;
     tenant_id?: string;
     tenant?: {
       id: string;
@@ -68,9 +69,12 @@ const deleteCookie = async () => {
   cookieStore.delete("auth_token");
 };
 
-export async function login(formData: FormData) {
+export async function login(formData: FormData, tenantSlug?: string) {
   try {
-    const response = await axiosInstance.post<AuthResponse>("/auth/login", {
+    // Use tenant-specific login endpoint if tenant slug is provided
+    const loginUrl = tenantSlug ? `/api/${tenantSlug}/auth/login` : "/auth/login";
+
+    const response = await axiosInstance.post<AuthResponse>(loginUrl, {
       email: formData.get("email"),
       password: formData.get("password"),
     });
@@ -83,9 +87,14 @@ export async function login(formData: FormData) {
 
     revalidatePath("/login", "page");
 
-    // Use proper role-based redirection
-    const redirectPath = getDefaultRedirectPath(response.data?.user || null);
-    return { success: true, redirect: redirectPath };
+    // Use proper role-based redirection with tenant context
+    const redirectPath = getDefaultRedirectPath(response.data?.user as User | null);
+    return {
+      success: true,
+      redirect: redirectPath,
+      user: response.data?.user,
+      tenant: response.data?.user?.tenant
+    };
   } catch (error) {
     return { error: getErrorMessage(error) };
   }
@@ -107,7 +116,7 @@ export async function register(formData: FormData) {
     revalidatePath("/register", "page");
 
     // Use proper role-based redirection
-    const redirectPath = getDefaultRedirectPath(response.data?.user || null);
+    const redirectPath = getDefaultRedirectPath(response.data?.user as User | null);
     return { ...response.data, redirect: redirectPath };
   } catch (error) {
     return { error: getErrorMessage(error) };
