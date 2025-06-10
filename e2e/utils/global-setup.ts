@@ -30,7 +30,7 @@ async function globalSetup(config: FullConfig) {
     
     // Seed basic data if needed
     console.log('🌱 Seeding basic test data...');
-    execSync('cd ../backend && php artisan db:seed --class=RoleSeeder --env=testing --force', { stdio: 'inherit' });
+    execSync('cd ../backend && php artisan db:seed --class=SuperAdminSeeder --env=testing --force', { stdio: 'inherit' });
 
     // 2. Initialize database helper
     const dbHelper = new DatabaseHelper();

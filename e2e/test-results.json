@@ -145,13 +145,19 @@
   "suites": [],
   "errors": [
     {
-      "message": "Error: Timed out waiting 120000ms from config.webServer.",
-      "stack": "Error: Timed out waiting 120000ms from config.webServer."
+      "message": "Error: Command failed: cd ../backend && php artisan db:seed --class=RoleSeeder --env=testing --force",
+      "stack": "Error: Command failed: cd ../backend && php artisan db:seed --class=RoleSeeder --env=testing --force\n    at globalSetup (/home/onionlake-admin/PROJECT/gol_2025/e2e/utils/global-setup.ts:33:13)",
+      "location": {
+        "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/utils/global-setup.ts",
+        "column": 13,
+        "line": 33
+      },
+      "snippet": "\u001b[90m   at \u001b[39m../utils/global-setup.ts:33\n\n\u001b[0m \u001b[90m 31 |\u001b[39m     \u001b[90m// Seed basic data if needed\u001b[39m\n \u001b[90m 32 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m'🌱 Seeding basic test data...'\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 33 |\u001b[39m     execSync(\u001b[32m'cd ../backend && php artisan db:seed --class=RoleSeeder --env=testing --force'\u001b[39m\u001b[33m,\u001b[39m { stdio\u001b[33m:\u001b[39m \u001b[32m'inherit'\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m             \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 34 |\u001b[39m\n \u001b[90m 35 |\u001b[39m     \u001b[90m// 2. Initialize database helper\u001b[39m\n \u001b[90m 36 |\u001b[39m     \u001b[36mconst\u001b[39m dbHelper \u001b[33m=\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mDatabaseHelper\u001b[39m()\u001b[33m;\u001b[39m\u001b[0m"
     }
   ],
   "stats": {
-    "startTime": "2025-06-10T05:06:45.186Z",
-    "duration": 139156.485,
+    "startTime": "2025-06-10T05:16:40.720Z",
+    "duration": 7121.523999999999,
     "expected": 0,
     "skipped": 0,
     "unexpected": 0,

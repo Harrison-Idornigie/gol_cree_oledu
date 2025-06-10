@@ -96,20 +96,20 @@ export default defineConfig({
   globalTeardown: require.resolve('./utils/global-teardown.ts'),
 
   /* Run your local dev server before starting the tests */
-  webServer: [
-    {
-      command: 'cd ../frontend && npm run dev',
-      url: process.env.FRONTEND_URL || 'http://localhost:3000',
-      reuseExistingServer: !process.env.CI,
-      timeout: 120 * 1000,
-    },
-    {
-      command: 'cd ../backend && php artisan serve',
-      url: process.env.BACKEND_URL || 'http://localhost:8000',
-      reuseExistingServer: !process.env.CI,
-      timeout: 120 * 1000,
-    }
-  ],
+  // webServer: [
+  //   {
+  //     command: 'cd ../frontend && npm run dev',
+  //     url: process.env.FRONTEND_URL || 'http://localhost:3000',
+  //     reuseExistingServer: !process.env.CI,
+  //     timeout: 120 * 1000,
+  //   },
+  //   {
+  //     command: 'cd ../backend && php artisan serve',
+  //     url: process.env.BACKEND_URL || 'http://localhost:8000',
+  //     reuseExistingServer: !process.env.CI,
+  //     timeout: 120 * 1000,
+  //   }
+  // ],
 
   /* Test timeout */
   timeout: 60 * 1000,
