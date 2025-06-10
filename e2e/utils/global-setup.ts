@@ -24,13 +24,9 @@ async function globalSetup(config: FullConfig) {
     // Set test-specific environment variables
     execSync('cd ../backend && php artisan config:clear --env=testing', { stdio: 'inherit' });
     
-    // Run migrations for central database
-    console.log('🗄️  Running central database migrations...');
-    execSync('cd ../backend && php artisan migrate:fresh --env=testing --force', { stdio: 'inherit' });
-    
-    // Seed basic data if needed
-    console.log('🌱 Seeding basic test data...');
-    execSync('cd ../backend && php artisan db:seed --class=SuperAdminSeeder --env=testing --force', { stdio: 'inherit' });
+    // Run landlord migrations and seeding for central database
+    console.log('🏢 Running landlord migrations and seeding...');
+    execSync('cd ../backend && php artisan migrate:landlord --fresh --seed --force --env=testing', { stdio: 'inherit' });
 
     // 2. Initialize database helper
     const dbHelper = new DatabaseHelper();

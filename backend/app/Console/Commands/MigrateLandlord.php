@@ -62,7 +62,7 @@ class MigrateLandlord extends Command
             if ($this->option('seed')) {
                 $this->info('🌱 Seeding landlord database...');
                 Artisan::call('db:seed', [
-                    '--class' => 'LandlordSeeder',
+                    '--class' => 'Database\\Seeders\\Landlord\\LandlordSeeder',
                     '--force' => $this->option('force'),
                 ]);
                 $this->info('✅ Landlord seeding completed!');
