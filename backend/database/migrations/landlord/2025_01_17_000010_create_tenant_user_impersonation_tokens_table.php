@@ -19,7 +19,7 @@ class CreateTenantUserImpersonationTokensTable extends Migration
             $table->string('token', 128)->primary();
             $table->uuid('tenant_id');
             $table->string('user_email'); // Use email instead of user_id for flexibility
-            $table->uuid('impersonator_id'); // Central user performing impersonation
+            $table->unsignedBigInteger('impersonator_id'); // Central user performing impersonation
             $table->string('impersonator_email');
             $table->string('auth_guard')->default('tenant');
             $table->string('redirect_url')->nullable();
@@ -36,9 +36,9 @@ class CreateTenantUserImpersonationTokensTable extends Migration
             $table->foreign('impersonator_id')->references('id')->on('central_users')->onUpdate('cascade')->onDelete('cascade');
 
             // Indexes for performance
-            $table->index(['tenant_id', 'user_email']);
-            $table->index(['impersonator_id', 'created_at']);
-            $table->index(['expires_at', 'used_at']);
+            $table->index(['tenant_id', 'user_email'], 'idx_tenant_user');
+            $table->index(['impersonator_id', 'created_at'], 'idx_impersonator_date');
+            $table->index(['expires_at', 'used_at'], 'idx_expires_used');
         });
     }
 

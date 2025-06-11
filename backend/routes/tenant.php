@@ -28,7 +28,7 @@ use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 //     });
 // });
 
-require __DIR__ . '/tenant-auth.php';
-require __DIR__ . '/tenant-admin.php';
-require __DIR__ . '/tenant-team.php';
-require __DIR__ . '/tenant-students.php';
+require __DIR__ . '/tenant/tenant-auth.php';
+require __DIR__ . '/tenant/tenant-admin.php';
+require __DIR__ . '/tenant/tenant-team.php';
+require __DIR__ . '/tenant/tenant-students.php';

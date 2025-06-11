@@ -68,4 +68,5 @@ Route::prefix('super-admin')->middleware(['auth:central', 'verified', 'membershi
 
 });
 
-require __DIR__ . '/landlord-auth.php';
+require __DIR__ . '/landlord/landlord-auth.php';
+require __DIR__ . '/landlord/support.php';

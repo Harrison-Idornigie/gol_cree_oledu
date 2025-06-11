@@ -36,20 +36,7 @@ return new class extends Migration
             $table->index('is_system');
         });
 
-        // Create central_memberships pivot table
-        Schema::create('central_memberships', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->constrained('central_users')->onDelete('cascade');
-            $table->foreignId('membership_id')->constrained('central_memberships')->onDelete('cascade');
-            $table->timestamps();
 
-            // Unique constraint to prevent duplicate membership assignments
-            $table->unique(['user_id', 'membership_id']);
-
-            // Indexes
-            $table->index('user_id');
-            $table->index('membership_id');
-        });
     }
 
     /**
@@ -57,7 +44,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('central_memberships');
         Schema::dropIfExists('central_memberships');
     }
 };
