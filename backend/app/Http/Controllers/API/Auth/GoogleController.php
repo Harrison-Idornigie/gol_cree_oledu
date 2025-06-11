@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\Auth;
 use App\Http\Controllers\API\BaseAPIController;
 use App\Models\Tenants\Role;
 use App\Models\Tenants\User;
+use App\Services\Auth\UserTenantAssociationService;
 use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;

@@ -1,11 +1,9 @@
-<!-- 
- 
- <?php
+<?php
+
 namespace App\Http\Controllers\API\Auth;
 
-use App\Helpers\Tenants\TenantHelper;
 use App\Http\Controllers\API\BaseAPIController;
-use App\Models\Tenants\User;
+use App\Models\Landlord\CentralUser;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
@@ -13,7 +11,16 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 
-class LoginController extends BaseAPIController
+/**
+ * Central Login Controller
+ * 
+ * Handles authentication for central/landlord users (super admins)
+ * who need access to system-wide management features.
+ * 
+ * This controller operates in the central database context and creates
+ * tokens in the central personal_access_tokens table.
+ */
+class CentralLoginController extends BaseAPIController
 {
     public function login(Request $request)
     {
@@ -23,13 +30,25 @@ class LoginController extends BaseAPIController
                 'password' => 'required',
             ]);
 
-            if (! Auth::attempt($request->only('email', 'password'))) {
-                Log::warning('Failed login attempt', ['email' => $request->email]);
+            // Use central guard for authentication
+            if (!Auth::guard('central')->attempt($request->only('email', 'password'))) {
+                Log::warning('Failed central login attempt', ['email' => $request->email]);
                 return $this->sendUnauthorizedResponse('Invalid credentials');
             }
 
-            $user  = User::where('email', $request->email)->firstOrFail();
-            $token = $user->createToken('auth-token')->plainTextToken;
+            $user = CentralUser::where('email', $request->email)->firstOrFail();
+            
+            // Verify user is active
+            if (!$user->is_active) {
+                Log::warning('Inactive user login attempt', ['email' => $request->email]);
+                return $this->sendUnauthorizedResponse('Account is inactive');
+            }
+
+            // Create token in central database
+            $token = $user->createToken('central-auth-token')->plainTextToken;
+
+            // Update last login timestamp
+            $user->update(['last_login_at' => now()]);
 
             // Prepare response data
             $userData = [
@@ -38,28 +57,29 @@ class LoginController extends BaseAPIController
                 'email' => $user->email,
                 'role' => $user->role,
                 'email_verified_at' => $user->email_verified_at,
+                'is_active' => $user->is_active,
+                'last_login_at' => $user->last_login_at,
             ];
 
-            // Add tenant context if available
-            $userData = TenantHelper::addTenantContextToUser($userData);
-
-            // Determine redirect path based on user role and tenant
+            // Determine redirect path based on user role
             $redirectPath = $this->getPostLoginRedirectPath($user);
 
             $responseData = [
                 'token' => $token,
                 'user'  => $userData,
                 'redirect' => $redirectPath,
+                'auth_context' => 'central',
             ];
 
             return $this->sendResponse($responseData, 'Successfully logged in');
+            
         } catch (ValidationException $e) {
             return $this->sendError('Validation error', $e->errors(), 422);
         } catch (ModelNotFoundException $e) {
-            Log::error('User not found during login', ['email' => $request->email]);
+            Log::error('Central user not found during login', ['email' => $request->email]);
             return $this->sendError('Authentication failed', ['email' => 'User not found'], 404);
         } catch (Exception $e) {
-            Log::error('Login error: ' . $e->getMessage(), [
+            Log::error('Central login error: ' . $e->getMessage(), [
                 'trace' => $e->getTraceAsString(),
             ]);
             return $this->sendError('Login failed', ['error' => 'An unexpected error occurred'], 500);
@@ -69,14 +89,15 @@ class LoginController extends BaseAPIController
     public function logout(Request $request)
     {
         try {
-            if (! $request->user()) {
+            if (!$request->user()) {
                 return $this->sendUnauthorizedResponse('User not authenticated');
             }
 
             $request->user()->currentAccessToken()->delete();
             return $this->sendResponse([], 'Successfully logged out');
+            
         } catch (Exception $e) {
-            Log::error('Logout error: ' . $e->getMessage(), [
+            Log::error('Central logout error: ' . $e->getMessage(), [
                 'user_id' => $request->user() ? $request->user()->id : null,
                 'trace'   => $e->getTraceAsString(),
             ]);
@@ -85,38 +106,15 @@ class LoginController extends BaseAPIController
     }
 
     /**
-     * Determine the appropriate redirect path after login based on user role and tenant
+     * Determine the appropriate redirect path after login based on user role
      */
-    protected function getPostLoginRedirectPath(User $user): string
+    protected function getPostLoginRedirectPath(CentralUser $user): string
     {
-        // Check if user has tenant context
-        $tenant = TenantHelper::current();
-
-        if (!$tenant) {
-            // No tenant context - check user's role
-            if ($user->hasRole('super-admin')) {
-                return '/super/dashboard';
-            }
-
-            // For tenant users without tenant context, redirect to login
-            // This shouldn't happen in normal flow but provides fallback
-            return '/login';
+        if ($user->isSuperAdmin()) {
+            return '/super/dashboard';
         }
 
-        // User has tenant context - route based on role
-        $tenantSlug = $tenant->slug;
-
-        if ($user->hasRole('tenant-admin') || $user->hasRole('admin')) {
-            return "/{$tenantSlug}/admin/dashboard";
-        }
-
-        if ($user->hasRole('team') || $user->hasRole('teacher')) {
-            return "/{$tenantSlug}/team/dashboard";
-        }
-
-        // Default to student dashboard
-        return "/{$tenantSlug}/student/dashboard";
+        // Default fallback for other central users
+        return '/super/dashboard';
     }
-} 
-
--->
+}

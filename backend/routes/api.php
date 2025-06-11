@@ -31,6 +31,7 @@ Route::prefix('public')->group(function () {
 });
 
 // Authenticated routes (no specific role required)
+// Note: These routes will work with both central and tenant guards
 Route::middleware(['auth:sanctum'])->group(function () {
     // User profile routes that work across all roles
     Route::get('profile', function () {

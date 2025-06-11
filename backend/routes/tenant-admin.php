@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
  * URL Pattern: api/{tenant-slug}/tenant-admin/*
  */
 
-Route::prefix('tenant-admin')->middleware(['auth:sanctum', 'verified', 'role:tenant-admin'])->group(function () {
+Route::prefix('tenant-admin')->middleware(['auth:tenant', 'verified', 'role:tenant-admin'])->group(function () {
 
     // Dashboard & Analytics
     Route::get('dashboard', [TenantAdminDashboardController::class, 'index']);

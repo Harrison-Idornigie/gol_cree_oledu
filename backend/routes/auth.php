@@ -1,11 +1,13 @@
 <?php
 
+use App\Http\Controllers\API\Auth\CentralLoginController;
 use App\Http\Controllers\API\Auth\ForgotPasswordController;
 use App\Http\Controllers\API\Auth\GoogleController;
-use App\Http\Controllers\API\Auth\LoginController;
+// use App\Http\Controllers\API\Auth\LoginController;
 use App\Http\Controllers\API\Auth\LogoutController;
 use App\Http\Controllers\API\Auth\RegisterController;
 use App\Http\Controllers\API\Auth\ResetPasswordController;
+use App\Http\Controllers\API\Auth\TenantLoginController;
 use App\Http\Controllers\API\Auth\TenantRegistrationController;
 use App\Http\Controllers\API\Auth\VerificationController;
 use Illuminate\Support\Facades\Route;
@@ -28,10 +30,24 @@ use Illuminate\Support\Facades\Route;
 Route::group([
     'prefix'     => 'auth',
     'as'         => 'auth.',
-    // 'middleware' => ['api', \App\Http\Middleware\Tenant\InitializeTenancyByPathOrDomain::class],
 ], function () {
-    // Authentication routes (work in both central and tenant contexts)
-    Route::post('login', [LoginController::class, 'login']);
+    // Central authentication routes (for super admins)
+    Route::post('central-login', [CentralLoginController::class, 'login']);
+    Route::middleware('auth:central')->group(function () {
+        Route::post('central-logout', [CentralLoginController::class, 'logout']);
+    });
+
+    // Tenant authentication routes (require tenant context)
+    Route::middleware([\App\Http\Middleware\Tenant\InitializeTenancyByPathOrDomain::class])->group(function () {
+        Route::post('tenant-login', [TenantLoginController::class, 'login']);
+        Route::post('tenant-user-tenants', [TenantLoginController::class, 'getUserTenants']);
+        Route::middleware('auth:tenant')->group(function () {
+            Route::post('tenant-logout', [TenantLoginController::class, 'logout']);
+        });
+    });
+
+    // Legacy login route (deprecated - will be removed)
+    // Route::post('login', [LoginController::class, 'login']);
     Route::post('register', [RegisterController::class, 'register']);
 
     // Email verification routes
