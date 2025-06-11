@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\Landlord;
 
 use App\Http\Controllers\API\BaseAPIController;
 use App\Models\Tenants\User;
+use App\Services\Landlord\Support\TenantSupportAccessService;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 
@@ -59,34 +60,104 @@ class SystemUserController extends BaseAPIController
     }
 
     /**
-     * Impersonate a user (for support purposes).
-     * 
+     * Generate support access token for tenant user impersonation.
+     *
      * @param Request $request
-     * @param User $user
      * @return JsonResponse
      */
-    public function impersonateUser(Request $request, User $user): JsonResponse
+    public function generateSupportAccess(Request $request): JsonResponse
     {
-        // TODO: Implement user impersonation
-        // - Create impersonation session
-        // - Log impersonation activity
-        // - Set appropriate context
-        return $this->sendResponse([], 'User impersonation started successfully.');
+        $request->validate([
+            'tenant_slug' => 'required|string|exists:tenants,slug',
+            'user_email' => 'required|email',
+            'reason' => 'required|string|max:255',
+            'duration_minutes' => 'integer|min:15|max:480', // 15 minutes to 8 hours
+            'redirect_url' => 'nullable|string',
+        ]);
+
+        try {
+            $tenant = \App\Models\Landlord\Tenant::where('slug', $request->tenant_slug)->firstOrFail();
+            $centralUser = $request->user();
+
+            $supportService = app(TenantSupportAccessService::class);
+
+            $result = $supportService->generateSupportAccess($centralUser, $tenant, $request->user_email, [
+                'reason' => $request->reason,
+                'duration_minutes' => $request->duration_minutes ?? 60,
+                'redirect_url' => $request->redirect_url,
+                'ip_address' => $request->ip(),
+                'user_agent' => $request->userAgent(),
+            ]);
+
+            return $this->sendResponse($result, 'Support access token generated successfully.');
+
+        } catch (\Exception $e) {
+            return $this->sendError('Failed to generate support access', ['error' => $e->getMessage()], 400);
+        }
     }
 
     /**
-     * Stop impersonating a user.
-     * 
+     * Get support access audit log.
+     *
      * @param Request $request
      * @return JsonResponse
      */
-    public function stopImpersonation(Request $request): JsonResponse
+    public function getSupportAccessAudit(Request $request): JsonResponse
     {
-        // TODO: Implement stop impersonation
-        // - Clear impersonation session
-        // - Log end of impersonation
-        // - Restore original context
-        return $this->sendResponse([], 'User impersonation stopped successfully.');
+        $request->validate([
+            'tenant_id' => 'nullable|uuid|exists:tenants,id',
+            'user_email' => 'nullable|email',
+            'date_from' => 'nullable|date',
+            'date_to' => 'nullable|date|after_or_equal:date_from',
+            'per_page' => 'integer|min:1|max:100',
+        ]);
+
+        try {
+            $supportService = app(TenantSupportAccessService::class);
+
+            $filters = array_filter([
+                'tenant_id' => $request->tenant_id,
+                'user_email' => $request->user_email,
+                'date_from' => $request->date_from,
+                'date_to' => $request->date_to,
+            ]);
+
+            $audit = $supportService->getSupportAccessAudit($filters);
+
+            return $this->sendResponse($audit, 'Support access audit retrieved successfully.');
+
+        } catch (\Exception $e) {
+            return $this->sendError('Failed to retrieve audit log', ['error' => $e->getMessage()], 500);
+        }
+    }
+
+    /**
+     * Revoke support access token.
+     *
+     * @param Request $request
+     * @param string $token
+     * @return JsonResponse
+     */
+    public function revokeSupportAccess(Request $request, string $token): JsonResponse
+    {
+        $request->validate([
+            'reason' => 'nullable|string|max:255',
+        ]);
+
+        try {
+            $supportService = app(TenantSupportAccessService::class);
+
+            $revoked = $supportService->revokeSupportAccess($token, $request->reason);
+
+            if ($revoked) {
+                return $this->sendResponse([], 'Support access token revoked successfully.');
+            } else {
+                return $this->sendError('Token not found or already revoked', [], 404);
+            }
+
+        } catch (\Exception $e) {
+            return $this->sendError('Failed to revoke support access', ['error' => $e->getMessage()], 500);
+        }
     }
 
     /**

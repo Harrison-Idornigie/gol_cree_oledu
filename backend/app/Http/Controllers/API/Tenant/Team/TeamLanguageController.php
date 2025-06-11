@@ -12,7 +12,7 @@ use Illuminate\Http\JsonResponse;
  * Team Language Controller
  * 
  * Handles language management operations for team members.
- * Access Level: Team (Teachers/Content Creators)
+ * Access Level: Team (Teams/Content Creators)
  * Scope: Tenant-specific
  * 
  * This controller allows team members to create and manage languages
@@ -27,7 +27,7 @@ class TeamLanguageController extends BaseAPIController
      */
     public function __construct()
     {
-        $this->middleware(['auth:sanctum', 'verified', 'tenant', 'membership:teacher']);
+        $this->middleware(['auth:sanctum', 'verified', 'tenant', 'membership:team']);
     }
 
     /**

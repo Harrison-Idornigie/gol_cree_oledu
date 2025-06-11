@@ -12,7 +12,7 @@ use Illuminate\Http\JsonResponse;
  * Team Media Controller
  * 
  * Handles media upload and management operations for team members.
- * Access Level: Team (Teachers/Content Creators)
+ * Access Level: Team (Teams/Content Creators)
  * Scope: Tenant-specific
  * 
  * This controller allows team members to upload and manage media files
@@ -27,7 +27,7 @@ class TeamMediaController extends BaseAPIController
      */
     public function __construct()
     {
-        $this->middleware(['auth:sanctum', 'verified', 'tenant', 'membership:teacher']);
+        $this->middleware(['auth:sanctum', 'verified', 'tenant', 'membership:team']);
     }
 
     /**

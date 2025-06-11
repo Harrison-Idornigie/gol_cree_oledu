@@ -158,7 +158,7 @@ class UserTenantSyncCommandsTest extends TestCase
             'email' => 'duplicate@example.com',
             'tenant_id' => $this->tenant1->id,
             'tenant_slug' => $this->tenant1->slug,
-            'membership' => 'teacher', // Different membership but same email+tenant
+            'membership' => 'team', // Different membership but same email+tenant
             'is_active' => true,
         ]);
 

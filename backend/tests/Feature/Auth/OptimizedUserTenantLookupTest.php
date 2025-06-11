@@ -57,7 +57,7 @@ class OptimizedUserTenantLookupTest extends TestCase
             'email' => $this->testEmail,
             'tenant_id' => $this->tenant2->id,
             'tenant_slug' => $this->tenant2->slug,
-            'membership' => 'teacher',
+            'membership' => 'team',
             'is_active' => true,
         ]);
 
@@ -154,7 +154,7 @@ class OptimizedUserTenantLookupTest extends TestCase
             'email' => $this->testEmail,
             'tenant_id' => $this->tenant2->id,
             'tenant_slug' => $this->tenant2->slug,
-            'membership' => 'teacher',
+            'membership' => 'team',
             'last_accessed_at' => now(), // More recent
             'is_active' => true,
         ]);
@@ -163,7 +163,7 @@ class OptimizedUserTenantLookupTest extends TestCase
 
         $this->assertNotNull($primary);
         $this->assertEquals('test-district-2', $primary['tenant']->slug);
-        $this->assertEquals('teacher', $primary['membership']);
+        $this->assertEquals('team', $primary['membership']);
     }
 
     /** @test */

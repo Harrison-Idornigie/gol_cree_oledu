@@ -210,7 +210,7 @@ class UserContextController extends BaseAPIController
             'tenant-admin' => 'admin',
             'admin' => 'admin',
             'team' => 'team',
-            'teacher' => 'team',
+            'team' => 'team',
             'student' => 'student'
         ];
 

@@ -47,7 +47,7 @@ class TenantAdminUserController extends BaseAPIController
     }
 
     /**
-     * Get all teams (teachers/content creators) in the tenant.
+     * Get all teams (teams/content creators) in the tenant.
      * 
      * @param Request $request
      * @return JsonResponse
@@ -55,7 +55,7 @@ class TenantAdminUserController extends BaseAPIController
     public function getTeams(Request $request): JsonResponse
     {
         // TODO: Implement team members listing
-        // - Users with team/teacher memberships
+        // - Users with team/team memberships
         // - Content creation statistics
         // - Activity levels
         return $this->sendResponse([], 'Team members retrieved successfully.');

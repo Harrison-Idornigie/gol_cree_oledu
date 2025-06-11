@@ -11,7 +11,7 @@ use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
  * Team Progress Controller
  * 
  * Handles progress tracking and analytics for team-created content.
- * Access Level: Team (Teachers/Content Creators)
+ * Access Level: Team (Teams/Content Creators)
  * Scope: Tenant-specific
  * 
  * This controller allows team members to track progress and analytics
@@ -26,7 +26,7 @@ class TeamProgressController extends BaseAPIController
      */
     public function __construct()
     {
-        $this->middleware(['auth:sanctum', 'verified', 'tenant', 'membership:teacher']);
+        $this->middleware(['auth:sanctum', 'verified', 'tenant', 'membership:team']);
     }
 
     /**
