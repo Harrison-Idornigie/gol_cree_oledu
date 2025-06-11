@@ -89,6 +89,8 @@ export default function LoginPage() {
               required
               className="duo-input"
               placeholder="student@example.com"
+              spellCheck={false}
+              suppressHydrationWarning
             />
           </div>
         </div>
@@ -109,6 +111,8 @@ export default function LoginPage() {
               required
               className="duo-input"
               placeholder="••••••••"
+              spellCheck={false}
+              suppressHydrationWarning
             />
           </div>
         </div>

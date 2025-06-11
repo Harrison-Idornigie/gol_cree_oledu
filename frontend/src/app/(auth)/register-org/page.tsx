@@ -153,6 +153,9 @@ export default function RegisterOrganizationPage() {
                 required
                 className="duo-input"
                 placeholder="Springfield School District"
+                spellCheck={false}
+                autoComplete="organization"
+                suppressHydrationWarning
                 onChange={(e) => {
                   const slugField = document.getElementById('organizationSlug') as HTMLInputElement;
                   if (slugField && !slugField.value) {
@@ -180,6 +183,9 @@ export default function RegisterOrganizationPage() {
                   required
                   className="duo-input rounded-l-none"
                   placeholder="springfield-schools"
+                  spellCheck={false}
+                  autoComplete="off"
+                  suppressHydrationWarning
                   onChange={handleSlugChange}
                 />
               </div>
@@ -209,6 +215,8 @@ export default function RegisterOrganizationPage() {
                 rows={3}
                 className="duo-input"
                 placeholder="Brief description of your organization..."
+                spellCheck={true}
+                suppressHydrationWarning
               />
             </div>
           </div>
@@ -230,6 +238,9 @@ export default function RegisterOrganizationPage() {
                 required
                 className="duo-input"
                 placeholder="John Smith"
+                spellCheck={false}
+                autoComplete="name"
+                suppressHydrationWarning
               />
             </div>
           </div>
@@ -246,6 +257,9 @@ export default function RegisterOrganizationPage() {
                 required
                 className="duo-input"
                 placeholder="admin@springfield-schools.edu"
+                spellCheck={false}
+                autoComplete="email"
+                suppressHydrationWarning
               />
             </div>
           </div>
@@ -262,6 +276,9 @@ export default function RegisterOrganizationPage() {
                 required
                 className="duo-input"
                 placeholder="••••••••"
+                spellCheck={false}
+                autoComplete="new-password"
+                suppressHydrationWarning
               />
             </div>
           </div>
@@ -278,6 +295,9 @@ export default function RegisterOrganizationPage() {
                 required
                 className="duo-input"
                 placeholder="••••••••"
+                spellCheck={false}
+                autoComplete="new-password"
+                suppressHydrationWarning
               />
             </div>
           </div>

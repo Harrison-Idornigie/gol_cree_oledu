@@ -88,6 +88,9 @@ export default function RegisterPage() {
               required
               className="duo-input"
               placeholder="Your name"
+              spellCheck={false}
+              autoComplete="name"
+              suppressHydrationWarning
             />
           </div>
         </div>
@@ -108,6 +111,8 @@ export default function RegisterPage() {
               required
               className="duo-input"
               placeholder="student@example.com"
+              spellCheck={false}
+              suppressHydrationWarning
             />
           </div>
         </div>
@@ -128,6 +133,8 @@ export default function RegisterPage() {
               required
               className="duo-input"
               placeholder="••••••••"
+              spellCheck={false}
+              suppressHydrationWarning
             />
           </div>
         </div>
@@ -148,6 +155,8 @@ export default function RegisterPage() {
               required
               className="duo-input"
               placeholder="••••••••"
+              spellCheck={false}
+              suppressHydrationWarning
             />
           </div>
         </div>

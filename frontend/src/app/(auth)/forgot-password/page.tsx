@@ -89,6 +89,9 @@ export default function ForgotPasswordPage() {
               required
               className="duo-input"
               placeholder="student@example.com"
+              spellCheck={false}
+              autoComplete="email"
+              suppressHydrationWarning
             />
           </div>
         </div>

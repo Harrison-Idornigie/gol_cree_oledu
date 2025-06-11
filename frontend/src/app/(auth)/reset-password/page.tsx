@@ -114,6 +114,9 @@ export default function ResetPasswordPage() {
               required
               className="duo-input"
               placeholder="••••••••"
+              spellCheck={false}
+              autoComplete="new-password"
+              suppressHydrationWarning
             />
           </div>
         </div>
@@ -131,6 +134,9 @@ export default function ResetPasswordPage() {
               required
               className="duo-input"
               placeholder="••••••••"
+              spellCheck={false}
+              autoComplete="new-password"
+              suppressHydrationWarning
             />
           </div>
         </div>
