@@ -111,10 +111,13 @@ class InitializeTenancyByPathOrDomain
                 return null;
             }
 
-            // Find tenant by slug
-            $tenant = Tenant::where('slug', $tenantSlug)
-                           ->where('status', 'active')
-                           ->first();
+            // Use caching for better performance
+            $cacheKey = "tenant_slug_{$tenantSlug}";
+            $tenant = cache()->remember($cacheKey, 300, function () use ($tenantSlug) {
+                return Tenant::where('slug', $tenantSlug)
+                            ->where('status', 'active')
+                            ->first();
+            });
 
             if ($tenant) {
                 // Add tenant slug to route parameters for controllers
