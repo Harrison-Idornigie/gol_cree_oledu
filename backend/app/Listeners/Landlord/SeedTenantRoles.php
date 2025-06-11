@@ -11,7 +11,7 @@ use Exception;
 /**
  * Seed Tenant Roles Listener
  * 
- * Handles seeding of roles and permissions for new tenants.
+ * Handles seeding of memberships and permissions for new tenants.
  * This listener is modular and can be easily extended or replaced.
  */
 class SeedTenantRoles
@@ -21,8 +21,8 @@ class SeedTenantRoles
      */
     public function handle(TenantSeedingRequested $event): void
     {
-        // Skip if roles seeding is disabled
-        if (!$event->shouldSeed('roles')) {
+        // Skip if memberships seeding is disabled
+        if (!$event->shouldSeed('memberships')) {
             return;
         }
 
@@ -36,19 +36,19 @@ class SeedTenantRoles
             // Seed permissions first
             $this->seedPermissions($tenant);
             
-            // Seed roles and assign permissions
+            // Seed memberships and assign permissions
             $this->seedRoles($tenant);
             
-            // Assign admin role to admin user
+            // Assign admin membership to admin user
             $this->assignAdminRole($adminUser, $tenant);
 
-            Log::info('Tenant roles seeded successfully', [
+            Log::info('Tenant memberships seeded successfully', [
                 'tenant_id' => $tenant->id,
                 'tenant_name' => $tenant->name
             ]);
 
         } catch (Exception $e) {
-            Log::error('Failed to seed tenant roles', [
+            Log::error('Failed to seed tenant memberships', [
                 'tenant_id' => $tenant->id,
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString()
@@ -78,35 +78,35 @@ class SeedTenantRoles
     }
 
     /**
-     * Seed roles for the tenant
+     * Seed memberships for the tenant
      */
     protected function seedRoles($tenant): void
     {
-        $roles = config('tenant.default_roles', []);
+        $memberships = config('tenant.default_memberships', []);
 
-        foreach ($roles as $roleData) {
-            $role = Role::firstOrCreate([
-                'slug' => $roleData['slug'],
+        foreach ($memberships as $membershipData) {
+            $membership = Role::firstOrCreate([
+                'slug' => $membershipData['slug'],
                 'tenant_id' => $tenant->id
             ], [
-                'name' => $roleData['name'],
-                'description' => $roleData['description'],
-                'is_system' => $roleData['is_system'] ?? true,
+                'name' => $membershipData['name'],
+                'description' => $membershipData['description'],
+                'is_system' => $membershipData['is_system'] ?? true,
             ]);
 
-            // Assign permissions to role
-            if (!empty($roleData['permissions'])) {
+            // Assign permissions to membership
+            if (!empty($membershipData['permissions'])) {
                 $permissionIds = Permission::where('tenant_id', $tenant->id)
-                    ->whereIn('slug', $roleData['permissions'])
+                    ->whereIn('slug', $membershipData['permissions'])
                     ->pluck('id');
 
-                $role->permissions()->sync($permissionIds);
+                $membership->permissions()->sync($permissionIds);
             }
         }
     }
 
     /**
-     * Assign admin role to the admin user
+     * Assign admin membership to the admin user
      */
     protected function assignAdminRole($adminUser, $tenant): void
     {
@@ -114,8 +114,8 @@ class SeedTenantRoles
             ->where('slug', 'tenant-admin')
             ->first();
 
-        if ($tenantAdminRole && !$adminUser->roles()->where('role_id', $tenantAdminRole->id)->exists()) {
-            $adminUser->roles()->attach($tenantAdminRole);
+        if ($tenantAdminRole && !$adminUsermemberships()->where('membership_id', $tenantAdminRole->id)->exists()) {
+            $adminUsermemberships()->attach($tenantAdminRole);
         }
     }
 }

@@ -8,29 +8,29 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('role_user', function (Blueprint $table) {
+        Schema::create('membership_user', function (Blueprint $table) {
             $table->string('tenant_id')->nullable()->comment('Reference to tenant in landlord database');
-            $table->foreignId('role_id')
+            $table->foreignId('membership_id')
                 ->constrained()
                 ->onDelete('cascade');
             $table->foreignId('user_id')
                 ->constrained()
                 ->onDelete('cascade');
             $table->json('metadata')->nullable()
-                ->comment('Additional role assignment data (e.g., expiry, restrictions)');
+                ->comment('Additional membership assignment data (e.g., expiry, restrictions)');
             $table->timestamps();
 
             // Create composite primary key
-            $table->primary(['role_id', 'user_id']);
+            $table->primary(['membership_id', 'user_id']);
 
             // Add indexes for efficient queries
             $table->index('user_id');
-            $table->index('role_id');
+            $table->index('membership_id');
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('role_user');
+        Schema::dropIfExists('membership_user');
     }
 };

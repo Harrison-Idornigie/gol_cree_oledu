@@ -30,7 +30,7 @@ class Permission extends Model
     /**
      * Roles that have this permission.
      */
-    public function roles(): BelongsToMany
+    public function memberships(): BelongsToMany
     {
         return $this->belongsToMany(Role::class)
             ->withPivot(['conditions', 'is_denied'])
@@ -38,25 +38,25 @@ class Permission extends Model
     }
 
     /**
-     * Get all users that have this permission through their roles.
+     * Get all users that have this permission through their memberships.
      */
     public function users()
     {
-        return User::whereHas('roles', function ($query) {
+        return User::whereHas('memberships', function ($query) {
             $query->whereHas('permissions', function ($query) {
                 $query->where('permissions.id', $this->id)
-                    ->where('permission_role.is_denied', false);
+                    ->where('permission_membership.is_denied', false);
             });
         });
     }
 
     /**
-     * Check if the permission is granted to a specific role.
+     * Check if the permission is granted to a specific membership.
      */
-    public function isGrantedTo(Role $role): bool
+    public function isGrantedTo(Role $membership): bool
     {
-        return $this->roles()
-            ->where('roles.id', $role->id)
+        return $thismemberships()
+            ->where('memberships.id', $membership->id)
             ->where('is_denied', false)
             ->exists();
     }

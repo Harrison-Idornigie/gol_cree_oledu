@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
  * URL Pattern: api/{tenant-slug}/tenant-admin/*
  */
 
-Route::prefix('tenant-admin')->middleware(['auth:tenant', 'verified', 'role:tenant-admin'])->group(function () {
+Route::prefix('tenant-admin')->middleware(['auth:tenant', 'verified', 'membership:tenant-admin'])->group(function () {
 
     // Dashboard & Analytics
     Route::get('dashboard', [TenantAdminDashboardController::class, 'index']);
@@ -45,19 +45,19 @@ Route::prefix('tenant-admin')->middleware(['auth:tenant', 'verified', 'role:tena
         Route::post('invite', [TenantAdminUserController::class, 'sendInvite']);
         Route::delete('invite/{invite}', [TenantAdminUserController::class, 'cancelInvite']);
         Route::post('invite/{invite}/resend', [TenantAdminUserController::class, 'resendInvite']);
-        Route::patch('{user}/role', [TenantAdminUserController::class, 'updateUserRole']);
+        Route::patch('{user}/membership', [TenantAdminUserController::class, 'updateMembership']);
         Route::patch('{user}/status', [TenantAdminUserController::class, 'updateUserStatus']);
         Route::get('{user}/activity', [TenantAdminUserController::class, 'getUserActivity']);
     });
 
     // Roles & Permissions Management
-    Route::prefix('roles')->group(function () {
+    Route::prefix('memberships')->group(function () {
         Route::get('/', [TenantAdminRoleController::class, 'index']);
         Route::post('/', [TenantAdminRoleController::class, 'store']);
-        Route::get('{role}', [TenantAdminRoleController::class, 'show']);
-        Route::put('{role}', [TenantAdminRoleController::class, 'update']);
-        Route::delete('{role}', [TenantAdminRoleController::class, 'destroy']);
-        Route::post('{role}/permissions', [TenantAdminRoleController::class, 'updatePermissions']);
+        Route::get('{membership}', [TenantAdminRoleController::class, 'show']);
+        Route::put('{membership}', [TenantAdminRoleController::class, 'update']);
+        Route::delete('{membership}', [TenantAdminRoleController::class, 'destroy']);
+        Route::post('{membership}/permissions', [TenantAdminRoleController::class, 'updatePermissions']);
     });
 
     // Audit Logs for Tenant

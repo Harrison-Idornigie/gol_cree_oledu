@@ -21,7 +21,7 @@ class TenantUserRegisterController extends BaseAPIController
                 'invite_token' => 'nullable|string',
             ]);
 
-            $role = 'user';
+            $membership = 'user';
 
             // If invite token is present, validate it
             if ($request->invite_token) {
@@ -41,7 +41,7 @@ class TenantUserRegisterController extends BaseAPIController
                     ]);
                 }
 
-                $role = 'admin';
+                $membership = 'admin';
                 $invite->markAsUsed();
             }
 
@@ -49,7 +49,7 @@ class TenantUserRegisterController extends BaseAPIController
                 'name'     => $request->name,
                 'email'    => $request->email,
                 'password' => bcrypt($request->password),
-                'role'     => $role,
+                'membership'     => $membership,
                 'points'   => 0,
             ]);
 

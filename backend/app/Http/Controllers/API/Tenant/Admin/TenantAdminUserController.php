@@ -16,7 +16,7 @@ use Illuminate\Http\JsonResponse;
  * Scope: Tenant-specific
  * 
  * This controller manages users within a specific tenant, including
- * invitations, role management, and user activity monitoring.
+ * invitations, membership management, and user activity monitoring.
  */
 class TenantAdminUserController extends BaseAPIController
 {
@@ -27,7 +27,7 @@ class TenantAdminUserController extends BaseAPIController
      */
     public function __construct()
     {
-        $this->middleware(['auth:sanctum', 'verified', 'tenant', 'role:tenant-admin']);
+        $this->middleware(['auth:sanctum', 'verified', 'tenant', 'membership:tenant-admin']);
     }
 
     /**
@@ -40,7 +40,7 @@ class TenantAdminUserController extends BaseAPIController
     {
         // TODO: Implement tenant user listing
         // - All users in current tenant
-        // - Filter by role, status
+        // - Filter by membership, status
         // - Search functionality
         // - Pagination support
         return $this->sendResponse([], 'Users retrieved successfully.');
@@ -55,7 +55,7 @@ class TenantAdminUserController extends BaseAPIController
     public function getTeams(Request $request): JsonResponse
     {
         // TODO: Implement team members listing
-        // - Users with team/teacher roles
+        // - Users with team/teacher memberships
         // - Content creation statistics
         // - Activity levels
         return $this->sendResponse([], 'Team members retrieved successfully.');
@@ -70,7 +70,7 @@ class TenantAdminUserController extends BaseAPIController
     public function getStudents(Request $request): JsonResponse
     {
         // TODO: Implement students listing
-        // - Users with student role
+        // - Users with student membership
         // - Learning progress overview
         // - Enrollment statistics
         return $this->sendResponse([], 'Students retrieved successfully.');
@@ -87,7 +87,7 @@ class TenantAdminUserController extends BaseAPIController
         // TODO: Implement user invitation
         // - Create invitation record
         // - Send invitation email
-        // - Set appropriate role
+        // - Set appropriate membership
         // - Track invitation status
         return $this->sendCreatedResponse([], 'Invitation sent successfully.');
     }
@@ -125,20 +125,20 @@ class TenantAdminUserController extends BaseAPIController
     }
 
     /**
-     * Update user role within tenant.
+     * Update user membership within tenant.
      * 
      * @param Request $request
      * @param User $user
      * @return JsonResponse
      */
-    public function updateUserRole(Request $request, User $user): JsonResponse
+    public function updateMembership(Request $request, User $user): JsonResponse
     {
-        // TODO: Implement user role update
+        // TODO: Implement user membership update
         // - Validate user belongs to tenant
-        // - Update user role
-        // - Log role change
+        // - Update user membership
+        // - Log membership change
         // - Notify user if needed
-        return $this->sendResponse([], 'User role updated successfully.');
+        return $this->sendResponse([], 'User membership updated successfully.');
     }
 
     /**

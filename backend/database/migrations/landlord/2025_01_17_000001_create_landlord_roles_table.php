@@ -5,12 +5,12 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 /**
- * Create landlord roles and user_roles tables
+ * Create landlord memberships and memberships tables
  * 
- * This migration creates the roles and user_roles tables in the central/landlord 
- * database for system-wide role-based access control.
+ * This migration creates the memberships and memberships tables in the central/landlord 
+ * database for system-wide membership-based access control.
  * 
- * This is separate from tenant-specific roles which exist in individual
+ * This is separate from tenant-specific memberships which exist in individual
  * tenant databases.
  */
 return new class extends Migration
@@ -20,8 +20,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // Create roles table
-        Schema::create('central_roles', function (Blueprint $table) {
+        // Create memberships table
+        Schema::create('central_memberships', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('slug')->unique();
@@ -36,19 +36,19 @@ return new class extends Migration
             $table->index('is_system');
         });
 
-        // Create central_user_roles pivot table
-        Schema::create('central_user_roles', function (Blueprint $table) {
+        // Create central_memberships pivot table
+        Schema::create('central_memberships', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('central_users')->onDelete('cascade');
-            $table->foreignId('role_id')->constrained('central_roles')->onDelete('cascade');
+            $table->foreignId('membership_id')->constrained('central_memberships')->onDelete('cascade');
             $table->timestamps();
 
-            // Unique constraint to prevent duplicate role assignments
-            $table->unique(['user_id', 'role_id']);
+            // Unique constraint to prevent duplicate membership assignments
+            $table->unique(['user_id', 'membership_id']);
 
             // Indexes
             $table->index('user_id');
-            $table->index('role_id');
+            $table->index('membership_id');
         });
     }
 
@@ -57,7 +57,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('central_user_roles');
-        Schema::dropIfExists('central_roles');
+        Schema::dropIfExists('central_memberships');
+        Schema::dropIfExists('central_memberships');
     }
 };

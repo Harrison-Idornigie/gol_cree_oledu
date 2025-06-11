@@ -30,7 +30,7 @@ class StudentRegistrationTest extends TestCase
                     'id',
                     'name',
                     'email',
-                    'role',
+                    'membership',
                 ],
             ],
             'message',
@@ -39,7 +39,7 @@ class StudentRegistrationTest extends TestCase
         $this->assertDatabaseHas('users', [
             'name'  => 'Test Student',
             'email' => 'student@example.com',
-            'role'  => 'user',
+            'membership'  => 'user',
         ]);
 
         $user = User::where('email', 'student@example.com')->first();

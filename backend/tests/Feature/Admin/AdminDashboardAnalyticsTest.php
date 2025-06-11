@@ -98,7 +98,7 @@ class AdminDashboardAnalyticsTest extends AdminTestCase
                 'name' => "Test User $i",
                 'email' => "user$i@example.com",
                 'password' => bcrypt('password'),
-                'role' => 'user'
+                'membership' => 'user'
             ]);
 
             // Add progress

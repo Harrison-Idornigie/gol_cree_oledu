@@ -8,32 +8,32 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('permission_role', function (Blueprint $table) {
+        Schema::create('permission_membership', function (Blueprint $table) {
             $table->string('tenant_id')->nullable()->comment('Reference to tenant in landlord database');
             $table->foreignId('permission_id')
                 ->constrained()
                 ->onDelete('cascade');
-            $table->foreignId('role_id')
+            $table->foreignId('membership_id')
                 ->constrained()
                 ->onDelete('cascade');
             $table->json('conditions')->nullable()
-                ->comment('Additional conditions for this specific permission-role combination');
+                ->comment('Additional conditions for this specific permission-membership combination');
             $table->boolean('is_denied')->default(false)
-                ->comment('Explicitly deny this permission for this role');
+                ->comment('Explicitly deny this permission for this membership');
             $table->timestamps();
 
             // Create composite primary key
-            $table->primary(['permission_id', 'role_id']);
+            $table->primary(['permission_id', 'membership_id']);
 
             // Add indexes for efficient queries
             $table->index('permission_id');
-            $table->index('role_id');
+            $table->index('membership_id');
             $table->index('is_denied');
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('permission_role');
+        Schema::dropIfExists('permission_membership');
     }
 };

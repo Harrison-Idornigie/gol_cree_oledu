@@ -25,7 +25,7 @@ class SystemUserController extends BaseAPIController
      */
     public function __construct()
     {
-        $this->middleware(['auth:sanctum', 'verified', 'role:super-admin']);
+        $this->middleware(['auth:sanctum', 'verified', 'membership:super-admin']);
     }
 
     /**
@@ -38,7 +38,7 @@ class SystemUserController extends BaseAPIController
     {
         // TODO: Implement global user listing
         // - Search across all tenants
-        // - Filter by tenant, role, status
+        // - Filter by tenant, membership, status
         // - Pagination support
         return $this->sendResponse([], 'Users retrieved successfully.');
     }

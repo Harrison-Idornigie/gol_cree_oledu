@@ -8,7 +8,7 @@ use Illuminate\Database\Seeder;
  * Landlord Seeder
  * 
  * Seeds the central/landlord database with system-wide data.
- * This includes super admin users, system roles, and other
+ * This includes super admin users, system memberships, and other
  * central configuration data.
  */
 class LandlordSeeder extends Seeder

@@ -134,7 +134,7 @@ class GoogleAuthTest extends TestCase
             'google_id' => '123456789',
             'avatar'    => 'https://example.com/old-avatar.jpg',
             'password'  => bcrypt('password123'),
-            'role'      => 'user',
+            'membership'      => 'user',
         ]);
 
         $googleUser = $this->createGoogleUser('test@gmail.com', '123456789');
@@ -165,7 +165,7 @@ class GoogleAuthTest extends TestCase
             'name'     => 'Test User',
             'email'    => 'test@gmail.com',
             'password' => bcrypt('password123'),
-            'role'     => 'user',
+            'membership'     => 'user',
         ]);
 
         $googleUser = $this->createGoogleUser('test@gmail.com', '123456789');
@@ -197,7 +197,7 @@ class GoogleAuthTest extends TestCase
         $user = User::factory()->create([
             'email'     => 'test@gmail.com',
             'google_id' => '123456789',
-            'role'      => 'user',
+            'membership'      => 'user',
         ]);
 
         // For this test, we'll just verify the endpoint exists and accepts our parameters

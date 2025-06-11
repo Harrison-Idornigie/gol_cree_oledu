@@ -18,7 +18,7 @@ class AuthenticationTest extends TestCase
             'name' => 'Test User',
             'email' => 'test@example.com',
             'password' => Hash::make('password123'),
-            'role' => 'user'
+            'membership' => 'user'
         ]);
 
         $response = $this->postJson('/api/auth/login', [

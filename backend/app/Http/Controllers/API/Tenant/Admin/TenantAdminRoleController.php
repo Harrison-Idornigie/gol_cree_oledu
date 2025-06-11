@@ -11,12 +11,12 @@ use Illuminate\Http\JsonResponse;
 /**
  * Tenant Admin Role Controller
  * 
- * Handles role and permission management within tenant scope.
+ * Handles membership and permission management within tenant scope.
  * Access Level: Tenant Admin
  * Scope: Tenant-specific
  * 
- * This controller manages roles and permissions within a specific tenant,
- * allowing tenant admins to create custom roles and manage permissions.
+ * This controller manages memberships and permissions within a specific tenant,
+ * allowing tenant admins to create custom memberships and manage permissions.
  */
 class TenantAdminRoleController extends BaseAPIController
 {
@@ -27,102 +27,102 @@ class TenantAdminRoleController extends BaseAPIController
      */
     public function __construct()
     {
-        $this->middleware(['auth:sanctum', 'verified', 'tenant', 'role:tenant-admin']);
+        $this->middleware(['auth:sanctum', 'verified', 'tenant', 'membership:tenant-admin']);
     }
 
     /**
-     * Display a listing of roles in the tenant.
+     * Display a listing of memberships in the tenant.
      * 
      * @param Request $request
      * @return JsonResponse
      */
     public function index(Request $request): JsonResponse
     {
-        // TODO: Implement role listing
-        // - All roles in current tenant
+        // TODO: Implement membership listing
+        // - All memberships in current tenant
         // - Include permission counts
         // - Filter by type (system/custom)
         return $this->sendResponse([], 'Roles retrieved successfully.');
     }
 
     /**
-     * Store a newly created role.
+     * Store a newly created membership.
      * 
      * @param Request $request
      * @return JsonResponse
      */
     public function store(Request $request): JsonResponse
     {
-        // TODO: Implement role creation
-        // - Validate role name uniqueness within tenant
-        // - Create role with tenant association
+        // TODO: Implement membership creation
+        // - Validate membership name uniqueness within tenant
+        // - Create membership with tenant association
         // - Set default permissions if specified
         return $this->sendCreatedResponse([], 'Role created successfully.');
     }
 
     /**
-     * Display the specified role.
+     * Display the specified membership.
      * 
      * @param Request $request
-     * @param Role $role
+     * @param Role $membership
      * @return JsonResponse
      */
-    public function show(Request $request, Role $role): JsonResponse
+    public function show(Request $request, Role $membership): JsonResponse
     {
-        // TODO: Implement role details
-        // - Validate role belongs to tenant
+        // TODO: Implement membership details
+        // - Validate membership belongs to tenant
         // - Include associated permissions
-        // - Include user count with this role
-        return $this->sendResponse($role, 'Role retrieved successfully.');
+        // - Include user count with this membership
+        return $this->sendResponse($membership, 'Role retrieved successfully.');
     }
 
     /**
-     * Update the specified role.
+     * Update the specified membership.
      * 
      * @param Request $request
-     * @param Role $role
+     * @param Role $membership
      * @return JsonResponse
      */
-    public function update(Request $request, Role $role): JsonResponse
+    public function update(Request $request, Role $membership): JsonResponse
     {
-        // TODO: Implement role update
-        // - Validate role belongs to tenant
-        // - Update role properties
+        // TODO: Implement membership update
+        // - Validate membership belongs to tenant
+        // - Update membership properties
         // - Handle permission changes
-        // - Log role modifications
-        return $this->sendResponse($role, 'Role updated successfully.');
+        // - Log membership modifications
+        return $this->sendResponse($membership, 'Role updated successfully.');
     }
 
     /**
-     * Remove the specified role.
+     * Remove the specified membership.
      * 
      * @param Request $request
-     * @param Role $role
+     * @param Role $membership
      * @return JsonResponse
      */
-    public function destroy(Request $request, Role $role): JsonResponse
+    public function destroy(Request $request, Role $membership): JsonResponse
     {
-        // TODO: Implement role deletion
-        // - Validate role belongs to tenant
-        // - Check if role is in use
+        // TODO: Implement membership deletion
+        // - Validate membership belongs to tenant
+        // - Check if membership is in use
         // - Handle user reassignment
-        // - Delete role and associations
+        // - Delete membership and associations
         return $this->sendNoContentResponse();
     }
 
     /**
-     * Update permissions for the specified role.
+     * Update permissions for the specified membership.
      * 
      * @param Request $request
-     * @param Role $role
+     * @param Role $membership
      * @return JsonResponse
      */
-    public function updatePermissions(Request $request, Role $role): JsonResponse
+    public function updatePermissions(Request $request, Role $membership): JsonResponse
     {
         // TODO: Implement permission update
-        // - Validate role belongs to tenant
+        // - Validate membership belongs to tenant
         // - Validate permissions are tenant-appropriate
-        // - Update role permissions
+        // - Update membership permissions
         // - Log permission changes
         return $this->sendResponse([], 'Role permissions updated successfully.');
     }

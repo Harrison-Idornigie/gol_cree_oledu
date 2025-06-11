@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class RoleMiddleware
 {
-    public function handle(Request $request, Closure $next, ...$roles)
+    public function handle(Request $request, Closure $next, ...$memberships)
     {
         $user = Auth::user();
         
@@ -18,14 +18,14 @@ class RoleMiddleware
             ], 401);
         }
 
-        foreach ($roles as $role) {
-            if ($user->hasRole($role)) {
+        foreach ($memberships as $membership) {
+            if ($user->hasRole($membership)) {
                 return $next($request);
             }
         }
 
         return response()->json([
-            'message' => 'Unauthorized. Requires role: ' . implode(', ', $roles)
+            'message' => 'Unauthorized. Requires membership: ' . implode(', ', $memberships)
         ], 403);
     }
 }

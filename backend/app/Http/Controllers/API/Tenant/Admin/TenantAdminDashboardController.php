@@ -26,7 +26,7 @@ class TenantAdminDashboardController extends BaseAPIController
      */
     public function __construct()
     {
-        $this->middleware(['auth:sanctum', 'verified', 'tenant', 'role:tenant-admin']);
+        $this->middleware(['auth:sanctum', 'verified', 'tenant', 'membership:tenant-admin']);
     }
 
     /**

@@ -36,7 +36,7 @@ class CentralUser extends Authenticatable
         'name',
         'email',
         'password',
-        'role',
+        'membership',
         'interface_language',
         'avatar',
         'is_active',
@@ -64,21 +64,21 @@ class CentralUser extends Authenticatable
     ];
 
     /**
-     * Get the roles that belong to the user.
-     * These are system-wide roles, not tenant-specific roles.
+     * Get the memberships that belong to the user.
+     * These are system-wide memberships, not tenant-specific memberships.
      */
-    public function roles(): BelongsToMany
+    public function memberships(): BelongsToMany
     {
-        return $this->belongsToMany(CentralRole::class, 'central_user_roles')
+        return $this->belongsToMany(CentralRole::class, 'central_memberships')
             ->withTimestamps();
     }
 
     /**
-     * Check if user has a specific role.
+     * Check if user has a specific membership.
      */
-    public function hasRole(string $role): bool
+    public function hasRole(string $membership): bool
     {
-        return $this->roles()->where('slug', $role)->exists() || $this->role === $role;
+        return $thismemberships()->where('slug', $membership)->exists() || $thismembership === $membership;
     }
 
     /**
@@ -86,7 +86,7 @@ class CentralUser extends Authenticatable
      */
     public function isSuperAdmin(): bool
     {
-        return $this->hasRole('super-admin') || $this->role === 'admin';
+        return $this->hasRole('super-admin') || $thismembership === 'admin';
     }
 
     /**
@@ -118,8 +118,8 @@ class CentralUser extends Authenticatable
      */
     public function scopeSuperAdmins($query)
     {
-        return $query->where('role', 'admin')
-                    ->orWhereHas('roles', function ($q) {
+        return $query->where('membership', 'admin')
+                    ->orWhereHas('memberships', function ($q) {
                         $q->where('slug', 'super-admin');
                     });
     }

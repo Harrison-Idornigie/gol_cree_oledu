@@ -16,7 +16,7 @@ class TenantAdminInviteController extends BaseAPIController
     public function __construct()
     {
         $this->middleware(['auth:sanctum', function ($request, $next) {
-            if ($request->user()->role !== 'admin') {
+            if ($request->user()membership !== 'admin') {
                 return response()->json(['message' => 'Unauthorized'], 403);
             }
             return $next($request);

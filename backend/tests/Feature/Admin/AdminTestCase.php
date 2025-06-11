@@ -43,7 +43,7 @@ abstract class AdminTestCase extends TestCase
             'name' => 'Admin User',
             'email' => 'admin@example.com'
         ]);
-        $this->admin->roles()->attach($this->adminRole);
+        $this->adminmemberships()->attach($this->adminRole);
         UserStreak::factory()->create(['user_id' => $this->admin->id]);
 
         // Create normal user with streak record
@@ -75,7 +75,7 @@ abstract class AdminTestCase extends TestCase
     {
         $response->assertStatus(403)
             ->assertJson([
-                'message' => 'Unauthorized. Requires role: admin'
+                'message' => 'Unauthorized. Requires membership: admin'
             ]);
     }
 

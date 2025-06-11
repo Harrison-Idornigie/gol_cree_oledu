@@ -271,10 +271,10 @@ class Tenant extends BaseTenant implements \Stancl\Tenancy\Contracts\TenantWithD
         try {
             $this->run(function () use (&$stats) {
                 $stats['total_users'] = \App\Models\Tenants\User::count();
-                $stats['total_students'] = \App\Models\Tenants\User::whereHas('roles', function($q) {
+                $stats['total_students'] = \App\Models\Tenants\User::whereHas('memberships', function($q) {
                     $q->where('slug', 'student');
                 })->count();
-                $stats['total_teachers'] = \App\Models\Tenants\User::whereHas('roles', function($q) {
+                $stats['total_teachers'] = \App\Models\Tenants\User::whereHas('memberships', function($q) {
                     $q->where('slug', 'team');
                 })->count();
                 $stats['total_learning_paths'] = \App\Models\Tenants\LearningPath::count();

@@ -47,7 +47,7 @@ class TenantApiTest extends TenantTestCase
     }
 
     /** @test */
-    public function it_requires_super_admin_role_to_create_tenant()
+    public function it_requires_super_admin_membership_to_create_tenant()
     {
         // Create regular user
         $regularUser = User::factory()->create();

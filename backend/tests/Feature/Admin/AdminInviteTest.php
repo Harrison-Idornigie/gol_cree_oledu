@@ -19,7 +19,7 @@ class AdminInviteTest extends AdminTestCase
         $response = $this->actingAsAdmin()
             ->postJson('/api/admin/users/invite', [
                 'email' => 'newteam@example.com',
-                'role' => 'team',
+                'membership' => 'team',
                 'message' => 'Welcome to our platform!'
             ]);
 
@@ -28,14 +28,14 @@ class AdminInviteTest extends AdminTestCase
                 'success' => true,
                 'data' => [
                     'email' => 'newteam@example.com',
-                    'role' => 'team',
+                    'membership' => 'team',
                     'status' => 'pending'
                 ]
             ]);
 
         $this->assertDatabaseHas('admin_invites', [
             'email' => 'newteam@example.com',
-            'role' => 'team',
+            'membership' => 'team',
             'status' => 'pending'
         ]);
 
@@ -50,36 +50,36 @@ class AdminInviteTest extends AdminTestCase
             'name' => 'Existing User',
             'email' => 'existing@example.com',
             'password' => bcrypt('password123'),
-            'role' => 'user'
+            'membership' => 'user'
         ]);
 
         $response = $this->actingAsAdmin()
             ->postJson('/api/admin/users/invite', [
                 'email' => 'existing@example.com',
-                'role' => 'team'
+                'membership' => 'team'
             ]);
 
         $response->assertStatus(422)
             ->assertJsonValidationErrors(['email']);
     }
 
-    public function test_admin_cannot_invite_with_invalid_role()
+    public function test_admin_cannot_invite_with_invalid_membership()
     {
         $response = $this->actingAsAdmin()
             ->postJson('/api/admin/users/invite', [
                 'email' => 'newuser@example.com',
-                'role' => 'invalid_role'
+                'membership' => 'invalid_membership'
             ]);
 
         $response->assertStatus(422)
-            ->assertJsonValidationErrors(['role']);
+            ->assertJsonValidationErrors(['membership']);
     }
 
     public function test_admin_can_cancel_invite()
     {
         $invite = AdminInvite::create([
             'email' => 'pending@example.com',
-            'role' => 'team',
+            'membership' => 'team',
             'token' => 'test-token',
             'status' => 'pending',
             'invited_by' => $this->admin->id,
@@ -105,7 +105,7 @@ class AdminInviteTest extends AdminTestCase
     {
         $invite = AdminInvite::create([
             'email' => 'accepted@example.com',
-            'role' => 'team',
+            'membership' => 'team',
             'token' => 'test-token',
             'status' => 'accepted',
             'invited_by' => $this->admin->id,
@@ -127,7 +127,7 @@ class AdminInviteTest extends AdminTestCase
         $response = $this->actingAsAdmin()
             ->postJson('/api/admin/users/invite', [
                 'email' => 'invalid-email',
-                'role' => 'team'
+                'membership' => 'team'
             ]);
 
         $response->assertStatus(422)
@@ -139,7 +139,7 @@ class AdminInviteTest extends AdminTestCase
         $response = $this->actingAsUser()
             ->postJson('/api/admin/users/invite', [
                 'email' => 'newuser@example.com',
-                'role' => 'team'
+                'membership' => 'team'
             ]);
 
         $this->assertUnauthorized($response);
@@ -149,7 +149,7 @@ class AdminInviteTest extends AdminTestCase
     {
         $invite = AdminInvite::create([
             'email' => 'pending@example.com',
-            'role' => 'team',
+            'membership' => 'team',
             'token' => 'test-token',
             'status' => 'pending',
             'invited_by' => $this->admin->id,

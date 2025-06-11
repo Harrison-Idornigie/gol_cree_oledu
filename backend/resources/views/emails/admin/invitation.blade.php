@@ -1,7 +1,7 @@
 @component('mail::message')
 # You've Been Invited
 
-You have been invited to join as a {{ $role }} by {{ $invitedBy }}.
+You have been invited to join as a {{ $membership }} by {{ $invitedBy }}.
 
 Click the button below to accept your invitation:
 

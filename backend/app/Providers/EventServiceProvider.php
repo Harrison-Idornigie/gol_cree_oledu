@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Listeners\SyncUserTenantAssociation;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -38,6 +39,19 @@ class EventServiceProvider extends ServiceProvider
 
         TenantDeleting::class => [
             CleanupTenantData::class,
+        ],
+
+        // User Tenant Association Sync Events
+        'eloquent.created: App\Models\Tenants\User' => [
+            SyncUserTenantAssociation::class . '@handleUserCreated',
+        ],
+
+        'eloquent.updated: App\Models\Tenants\User' => [
+            SyncUserTenantAssociation::class . '@handleUserUpdated',
+        ],
+
+        'eloquent.deleted: App\Models\Tenants\User' => [
+            SyncUserTenantAssociation::class . '@handleUserDeleted',
         ],
     ];
 

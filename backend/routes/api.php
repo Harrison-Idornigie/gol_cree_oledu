@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
  * General API Routes
  *
  * These routes are for general API functionality that doesn't require
- * specific role-based access or tenant isolation.
+ * specific membership-based access or tenant isolation.
  */
 
 // Public API routes (no authentication required)
@@ -30,10 +30,10 @@ Route::prefix('public')->group(function () {
     });
 });
 
-// Authenticated routes (no specific role required)
+// Authenticated routes (no specific membership required)
 // Note: These routes will work with both central and tenant guards
 Route::middleware(['auth:sanctum'])->group(function () {
-    // User profile routes that work across all roles
+    // User profile routes that work across all memberships
     Route::get('profile', function () {
         return response()->json(auth()->user());
     });
@@ -45,7 +45,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
             'id' => $user->id,
             'name' => $user->name,
             'email' => $user->email,
-            'role' => $user->role,
+            'membership' => $user->membership,
             'tenant_id' => $user->tenant_id,
             'email_verified_at' => $user->email_verified_at,
         ]);

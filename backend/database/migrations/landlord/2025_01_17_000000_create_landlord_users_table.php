@@ -27,7 +27,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('role')->default('user'); // admin, user, etc.
+            $table->string('membership')->default('user'); // admin, user, etc.
             $table->string('interface_language', 5)->default('en');
             $table->string('avatar')->nullable();
             $table->boolean('is_active')->default(true);
@@ -38,7 +38,7 @@ return new class extends Migration
 
             // Indexes
             $table->index(['email', 'is_active']);
-            $table->index('role');
+            $table->index('membership');
             $table->index('last_login_at');
         });
     }

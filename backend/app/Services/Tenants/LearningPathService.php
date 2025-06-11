@@ -13,14 +13,14 @@ use Illuminate\Support\Facades\DB;
 class LearningPathService
 {
     /**
-     * Get filtered learning paths with role-based access.
+     * Get filtered learning paths with membership-based access.
      */
-    public function getFilteredLearningPaths(Request $request, string $userRole = 'student'): LengthAwarePaginator
+    public function getFilteredLearningPaths(Request $request, string $membership = 'student'): LengthAwarePaginator
     {
         $query = LearningPath::query();
 
-        // Apply role-based filtering
-        if (!in_array($userRole, ['super-admin', 'tenant-admin', 'team'])) {
+        // Apply membership-based filtering
+        if (!in_array($membership, ['super-admin', 'tenant-admin', 'team'])) {
             // Students can only see published content
             $query->where('status', 'published');
         }
@@ -60,7 +60,7 @@ class LearningPathService
         }
 
         // Admin-specific relationships
-        if (in_array($userRole, ['super-admin', 'tenant-admin', 'team'])) {
+        if (in_array($membership, ['super-admin', 'tenant-admin', 'team'])) {
             if ($request->has('with_versions')) {
                 $query->with('versions');
             }
@@ -242,7 +242,7 @@ class LearningPathService
     }
 
     /**
-     * Check if user can access learning path based on role and tenant.
+     * Check if user can access learning path based on membership and tenant.
      */
     public function canUserAccess(LearningPath $learningPath, User $user): bool
     {
@@ -251,7 +251,7 @@ class LearningPathService
             return true;
         }
 
-        // Tenant-scoped access for other roles
+        // Tenant-scoped access for other memberships
         if ($user->tenant_id && $learningPath->tenant_id) {
             return $user->tenant_id === $learningPath->tenant_id;
         }

@@ -21,7 +21,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'name',
         'email',
         'password',
-        'role',
+        'membership',
         'interface_language',
         'google_id',
         'avatar',
@@ -78,9 +78,9 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
-     * Get the roles that belong to the user.
+     * Get the memberships that belong to the user.
      */
-    public function roles(): BelongsToMany
+    public function memberships(): BelongsToMany
     {
         return $this->belongsToMany(Role::class);
     }
@@ -156,11 +156,11 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
-     * Check if user has a specific role.
+     * Check if user has a specific membership.
      */
-    public function hasRole(string $role): bool
+    public function hasRole(string $membership): bool
     {
-        return $this->roles()->where('slug', $role)->exists();
+        return $thismemberships()->where('slug', $membership)->exists();
     }
 
     /**

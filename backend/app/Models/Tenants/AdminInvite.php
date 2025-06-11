@@ -15,7 +15,7 @@ class AdminInvite extends Model
         'invited_by',
         'expires_at',
         'used_at',
-        'role',
+        'membership',
         'status',
     ];
 

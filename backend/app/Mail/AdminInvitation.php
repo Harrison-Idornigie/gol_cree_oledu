@@ -30,7 +30,7 @@ class AdminInvitation extends Mailable
             ->subject('Invitation to Join as Administrator')
             ->with([
                 'inviteUrl' => config('app.url') . '/admin/accept-invite?token=' . $this->invite->token,
-                'role' => $this->invite->role,
+                'membership' => $this->invitemembership,
                 'expiresAt' => $this->invite->expires_at,
                 'invitedBy' => $this->invite->inviter->name
             ]);

@@ -27,7 +27,7 @@ class TenantUserController extends BaseAPIController
             'id' => $user->id,
             'name' => $user->name,
             'email' => $user->email,
-            'role' => $user->role,
+            'membership' => $user->membership,
             'email_verified_at' => $user->email_verified_at,
         ];
 

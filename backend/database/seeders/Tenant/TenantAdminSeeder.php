@@ -21,7 +21,7 @@ class TenantAdminSeeder extends Seeder
             'email_verified_at' => now(),
             'password' => Hash::make('password123'), // You should change this in production
             'remember_token' => Str::random(10),
-            'role' => 'admin',
+            'membership' => 'admin',
             'interface_language' => 'en',
             'is_active' => true,
         ]);

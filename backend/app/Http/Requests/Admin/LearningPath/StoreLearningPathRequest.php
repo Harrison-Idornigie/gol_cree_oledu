@@ -12,7 +12,7 @@ class StoreLearningPathRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        // Check if user has admin role
+        // Check if user has admin membership
         return $this->user()->can('manage-learning-paths');
     }
 

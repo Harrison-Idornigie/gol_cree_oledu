@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Tenants\Role>
  */
-class RoleFactory extends Factory
+class MembershipFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
@@ -41,7 +41,7 @@ class RoleFactory extends Factory
     }
 
     /**
-     * Indicate that the role is a system role.
+     * Indicate that the membership is a system membership.
      */
     public function system(): static
     {
@@ -51,7 +51,7 @@ class RoleFactory extends Factory
     }
 
     /**
-     * Create a super admin role.
+     * Create a super admin membership.
      */
     public function superAdmin(): static
     {
@@ -64,7 +64,7 @@ class RoleFactory extends Factory
     }
 
     /**
-     * Create a tenant admin role.
+     * Create a tenant admin membership.
      */
     public function tenantAdmin(): static
     {
@@ -77,7 +77,7 @@ class RoleFactory extends Factory
     }
 
     /**
-     * Create a team role.
+     * Create a team membership.
      */
     public function team(): static
     {
@@ -90,7 +90,7 @@ class RoleFactory extends Factory
     }
 
     /**
-     * Create a student role.
+     * Create a student membership.
      */
     public function student(): static
     {

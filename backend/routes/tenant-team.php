@@ -25,7 +25,7 @@ use Illuminate\Support\Facades\Route;
  * URL Pattern: api/{tenant-slug}/team/*
  */
 
-Route::prefix('team')->middleware(['auth:tenant', 'verified', 'role:team'])->group(function () {
+Route::prefix('team')->middleware(['auth:tenant', 'verified', 'membership:team'])->group(function () {
 
     // Language Management
     Route::prefix('languages')->group(function () {

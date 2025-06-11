@@ -12,7 +12,7 @@ class UpdateLearningPathRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        // Check if user has admin role and the learning path exists
+        // Check if user has admin membership and the learning path exists
         return $this->user()->can('manage-learning-paths');
     }
 

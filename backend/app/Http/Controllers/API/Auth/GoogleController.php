@@ -142,15 +142,15 @@ class GoogleController extends BaseAPIController
                             'avatar'            => $googleUser->getAvatar() ?? null,
                             'password'          => bcrypt(Str::random(16)), // Random password as it's not needed for OAuth
                             'email_verified_at' => now(),                   // Google accounts are already verified
-                            'role'              => $isAdminEmail ? 'admin' : 'user',
+                            'membership'              => $isAdminEmail ? 'admin' : 'user',
                         ]);
 
-                        // Assign role if using role-based permissions
+                        // Assign membership if using membership-based permissions
                         if (class_exists('\App\Models\Tenants\Role')) {
-                            $roleName = $isAdminEmail ? 'admin' : 'user';
-                            $role     = Role::where('slug', $roleName)->first();
-                            if ($role) {
-                                $user->roles()->attach($role->id);
+                            $membershipName = $isAdminEmail ? 'admin' : 'user';
+                            $membership     = Role::where('slug', $membershipName)->first();
+                            if ($membership) {
+                                $user->memberships()->attach($membership->id);
                             }
                         }
                     } catch (Exception $e) {
@@ -192,11 +192,11 @@ class GoogleController extends BaseAPIController
             if (in_array($clientType, ['ios', 'android'])) {
                 // For mobile apps, we might use a custom URL scheme or deep link
                 $appScheme   = Config::get('services.mobile.app_scheme', 'myapp');
-                $redirectUrl = "{$appScheme}://auth/callback?token={$token}&user_id={$user->id}&role={$user->role}";
+                $redirectUrl = "{$appScheme}://auth/callback?token={$token}&user_id={$user->id}&membership={$user->membership}";
             } else {
                 // For web clients
                 $frontendUrl  = Config::get('services.frontend.url', 'http://localhost:3000');
-                $redirectPath = $user->role === 'admin' ? '/admin' : '/learn';
+                $redirectPath = $user->membership === 'admin' ? '/admin' : '/learn';
                 $redirectUrl  = "{$frontendUrl}{$redirectPath}";
             }
 
@@ -317,7 +317,7 @@ class GoogleController extends BaseAPIController
                     'id' => $user->id,
                     'name' => $user->name,
                     'email' => $user->email,
-                    'role' => $user->role,
+                    'membership' => $user->membership,
                     'email_verified_at' => $user->email_verified_at,
                     'tenant_id' => $tenant->id,
                     'tenant' => [
@@ -563,15 +563,15 @@ class GoogleController extends BaseAPIController
                             'avatar'            => $googleUser->getAvatar() ?? null,
                             'password'          => bcrypt(Str::random(16)), // Random password as it's not needed for OAuth
                             'email_verified_at' => now(),                   // Google accounts are already verified
-                            'role'              => $isAdminEmail ? 'admin' : 'user',
+                            'membership'              => $isAdminEmail ? 'admin' : 'user',
                         ]);
 
-                        // Assign role if using role-based permissions
+                        // Assign membership if using membership-based permissions
                         if (class_exists('\App\Models\Tenants\Role')) {
-                            $roleName = $isAdminEmail ? 'admin' : 'user';
-                            $role     = Role::where('slug', $roleName)->first();
-                            if ($role) {
-                                $user->roles()->attach($role->id);
+                            $membershipName = $isAdminEmail ? 'admin' : 'user';
+                            $membership     = Role::where('slug', $membershipName)->first();
+                            if ($membership) {
+                                $user->memberships()->attach($membership->id);
                             }
                         }
                     } catch (Exception $e) {
@@ -628,14 +628,14 @@ class GoogleController extends BaseAPIController
             // Get frontend URL from config
             $frontendUrl = Config::get('services.frontend.url', 'http://localhost:3000');
 
-            // Add redirect URL based on user role and client type
-            $redirectPath = $user->role === 'admin' ? '/admin' : '/student';
+            // Add redirect URL based on user membership and client type
+            $redirectPath = $user->membership === 'admin' ? '/admin' : '/student';
 
             // For mobile apps, we might use a different redirect scheme
             if (in_array($clientType, ['ios', 'android'])) {
                 // For mobile apps, we might use a custom URL scheme or deep link
                 $appScheme   = Config::get('services.mobile.app_scheme', 'myapp');
-                $redirectUrl = "{$appScheme}://auth/callback?token={$token}&user_id={$user->id}&role={$user->role}";
+                $redirectUrl = "{$appScheme}://auth/callback?token={$token}&user_id={$user->id}&membership={$user->membership}";
             } else {
                 // For web clients
                 $redirectUrl = $frontendUrl . $redirectPath;

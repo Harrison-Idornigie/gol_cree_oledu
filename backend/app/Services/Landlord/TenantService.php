@@ -23,7 +23,7 @@ use Exception;
  * 
  * Handles comprehensive tenant management operations including:
  * - Tenant creation with database initialization
- * - Admin user setup and role assignment
+ * - Admin user setup and membership assignment
  * - Event-driven seeding and configuration
  * - Validation and error handling with rollback
  * - Tenant updates and deletion
@@ -133,7 +133,7 @@ class TenantService
             $this->verifyTenantDatabaseReady($tenant);
 
             event(new TenantSeedingRequested($tenant, $adminUser, [
-                'seed_roles' => true,
+                'seed_memberships' => true,
                 'seed_languages' => true,
                 'seed_settings' => true,
                 'database_ready' => true, // Flag to indicate DB is verified ready
@@ -423,7 +423,7 @@ class TenantService
                     $connection->getPdo();
 
                     // Verify essential tables exist (migrations completed)
-                    $tables = ['users', 'roles', 'languages'];
+                    $tables = ['users', 'memberships', 'languages'];
                     foreach ($tables as $table) {
                         DB::select("SELECT 1 FROM {$table} LIMIT 1");
                     }
@@ -499,7 +499,7 @@ class TenantService
             'name' => $adminData['name'],
             'email' => $adminData['email'],
             'password' => Hash::make($adminData['password']),
-            'role' => 'tenant-admin',
+            'membership' => 'tenant-admin',
             'interface_language' => $adminData['interface_language'] ?? 'en',
             'is_active' => true,
         ]);
@@ -561,7 +561,7 @@ class TenantService
                 throw $e;
             }
 
-            // Create tenant admin role if it doesn't exist
+            // Create tenant admin membership if it doesn't exist
             $tenantAdminRole = Role::firstOrCreate([
                 'slug' => 'tenant-admin',
                 'tenant_id' => $tenant->id,
@@ -571,8 +571,8 @@ class TenantService
                 'is_system' => true,
             ]);
 
-            // Assign tenant admin role
-            $adminUser->roles()->attach($tenantAdminRole);
+            // Assign tenant admin membership
+            $adminUsermemberships()->attach($tenantAdminRole);
         });
 
         if (!$adminUser) {
@@ -635,7 +635,7 @@ class TenantService
                 throw $e;
             }
 
-            // Create tenant admin role if it doesn't exist
+            // Create tenant admin membership if it doesn't exist
             $tenantAdminRole = Role::firstOrCreate([
                 'slug' => 'tenant-admin',
                 'tenant_id' => $tenant->id,
@@ -645,8 +645,8 @@ class TenantService
                 'is_system' => true,
             ]);
 
-            // Assign tenant admin role
-            $adminUser->roles()->attach($tenantAdminRole);
+            // Assign tenant admin membership
+            $adminUsermemberships()->attach($tenantAdminRole);
         });
 
         if (!$adminUser) {

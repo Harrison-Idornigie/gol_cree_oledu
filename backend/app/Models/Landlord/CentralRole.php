@@ -9,11 +9,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 /**
  * Central Role Model
  *
- * This model represents system-wide roles in the central/landlord database.
- * These are roles for system administrators and other users who operate
+ * This model represents system-wide memberships in the central/landlord database.
+ * These are memberships for system administrators and other users who operate
  * across the entire multi-tenant system.
  *
- * This is separate from tenant-scoped roles which exist within
+ * This is separate from tenant-scoped memberships which exist within
  * individual tenant databases.
  */
 class CentralRole extends Model
@@ -24,7 +24,7 @@ class CentralRole extends Model
      * The table associated with the model.
      * Uses the central database, not tenant databases.
      */
-    protected $table = 'central_roles';
+    protected $table = 'central_memberships';
 
     /**
      * The attributes that are mass assignable.
@@ -48,16 +48,16 @@ class CentralRole extends Model
     ];
 
     /**
-     * Users that belong to this role.
+     * Users that belong to this membership.
      */
     public function users(): BelongsToMany
     {
-        return $this->belongsToMany(CentralUser::class, 'central_user_roles')
+        return $this->belongsToMany(CentralUser::class, 'central_memberships')
             ->withTimestamps();
     }
 
     /**
-     * Scope for system roles
+     * Scope for system memberships
      */
     public function scopeSystem($query)
     {
@@ -65,7 +65,7 @@ class CentralRole extends Model
     }
 
     /**
-     * Check if role has a specific permission
+     * Check if membership has a specific permission
      */
     public function hasPermission(string $permission): bool
     {
@@ -74,7 +74,7 @@ class CentralRole extends Model
     }
 
     /**
-     * Add permission to role
+     * Add permission to membership
      */
     public function addPermission(string $permission): void
     {
@@ -87,7 +87,7 @@ class CentralRole extends Model
     }
 
     /**
-     * Remove permission from role
+     * Remove permission from membership
      */
     public function removePermission(string $permission): void
     {

@@ -25,7 +25,7 @@ class AdminProgressTest extends AdminTestCase
             'name' => 'Student User',
             'email' => 'student@example.com',
             'password' => bcrypt('password'),
-            'role' => 'user'
+            'membership' => 'user'
         ]);
 
         // Create learning content

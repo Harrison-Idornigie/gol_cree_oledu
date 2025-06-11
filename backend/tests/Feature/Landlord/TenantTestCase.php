@@ -27,7 +27,7 @@ abstract class TenantTestCase extends TestCase
     protected User $superAdmin;
 
     /**
-     * Super admin role
+     * Super admin membership
      */
     protected Role $superAdminRole;
 
@@ -57,11 +57,11 @@ abstract class TenantTestCase extends TestCase
     }
 
     /**
-     * Create super admin user and role for testing
+     * Create super admin user and membership for testing
      */
     protected function createSuperAdmin(): void
     {
-        // Create super admin role in central database
+        // Create super admin membership in central database
         $this->superAdminRole = Role::create([
             'name' => 'Super Administrator',
             'slug' => 'super-admin',
@@ -75,8 +75,8 @@ abstract class TenantTestCase extends TestCase
             'name' => 'Super Admin',
         ]);
 
-        // Assign super admin role
-        $this->superAdmin->roles()->attach($this->superAdminRole);
+        // Assign super admin membership
+        $this->superAdminmemberships()->attach($this->superAdminRole);
     }
 
     /**
@@ -106,9 +106,9 @@ abstract class TenantTestCase extends TestCase
 
         $adminData = array_merge($defaultAdminAttributes, $adminAttributes);
 
-        // Create admin user and role in tenant context
+        // Create admin user and membership in tenant context
         $adminUser = $this->runInTenantContext($tenant, function () use ($adminData, $tenant) {
-            // Create tenant admin role
+            // Create tenant admin membership
             $tenantAdminRole = Role::create([
                 'name' => 'Tenant Administrator',
                 'slug' => 'tenant-admin',
@@ -127,8 +127,8 @@ abstract class TenantTestCase extends TestCase
                 'tenant_id' => $tenant->id,
             ]);
 
-            // Assign tenant admin role
-            $adminUser->roles()->attach($tenantAdminRole);
+            // Assign tenant admin membership
+            $adminUsermemberships()->attach($tenantAdminRole);
 
             return $adminUser;
         });
@@ -157,8 +157,8 @@ abstract class TenantTestCase extends TestCase
         
         // Assert essential tables exist in tenant database
         $this->assertTenantHasTable($tenant, 'users');
-        $this->assertTenantHasTable($tenant, 'roles');
-        $this->assertTenantHasTable($tenant, 'role_user');
+        $this->assertTenantHasTable($tenant, 'memberships');
+        $this->assertTenantHasTable($tenant, 'membership_user');
     }
 
     /**
@@ -173,13 +173,13 @@ abstract class TenantTestCase extends TestCase
                 'name' => $expectedAdminData['name'],
             ]);
 
-            // Assert tenant admin role exists
-            $this->assertDatabaseHas('roles', [
+            // Assert tenant admin membership exists
+            $this->assertDatabaseHas('memberships', [
                 'slug' => 'tenant-admin',
                 'name' => 'Tenant Administrator',
             ]);
 
-            // Assert admin user has tenant admin role
+            // Assert admin user has tenant admin membership
             $adminUser = User::where('email', $expectedAdminData['email'])->first();
             $this->assertTrue($adminUser->hasRole('tenant-admin'));
         });

@@ -43,7 +43,7 @@ class TenantRegistrationTest extends TestCase
                             'id',
                             'name',
                             'email',
-                            'role',
+                            'membership',
                             'email_verified_at',
                             'tenant_id',
                             'tenant' => [
@@ -65,7 +65,7 @@ class TenantRegistrationTest extends TestCase
 
         // Verify response data
         $responseData = $response->json('data');
-        $this->assertEquals('tenant-admin', $responseData['user']['role']);
+        $this->assertEquals('tenant-admin', $responseData['user']['membership']);
         $this->assertEquals('test-school-district', $responseData['user']['tenant']['slug']);
         $this->assertNotEmpty($responseData['token']);
     }

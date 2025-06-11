@@ -55,13 +55,13 @@ class CentralLoginController extends BaseAPIController
                 'id' => $user->id,
                 'name' => $user->name,
                 'email' => $user->email,
-                'role' => $user->role,
+                'membership' => $user->membership,
                 'email_verified_at' => $user->email_verified_at,
                 'is_active' => $user->is_active,
                 'last_login_at' => $user->last_login_at,
             ];
 
-            // Determine redirect path based on user role
+            // Determine redirect path based on user membership
             $redirectPath = $this->getPostLoginRedirectPath($user);
 
             $responseData = [
@@ -89,7 +89,7 @@ class CentralLoginController extends BaseAPIController
 
 
     /**
-     * Determine the appropriate redirect path after login based on user role
+     * Determine the appropriate redirect path after login based on user membership
      */
     protected function getPostLoginRedirectPath(CentralUser $user): string
     {

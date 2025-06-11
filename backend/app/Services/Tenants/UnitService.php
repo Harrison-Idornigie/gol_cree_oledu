@@ -13,14 +13,14 @@ use Illuminate\Support\Facades\DB;
 class UnitService
 {
     /**
-     * Get filtered units with role-based access.
+     * Get filtered units with membership-based access.
      */
-    public function getFilteredUnits(Request $request, string $userRole = 'student'): LengthAwarePaginator
+    public function getFilteredUnits(Request $request, string $membership = 'student'): LengthAwarePaginator
     {
         $query = Unit::query();
 
-        // Apply role-based filtering
-        if (!in_array($userRole, ['super-admin', 'tenant-admin', 'team'])) {
+        // Apply membership-based filtering
+        if (!in_array($membership, ['super-admin', 'tenant-admin', 'team'])) {
             // Students can only see published content
             $query->where('status', 'published');
         }
@@ -55,7 +55,7 @@ class UnitService
         }
 
         // Admin-specific relationships
-        if (in_array($userRole, ['super-admin', 'tenant-admin', 'team'])) {
+        if (in_array($membership, ['super-admin', 'tenant-admin', 'team'])) {
             if ($request->has('with_versions')) {
                 $query->with('versions');
             }
@@ -77,12 +77,12 @@ class UnitService
     /**
      * Get units for a specific learning path.
      */
-    public function getUnitsForLearningPath(LearningPath $learningPath, string $userRole = 'student'): \Illuminate\Database\Eloquent\Collection
+    public function getUnitsForLearningPath(LearningPath $learningPath, string $membership = 'student'): \Illuminate\Database\Eloquent\Collection
     {
         $query = $learningPath->units()->orderBy('order');
 
-        // Apply role-based filtering
-        if (!in_array($userRole, ['super-admin', 'tenant-admin', 'team'])) {
+        // Apply membership-based filtering
+        if (!in_array($membership, ['super-admin', 'tenant-admin', 'team'])) {
             $query->where('status', 'published');
         }
 
@@ -257,7 +257,7 @@ class UnitService
     }
 
     /**
-     * Check if user can access unit based on role and tenant.
+     * Check if user can access unit based on membership and tenant.
      */
     public function canUserAccess(Unit $unit, User $user): bool
     {

@@ -65,7 +65,7 @@ class TenantLoginController extends BaseAPIController
                 'id' => $user->id,
                 'name' => $user->name,
                 'email' => $user->email,
-                'role' => $user->role,
+                'membership' => $user->membership,
                 'email_verified_at' => $user->email_verified_at,
                 'total_points' => $user->total_points,
                 'interface_language' => $user->interface_language,
@@ -74,7 +74,7 @@ class TenantLoginController extends BaseAPIController
             // Add tenant context to user data
             $userData = TenantHelper::addTenantContextToUser($userData, $tenant);
 
-            // Determine redirect path based on user role and tenant
+            // Determine redirect path based on user membership and tenant
             $redirectPath = $this->getPostLoginRedirectPath($user, $tenant);
 
             $responseData = [
@@ -128,9 +128,9 @@ class TenantLoginController extends BaseAPIController
                     ],
                     'user' => [
                         'id' => $tenantData['user']->id,
-                        'role' => $tenantData['user']->role,
+                        'membership' => $tenantData['user']membership,
                     ],
-                    'roles' => $tenantData['roles'],
+                    'memberships' => $tenantData['memberships'],
                 ];
             });
 
@@ -150,7 +150,7 @@ class TenantLoginController extends BaseAPIController
     }
 
     /**
-     * Determine the appropriate redirect path after login based on user role and tenant
+     * Determine the appropriate redirect path after login based on user membership and tenant
      */
     protected function getPostLoginRedirectPath(User $user, $tenant): string
     {

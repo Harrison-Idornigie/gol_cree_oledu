@@ -14,10 +14,10 @@ class TenantRoleSeeder extends Seeder
      */
     public function run(): void
     {
-        // Create system-wide roles first (no tenant_id)
+        // Create system-wide memberships first (no tenant_id)
         $this->createSystemRoles();
 
-        // Create tenant-specific roles for each tenant
+        // Create tenant-specific memberships for each tenant
         $tenants = Tenant::all();
         foreach ($tenants as $tenant) {
             $this->createTenantRoles($tenant);
@@ -25,7 +25,7 @@ class TenantRoleSeeder extends Seeder
     }
 
     /**
-     * Create system-wide roles.
+     * Create system-wide memberships.
      */
     private function createSystemRoles(): void
     {
@@ -60,7 +60,7 @@ class TenantRoleSeeder extends Seeder
     }
 
     /**
-     * Create tenant-specific roles.
+     * Create tenant-specific memberships.
      */
     private function createTenantRoles(Tenant $tenant): void
     {
@@ -80,7 +80,7 @@ class TenantRoleSeeder extends Seeder
             'tenant_id' => $tenant->id,
         ], [
             'name' => 'Team',
-            'description' => 'Team role for ' . $tenant->name,
+            'description' => 'Team membership for ' . $tenant->name,
             'is_system' => false,
         ]);
 
@@ -90,7 +90,7 @@ class TenantRoleSeeder extends Seeder
             'tenant_id' => $tenant->id,
         ], [
             'name' => 'Student',
-            'description' => 'Student role for ' . $tenant->name,
+            'description' => 'Student membership for ' . $tenant->name,
             'is_system' => false,
         ]);
 
@@ -99,84 +99,84 @@ class TenantRoleSeeder extends Seeder
     }
 
     /**
-     * Create tenant-specific permissions and assign to roles.
+     * Create tenant-specific permissions and assign to memberships.
      */
     private function createTenantPermissions(Tenant $tenant, Role $tenantAdmin, Role $team, Role $student): void
     {
-        // Define permissions with their role assignments
+        // Define permissions with their membership assignments
         $permissions = [
             // Tenant Admin permissions
             'manage-tenant-users' => [
                 'description' => 'Manage users within tenant',
-                'roles' => [$tenantAdmin],
+                'memberships' => [$tenantAdmin],
             ],
             'manage-tenant-settings' => [
                 'description' => 'Manage tenant settings',
-                'roles' => [$tenantAdmin],
+                'memberships' => [$tenantAdmin],
             ],
             'view-tenant-analytics' => [
                 'description' => 'View tenant analytics and reports',
-                'roles' => [$tenantAdmin],
+                'memberships' => [$tenantAdmin],
             ],
             
             // Content management permissions
             'manage-learning-paths' => [
                 'description' => 'Create, edit, and delete learning paths',
-                'roles' => [$tenantAdmin, $team],
+                'memberships' => [$tenantAdmin, $team],
             ],
             'manage-units' => [
                 'description' => 'Create, edit, and delete units',
-                'roles' => [$tenantAdmin, $team],
+                'memberships' => [$tenantAdmin, $team],
             ],
             'manage-lessons' => [
                 'description' => 'Create, edit, and delete lessons',
-                'roles' => [$tenantAdmin, $team],
+                'memberships' => [$tenantAdmin, $team],
             ],
             'manage-exercises' => [
                 'description' => 'Create, edit, and delete exercises',
-                'roles' => [$tenantAdmin, $team],
+                'memberships' => [$tenantAdmin, $team],
             ],
             'manage-vocabulary' => [
                 'description' => 'Manage vocabulary items',
-                'roles' => [$tenantAdmin, $team],
+                'memberships' => [$tenantAdmin, $team],
             ],
             'manage-media' => [
                 'description' => 'Upload and manage media files',
-                'roles' => [$tenantAdmin, $team],
+                'memberships' => [$tenantAdmin, $team],
             ],
             
             // View permissions
             'view-learning-paths' => [
                 'description' => 'View learning paths',
-                'roles' => [$tenantAdmin, $team, $student],
+                'memberships' => [$tenantAdmin, $team, $student],
             ],
             'view-lessons' => [
                 'description' => 'View lessons',
-                'roles' => [$tenantAdmin, $team, $student],
+                'memberships' => [$tenantAdmin, $team, $student],
             ],
             'view-exercises' => [
                 'description' => 'View and complete exercises',
-                'roles' => [$tenantAdmin, $team, $student],
+                'memberships' => [$tenantAdmin, $team, $student],
             ],
             
             // Student-specific permissions
             'track-progress' => [
                 'description' => 'Track learning progress',
-                'roles' => [$student],
+                'memberships' => [$student],
             ],
             'submit-exercises' => [
                 'description' => 'Submit exercise attempts',
-                'roles' => [$student],
+                'memberships' => [$student],
             ],
             
             // Team-specific permissions
             'view-student-progress' => [
                 'description' => 'View student progress and analytics',
-                'roles' => [$tenantAdmin, $team],
+                'memberships' => [$tenantAdmin, $team],
             ],
             'grade-exercises' => [
                 'description' => 'Grade student exercise submissions',
-                'roles' => [$tenantAdmin, $team],
+                'memberships' => [$tenantAdmin, $team],
             ],
         ];
 
@@ -188,9 +188,9 @@ class TenantRoleSeeder extends Seeder
                 'description' => $config['description'],
             ]);
 
-            // Assign permission to specified roles
-            foreach ($config['roles'] as $role) {
-                $role->permissions()->syncWithoutDetaching([$permission->id]);
+            // Assign permission to specified memberships
+            foreach ($config['memberships'] as $membership) {
+                $membership->permissions()->syncWithoutDetaching([$permission->id]);
             }
         }
     }

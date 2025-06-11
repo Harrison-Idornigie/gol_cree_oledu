@@ -26,7 +26,7 @@ class Role extends Model
     ];
 
     /**
-     * Users that belong to this role.
+     * Users that belong to this membership.
      */
     public function users(): BelongsToMany
     {
@@ -36,7 +36,7 @@ class Role extends Model
     }
 
     /**
-     * Permissions that belong to this role.
+     * Permissions that belong to this membership.
      */
     public function permissions(): BelongsToMany
     {
@@ -46,7 +46,7 @@ class Role extends Model
     }
 
     /**
-     * Check if the role has a specific permission.
+     * Check if the membership has a specific permission.
      */
     public function hasPermission(string $permission): bool
     {
@@ -57,7 +57,7 @@ class Role extends Model
     }
 
     /**
-     * Check if the role has any of the given permissions.
+     * Check if the membership has any of the given permissions.
      */
     public function hasAnyPermission(array $permissions): bool
     {
@@ -68,7 +68,7 @@ class Role extends Model
     }
 
     /**
-     * Check if the role has all of the given permissions.
+     * Check if the membership has all of the given permissions.
      */
     public function hasAllPermissions(array $permissions): bool
     {
@@ -81,7 +81,7 @@ class Role extends Model
     }
 
     /**
-     * Grant one or more permissions to the role.
+     * Grant one or more permissions to the membership.
      */
     public function grantPermissions(array $permissions, array $conditions = null): void
     {
@@ -98,7 +98,7 @@ class Role extends Model
     }
 
     /**
-     * Revoke one or more permissions from the role.
+     * Revoke one or more permissions from the membership.
      */
     public function revokePermissions(array $permissions): void
     {
@@ -106,7 +106,7 @@ class Role extends Model
     }
 
     /**
-     * Explicitly deny one or more permissions for the role.
+     * Explicitly deny one or more permissions for the membership.
      */
     public function denyPermissions(array $permissions): void
     {
@@ -122,7 +122,7 @@ class Role extends Model
     }
 
     /**
-     * Sync role permissions, maintaining deny status where applicable.
+     * Sync membership permissions, maintaining deny status where applicable.
      */
     public function syncPermissions(array $permissions): void
     {
