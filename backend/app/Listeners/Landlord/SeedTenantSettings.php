@@ -27,11 +27,11 @@ class SeedTenantSettings
         $tenant = $event->tenant;
 
         try {
-            // Set tenant context
-            app()->instance('current_tenant', $tenant);
-
-            // Seed default settings
-            $this->seedSettings($tenant);
+            // Switch to tenant context for all database operations
+            $tenant->run(function () use ($tenant) {
+                // Seed default settings
+                $this->seedSettings($tenant);
+            });
 
             Log::info('Tenant settings seeded successfully', [
                 'tenant_id' => $tenant->id,

@@ -195,10 +195,10 @@
                           "workerIndex": 0,
                           "parallelIndex": 0,
                           "status": "failed",
-                          "duration": 18380,
+                          "duration": 13497,
                           "error": {
-                            "message": "Error: \u001b[31mTimed out 10000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/e2e-test-1749667719211-hxcc5f\\/admin/\u001b[39m\nReceived string:  \u001b[31m\"http://localhost:3000/register-org\"\u001b[39m\nCall log:\n\u001b[2m  - expect.toHaveURL with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m    13 × locator resolved to <html lang=\"en\">…</html>\u001b[22m\n\u001b[2m       - unexpected value \"http://localhost:3000/register-org\"\u001b[22m\n",
-                            "stack": "Error: \u001b[31mTimed out 10000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/e2e-test-1749667719211-hxcc5f\\/admin/\u001b[39m\nReceived string:  \u001b[31m\"http://localhost:3000/register-org\"\u001b[39m\nCall log:\n\u001b[2m  - expect.toHaveURL with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m    13 × locator resolved to <html lang=\"en\">…</html>\u001b[22m\n\u001b[2m       - unexpected value \"http://localhost:3000/register-org\"\u001b[22m\n\n    at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/tenant-registration.spec.ts:60:26",
+                            "message": "Error: \u001b[31mTimed out 10000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/e2e-test-1749671809493-r05bu0\\/admin/\u001b[39m\nReceived string:  \u001b[31m\"http://localhost:3000/register-org\"\u001b[39m\nCall log:\n\u001b[2m  - expect.toHaveURL with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m    13 × locator resolved to <html lang=\"en\">…</html>\u001b[22m\n\u001b[2m       - unexpected value \"http://localhost:3000/register-org\"\u001b[22m\n",
+                            "stack": "Error: \u001b[31mTimed out 10000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/e2e-test-1749671809493-r05bu0\\/admin/\u001b[39m\nReceived string:  \u001b[31m\"http://localhost:3000/register-org\"\u001b[39m\nCall log:\n\u001b[2m  - expect.toHaveURL with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m    13 × locator resolved to <html lang=\"en\">…</html>\u001b[22m\n\u001b[2m       - unexpected value \"http://localhost:3000/register-org\"\u001b[22m\n\n    at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/tenant-registration.spec.ts:60:26",
                             "location": {
                               "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/tenant-registration.spec.ts",
                               "column": 26,
@@ -213,7 +213,7 @@
                                 "column": 26,
                                 "line": 60
                               },
-                              "message": "Error: \u001b[31mTimed out 10000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/e2e-test-1749667719211-hxcc5f\\/admin/\u001b[39m\nReceived string:  \u001b[31m\"http://localhost:3000/register-org\"\u001b[39m\nCall log:\n\u001b[2m  - expect.toHaveURL with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m    13 × locator resolved to <html lang=\"en\">…</html>\u001b[22m\n\u001b[2m       - unexpected value \"http://localhost:3000/register-org\"\u001b[22m\n\n\n\u001b[0m \u001b[90m 58 |\u001b[39m       \n \u001b[90m 59 |\u001b[39m       \u001b[90m// Wait for redirect to tenant dashboard\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 60 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page)\u001b[33m.\u001b[39mtoHaveURL(\u001b[36mnew\u001b[39m \u001b[33mRegExp\u001b[39m(\u001b[32m`/${testData.organizationSlug}/admin`\u001b[39m))\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                          \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 61 |\u001b[39m       \n \u001b[90m 62 |\u001b[39m       \u001b[90m// Verify we're on the tenant dashboard\u001b[39m\n \u001b[90m 63 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'h1'\u001b[39m))\u001b[33m.\u001b[39mtoContainText(\u001b[32m'Dashboard'\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/tenant-registration.spec.ts:60:26\u001b[22m"
+                              "message": "Error: \u001b[31mTimed out 10000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/e2e-test-1749671809493-r05bu0\\/admin/\u001b[39m\nReceived string:  \u001b[31m\"http://localhost:3000/register-org\"\u001b[39m\nCall log:\n\u001b[2m  - expect.toHaveURL with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m    13 × locator resolved to <html lang=\"en\">…</html>\u001b[22m\n\u001b[2m       - unexpected value \"http://localhost:3000/register-org\"\u001b[22m\n\n\n\u001b[0m \u001b[90m 58 |\u001b[39m       \n \u001b[90m 59 |\u001b[39m       \u001b[90m// Wait for redirect to tenant dashboard\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 60 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page)\u001b[33m.\u001b[39mtoHaveURL(\u001b[36mnew\u001b[39m \u001b[33mRegExp\u001b[39m(\u001b[32m`/${testData.organizationSlug}/admin`\u001b[39m))\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                          \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 61 |\u001b[39m       \n \u001b[90m 62 |\u001b[39m       \u001b[90m// Verify we're on the tenant dashboard\u001b[39m\n \u001b[90m 63 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'h1'\u001b[39m))\u001b[33m.\u001b[39mtoContainText(\u001b[32m'Dashboard'\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/tenant-registration.spec.ts:60:26\u001b[22m"
                             }
                           ],
                           "stdout": [
@@ -221,12 +221,12 @@
                               "text": "🗑️  Cleaning up all test tenants...\n"
                             },
                             {
-                              "text": "🗑️  Cleaning up tenant: e2e-test-1749667719211-hxcc5f\n"
+                              "text": "🗑️  Cleaning up tenant: e2e-test-1749671809493-r05bu0\n"
                             }
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-06-11T18:48:32.669Z",
+                          "startTime": "2025-06-11T19:56:47.476Z",
                           "annotations": [],
                           "attachments": [
                             {
@@ -269,8 +269,8 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2025-06-11T18:48:28.024Z",
-    "duration": 25963.234999999997,
+    "startTime": "2025-06-11T19:56:40.879Z",
+    "duration": 23157.936,
     "expected": 0,
     "skipped": 0,
     "unexpected": 1,

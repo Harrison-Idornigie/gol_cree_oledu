@@ -30,17 +30,17 @@ class SeedTenantMemberships
         $adminUser = $event->adminUser;
 
         try {
-            // Set tenant context
-            app()->instance('current_tenant', $tenant);
+            // Switch to tenant context for all database operations
+            $tenant->run(function () use ($tenant, $adminUser) {
+                // Seed permissions first
+                $this->seedPermissions($tenant);
 
-            // Seed permissions first
-            $this->seedPermissions($tenant);
-            
-            // Seed memberships and assign permissions
-            $this->seedMemberships($tenant);
-            
-            // Assign admin membership to admin user
-            $this->assignAdminMembership($adminUser, $tenant);
+                // Seed memberships and assign permissions
+                $this->seedMemberships($tenant);
+
+                // Assign admin membership to admin user
+                $this->assignAdminMembership($adminUser, $tenant);
+            });
 
             Log::info('Tenant memberships seeded successfully', [
                 'tenant_id' => $tenant->id,
@@ -53,8 +53,13 @@ class SeedTenantMemberships
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString()
             ]);
-            
-            // Don't throw - let other seeders continue
+
+            // Check if this is critical seeding - if so, throw to cause transaction rollback
+            if ($event->getContext('critical_seeding', false)) {
+                throw new Exception('Critical membership seeding failed: ' . $e->getMessage(), 0, $e);
+            }
+
+            // For non-critical seeding, log and continue
         }
     }
 
@@ -114,8 +119,8 @@ class SeedTenantMemberships
             ->where('slug', 'tenant-admin')
             ->first();
 
-        if ($tenantAdminMembership && !$adminUsermemberships()->where('membership_id', $tenantAdminMembership->id)->exists()) {
-            $adminUsermemberships()->attach($tenantAdminMembership);
+        if ($tenantAdminMembership && !$adminUser->memberships()->where('membership_id', $tenantAdminMembership->id)->exists()) {
+            $adminUser->memberships()->attach($tenantAdminMembership);
         }
     }
 }

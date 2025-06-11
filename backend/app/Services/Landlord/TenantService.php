@@ -126,18 +126,14 @@ class TenantService
                 'has_admin_user' => true
             ]));
 
-            // Step 6: Fire seeding event for modular setup (after database is ready)
+            // Step 6: Run critical seeding synchronously within transaction
             $this->updateProgress($progressId, 'seeding_data', 'Seeding initial content...', 90);
 
             // Verify database is still ready before seeding
             $this->verifyTenantDatabaseReady($tenant);
 
-            event(new TenantSeedingRequested($tenant, $adminUser, [
-                'seed_memberships' => true,
-                'seed_languages' => true,
-                'seed_settings' => true,
-                'database_ready' => true, // Flag to indicate DB is verified ready
-            ]));
+            // Run critical seeding synchronously to ensure completion before API response
+            $this->runCriticalSeeding($tenant, $adminUser);
 
             DB::commit();
 
@@ -491,6 +487,49 @@ class TenantService
     }
 
     /**
+     * Run critical seeding synchronously within the transaction
+     * This ensures essential setup completes before API response
+     */
+    protected function runCriticalSeeding(Tenant $tenant, User $adminUser): void
+    {
+        try {
+            Log::info('Starting critical tenant seeding', [
+                'tenant_id' => $tenant->id,
+                'tenant_name' => $tenant->name
+            ]);
+
+            // Dispatch seeding event synchronously (not queued)
+            event(new TenantSeedingRequested($tenant, $adminUser, [
+                'seed_memberships' => true,
+                'seed_languages' => true,
+                'seed_settings' => true,
+                'database_ready' => true,
+                'critical_seeding' => true, // Flag to indicate this is critical seeding
+            ]));
+
+            Log::info('Critical tenant seeding completed successfully', [
+                'tenant_id' => $tenant->id,
+                'tenant_name' => $tenant->name
+            ]);
+
+        } catch (Exception $e) {
+            Log::error('Critical tenant seeding failed', [
+                'tenant_id' => $tenant->id,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+
+            // Critical seeding failure should cause transaction rollback
+            throw new Exception(
+                'Critical tenant seeding failed. This indicates a serious setup issue. ' .
+                'Error: ' . $e->getMessage(),
+                0,
+                $e
+            );
+        }
+    }
+
+    /**
      * Create admin user in central database (Phase 1)
      */
     protected function createCentralAdminUser(array $adminData): \App\Models\Landlord\CentralUser
@@ -561,17 +600,8 @@ class TenantService
                 throw $e;
             }
 
-            // Create tenant admin membership if it doesn't exist (in tenant context, no tenant_id needed)
-            $tenantAdminMembership = Membership::firstOrCreate([
-                'slug' => 'tenant-admin',
-            ], [
-                'name' => 'Tenant Administrator',
-                'description' => "Administrator for {$tenant->name}",
-                'is_system' => true,
-            ]);
-
-            // Assign tenant admin membership
-            $adminUser->memberships()->attach($tenantAdminMembership);
+            // Note: Membership creation and assignment is handled by the seeding events
+            // This ensures proper separation of concerns and consistent seeding process
         });
 
         if (!$adminUser) {

@@ -1,13 +1,13 @@
-<testsuites id="" name="" tests="1" failures="1" skipped="0" errors="0" time="25.963234999999997">
-<testsuite name="tenant-registration.spec.ts" timestamp="2025-06-11T18:48:31.375Z" hostname="chromium" tests="1" failures="1" skipped="0" time="18.38" errors="0">
-<testcase name="Tenant Registration E2E Flow › Successful Registration Flow › should complete full tenant registration with valid data" classname="tenant-registration.spec.ts" time="18.38">
+<testsuites id="" name="" tests="1" failures="1" skipped="0" errors="0" time="23.157936000000003">
+<testsuite name="tenant-registration.spec.ts" timestamp="2025-06-11T19:56:45.707Z" hostname="chromium" tests="1" failures="1" skipped="0" time="13.497" errors="0">
+<testcase name="Tenant Registration E2E Flow › Successful Registration Flow › should complete full tenant registration with valid data" classname="tenant-registration.spec.ts" time="13.497">
 <failure message="tenant-registration.spec.ts:47:9 should complete full tenant registration with valid data" type="FAILURE">
 <![CDATA[  [chromium] › tenant-registration.spec.ts:47:9 › Tenant Registration E2E Flow › Successful Registration Flow › should complete full tenant registration with valid data 
 
     Error: Timed out 10000ms waiting for expect(locator).toHaveURL(expected)
 
     Locator: locator(':root')
-    Expected pattern: /\/e2e-test-1749667719211-hxcc5f\/admin/
+    Expected pattern: /\/e2e-test-1749671809493-r05bu0\/admin/
     Received string:  "http://localhost:3000/register-org"
     Call log:
       - expect.toHaveURL with timeout 10000ms
@@ -38,7 +38,7 @@
 </failure>
 <system-out>
 <![CDATA[🗑️  Cleaning up all test tenants...
-🗑️  Cleaning up tenant: e2e-test-1749667719211-hxcc5f
+🗑️  Cleaning up tenant: e2e-test-1749671809493-r05bu0
 
 [[ATTACHMENT|test-results/tenant-registration-Tenant-3bda2-egistration-with-valid-data-chromium/test-failed-1.png]]
 

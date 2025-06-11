@@ -28,11 +28,11 @@ class SeedTenantLanguages
         $tenant = $event->tenant;
 
         try {
-            // Set tenant context
-            app()->instance('current_tenant', $tenant);
-
-            // Seed default languages
-            $this->seedLanguages($tenant);
+            // Switch to tenant context for all database operations
+            $tenant->run(function () use ($tenant) {
+                // Seed default languages
+                $this->seedLanguages($tenant);
+            });
 
             Log::info('Tenant languages seeded successfully', [
                 'tenant_id' => $tenant->id,
