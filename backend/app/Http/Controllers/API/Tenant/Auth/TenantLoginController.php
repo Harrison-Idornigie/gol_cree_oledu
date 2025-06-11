@@ -156,11 +156,11 @@ class TenantLoginController extends BaseAPIController
     {
         $tenantSlug = $tenant->slug;
 
-        if ($user->hasRole('tenant-admin') || $user->hasRole('admin')) {
+        if ($user->hasMembership('tenant-admin') || $user->hasMembership('admin')) {
             return "/{$tenantSlug}/admin/dashboard";
         }
 
-        if ($user->hasRole('team') || $user->hasRole('teacher')) {
+        if ($user->hasMembership('team') || $user->hasMembership('teacher')) {
             return "/{$tenantSlug}/team/dashboard";
         }
 

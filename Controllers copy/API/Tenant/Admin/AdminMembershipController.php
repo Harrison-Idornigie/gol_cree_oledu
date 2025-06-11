@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
-class AdminRoleController extends BaseAPIController
+class AdminMembershipController extends BaseAPIController
 {
     /**
      * Display a listing of roles.

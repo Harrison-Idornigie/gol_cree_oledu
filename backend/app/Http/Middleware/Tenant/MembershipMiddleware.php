@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class RoleMiddleware
+class MembershipMiddleware
 {
     public function handle(Request $request, Closure $next, ...$memberships)
     {
@@ -19,7 +19,7 @@ class RoleMiddleware
         }
 
         foreach ($memberships as $membership) {
-            if ($user->hasRole($membership)) {
+            if ($user->hasMembership($membership)) {
                 return $next($request);
             }
         }

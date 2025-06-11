@@ -72,7 +72,7 @@ class UserContextController extends BaseAPIController
                     'name' => $tenantData['tenant']->name,
                     'status' => $tenantData['tenant']->status,
                     'membership' => $tenantData['user']membership,
-                    'defaultRedirect' => $this->getDefaultRedirectForRole(
+                    'defaultRedirect' => $this->getDefaultRedirectForMembership(
                         $tenantData['user']membership, 
                         $tenantData['tenant']->slug
                     )
@@ -171,8 +171,8 @@ class UserContextController extends BaseAPIController
             $membership = $matches[2];
             
             // Validate membership
-            $validRoles = ['admin', 'team', 'student'];
-            if (in_array($membership, $validRoles)) {
+            $validMemberships = ['admin', 'team', 'student'];
+            if (in_array($membership, $validMemberships)) {
                 return [
                     'tenantSlug' => $tenantSlug,
                     'membership' => $membership
@@ -204,7 +204,7 @@ class UserContextController extends BaseAPIController
     /**
      * Get default redirect URL for user membership
      */
-    protected function getDefaultRedirectForRole(string $membership, string $tenantSlug): string
+    protected function getDefaultRedirectForMembership(string $membership, string $tenantSlug): string
     {
         $membershipMap = [
             'tenant-admin' => 'admin',
@@ -214,8 +214,8 @@ class UserContextController extends BaseAPIController
             'student' => 'student'
         ];
 
-        $mappedRole = $membershipMap[$membership] ?? 'student';
+        $mappedMembership = $membershipMap[$membership] ?? 'student';
         
-        return "/{$tenantSlug}/{$mappedRole}/dashboard";
+        return "/{$tenantSlug}/{$mappedMembership}/dashboard";
     }
 }

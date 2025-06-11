@@ -3,18 +3,18 @@
 namespace App\Listeners\Landlord;
 
 use App\Events\Landlord\TenantSeedingRequested;
-use App\Models\Tenants\Role;
+use App\Models\Tenants\Membership;
 use App\Models\Tenants\Permission;
 use Illuminate\Support\Facades\Log;
 use Exception;
 
 /**
- * Seed Tenant Roles Listener
+ * Seed Tenant Memberships Listener
  * 
  * Handles seeding of memberships and permissions for new tenants.
  * This listener is modular and can be easily extended or replaced.
  */
-class SeedTenantRoles
+class SeedTenantMemberships
 {
     /**
      * Handle the event.
@@ -37,10 +37,10 @@ class SeedTenantRoles
             $this->seedPermissions($tenant);
             
             // Seed memberships and assign permissions
-            $this->seedRoles($tenant);
+            $this->seedMemberships($tenant);
             
             // Assign admin membership to admin user
-            $this->assignAdminRole($adminUser, $tenant);
+            $this->assignAdminMembership($adminUser, $tenant);
 
             Log::info('Tenant memberships seeded successfully', [
                 'tenant_id' => $tenant->id,
@@ -80,12 +80,12 @@ class SeedTenantRoles
     /**
      * Seed memberships for the tenant
      */
-    protected function seedRoles($tenant): void
+    protected function seedMemberships($tenant): void
     {
         $memberships = config('tenant.default_memberships', []);
 
         foreach ($memberships as $membershipData) {
-            $membership = Role::firstOrCreate([
+            $membership = Membership::firstOrCreate([
                 'slug' => $membershipData['slug'],
                 'tenant_id' => $tenant->id
             ], [
@@ -108,14 +108,14 @@ class SeedTenantRoles
     /**
      * Assign admin membership to the admin user
      */
-    protected function assignAdminRole($adminUser, $tenant): void
+    protected function assignAdminMembership($adminUser, $tenant): void
     {
-        $tenantAdminRole = Role::where('tenant_id', $tenant->id)
+        $tenantAdminMembership = Membership::where('tenant_id', $tenant->id)
             ->where('slug', 'tenant-admin')
             ->first();
 
-        if ($tenantAdminRole && !$adminUsermemberships()->where('membership_id', $tenantAdminRole->id)->exists()) {
-            $adminUsermemberships()->attach($tenantAdminRole);
+        if ($tenantAdminMembership && !$adminUsermemberships()->where('membership_id', $tenantAdminMembership->id)->exists()) {
+            $adminUsermemberships()->attach($tenantAdminMembership);
         }
     }
 }

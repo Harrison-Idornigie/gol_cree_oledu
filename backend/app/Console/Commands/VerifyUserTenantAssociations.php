@@ -158,7 +158,7 @@ class VerifyUserTenantAssociations extends Command
                     $stats['fixed']++;
                     $this->line("🔧 Fixed membership mismatch: {$association->email} → {$association->tenant_slug} ({$association->membership} → {$actualUsermembership})");
                 } else {
-                    $this->warn("❌ Role mismatch: {$association->email} → {$association->tenant_slug} (Central: {$association->membership}, Actual: {$actualUsermembership})");
+                    $this->warn("❌ Membership mismatch: {$association->email} → {$association->tenant_slug} (Central: {$association->membership}, Actual: {$actualUsermembership})");
                 }
                 return;
             }
@@ -200,7 +200,7 @@ class VerifyUserTenantAssociations extends Command
             ['Metric', 'Count'],
             [
                 ['Verified (Correct)', $stats['verified']],
-                ['Role Mismatches', $stats['mismatches']],
+                ['Membership Mismatches', $stats['mismatches']],
                 ['Missing Users', $stats['missing']],
                 $autoFix ? ['Fixed', $stats['fixed']] : null,
             ]
@@ -214,7 +214,7 @@ class VerifyUserTenantAssociations extends Command
             ['Metric', 'Count'],
             [
                 ['Verified (Correct)', $stats['verified']],
-                ['Role Mismatches', $stats['mismatches']],
+                ['Membership Mismatches', $stats['mismatches']],
                 ['Missing Users', $stats['missing']],
                 $autoFix ? ['Fixed', $stats['fixed']] : null,
             ]

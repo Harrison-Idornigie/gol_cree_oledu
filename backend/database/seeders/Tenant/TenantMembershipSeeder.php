@@ -3,11 +3,11 @@
 namespace Database\Seeders\Tenant;
 
 use App\Models\Tenants\Permission;
-use App\Models\Tenants\Role;
+use App\Models\Tenants\Membership;
 use App\Models\Landlord\Tenant;
 use Illuminate\Database\Seeder;
 
-class TenantRoleSeeder extends Seeder
+class TenantMembershipSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,22 +15,22 @@ class TenantRoleSeeder extends Seeder
     public function run(): void
     {
         // Create system-wide memberships first (no tenant_id)
-        $this->createSystemRoles();
+        $this->createSystemMemberships();
 
         // Create tenant-specific memberships for each tenant
         $tenants = Tenant::all();
         foreach ($tenants as $tenant) {
-            $this->createTenantRoles($tenant);
+            $this->createTenantMemberships($tenant);
         }
     }
 
     /**
      * Create system-wide memberships.
      */
-    private function createSystemRoles(): void
+    private function createSystemMemberships(): void
     {
         // Super Admin - can manage everything across all tenants
-        $superAdmin = Role::firstOrCreate([
+        $superAdmin = Membership::firstOrCreate([
             'slug' => 'super-admin',
             'tenant_id' => null,
         ], [
@@ -62,10 +62,10 @@ class TenantRoleSeeder extends Seeder
     /**
      * Create tenant-specific memberships.
      */
-    private function createTenantRoles(Tenant $tenant): void
+    private function createTenantMemberships(Tenant $tenant): void
     {
         // Tenant Administrator
-        $tenantAdmin = Role::firstOrCreate([
+        $tenantAdmin = Membership::firstOrCreate([
             'slug' => 'tenant-admin',
             'tenant_id' => $tenant->id,
         ], [
@@ -75,7 +75,7 @@ class TenantRoleSeeder extends Seeder
         ]);
 
         // Team
-        $team = Role::firstOrCreate([
+        $team = Membership::firstOrCreate([
             'slug' => 'team',
             'tenant_id' => $tenant->id,
         ], [
@@ -85,7 +85,7 @@ class TenantRoleSeeder extends Seeder
         ]);
 
         // Student
-        $student = Role::firstOrCreate([
+        $student = Membership::firstOrCreate([
             'slug' => 'student',
             'tenant_id' => $tenant->id,
         ], [
@@ -101,7 +101,7 @@ class TenantRoleSeeder extends Seeder
     /**
      * Create tenant-specific permissions and assign to memberships.
      */
-    private function createTenantPermissions(Tenant $tenant, Role $tenantAdmin, Role $team, Role $student): void
+    private function createTenantPermissions(Tenant $tenant, Membership $tenantAdmin, Membership $team, Membership $student): void
     {
         // Define permissions with their membership assignments
         $permissions = [

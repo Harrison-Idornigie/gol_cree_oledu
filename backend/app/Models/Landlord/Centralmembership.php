@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
- * Central Role Model
+ * Central Membership Model
  *
  * This model represents system-wide memberships in the central/landlord database.
  * These are memberships for system administrators and other users who operate
@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * This is separate from tenant-scoped memberships which exist within
  * individual tenant databases.
  */
-class CentralRole extends Model
+class Centralmembership extends Model
 {
     use HasFactory;
 

@@ -82,7 +82,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function memberships(): BelongsToMany
     {
-        return $this->belongsToMany(Role::class);
+        return $this->belongsToMany(Membership::class);
     }
 
     /**
@@ -158,49 +158,49 @@ class User extends Authenticatable implements MustVerifyEmail
     /**
      * Check if user has a specific membership.
      */
-    public function hasRole(string $membership): bool
+    public function hasMembership(string $membership): bool
     {
         return $thismemberships()->where('slug', $membership)->exists();
     }
 
     /**
-     * Admin Role Check
+     * Admin Membership Check
      */
     public function isAdmin(): bool
     {
-        return $this->hasRole('admin');
+        return $this->hasMembership('admin');
     }
 
     /**
-     * Super Admin Role Check
+     * Super Admin Membership Check
      */
     public function isSuperAdmin(): bool
     {
-        return $this->hasRole('super-admin');
+        return $this->hasMembership('super-admin');
     }
 
     /**
-     * Tenant Admin Role Check
+     * Tenant Admin Membership Check
      */
     public function isTenantAdmin(): bool
     {
-        return $this->hasRole('tenant-admin');
+        return $this->hasMembership('tenant-admin');
     }
 
     /**
-     * Team Role Check
+     * Team Membership Check
      */
     public function isTeam(): bool
     {
-        return $this->hasRole('team');
+        return $this->hasMembership('team');
     }
 
     /**
-     * Student Role Check
+     * Student Membership Check
      */
     public function isStudent(): bool
     {
-        return $this->hasRole('student');
+        return $this->hasMembership('student');
     }
 
     /**

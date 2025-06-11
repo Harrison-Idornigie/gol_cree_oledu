@@ -28,11 +28,11 @@ class Permission extends Model
     ];
 
     /**
-     * Roles that have this permission.
+     * Memberships that have this permission.
      */
     public function memberships(): BelongsToMany
     {
-        return $this->belongsToMany(Role::class)
+        return $this->belongsToMany(Membership::class)
             ->withPivot(['conditions', 'is_denied'])
             ->withTimestamps();
     }
@@ -53,7 +53,7 @@ class Permission extends Model
     /**
      * Check if the permission is granted to a specific membership.
      */
-    public function isGrantedTo(Role $membership): bool
+    public function isGrantedTo(Membership $membership): bool
     {
         return $thismemberships()
             ->where('memberships.id', $membership->id)

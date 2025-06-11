@@ -2,12 +2,12 @@
 
 namespace Database\Factories\Tenant;
 
-use App\Models\Tenants\Role;
+use App\Models\Tenants\Membership;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Tenants\Role>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Tenants\Membership>
  */
 class MembershipFactory extends Factory
 {
@@ -16,7 +16,7 @@ class MembershipFactory extends Factory
      *
      * @var string
      */
-    protected $model = Role::class;
+    protected $model = Membership::class;
 
     /**
      * Define the model's default state.

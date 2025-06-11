@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 
-class Role extends Model
+class Membership extends Model
 {
     use HasFactory, BelongsToTenant;
 

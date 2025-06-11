@@ -56,7 +56,7 @@ class TenantAdminAnalyticsController extends BaseAPIController
         // - User registration trends
         // - Active users metrics
         // - User engagement levels
-        // - Role distribution
+        // - Membership distribution
         return $this->sendResponse([], 'User analytics retrieved successfully.');
     }
 

@@ -2,7 +2,7 @@
 namespace App\Http\Controllers\API\Auth;
 
 use App\Http\Controllers\API\BaseAPIController;
-use App\Models\Tenants\Role;
+use App\Models\Tenants\Membership;
 use App\Models\Tenants\User;
 use App\Services\Auth\UserTenantAssociationService;
 use Exception;
@@ -146,9 +146,9 @@ class GoogleController extends BaseAPIController
                         ]);
 
                         // Assign membership if using membership-based permissions
-                        if (class_exists('\App\Models\Tenants\Role')) {
+                        if (class_exists('\App\Models\Tenants\Membership')) {
                             $membershipName = $isAdminEmail ? 'admin' : 'user';
-                            $membership     = Role::where('slug', $membershipName)->first();
+                            $membership     = Membership::where('slug', $membershipName)->first();
                             if ($membership) {
                                 $user->memberships()->attach($membership->id);
                             }
@@ -567,9 +567,9 @@ class GoogleController extends BaseAPIController
                         ]);
 
                         // Assign membership if using membership-based permissions
-                        if (class_exists('\App\Models\Tenants\Role')) {
+                        if (class_exists('\App\Models\Tenants\Membership')) {
                             $membershipName = $isAdminEmail ? 'admin' : 'user';
-                            $membership     = Role::where('slug', $membershipName)->first();
+                            $membership     = Membership::where('slug', $membershipName)->first();
                             if ($membership) {
                                 $user->memberships()->attach($membership->id);
                             }

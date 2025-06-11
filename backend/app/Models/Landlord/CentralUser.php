@@ -69,24 +69,24 @@ class CentralUser extends Authenticatable
      */
     public function memberships(): BelongsToMany
     {
-        return $this->belongsToMany(CentralRole::class, 'central_memberships')
+        return $this->belongsToMany(CentralMembership::class, 'central_memberships')
             ->withTimestamps();
     }
 
     /**
      * Check if user has a specific membership.
      */
-    public function hasRole(string $membership): bool
+    public function hasMembership(string $membership): bool
     {
         return $thismemberships()->where('slug', $membership)->exists() || $thismembership === $membership;
     }
 
     /**
-     * Super Admin Role Check
+     * Super Admin Membership Check
      */
     public function isSuperAdmin(): bool
     {
-        return $this->hasRole('super-admin') || $thismembership === 'admin';
+        return $this->hasMembership('super-admin') || $thismembership === 'admin';
     }
 
     /**

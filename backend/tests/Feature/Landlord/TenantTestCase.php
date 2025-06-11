@@ -4,7 +4,7 @@ namespace Tests\Feature\Landlord;
 
 use App\Models\Landlord\Tenant;
 use App\Models\Tenants\User;
-use App\Models\Role;
+use App\Models\Membership;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Event;
@@ -29,7 +29,7 @@ abstract class TenantTestCase extends TestCase
     /**
      * Super admin membership
      */
-    protected Role $superAdminRole;
+    protected Membership $superAdminMembership;
 
     /**
      * Setup the test environment
@@ -62,7 +62,7 @@ abstract class TenantTestCase extends TestCase
     protected function createSuperAdmin(): void
     {
         // Create super admin membership in central database
-        $this->superAdminRole = Role::create([
+        $this->superAdminMembership = Membership::create([
             'name' => 'Super Administrator',
             'slug' => 'super-admin',
             'description' => 'System super administrator',
@@ -76,7 +76,7 @@ abstract class TenantTestCase extends TestCase
         ]);
 
         // Assign super admin membership
-        $this->superAdminmemberships()->attach($this->superAdminRole);
+        $this->superAdminmemberships()->attach($this->superAdminMembership);
     }
 
     /**
@@ -109,7 +109,7 @@ abstract class TenantTestCase extends TestCase
         // Create admin user and membership in tenant context
         $adminUser = $this->runInTenantContext($tenant, function () use ($adminData, $tenant) {
             // Create tenant admin membership
-            $tenantAdminRole = Role::create([
+            $tenantAdminMembership = Membership::create([
                 'name' => 'Tenant Administrator',
                 'slug' => 'tenant-admin',
                 'description' => "Administrator for {$tenant->name}",
@@ -128,7 +128,7 @@ abstract class TenantTestCase extends TestCase
             ]);
 
             // Assign tenant admin membership
-            $adminUsermemberships()->attach($tenantAdminRole);
+            $adminUsermemberships()->attach($tenantAdminMembership);
 
             return $adminUser;
         });
@@ -181,7 +181,7 @@ abstract class TenantTestCase extends TestCase
 
             // Assert admin user has tenant admin membership
             $adminUser = User::where('email', $expectedAdminData['email'])->first();
-            $this->assertTrue($adminUser->hasRole('tenant-admin'));
+            $this->assertTrue($adminUser->hasMembership('tenant-admin'));
         });
     }
 

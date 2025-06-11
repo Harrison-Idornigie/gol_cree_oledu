@@ -4,7 +4,7 @@ use App\Http\Controllers\API\Tenant\Admin\TenantAdminAnalyticsController;
 use App\Http\Controllers\API\Tenant\Admin\TenantAdminAuditController;
 use App\Http\Controllers\API\Tenant\Admin\TenantAdminDashboardController;
 use App\Http\Controllers\API\Tenant\Admin\TenantAdminUserController;
-use App\Http\Controllers\API\Tenant\Admin\TenantAdminRoleController;
+use App\Http\Controllers\API\Tenant\Admin\TenantAdminMembershipController;
 use App\Http\Controllers\API\Tenant\Admin\TenantAdminSettingsController;
 use App\Http\Controllers\API\Tenant\Admin\TenantAdminContentController;
 use Illuminate\Support\Facades\Route;
@@ -50,14 +50,14 @@ Route::prefix('tenant-admin')->middleware(['auth:tenant', 'verified', 'membershi
         Route::get('{user}/activity', [TenantAdminUserController::class, 'getUserActivity']);
     });
 
-    // Roles & Permissions Management
+    // Memberships & Permissions Management
     Route::prefix('memberships')->group(function () {
-        Route::get('/', [TenantAdminRoleController::class, 'index']);
-        Route::post('/', [TenantAdminRoleController::class, 'store']);
-        Route::get('{membership}', [TenantAdminRoleController::class, 'show']);
-        Route::put('{membership}', [TenantAdminRoleController::class, 'update']);
-        Route::delete('{membership}', [TenantAdminRoleController::class, 'destroy']);
-        Route::post('{membership}/permissions', [TenantAdminRoleController::class, 'updatePermissions']);
+        Route::get('/', [TenantAdminMembershipController::class, 'index']);
+        Route::post('/', [TenantAdminMembershipController::class, 'store']);
+        Route::get('{membership}', [TenantAdminMembershipController::class, 'show']);
+        Route::put('{membership}', [TenantAdminMembershipController::class, 'update']);
+        Route::delete('{membership}', [TenantAdminMembershipController::class, 'destroy']);
+        Route::post('{membership}/permissions', [TenantAdminMembershipController::class, 'updatePermissions']);
     });
 
     // Audit Logs for Tenant

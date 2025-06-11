@@ -2,16 +2,16 @@
 
 namespace Tests\Feature\Admin;
 
-use App\Models\Role;
-use App\Models\Permission;
+use App\Models\Tenants\Permission;
+use App\Models\Tenants\Membership;
 use App\Models\Tenants\User;
 
-class AdminRolePermissionTest extends AdminTestCase
+class AdminMembershipPermissionTest extends AdminTestCase
 {
     public function test_admin_can_list_memberships()
     {
-        Role::create(['name' => 'team']);
-        Role::create(['name' => 'moderator']);
+        Membership::create(['name' => 'team']);
+        Membership::create(['name' => 'moderator']);
 
         $response = $this->actingAsAdmin()
             ->getJson('/api/admin/memberships');
@@ -59,14 +59,14 @@ class AdminRolePermissionTest extends AdminTestCase
         ]);
 
         // Check if permissions were created and assigned
-        $membership = Role::where('name', 'content_creator')->first();
+        $membership = Membership::where('name', 'content_creator')->first();
         $this->assertTrue($membership->permissions->contains('name', 'create_content'));
         $this->assertTrue($membership->permissions->contains('name', 'edit_content'));
     }
 
     public function test_admin_can_update_membership()
     {
-        $membership = Role::create([
+        $membership = Membership::create([
             'name' => 'editor',
             'description' => 'Content editor'
         ]);
@@ -95,10 +95,10 @@ class AdminRolePermissionTest extends AdminTestCase
 
     public function test_admin_cannot_delete_admin_membership()
     {
-        $adminRole = Role::where('name', 'admin')->first();
+        $adminMembership = Membership::where('name', 'admin')->first();
 
         $response = $this->actingAsAdmin()
-            ->deleteJson("/api/admin/memberships/{$adminRole->id}");
+            ->deleteJson("/api/admin/memberships/{$adminMembership->id}");
 
         $response->assertStatus(403);
         $this->assertDatabaseHas('memberships', ['name' => 'admin']);
@@ -106,7 +106,7 @@ class AdminRolePermissionTest extends AdminTestCase
 
     public function test_admin_can_update_membership_permissions()
     {
-        $membership = Role::create([
+        $membership = Membership::create([
             'name' => 'reviewer',
             'description' => 'Content reviewer'
         ]);
@@ -137,7 +137,7 @@ class AdminRolePermissionTest extends AdminTestCase
 
     public function test_admin_can_sync_membership_permissions()
     {
-        $membership = Role::create(['name' => 'manager']);
+        $membership = Membership::create(['name' => 'manager']);
 
         // Create initial permissions
         Permission::create(['name' => 'view_reports']);
@@ -153,14 +153,14 @@ class AdminRolePermissionTest extends AdminTestCase
 
         $response->assertOk();
 
-        $updatedRole = $membership->fresh();
-        $this->assertFalse($updatedRole->permissions->contains('name', 'view_reports'));
-        $this->assertTrue($updatedRole->permissions->contains('name', 'edit_settings'));
+        $updatedMembership = $membership->fresh();
+        $this->assertFalse($updatedMembership->permissions->contains('name', 'view_reports'));
+        $this->assertTrue($updatedMembership->permissions->contains('name', 'edit_settings'));
     }
 
     public function test_cannot_create_duplicate_membership()
     {
-        Role::create(['name' => 'moderator']);
+        Membership::create(['name' => 'moderator']);
 
         $response = $this->actingAsAdmin()
             ->postJson('/api/admin/memberships', [
@@ -174,7 +174,7 @@ class AdminRolePermissionTest extends AdminTestCase
 
     public function test_admin_can_view_membership_details()
     {
-        $membership = Role::create([
+        $membership = Membership::create([
             'name' => 'contributor',
             'description' => 'Content contributor'
         ]);
@@ -200,12 +200,12 @@ class AdminRolePermissionTest extends AdminTestCase
 
     public function test_membership_hierarchy_validation()
     {
-        $adminRole = Role::where('name', 'admin')->first();
+        $adminMembership = Membership::where('name', 'admin')->first();
 
         $response = $this->actingAsAdmin()
             ->postJson('/api/admin/memberships', [
                 'name' => 'super_admin',
-                'permissions' => $adminRole->permissions->pluck('name')->toArray()
+                'permissions' => $adminMembership->permissions->pluck('name')->toArray()
             ]);
 
         $response->assertStatus(403)

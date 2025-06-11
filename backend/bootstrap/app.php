@@ -2,7 +2,7 @@
 
 use App\Http\Middleware\CheckSequentialAccess;
 use App\Http\Middleware\EnsureEmailIsVerified;
-use App\Http\Middleware\RoleMiddleware;
+use App\Http\Middleware\MembershipMiddleware;
 use App\Http\Middleware\Tenant\InitializeTenancyByPathOrDomain;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -37,7 +37,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
-            // 'membership'                => RoleMiddleware::class,
+            // 'membership'                => MembershipMiddleware::class,
             // 'verified'            => EnsureEmailIsVerified::class,
             // 'sequential-learning' => CheckSequentialAccess::class,
         ]);

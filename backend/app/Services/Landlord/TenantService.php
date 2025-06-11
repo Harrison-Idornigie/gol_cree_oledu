@@ -4,7 +4,7 @@ namespace App\Services\Landlord;
 
 use App\Models\Landlord\Tenant;
 use App\Models\Tenants\User;
-use App\Models\Tenants\Role;
+use App\Models\Tenants\Membership;
 use App\Events\Landlord\TenantSetupCompleted;
 use App\Events\Landlord\TenantSeedingRequested;
 use App\Events\Landlord\TenantDeleting;
@@ -562,7 +562,7 @@ class TenantService
             }
 
             // Create tenant admin membership if it doesn't exist
-            $tenantAdminRole = Role::firstOrCreate([
+            $tenantAdminMembership = Membership::firstOrCreate([
                 'slug' => 'tenant-admin',
                 'tenant_id' => $tenant->id,
             ], [
@@ -572,7 +572,7 @@ class TenantService
             ]);
 
             // Assign tenant admin membership
-            $adminUsermemberships()->attach($tenantAdminRole);
+            $adminUsermemberships()->attach($tenantAdminMembership);
         });
 
         if (!$adminUser) {
@@ -636,7 +636,7 @@ class TenantService
             }
 
             // Create tenant admin membership if it doesn't exist
-            $tenantAdminRole = Role::firstOrCreate([
+            $tenantAdminMembership = Membership::firstOrCreate([
                 'slug' => 'tenant-admin',
                 'tenant_id' => $tenant->id,
             ], [
@@ -646,7 +646,7 @@ class TenantService
             ]);
 
             // Assign tenant admin membership
-            $adminUsermemberships()->attach($tenantAdminRole);
+            $adminUsermemberships()->attach($tenantAdminMembership);
         });
 
         if (!$adminUser) {

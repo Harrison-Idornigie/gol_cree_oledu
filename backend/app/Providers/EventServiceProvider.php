@@ -10,7 +10,7 @@ use App\Events\Landlord\TenantSetupCompleted;
 use App\Events\Landlord\TenantDeleting;
 use App\Events\Landlord\TenantSeedingRequested;
 use App\Listeners\Landlord\CleanupTenantData;
-use App\Listeners\Landlord\SeedTenantRoles;
+use App\Listeners\Landlord\SeedTenantMemberships;
 use App\Listeners\Landlord\SeedTenantLanguages;
 use App\Listeners\Landlord\SeedTenantSettings;
 
@@ -28,7 +28,7 @@ class EventServiceProvider extends ServiceProvider
 
         // Tenant Management Events
         TenantSeedingRequested::class => [
-            SeedTenantRoles::class,
+            SeedTenantMemberships::class,
             SeedTenantLanguages::class,
             SeedTenantSettings::class,
         ],

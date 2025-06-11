@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Admin;
 
-use App\Models\Role;
+use App\Models\Membership;
 use App\Models\Tenants\User;
 use App\Models\UserStreak;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -16,20 +16,20 @@ abstract class AdminTestCase extends TestCase
 
     protected User $admin;
     protected User $user;
-    protected Role $adminRole;
+    protected Membership $adminMembership;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->createRoles();
+        $this->createMemberships();
         $this->createUsers();
         $this->authenticateAdmin();
     }
 
-    protected function createRoles(): void
+    protected function createMemberships(): void
     {
-        $this->adminRole = Role::create([
+        $this->adminMembership = Membership::create([
             'name' => 'admin',
             'slug' => Str::slug('admin'),
             'description' => 'Administrator'
@@ -43,7 +43,7 @@ abstract class AdminTestCase extends TestCase
             'name' => 'Admin User',
             'email' => 'admin@example.com'
         ]);
-        $this->adminmemberships()->attach($this->adminRole);
+        $this->adminmemberships()->attach($this->adminMembership);
         UserStreak::factory()->create(['user_id' => $this->admin->id]);
 
         // Create normal user with streak record
