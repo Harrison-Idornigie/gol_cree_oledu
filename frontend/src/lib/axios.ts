@@ -20,24 +20,36 @@ function getCurrentTenantSlug(): string | null {
 
 // Helper function to transform URL to include tenant context
 function transformUrlWithTenant(url: string, tenantSlug: string | null): string {
-  if (!tenantSlug || !url.startsWith('/')) return url;
+  if (!url.startsWith('/')) return url;
 
   // Skip if URL already has tenant context or is a central route
   if (url.match(/^\/api\/[a-z0-9-]+\//) ||
       url.startsWith('/api/public/') ||
       url.startsWith('/api/super-admin/') ||
       url.startsWith('/api/auth/register-tenant-admin') ||
-      url.startsWith('/api/auth/validate-tenant-slug/')) {
+      url.startsWith('/api/auth/validate-tenant-slug/') ||
+      url.startsWith('/api/auth/central-')) {
     return url;
   }
 
-  // Transform /api/auth/* to /api/{tenant}/auth/*
-  if (url.startsWith('/api/auth/')) {
+  // Special handling for /auth/me endpoint
+  if (url === '/auth/me') {
+    if (tenantSlug) {
+      // Transform to tenant-scoped endpoint
+      return `/api/${tenantSlug}/auth/me`;
+    } else {
+      // Transform to central endpoint
+      return '/api/auth/central-me';
+    }
+  }
+
+  // Transform /api/auth/* to /api/{tenant}/auth/* (only if tenant context exists)
+  if (url.startsWith('/api/auth/') && tenantSlug) {
     return url.replace('/api/auth/', `/api/${tenantSlug}/auth/`);
   }
 
-  // Transform other API routes to include tenant context
-  if (url.startsWith('/api/')) {
+  // Transform other API routes to include tenant context (only if tenant context exists)
+  if (url.startsWith('/api/') && tenantSlug) {
     return url.replace('/api/', `/api/${tenantSlug}/`);
   }
 

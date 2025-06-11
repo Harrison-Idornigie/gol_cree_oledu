@@ -13,6 +13,7 @@ Route::group([
     Route::post('central-login', [CentralLoginController::class, 'login']);
     Route::middleware('auth:central')->group(function () {
         Route::post('central-logout', [CentralLogoutController::class, 'logout']);
+        Route::get('central-me', [CentralLoginController::class, 'me']);
     });
 
     // Central user registration (for super admins)

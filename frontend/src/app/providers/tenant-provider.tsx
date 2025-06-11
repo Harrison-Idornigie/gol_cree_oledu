@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState, useCallback } from 'react';
 import { usePathname } from 'next/navigation';
 import { TenantInfo, extractTenantFromPath, UserType } from '@/types/tenant/user';
 import { useAuth } from './auth-provider';
@@ -33,28 +33,7 @@ export function TenantProvider({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const { user } = useAuth();
 
-  // Extract tenant context from URL path
-  useEffect(() => {
-    const { tenantSlug: extractedSlug, membership } = extractTenantFromPath(pathname);
-    
-    setTenantSlug(extractedSlug);
-    setCurrentMembership(membership);
-    setIsValidTenantPath(!!(extractedSlug && membership));
-    
-    // If we have tenant info from user data, use it
-    if (user?.tenant && extractedSlug === user.tenant.slug) {
-      setCurrentTenant(user.tenant);
-      setIsLoading(false);
-    } else if (extractedSlug) {
-      // If we have a tenant slug but no user tenant data, fetch tenant info
-      fetchTenantInfo(extractedSlug);
-    } else {
-      setCurrentTenant(null);
-      setIsLoading(false);
-    }
-  }, [pathname, user]);
-
-  const fetchTenantInfo = async (slug: string) => {
+  const fetchTenantInfo = useCallback(async (slug: string) => {
     try {
       setIsLoading(true);
 
@@ -73,7 +52,28 @@ export function TenantProvider({ children }: { children: React.ReactNode }) {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [user]);
+
+  // Extract tenant context from URL path
+  useEffect(() => {
+    const { tenantSlug: extractedSlug, membership } = extractTenantFromPath(pathname);
+
+    setTenantSlug(extractedSlug);
+    setCurrentMembership(membership);
+    setIsValidTenantPath(!!(extractedSlug && membership));
+
+    // If we have tenant info from user data, use it
+    if (user?.tenant && extractedSlug === user.tenant.slug) {
+      setCurrentTenant(user.tenant);
+      setIsLoading(false);
+    } else if (extractedSlug) {
+      // If we have a tenant slug but no user tenant data, fetch tenant info
+      fetchTenantInfo(extractedSlug);
+    } else {
+      setCurrentTenant(null);
+      setIsLoading(false);
+    }
+  }, [pathname, user, fetchTenantInfo]);
 
   const refreshTenant = async () => {
     if (tenantSlug) {

@@ -89,6 +89,41 @@ class CentralLoginController extends BaseAPIController
 
 
     /**
+     * Get the authenticated central user
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function me(Request $request)
+    {
+        $user = $request->user();
+
+        if (!$user) {
+            return $this->sendError('Unauthenticated', [], 401);
+        }
+
+        // Prepare central user data
+        $userData = [
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'membership' => $user->membership,
+            'email_verified_at' => $user->email_verified_at,
+            'is_active' => $user->is_active,
+            'last_login_at' => $user->last_login_at,
+            'interface_language' => $user->interface_language,
+            'avatar' => $user->avatar,
+            // Central users don't have tenant context
+            'tenant_id' => null,
+            'tenant' => null,
+        ];
+
+        return $this->sendResponse([
+            'user' => $userData
+        ], 'Central user retrieved successfully');
+    }
+
+    /**
      * Determine the appropriate redirect path after login based on user membership
      */
     protected function getPostLoginRedirectPath(CentralUser $user): string

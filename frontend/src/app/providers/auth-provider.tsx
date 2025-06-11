@@ -55,46 +55,36 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const initializeAuth = async () => {
       try {
-        // First try to get user data from cookie
-        const userDataString = document.cookie
-          .split('; ')
-          .find(row => row.startsWith('user_data='))
-          ?.split('=')[1];
+        console.log('🔄 AuthProvider: Initializing authentication...');
 
-        if (userDataString) {
-          const userData = JSON.parse(decodeURIComponent(userDataString));
-          setUser(userData);
-          setIsLoading(false);
-          return;
-        }
+        // Always try to fetch user data using server action
+        // This handles httpOnly cookies properly on the server side
+        const { getCurrentUser } = await import('@/app/_actions/auth-actions');
+        const result = await getCurrentUser();
 
-        // If no user data cookie, check if we have an auth token
-        const authToken = document.cookie
-          .split('; ')
-          .find(row => row.startsWith('auth_token='))
-          ?.split('=')[1];
+        console.log('🔍 AuthProvider: getCurrentUser result:', {
+          hasUser: !!result.user,
+          hasError: !!result.error,
+          error: result.error
+        });
 
-        if (authToken) {
-          // Fetch user data using server action (proper Next.js pattern)
-          try {
-            const { getCurrentUser } = await import('@/app/_actions/auth-actions');
-            const result = await getCurrentUser();
-
-            if (result.user) {
-              setUser(result.user as User);
-            } else if (result.error) {
-              // Token is invalid, clear it
-              document.cookie = 'auth_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-              setUser(null);
-            }
-          } catch (error) {
-            console.error('Error fetching user data via server action:', error);
-            setUser(null);
-          }
+        if (result.user) {
+          console.log('✅ AuthProvider: User authenticated:', {
+            id: result.user.id,
+            email: result.user.email,
+            membership: result.user.membership,
+            tenantSlug: result.user.tenant?.slug
+          });
+          setUser(result.user as User);
+        } else if (result.error) {
+          console.log('❌ AuthProvider: Authentication failed:', result.error);
+          setUser(null);
         }
       } catch (error) {
-        console.error('Error initializing auth:', error);
+        console.error('💥 AuthProvider: Error fetching user data:', error);
+        setUser(null);
       } finally {
+        console.log('🏁 AuthProvider: Initialization complete');
         setIsLoading(false);
       }
     };

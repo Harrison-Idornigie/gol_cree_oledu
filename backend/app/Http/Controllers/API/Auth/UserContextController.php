@@ -71,9 +71,9 @@ class UserContextController extends BaseAPIController
                     'slug' => $tenantData['tenant']->slug,
                     'name' => $tenantData['tenant']->name,
                     'status' => $tenantData['tenant']->status,
-                    'membership' => $tenantData['user']membership,
+                    'membership' => $tenantData['user']->membership,
                     'defaultRedirect' => $this->getDefaultRedirectForMembership(
-                        $tenantData['user']membership, 
+                        $tenantData['user']->membership,
                         $tenantData['tenant']->slug
                     )
                 ];

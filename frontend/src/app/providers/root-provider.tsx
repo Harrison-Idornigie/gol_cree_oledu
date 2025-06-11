@@ -1,13 +1,16 @@
 "use client";
 
 import { AuthProvider } from "./auth-provider";
+import { TenantProvider } from "./tenant-provider";
 import { Toaster } from "@/components/ui/toaster";
 
 export function RootProvider({ children }: { children: React.ReactNode }) {
   return (
     <AuthProvider>
-      {children}
-      <Toaster />
+      <TenantProvider>
+        {children}
+        <Toaster />
+      </TenantProvider>
     </AuthProvider>
   );
 }

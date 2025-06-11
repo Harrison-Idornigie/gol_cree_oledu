@@ -153,10 +153,25 @@ class InitializeTenancyByPathOrDomain
             }
         }
 
-        // All routes starting with api/auth/ are central (SSO-like behavior)
-        // This ensures tenant registration, login, etc. work without tenant context
+        // Check for central auth routes (without tenant slug)
+        // Pattern: api/auth/* (central) vs api/{tenant-slug}/auth/* (tenant-scoped)
         if (str_starts_with($path, 'api/auth/')) {
+            // This is a central auth route (no tenant slug)
             return true;
+        }
+
+        // Check if this is a tenant-scoped auth route
+        // Pattern: api/{tenant-slug}/auth/*
+        if (preg_match('/^api\/([^\/]+)\/auth\//', $path, $matches)) {
+            $potentialTenantSlug = $matches[1];
+
+            // If the "tenant slug" is actually a reserved central route, treat as central
+            if ($this->isNonTenantApiRoute($potentialTenantSlug)) {
+                return true;
+            }
+
+            // This is a tenant-scoped auth route, not central
+            return false;
         }
 
         return false;

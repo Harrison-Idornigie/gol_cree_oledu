@@ -128,7 +128,7 @@ class TenantLoginController extends BaseAPIController
                     ],
                     'user' => [
                         'id' => $tenantData['user']->id,
-                        'membership' => $tenantData['user']membership,
+                        'membership' => $tenantData['user']->membership,
                     ],
                     'memberships' => $tenantData['memberships'],
                 ];
