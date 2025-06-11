@@ -81,8 +81,11 @@ class TenantRegistrationController extends BaseAPIController
                 $tenant = $result['tenant'];
                 $adminUser = $result['admin_user'];
 
-                // Generate auth token for the admin user
-                $token = $adminUser->createToken('auth-token')->plainTextToken;
+                // Generate auth token for the admin user within tenant context
+                $token = null;
+                $tenant->run(function () use ($adminUser, &$token) {
+                    $token = $adminUser->createToken('auth-token')->plainTextToken;
+                });
 
                 DB::commit();
 

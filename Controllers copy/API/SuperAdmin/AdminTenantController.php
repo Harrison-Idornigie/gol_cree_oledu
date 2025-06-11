@@ -114,14 +114,7 @@ class AdminTenantController extends BaseAPIController
     {
         $this->authorize('view-tenant', $tenant);
 
-        $tenant->load([
-            'users.roles',
-            'learningPaths' => function ($query) {
-                $query->withCount(['units', 'progress']);
-            },
-            'languages',
-            'roles'
-        ]);
+        $tenant->load(['domains']);
 
         $statistics = $tenant->getStatistics();
 

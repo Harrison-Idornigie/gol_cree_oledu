@@ -5,7 +5,7 @@ namespace App\Services\Landlord;
 use App\Models\Landlord\Tenant;
 use App\Models\Tenants\User;
 use App\Models\Tenants\Role;
-use App\Events\Landlord\TenantCreated;
+use App\Events\Landlord\TenantSetupCompleted;
 use App\Events\Landlord\TenantSeedingRequested;
 use App\Events\Landlord\TenantDeleting;
 use Illuminate\Http\Request;
@@ -63,7 +63,7 @@ class TenantService
 
         // Include relationships if requested
         if ($request->has('with_stats')) {
-            $query->withCount(['users', 'domains']);
+            $query->withCount(['domains']);
         }
 
         // Sorting
@@ -119,16 +119,24 @@ class TenantService
             $this->updateProgress($progressId, 'creating_tenant_admin', 'Creating tenant admin user...', 70);
             $adminUser = $this->createTenantAdminUser($tenant, $centralAdminUser, $adminData);
 
-            // Step 5: Fire tenant created event
+            // Step 5: Fire tenant setup completed event
             $this->updateProgress($progressId, 'setting_up_data', 'Setting up default data...', 80);
-            event(new TenantCreated($tenant, $adminUser));
+            event(new TenantSetupCompleted($tenant, $adminUser, [
+                'created_via' => 'tenant_service',
+                'has_admin_user' => true
+            ]));
 
-            // Step 6: Fire seeding event for modular setup
+            // Step 6: Fire seeding event for modular setup (after database is ready)
             $this->updateProgress($progressId, 'seeding_data', 'Seeding initial content...', 90);
+
+            // Verify database is still ready before seeding
+            $this->verifyTenantDatabaseReady($tenant);
+
             event(new TenantSeedingRequested($tenant, $adminUser, [
                 'seed_roles' => true,
                 'seed_languages' => true,
                 'seed_settings' => true,
+                'database_ready' => true, // Flag to indicate DB is verified ready
             ]));
 
             DB::commit();
@@ -143,7 +151,7 @@ class TenantService
             ]);
 
             return [
-                'tenant' => $tenant->load(['domains', 'users']),
+                'tenant' => $tenant->load(['domains']),
                 'admin_user' => $adminUser
             ];
 
@@ -373,18 +381,113 @@ class TenantService
     }
 
     /**
-     * Initialize tenant database
+     * Initialize tenant database and wait for completion
      */
     protected function initializeTenantDatabase(Tenant $tenant): void
     {
-        // Stancl will automatically handle database creation and migration
-        // through the TenantCreated event pipeline configured in TenancyServiceProvider
-
-        // The database creation is handled by Stancl events, so we just log the process
         Log::info('Tenant database initialization triggered', [
             'tenant_id' => $tenant->id,
             'database_name' => $tenant->database_name ?? $tenant->id
         ]);
+
+        // Stancl automatically handles database creation and migration
+        // through the TenantCreated event pipeline, but we need to wait for completion
+        $this->waitForTenantDatabaseReady($tenant);
+
+        Log::info('Tenant database initialization completed', [
+            'tenant_id' => $tenant->id,
+            'database_name' => $tenant->database_name ?? $tenant->id
+        ]);
+    }
+
+    /**
+     * Wait for tenant database to be ready (created and migrated)
+     */
+    protected function waitForTenantDatabaseReady(Tenant $tenant): void
+    {
+        $maxAttempts = 30; // 30 seconds timeout
+        $attempt = 0;
+        $delay = 1; // 1 second between attempts
+
+        Log::info('Waiting for tenant database to be ready', [
+            'tenant_id' => $tenant->id,
+            'max_attempts' => $maxAttempts
+        ]);
+
+        while ($attempt < $maxAttempts) {
+            try {
+                // Try to connect to tenant database and verify essential tables exist
+                $tenant->run(function () {
+                    // Test database connection (should be automatically switched to tenant)
+                    $connection = DB::connection();
+                    $connection->getPdo();
+
+                    // Verify essential tables exist (migrations completed)
+                    $tables = ['users', 'roles', 'languages'];
+                    foreach ($tables as $table) {
+                        DB::select("SELECT 1 FROM {$table} LIMIT 1");
+                    }
+                });
+
+                Log::info('Tenant database is ready', [
+                    'tenant_id' => $tenant->id,
+                    'attempts' => $attempt + 1
+                ]);
+                return; // Success - database is ready
+
+            } catch (Exception $e) {
+                $attempt++;
+
+                Log::debug('Tenant database not ready yet', [
+                    'tenant_id' => $tenant->id,
+                    'attempt' => $attempt,
+                    'max_attempts' => $maxAttempts,
+                    'error' => $e->getMessage()
+                ]);
+
+                if ($attempt >= $maxAttempts) {
+                    Log::error('Tenant database failed to become ready', [
+                        'tenant_id' => $tenant->id,
+                        'attempts' => $attempt,
+                        'last_error' => $e->getMessage()
+                    ]);
+
+                    throw new Exception(
+                        "Tenant database not ready after {$maxAttempts} seconds. " .
+                        "Database creation or migration may have failed. " .
+                        "Last error: " . $e->getMessage()
+                    );
+                }
+
+                sleep($delay);
+            }
+        }
+    }
+
+    /**
+     * Quick verification that tenant database is still ready
+     */
+    protected function verifyTenantDatabaseReady(Tenant $tenant): void
+    {
+        try {
+            $tenant->run(function () {
+                // Quick connection test (should be automatically switched to tenant)
+                DB::connection()->getPdo();
+                // Verify users table exists (essential for admin user creation)
+                DB::select('SELECT 1 FROM users LIMIT 1');
+            });
+        } catch (Exception $e) {
+            Log::error('Tenant database verification failed before seeding', [
+                'tenant_id' => $tenant->id,
+                'error' => $e->getMessage()
+            ]);
+
+            throw new Exception(
+                'Tenant database became unavailable before seeding. ' .
+                'This may indicate a database connection issue. ' .
+                'Error: ' . $e->getMessage()
+            );
+        }
     }
 
     /**

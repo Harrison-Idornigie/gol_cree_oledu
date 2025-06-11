@@ -121,10 +121,10 @@ class SystemTenantController extends BaseAPIController
      */
     public function show(Tenant $tenant): JsonResponse
     {
-        $tenant->load(['users', 'learningPaths', 'languages', 'roles']);
-        $tenant->loadCount(['users', 'learningPaths', 'languages']);
+        // Load domains (landlord relationship)
+        $tenant->load(['domains']);
 
-        // Add statistics
+        // Add statistics (calculated from tenant database)
         $tenant->statistics = $tenant->getStatistics();
 
         return $this->sendResponse($tenant, 'Tenant retrieved successfully.');

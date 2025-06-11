@@ -5,7 +5,9 @@ namespace App\Models\Landlord;
 use Stancl\Tenancy\Database\Models\Tenant as BaseTenant;
 use Stancl\Tenancy\Database\Concerns\HasDatabase;
 use Stancl\Tenancy\Database\Concerns\HasDomains;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Custom Tenant Model
@@ -231,18 +233,62 @@ class Tenant extends BaseTenant implements \Stancl\Tenancy\Contracts\TenantWithD
     }
 
     /**
+     * Get tenant users (via tenant database context)
+     * Note: This is a virtual relationship - not a true Eloquent relationship
+     */
+    public function getTenantUsers()
+    {
+        $users = collect();
+
+        try {
+            $this->run(function () use (&$users) {
+                $users = \App\Models\Tenants\User::all();
+            });
+        } catch (\Exception $e) {
+            // Tenant database might not exist yet
+            Log::warning('Could not load tenant users', [
+                'tenant_id' => $this->id,
+                'error' => $e->getMessage()
+            ]);
+        }
+
+        return $users;
+    }
+
+    /**
      * Get tenant statistics
      */
     public function getStatistics(): array
     {
-        // This will be populated when we integrate with your existing models
-        return [
+        $stats = [
             'total_users' => 0,
             'total_students' => 0,
             'total_teachers' => 0,
             'total_learning_paths' => 0,
             'total_languages' => 0,
         ];
+
+        try {
+            $this->run(function () use (&$stats) {
+                $stats['total_users'] = \App\Models\Tenants\User::count();
+                $stats['total_students'] = \App\Models\Tenants\User::whereHas('roles', function($q) {
+                    $q->where('slug', 'student');
+                })->count();
+                $stats['total_teachers'] = \App\Models\Tenants\User::whereHas('roles', function($q) {
+                    $q->where('slug', 'team');
+                })->count();
+                $stats['total_learning_paths'] = \App\Models\Tenants\LearningPath::count();
+                $stats['total_languages'] = \App\Models\Tenants\Language::count();
+            });
+        } catch (\Exception $e) {
+            // Tenant database might not exist yet
+            Log::warning('Could not load tenant statistics', [
+                'tenant_id' => $this->id,
+                'error' => $e->getMessage()
+            ]);
+        }
+
+        return $stats;
     }
 
     /**
