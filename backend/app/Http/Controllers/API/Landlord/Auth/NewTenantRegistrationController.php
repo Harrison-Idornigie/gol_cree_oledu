@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API\Auth;
+namespace App\Http\Controllers\API\Landlord\Auth;
 
 use App\Http\Controllers\API\BaseAPIController;
 use App\Models\Landlord\Tenant;
@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
-class TenantRegistrationController extends BaseAPIController
+class NewTenantRegistrationController extends BaseAPIController
 {
     protected TenantService $tenantService;
 

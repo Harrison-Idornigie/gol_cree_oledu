@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API\Auth;
+namespace App\Http\Controllers\API\Landlord\Auth;
 
 use App\Http\Controllers\API\BaseAPIController;
 use Illuminate\Http\Request;
@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Log;
 use Exception;
 
-class ForgotPasswordController extends BaseAPIController
+class CentralForgotPasswordController extends BaseAPIController
 {
     /**
      * Send a reset link to the given user.

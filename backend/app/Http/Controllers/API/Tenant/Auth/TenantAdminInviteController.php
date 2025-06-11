@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API\Auth;
+namespace App\Http\Controllers\API\Tenant\Auth;
 
 use App\Http\Controllers\API\BaseAPIController;
 use App\Models\Tenants\AdminInvite;
@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Log;
 use Exception;
 
-class AdminInviteController extends BaseAPIController
+class TenantAdminInviteController extends BaseAPIController
 {
     public function __construct()
     {

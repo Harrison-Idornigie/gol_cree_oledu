@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\API\Auth;
+namespace App\Http\Controllers\API\Tenant;
 
 use App\Helpers\Tenants\TenantHelper;
 use App\Http\Controllers\API\BaseAPIController;
 use Illuminate\Http\Request;
 
-class UserController extends BaseAPIController
+class TenantUserController extends BaseAPIController
 {
     /**
      * Get the authenticated user

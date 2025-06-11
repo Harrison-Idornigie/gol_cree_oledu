@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API\Auth;
+namespace App\Http\Controllers\API\Landlord\Auth;
 
 use App\Http\Controllers\API\BaseAPIController;
 use App\Models\Landlord\CentralUser;
@@ -86,24 +86,7 @@ class CentralLoginController extends BaseAPIController
         }
     }
 
-    public function logout(Request $request)
-    {
-        try {
-            if (!$request->user()) {
-                return $this->sendUnauthorizedResponse('User not authenticated');
-            }
 
-            $request->user()->currentAccessToken()->delete();
-            return $this->sendResponse([], 'Successfully logged out');
-            
-        } catch (Exception $e) {
-            Log::error('Central logout error: ' . $e->getMessage(), [
-                'user_id' => $request->user() ? $request->user()->id : null,
-                'trace'   => $e->getTraceAsString(),
-            ]);
-            return $this->sendError('Logout failed', ['error' => 'An unexpected error occurred'], 500);
-        }
-    }
 
     /**
      * Determine the appropriate redirect path after login based on user role

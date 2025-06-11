@@ -16,7 +16,7 @@ use App\Http\Controllers\API\Tenant\Student\StudentUserProgressController;
 use App\Http\Controllers\API\Tenant\Student\StudentUserSettingsController;
 use App\Http\Controllers\API\Tenant\Student\StudentVocabularyController;
 use App\Http\Controllers\API\Tenant\Student\StudentWordController;
-use App\Http\Controllers\API\Tenant\TenantTestController;
+
 use Illuminate\Support\Facades\Route;
 
 /**
@@ -140,5 +140,3 @@ Route::prefix('student')->middleware(['auth:tenant', 'verified', 'role:student']
 
 });
 
-// Test route for tenant identification (can be removed after testing)
-Route::get('test/tenant-context', [TenantTestController::class, 'testTenantContext']);

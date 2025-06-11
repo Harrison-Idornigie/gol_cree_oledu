@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API\Auth;
+namespace App\Http\Controllers\API\Tenant\Auth;
 
 use App\Helpers\Tenants\TenantHelper;
 use App\Http\Controllers\API\BaseAPIController;
@@ -104,24 +104,7 @@ class TenantLoginController extends BaseAPIController
         }
     }
 
-    public function logout(Request $request)
-    {
-        try {
-            if (!$request->user()) {
-                return $this->sendUnauthorizedResponse('User not authenticated');
-            }
 
-            $request->user()->currentAccessToken()->delete();
-            return $this->sendResponse([], 'Successfully logged out');
-            
-        } catch (Exception $e) {
-            Log::error('Tenant logout error: ' . $e->getMessage(), [
-                'user_id' => $request->user() ? $request->user()->id : null,
-                'trace'   => $e->getTraceAsString(),
-            ]);
-            return $this->sendError('Logout failed', ['error' => 'An unexpected error occurred'], 500);
-        }
-    }
 
     /**
      * Get user's available tenants for multi-tenant scenarios

@@ -59,59 +59,59 @@ class SystemTenantController extends BaseAPIController
      * @param Request $request
      * @return JsonResponse
      */
-    public function store(Request $request): JsonResponse
-    {
-        $validated = $request->validate([
-            // Tenant data
-            'name' => 'required|string|max:255',
-            'slug' => 'nullable|string|max:255|unique:tenants,slug',
-            'domain' => 'nullable|string|max:255|unique:tenants,domain',
-            'subdomain' => 'nullable|string|max:255|unique:tenants,subdomain',
-            'custom_domain' => 'nullable|string|max:255|unique:tenants,custom_domain',
-            'description' => 'nullable|string|max:1000',
-            'settings' => 'nullable|array',
-            'contact_info' => 'nullable|array',
-            'trial_ends_at' => 'nullable|date|after:today',
-            'subscription_ends_at' => 'nullable|date|after:trial_ends_at',
-            'status' => 'nullable|in:active,inactive,suspended',
+    // public function store(Request $request): JsonResponse
+    // {
+    //     $validated = $request->validate([
+    //         // Tenant data
+    //         'name' => 'required|string|max:255',
+    //         'slug' => 'nullable|string|max:255|unique:tenants,slug',
+    //         'domain' => 'nullable|string|max:255|unique:tenants,domain',
+    //         'subdomain' => 'nullable|string|max:255|unique:tenants,subdomain',
+    //         'custom_domain' => 'nullable|string|max:255|unique:tenants,custom_domain',
+    //         'description' => 'nullable|string|max:1000',
+    //         'settings' => 'nullable|array',
+    //         'contact_info' => 'nullable|array',
+    //         'trial_ends_at' => 'nullable|date|after:today',
+    //         'subscription_ends_at' => 'nullable|date|after:trial_ends_at',
+    //         'status' => 'nullable|in:active,inactive,suspended',
 
-            // Admin user data - check central_users table since tenant DB doesn't exist yet
-            'admin_name' => 'required|string|max:255',
-            'admin_email' => 'required|email|max:255|unique:central_users,email',
-            'admin_password' => 'required|string|min:8|confirmed',
-            'admin_interface_language' => 'nullable|string|in:en,es,fr,de',
-        ]);
+    //         // Admin user data - check central_users table since tenant DB doesn't exist yet
+    //         'admin_name' => 'required|string|max:255',
+    //         'admin_email' => 'required|email|max:255|unique:central_users,email',
+    //         'admin_password' => 'required|string|min:8|confirmed',
+    //         'admin_interface_language' => 'nullable|string|in:en,es,fr,de',
+    //     ]);
 
-        try {
-            $tenantData = [
-                'name' => $validated['name'],
-                'slug' => $validated['slug'] ?? null,
-                'domain' => $validated['domain'] ?? null,
-                'subdomain' => $validated['subdomain'] ?? null,
-                'custom_domain' => $validated['custom_domain'] ?? null,
-                'description' => $validated['description'] ?? null,
-                'settings' => $validated['settings'] ?? [],
-                'contact_info' => $validated['contact_info'] ?? [],
-                'trial_ends_at' => $validated['trial_ends_at'] ?? null,
-                'subscription_ends_at' => $validated['subscription_ends_at'] ?? null,
-                'status' => $validated['status'] ?? 'active',
-            ];
+    //     try {
+    //         $tenantData = [
+    //             'name' => $validated['name'],
+    //             'slug' => $validated['slug'] ?? null,
+    //             'domain' => $validated['domain'] ?? null,
+    //             'subdomain' => $validated['subdomain'] ?? null,
+    //             'custom_domain' => $validated['custom_domain'] ?? null,
+    //             'description' => $validated['description'] ?? null,
+    //             'settings' => $validated['settings'] ?? [],
+    //             'contact_info' => $validated['contact_info'] ?? [],
+    //             'trial_ends_at' => $validated['trial_ends_at'] ?? null,
+    //             'subscription_ends_at' => $validated['subscription_ends_at'] ?? null,
+    //             'status' => $validated['status'] ?? 'active',
+    //         ];
 
-            $adminData = [
-                'name' => $validated['admin_name'],
-                'email' => $validated['admin_email'],
-                'password' => $validated['admin_password'],
-                'interface_language' => $validated['admin_interface_language'] ?? 'en',
-            ];
+    //         $adminData = [
+    //             'name' => $validated['admin_name'],
+    //             'email' => $validated['admin_email'],
+    //             'password' => $validated['admin_password'],
+    //             'interface_language' => $validated['admin_interface_language'] ?? 'en',
+    //         ];
 
-            $tenant = $this->tenantService->createTenant($tenantData, $adminData);
+    //         $tenant = $this->tenantService->createTenant($tenantData, $adminData);
 
-            return $this->sendCreatedResponse($tenant, 'Tenant created successfully.');
+    //         return $this->sendCreatedResponse($tenant, 'Tenant created successfully.');
 
-        } catch (Exception $e) {
-            return $this->sendError('Failed to create tenant: ' . $e->getMessage(), [], 422);
-        }
-    }
+    //     } catch (Exception $e) {
+    //         return $this->sendError('Failed to create tenant: ' . $e->getMessage(), [], 422);
+    //     }
+    // }
 
     /**
      * Display the specified tenant.

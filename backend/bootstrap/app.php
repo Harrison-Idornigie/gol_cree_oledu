@@ -3,6 +3,7 @@
 use App\Http\Middleware\CheckSequentialAccess;
 use App\Http\Middleware\EnsureEmailIsVerified;
 use App\Http\Middleware\RoleMiddleware;
+use App\Http\Middleware\Tenant\InitializeTenancyByPathOrDomain;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -28,27 +29,17 @@ return Application::configure(basePath: dirname(__DIR__))
                 ->group(base_path('routes/landlord.php'));
 
             // Tenant-scoped Routes (with tenant context)
-            Route::middleware(['api', \App\Http\Middleware\Tenant\InitializeTenancyByPathOrDomain::class])
+            Route::middleware(['api', InitializeTenancyByPathOrDomain::class])
                 ->prefix('api/{tenant}')
                 ->where(['tenant' => '^(?!auth|public|super-admin|health|info)[a-zA-Z0-9][a-zA-Z0-9\-_]*[a-zA-Z0-9]$'])
-                ->group(function () {
-                    Route::group(['prefix' => 'tenant-admin'], function () {
-                        require base_path('routes/tenant-admin.php');
-                    });
-                    Route::group(['prefix' => 'team'], function () {
-                        require base_path('routes/tenant-team.php');
-                    });
-                    Route::group(['prefix' => 'student'], function () {
-                        require base_path('routes/tenant-students.php');
-                    });
-                });
+                ->group(base_path('routes/tenant.php'));
         }
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
-            'role'                => RoleMiddleware::class,
-            'verified'            => EnsureEmailIsVerified::class,
-            'sequential-learning' => CheckSequentialAccess::class,
+            // 'role'                => RoleMiddleware::class,
+            // 'verified'            => EnsureEmailIsVerified::class,
+            // 'sequential-learning' => CheckSequentialAccess::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API\Auth;
+namespace App\Http\Controllers\API\Tenant\Auth;
 
 use App\Http\Controllers\API\BaseAPIController;
 use App\Models\Tenants\User;
@@ -11,7 +11,7 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Log;
 use Exception;
 
-class VerificationController extends BaseAPIController
+class TenantVerificationController extends BaseAPIController
 {
     /**
      * Send email verification link

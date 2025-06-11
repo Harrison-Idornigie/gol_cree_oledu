@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API\Auth;
+namespace App\Http\Controllers\API\Tenant\Auth;
 
 use App\Http\Controllers\API\BaseAPIController;
 use Illuminate\Http\Request;
@@ -11,7 +11,7 @@ use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Support\Facades\Log;
 use Exception;
 
-class ResetPasswordController extends BaseAPIController
+class TenantResetPasswordController extends BaseAPIController
 {
     /**
      * Reset the given user's password.

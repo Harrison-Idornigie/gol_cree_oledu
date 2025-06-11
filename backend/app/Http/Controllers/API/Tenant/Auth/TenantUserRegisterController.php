@@ -1,5 +1,5 @@
 <?php
-namespace App\Http\Controllers\API\Auth;
+namespace App\Http\Controllers\API\Tenant\Auth;
 
 use App\Http\Controllers\API\BaseAPIController;
 use App\Models\Tenants\AdminInvite;
@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 
-class RegisterController extends BaseAPIController
+class TenantUserRegisterController extends BaseAPIController
 {
     public function register(Request $request)
     {

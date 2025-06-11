@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\Landlord\Auth\NewTenantRegistrationController;
 use App\Http\Controllers\API\Landlord\SystemTenantController;
 // use App\Http\Controllers\API\Landlord\SystemAnalyticsController;
 // use App\Http\Controllers\API\Landlord\SystemConfigurationController;
@@ -18,7 +19,7 @@ Route::prefix('super-admin')->middleware(['auth:central', 'verified', 'role:supe
     // Tenant Management
     Route::prefix('tenants')->group(function () {
         Route::get('/', [SystemTenantController::class, 'index']);
-        Route::post('/', [SystemTenantController::class, 'store']);
+        // Route::post('/', [SystemTenantController::class, 'store']);
         Route::get('{tenant}', [SystemTenantController::class, 'show']);
         Route::put('{tenant}', [SystemTenantController::class, 'update']);
         Route::delete('{tenant}', [SystemTenantController::class, 'destroy']);
@@ -27,6 +28,11 @@ Route::prefix('super-admin')->middleware(['auth:central', 'verified', 'role:supe
         Route::post('{tenant}/reset-trial', [SystemTenantController::class, 'resetTrial']);
         Route::post('{tenant}/extend-subscription', [SystemTenantController::class, 'extendSubscription']);
     });
+
+    // Tenant registration routes
+    Route::post('register-tenant-admin', [NewTenantRegistrationController::class, 'registerTenantAdmin']);
+    Route::get('validate-tenant-slug/{slug}', [NewTenantRegistrationController::class, 'validateSlug']);
+    Route::get('tenant-creation-progress/{progressId}', [NewTenantRegistrationController::class, 'checkProgress']);
 
     // TODO: Implement these controllers
     /*
@@ -61,3 +67,5 @@ Route::prefix('super-admin')->middleware(['auth:central', 'verified', 'role:supe
     */
 
 });
+
+require __DIR__ . '/landlord-auth.php';

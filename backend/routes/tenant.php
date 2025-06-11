@@ -27,3 +27,8 @@ use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 //         return 'This is your multi-tenant application. The id of the current tenant is ' . tenant('id');
 //     });
 // });
+
+require __DIR__ . '/tenant-auth.php';
+require __DIR__ . '/tenant-admin.php';
+require __DIR__ . '/tenant-team.php';
+require __DIR__ . '/tenant-students.php';
