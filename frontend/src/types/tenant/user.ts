@@ -11,7 +11,7 @@ export interface User {
   name: string;
   email: string;
   avatar_url?: string;
-  role: UserType;
+  membership: UserType;
   is_active: boolean;
   created_at: string;
   updated_at: string;
@@ -31,7 +31,7 @@ export interface AdminInvite {
   id: number;
   email: string;
   token: string;
-  role: UserType;
+  membership: UserType;
   expires_at: string;
   created_at: string;
   updated_at: string;
@@ -40,7 +40,7 @@ export interface AdminInvite {
 
 export interface AdminInviteFormData {
   email: string;
-  role?: UserType;
+  membership?: UserType;
 }
 
 export interface UserData {
@@ -48,7 +48,7 @@ export interface UserData {
   name: string;
   email: string;
   avatar_url?: string;
-  role: UserType;
+  membership: UserType;
   email_verified_at: string | null;
 }
 
@@ -97,31 +97,31 @@ export interface UserSession {
 }
 
 export const isAdmin = (user: User | null): boolean => {
-  return user?.role === UserType.SUPER_ADMIN ||
-         user?.role === UserType.TENANT_ADMIN;
+  return user?.membership === UserType.SUPER_ADMIN ||
+         user?.membership === UserType.TENANT_ADMIN;
 };
 
 export const isSuperAdmin = (user: User | null): boolean => {
-  return user?.role === UserType.SUPER_ADMIN;
+  return user?.membership === UserType.SUPER_ADMIN;
 };
 
 export const isTenantAdmin = (user: User | null): boolean => {
-  return user?.role === UserType.TENANT_ADMIN;
+  return user?.membership === UserType.TENANT_ADMIN;
 };
 
 export const isTeam = (user: User | null): boolean => {
-  return user?.role === UserType.TEAM;
+  return user?.membership === UserType.TEAM;
 };
 
 export const isStudent = (user: User | null): boolean => {
-  return user?.role === UserType.STUDENT || user?.role === UserType.USER;
+  return user?.membership === UserType.STUDENT || user?.membership === UserType.USER;
 };
 
 export const getDefaultRedirectPath = (user: User | null): string => {
   if (!user) return "/login";
 
   // Super admins use central routes
-  if (user.role === UserType.SUPER_ADMIN) {
+  if (user.membership === UserType.SUPER_ADMIN) {
     return "/super";
   }
 
@@ -133,39 +133,39 @@ export const getDefaultRedirectPath = (user: User | null): string => {
   }
 
   // Build tenant-specific paths
-  switch (user.role) {
+  switch (user.membership) {
     case UserType.TENANT_ADMIN:
-      return `/${tenantSlug}/admin`;
+      return `/${tenantSlug}/admin/dashboard`;
     case UserType.TEAM:
-      return `/${tenantSlug}/team`;
+      return `/${tenantSlug}/team/dashboard`;
     case UserType.STUDENT:
     case UserType.USER:
-      return `/${tenantSlug}/student`;
+      return `/${tenantSlug}/student/dashboard`;
     default:
-      return `/${tenantSlug}/student`;
+      return `/${tenantSlug}/student/dashboard`;
   }
 };
 
 // Utility functions for path-based tenant routing
-export const extractTenantFromPath = (pathname: string): { tenantSlug: string | null; role: string | null } => {
+export const extractTenantFromPath = (pathname: string): { tenantSlug: string | null; membership: string | null } => {
   const pathSegments = pathname.replace(/^\//, '').split('/');
 
   if (pathSegments.length < 2) {
-    return { tenantSlug: null, role: null };
+    return { tenantSlug: null, membership: null };
   }
 
-  const [tenantSlug, role] = pathSegments;
-  const validRoles = ['admin', 'team', 'student'];
+  const [tenantSlug, membership] = pathSegments;
+  const validMemberships = ['admin', 'team', 'student'];
 
   return {
     tenantSlug: /^[a-z0-9-]+$/.test(tenantSlug) ? tenantSlug : null,
-    role: validRoles.includes(role) ? role : null
+    membership: validMemberships.includes(membership) ? membership : null
   };
 };
 
 export const isTenantPath = (pathname: string): boolean => {
-  const { tenantSlug, role } = extractTenantFromPath(pathname);
-  return !!(tenantSlug && role);
+  const { tenantSlug, membership } = extractTenantFromPath(pathname);
+  return !!(tenantSlug && membership);
 };
 
 export const isCentralPath = (pathname: string): boolean => {

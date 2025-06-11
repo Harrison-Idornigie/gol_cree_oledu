@@ -7,7 +7,7 @@ interface GlobalUser {
   id: number;
   name: string;
   email: string;
-  role: string;
+  membership: string;
   tenant_id: number;
   tenant_name: string;
   is_active: boolean;
@@ -66,7 +66,7 @@ function getErrorMessage(error: unknown): string {
 export async function searchGlobalUsers(params?: {
   query?: string;
   tenant_id?: number;
-  role?: string;
+  membership?: string;
   is_active?: boolean;
   page?: number;
   per_page?: number;
@@ -76,7 +76,7 @@ export async function searchGlobalUsers(params?: {
     
     if (params?.query) searchParams.append('query', params.query);
     if (params?.tenant_id) searchParams.append('tenant_id', params.tenant_id.toString());
-    if (params?.role) searchParams.append('role', params.role);
+    if (params?.membership) searchParams.append('membership', params.membership);
     if (params?.is_active !== undefined) searchParams.append('is_active', params.is_active.toString());
     if (params?.page) searchParams.append('page', params.page.toString());
     if (params?.per_page) searchParams.append('per_page', params.per_page.toString());
@@ -103,14 +103,14 @@ export async function searchGlobalUsers(params?: {
  */
 export async function searchUsers(query: string, filters?: {
   tenant_id?: number;
-  role?: string;
+  membership?: string;
   limit?: number;
 }) {
   try {
     const searchParams = new URLSearchParams({ query });
     
     if (filters?.tenant_id) searchParams.append('tenant_id', filters.tenant_id.toString());
-    if (filters?.role) searchParams.append('role', filters.role);
+    if (filters?.membership) searchParams.append('membership', filters.membership);
     if (filters?.limit) searchParams.append('limit', filters.limit.toString());
 
     const response = await axiosInstance.get<ApiResponse<GlobalUser[]>>(

@@ -27,7 +27,7 @@ describe("VerificationNoticePage", () => {
 
     // Check for heading and instructions
     expect(
-      screen.getByRole("heading", { name: "Verify Your Email" })
+      screen.getByMembership("heading", { name: "Verify Your Email" })
     ).toBeInTheDocument();
     expect(
       screen.getByText(
@@ -37,12 +37,12 @@ describe("VerificationNoticePage", () => {
 
     // Check for resend button
     expect(
-      screen.getByRole("button", { name: "Resend Verification Email" })
+      screen.getByMembership("button", { name: "Resend Verification Email" })
     ).toBeInTheDocument();
 
     // Check for return link
     expect(
-      screen.getByRole("link", { name: "Return to Dashboard" })
+      screen.getByMembership("link", { name: "Return to Dashboard" })
     ).toBeInTheDocument();
   });
 
@@ -54,12 +54,12 @@ describe("VerificationNoticePage", () => {
 
     render(<VerificationNoticePage />);
     fireEvent.click(
-      screen.getByRole("button", { name: "Resend Verification Email" })
+      screen.getByMembership("button", { name: "Resend Verification Email" })
     );
 
     // Check if the button shows loading state
     expect(
-      screen.getByRole("button", { name: "Sending..." })
+      screen.getByMembership("button", { name: "Sending..." })
     ).toBeInTheDocument();
 
     // Wait for the async operation to complete
@@ -82,7 +82,7 @@ describe("VerificationNoticePage", () => {
 
     render(<VerificationNoticePage />);
     fireEvent.click(
-      screen.getByRole("button", { name: "Resend Verification Email" })
+      screen.getByMembership("button", { name: "Resend Verification Email" })
     );
 
     // Wait for the async operation to complete

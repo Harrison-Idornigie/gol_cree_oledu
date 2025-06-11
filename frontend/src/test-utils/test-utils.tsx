@@ -7,7 +7,7 @@ export const mockUser: User = {
   id: 1,
   name: 'Test User',
   email: 'test@example.com',
-  role: UserType.USER,
+  membership: UserType.USER,
   is_active: true,
   created_at: '2023-01-01T00:00:00.000Z',
   updated_at: '2023-01-01T00:00:00.000Z',

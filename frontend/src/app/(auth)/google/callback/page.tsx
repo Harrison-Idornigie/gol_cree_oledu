@@ -15,7 +15,7 @@ interface AuthResponse {
       id: number;
       name: string;
       email: string;
-      role: string;
+      membership: string;
       email_verified_at?: string | null;
       avatar_url?: string | null;
       avatar?: string;
@@ -52,7 +52,7 @@ export default function GoogleCallbackPage() {
         if (response.success && response.data) {
           // Token is already stored in HTTP-only cookie by the server action
 
-          // Use proper role-based redirection
+          // Use proper membership-based redirection
           const redirectPath = getDefaultRedirectPath(response.data.user);
 
           // Use router for navigation to maintain Next.js routing

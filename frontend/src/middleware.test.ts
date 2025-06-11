@@ -82,7 +82,7 @@ describe("Middleware", () => {
         ok: true,
         json: vi.fn().mockResolvedValue({
           user: {
-            role: UserType.TENANT_ADMIN,
+            membership: UserType.TENANT_ADMIN,
             email_verified_at: "2023-01-01",
           },
         }),
@@ -115,7 +115,7 @@ describe("Middleware", () => {
         ok: true,
         json: vi.fn().mockResolvedValue({
           user: {
-            role: UserType.USER,
+            membership: UserType.USER,
             email_verified_at: null,
           },
         }),
@@ -148,7 +148,7 @@ describe("Middleware", () => {
         ok: true,
         json: vi.fn().mockResolvedValue({
           user: {
-            role: UserType.USER,
+            membership: UserType.USER,
             email_verified_at: "2023-01-01",
           },
         }),

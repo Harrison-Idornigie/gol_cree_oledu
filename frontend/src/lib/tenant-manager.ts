@@ -81,7 +81,7 @@ export class TenantManager {
   /**
    * Switch to a different tenant context
    */
-  static async switchTenant(targetTenant: TenantInfo, userRole: string): Promise<TenantSwitchResult> {
+  static async switchTenant(targetTenant: TenantInfo, userMembership: string): Promise<TenantSwitchResult> {
     try {
       // Validate that user has access to this tenant
       const availableTenants = this.getAvailableTenants();
@@ -97,8 +97,8 @@ export class TenantManager {
       // Update current tenant context
       this.setCurrentTenant(targetTenant);
 
-      // Build redirect URL based on user role
-      const redirectUrl = this.buildTenantUrl(targetTenant.slug, userRole);
+      // Build redirect URL based on user membership
+      const redirectUrl = this.buildTenantUrl(targetTenant.slug, userMembership);
 
       return {
         success: true,
@@ -116,8 +116,8 @@ export class TenantManager {
   /**
    * Build tenant-specific URL
    */
-  static buildTenantUrl(tenantSlug: string, role: string, path: string = ''): string {
-    const basePath = `/${tenantSlug}/${role}`;
+  static buildTenantUrl(tenantSlug: string, membership: string, path: string = ''): string {
+    const basePath = `/${tenantSlug}/${membership}`;
     return path ? `${basePath}${path.startsWith('/') ? path : `/${path}`}` : basePath;
   }
 
@@ -130,10 +130,10 @@ export class TenantManager {
     const pathSegments = window.location.pathname.replace(/^\//, '').split('/');
     if (pathSegments.length < 2) return null;
     
-    const [tenantSlug, role] = pathSegments;
-    const validRoles = ['admin', 'team', 'student'];
+    const [tenantSlug, membership] = pathSegments;
+    const validMemberships = ['admin', 'team', 'student'];
     
-    return /^[a-z0-9-]+$/.test(tenantSlug) && validRoles.includes(role) ? tenantSlug : null;
+    return /^[a-z0-9-]+$/.test(tenantSlug) && validMemberships.includes(membership) ? tenantSlug : null;
   }
 
   /**
@@ -183,8 +183,8 @@ export class TenantManager {
  * React hook for tenant management
  */
 export function useTenantManager() {
-  const switchTenant = async (tenant: TenantInfo, userRole: string) => {
-    const result = await TenantManager.switchTenant(tenant, userRole);
+  const switchTenant = async (tenant: TenantInfo, userMembership: string) => {
+    const result = await TenantManager.switchTenant(tenant, userMembership);
     
     if (result.success && result.redirectUrl) {
       window.location.href = result.redirectUrl;

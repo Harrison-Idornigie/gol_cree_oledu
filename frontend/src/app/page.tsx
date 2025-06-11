@@ -33,7 +33,7 @@ export default function Home() {
         <div className="space-y-4">
           {user ? (
             <Link 
-              href={user.role === UserType.ADMIN ? '/admin' : '/student'}
+              href={user.membership === UserType.ADMIN ? '/admin' : '/student'}
               className="w-full duo-button bg-[var(--duo-green)] border-[var(--duo-green-hover)] flex items-center justify-center"
             >
               Continue Learning

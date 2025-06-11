@@ -120,7 +120,7 @@ test.describe('Tenant Registration E2E Flow', () => {
       await page.click(FORM_SELECTORS.submitButton);
       
       // Verify successful registration
-      await expect(page).toHaveURL(new RegExp(`/${testData.organizationSlug}/admin`));
+      await expect(page).toHaveURL(new RegExp(`/${testData.organizationSlug}/admin/dashboard`));
     });
   });
 

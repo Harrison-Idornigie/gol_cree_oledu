@@ -16,7 +16,7 @@ export enum ActivityCategory {
 
 export enum ActivityType {
   // Admin Actions
-  ADMIN_ROLE_CHANGE = 'admin_role_change',
+  ADMIN_ROLE_CHANGE = 'admin_membership_change',
   ADMIN_INVITE = 'admin_invite',
   ADMIN_REMOVE = 'admin_remove',
   

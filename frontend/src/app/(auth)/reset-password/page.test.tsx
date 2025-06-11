@@ -47,7 +47,7 @@ describe("ResetPasswordPage", () => {
       screen.getByText("The password reset link is invalid or has expired.")
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("link", { name: "Request a new password reset link" })
+      screen.getByMembership("link", { name: "Request a new password reset link" })
     ).toBeInTheDocument();
   });
 
@@ -61,12 +61,12 @@ describe("ResetPasswordPage", () => {
     render(<ResetPasswordPage />);
 
     expect(
-      screen.getByRole("heading", { name: "Reset Your Password" })
+      screen.getByMembership("heading", { name: "Reset Your Password" })
     ).toBeInTheDocument();
     expect(screen.getByLabelText("New Password")).toBeInTheDocument();
     expect(screen.getByLabelText("Confirm New Password")).toBeInTheDocument();
     expect(
-      screen.getByRole("button", { name: "Reset Password" })
+      screen.getByMembership("button", { name: "Reset Password" })
     ).toBeInTheDocument();
   });
 
@@ -89,7 +89,7 @@ describe("ResetPasswordPage", () => {
     });
 
     // Submit the form
-    fireEvent.click(screen.getByRole("button", { name: "Reset Password" }));
+    fireEvent.click(screen.getByMembership("button", { name: "Reset Password" }));
 
     // Check for error message
     expect(screen.getByText("Passwords do not match")).toBeInTheDocument();
@@ -114,7 +114,7 @@ describe("ResetPasswordPage", () => {
     });
 
     // Submit the form
-    fireEvent.click(screen.getByRole("button", { name: "Reset Password" }));
+    fireEvent.click(screen.getByMembership("button", { name: "Reset Password" }));
 
     // Check for error message
     expect(
@@ -151,11 +151,11 @@ describe("ResetPasswordPage", () => {
     });
 
     // Submit the form
-    fireEvent.click(screen.getByRole("button", { name: "Reset Password" }));
+    fireEvent.click(screen.getByMembership("button", { name: "Reset Password" }));
 
     // Check if the button shows loading state
     expect(
-      screen.getByRole("button", { name: "Resetting Password..." })
+      screen.getByMembership("button", { name: "Resetting Password..." })
     ).toBeInTheDocument();
 
     // Wait for the async operation to complete
@@ -200,7 +200,7 @@ describe("ResetPasswordPage", () => {
     });
 
     // Submit the form
-    fireEvent.click(screen.getByRole("button", { name: "Reset Password" }));
+    fireEvent.click(screen.getByMembership("button", { name: "Reset Password" }));
 
     // Wait for the async operation to complete
     await waitFor(() => {

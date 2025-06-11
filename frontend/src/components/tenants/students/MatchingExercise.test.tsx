@@ -83,7 +83,7 @@ describe("MatchingExercise", () => {
     expect(screen.getByText("naranja")).toBeInTheDocument();
 
     // Check if the submit button is disabled initially (no pairs selected)
-    expect(screen.getByRole("button", { name: "Check Answer" })).toBeDisabled();
+    expect(screen.getByMembership("button", { name: "Check Answer" })).toBeDisabled();
   });
 
   it("allows selecting and matching items", async () => {
@@ -119,7 +119,7 @@ describe("MatchingExercise", () => {
     fireEvent.click(matches[2]);
 
     // Check if the submit button is enabled now
-    const checkButton = screen.getByRole("button", { name: "Check Answer" });
+    const checkButton = screen.getByMembership("button", { name: "Check Answer" });
     expect(checkButton).not.toBeDisabled();
 
     // Submit the answer
@@ -132,7 +132,7 @@ describe("MatchingExercise", () => {
     expect(screen.getByText("Correct!")).toBeInTheDocument();
 
     // Check if the Next button is displayed
-    const nextButton = screen.getByRole("button", { name: "Next" });
+    const nextButton = screen.getByMembership("button", { name: "Next" });
     expect(nextButton).toBeInTheDocument();
 
     // Click the Next button
@@ -175,7 +175,7 @@ describe("MatchingExercise", () => {
     fireEvent.click(matches[0]); // Selecting manzana for orange
 
     // Submit the answer
-    const checkButton = screen.getByRole("button", { name: "Check Answer" });
+    const checkButton = screen.getByMembership("button", { name: "Check Answer" });
     fireEvent.click(checkButton);
 
     // Check if onAnswer was called with correct=false
@@ -209,11 +209,11 @@ describe("MatchingExercise", () => {
     fireEvent.click(matches[0]);
 
     // Find the reset button (×) and click it
-    const resetButtons = screen.getAllByRole("button", { name: "×" });
+    const resetButtons = screen.getAllByMembership("button", { name: "×" });
     fireEvent.click(resetButtons[0]);
 
     // Check if the submit button is disabled again (no complete pairs)
-    expect(screen.getByRole("button", { name: "Check Answer" })).toBeDisabled();
+    expect(screen.getByMembership("button", { name: "Check Answer" })).toBeDisabled();
   });
 
   it("renders mobile connections when pairs are created", async () => {

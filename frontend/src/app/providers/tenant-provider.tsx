@@ -2,12 +2,12 @@
 
 import { createContext, useContext, useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
-import { TenantInfo, extractTenantFromPath } from '@/types/tenant/user';
+import { TenantInfo, extractTenantFromPath, UserType } from '@/types/tenant/user';
 import { useAuth } from './auth-provider';
 
 interface TenantContextType {
   currentTenant: TenantInfo | null;
-  currentRole: string | null;
+  currentMembership: string | null;
   isValidTenantPath: boolean;
   tenantSlug: string | null;
   isLoading: boolean;
@@ -16,7 +16,7 @@ interface TenantContextType {
 
 const TenantContext = createContext<TenantContextType>({
   currentTenant: null,
-  currentRole: null,
+  currentMembership: null,
   isValidTenantPath: false,
   tenantSlug: null,
   isLoading: true,
@@ -25,7 +25,7 @@ const TenantContext = createContext<TenantContextType>({
 
 export function TenantProvider({ children }: { children: React.ReactNode }) {
   const [currentTenant, setCurrentTenant] = useState<TenantInfo | null>(null);
-  const [currentRole, setCurrentRole] = useState<string | null>(null);
+  const [currentMembership, setCurrentMembership] = useState<string | null>(null);
   const [isValidTenantPath, setIsValidTenantPath] = useState(false);
   const [tenantSlug, setTenantSlug] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -35,11 +35,11 @@ export function TenantProvider({ children }: { children: React.ReactNode }) {
 
   // Extract tenant context from URL path
   useEffect(() => {
-    const { tenantSlug: extractedSlug, role } = extractTenantFromPath(pathname);
+    const { tenantSlug: extractedSlug, membership } = extractTenantFromPath(pathname);
     
     setTenantSlug(extractedSlug);
-    setCurrentRole(role);
-    setIsValidTenantPath(!!(extractedSlug && role));
+    setCurrentMembership(membership);
+    setIsValidTenantPath(!!(extractedSlug && membership));
     
     // If we have tenant info from user data, use it
     if (user?.tenant && extractedSlug === user.tenant.slug) {
@@ -57,18 +57,18 @@ export function TenantProvider({ children }: { children: React.ReactNode }) {
   const fetchTenantInfo = async (slug: string) => {
     try {
       setIsLoading(true);
-      
-      // Make API call to get tenant info
-      const response = await fetch(`/api/tenants/${slug}/info`);
-      
-      if (response.ok) {
-        const data = await response.json();
-        setCurrentTenant(data.tenant);
+
+      // The tenant information should come from the user's authentication data
+      // If we have a tenant slug but no user tenant data, it means the user
+      // doesn't have access to this tenant or the tenant doesn't exist
+      // We'll rely on the user's tenant data from authentication
+      if (user?.tenant && user.tenant.slug === slug) {
+        setCurrentTenant(user.tenant);
       } else {
         setCurrentTenant(null);
       }
     } catch (error) {
-      console.error('Failed to fetch tenant info:', error);
+      console.error('Failed to resolve tenant info:', error);
       setCurrentTenant(null);
     } finally {
       setIsLoading(false);
@@ -84,7 +84,7 @@ export function TenantProvider({ children }: { children: React.ReactNode }) {
   return (
     <TenantContext.Provider value={{
       currentTenant,
-      currentRole,
+      currentMembership,
       isValidTenantPath,
       tenantSlug,
       isLoading,
@@ -109,9 +109,9 @@ export function useTenantSlug(): string | null {
   return tenantSlug;
 }
 
-export function useCurrentRole(): string | null {
-  const { currentRole } = useTenant();
-  return currentRole;
+export function useCurrentMembership(): string | null {
+  const { currentMembership } = useTenant();
+  return currentMembership;
 }
 
 export function useIsValidTenantPath(): boolean {
@@ -127,74 +127,72 @@ export function useTenantInfo(): TenantInfo | null {
 // Helper function to build tenant-specific URLs
 export function useTenantUrl() {
   const { tenantSlug } = useTenant();
-  
-  return (role: string, path: string = '') => {
+
+  return (membership: string, path: string = '') => {
     if (!tenantSlug) return path;
-    const basePath = `/${tenantSlug}/${role}`;
+    const basePath = `/${tenantSlug}/${membership}`;
     return path ? `${basePath}${path.startsWith('/') ? path : `/${path}`}` : basePath;
   };
 }
 
-// Helper function to check if current user has access to current tenant/role
+// Helper function to check if current user has access to current tenant/membership
 export function useTenantAccess() {
   const { user } = useAuth();
-  const { tenantSlug, currentRole } = useTenant();
+  const { tenantSlug, currentMembership } = useTenant();
   
   return {
     hasAccess: () => {
-      if (!user || !tenantSlug || !currentRole) return false;
+      if (!user || !tenantSlug || !currentMembership) return false;
       
       // Super admins can access any tenant
-      if (user.role === 'super-admin') return true;
-      
+      if (user.membership === UserType.SUPER_ADMIN) return true;
+
       // Users can only access their own tenant
       if (user.tenant?.slug !== tenantSlug) return false;
-      
-      // Role-based access within tenant
-      const roleHierarchy: Record<string, string[]> = {
-        'tenant-admin': ['admin', 'team', 'student'],
-        'admin': ['admin', 'team', 'student'], // Legacy support
-        'team': ['team', 'student'],
-        'student': ['student'],
-        'user': ['student'], // Legacy support
+
+      // Membership-based access within tenant
+      const membershipHierarchy: Record<string, string[]> = {
+        [UserType.TENANT_ADMIN]: ['admin', 'team', 'student'],
+        [UserType.TEAM]: ['team', 'student'],
+        [UserType.STUDENT]: ['student'],
+        [UserType.USER]: ['student'], // Legacy support
       };
-      
-      const allowedRoles = roleHierarchy[user.role] || [];
-      return allowedRoles.includes(currentRole);
+
+      const allowedMemberships = membershipHierarchy[user.membership] || [];
+      return allowedMemberships.includes(currentMembership);
     },
     
-    canAccessRole: (role: string) => {
+    canAccessMembership: (membership: string) => {
       if (!user) return false;
-      
-      // Super admins can access any role
-      if (user.role === 'super-admin') return true;
-      
-      const roleHierarchy: Record<string, string[]> = {
-        'tenant-admin': ['admin', 'team', 'student'],
-        'admin': ['admin', 'team', 'student'],
-        'team': ['team', 'student'],
-        'student': ['student'],
-        'user': ['student'],
+
+      // Super admins can access any membership
+      if (user.membership === UserType.SUPER_ADMIN) return true;
+
+      const membershipHierarchy: Record<string, string[]> = {
+        [UserType.TENANT_ADMIN]: ['admin', 'team', 'student'],
+        [UserType.TEAM]: ['team', 'student'],
+        [UserType.STUDENT]: ['student'],
+        [UserType.USER]: ['student'],
       };
-      
-      const allowedRoles = roleHierarchy[user.role] || [];
-      return allowedRoles.includes(role);
+
+      const allowedMemberships = membershipHierarchy[user.membership] || [];
+      return allowedMemberships.includes(membership);
     },
     
     isOwner: () => {
-      return user?.role === 'tenant-admin' || user?.role === 'admin';
+      return user?.membership === UserType.TENANT_ADMIN;
     },
-    
+
     isTeacher: () => {
-      return user?.role === 'team';
+      return user?.membership === UserType.TEAM;
     },
-    
+
     isStudent: () => {
-      return user?.role === 'student' || user?.role === 'user';
+      return user?.membership === UserType.STUDENT || user?.membership === UserType.USER;
     },
-    
+
     isSuperAdmin: () => {
-      return user?.role === 'super-admin';
+      return user?.membership === UserType.SUPER_ADMIN;
     }
   };
 }

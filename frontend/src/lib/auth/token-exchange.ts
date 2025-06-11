@@ -11,7 +11,7 @@ interface TokenExchangeResponse {
       id: number;
       name: string;
       email: string;
-      role: UserType;
+      membership: UserType;
     };
     token: string;
     redirect_url: string;

@@ -35,7 +35,7 @@ export default function GlobalUserManagement() {
   const [users, setUsers] = useState<GlobalUser[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
-  const [roleFilter, setRoleFilter] = useState('');
+  const [membershipFilter, setMembershipFilter] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -48,7 +48,7 @@ export default function GlobalUserManagement() {
       
       const result = await searchGlobalUsers({
         query: searchQuery || undefined,
-        role: roleFilter || undefined,
+        membership: membershipFilter || undefined,
         is_active: statusFilter ? statusFilter === 'active' : undefined,
         page: currentPage,
         per_page: 20
@@ -78,7 +78,7 @@ export default function GlobalUserManagement() {
     } finally {
       setLoading(false);
     }
-  }, [currentPage, searchQuery, roleFilter, statusFilter, toast]);
+  }, [currentPage, searchQuery, membershipFilter, statusFilter, toast]);
 
   useEffect(() => {
     fetchUsers();
@@ -184,8 +184,8 @@ export default function GlobalUserManagement() {
     );
   };
 
-  const getRoleBadge = (role: string) => {
-    const roleColors = {
+  const getMembershipBadge = (membership: string) => {
+    const membershipColors = {
       'super-admin': 'bg-purple-100 text-purple-800',
       'tenant-admin': 'bg-blue-100 text-blue-800',
       'team': 'bg-green-100 text-green-800',
@@ -193,8 +193,8 @@ export default function GlobalUserManagement() {
     };
     
     return (
-      <Badge className={roleColors[role as keyof typeof roleColors] || 'bg-gray-100 text-gray-800'}>
-        {role.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}
+      <Badge className={membershipColors[membership as keyof typeof membershipColors] || 'bg-gray-100 text-gray-800'}>
+        {membership.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}
       </Badge>
     );
   };
@@ -204,8 +204,8 @@ export default function GlobalUserManagement() {
     setCurrentPage(1);
   };
 
-  const handleRoleFilterChange = (value: string) => {
-    setRoleFilter(value);
+  const handleMembershipFilterChange = (value: string) => {
+    setMembershipFilter(value);
     setCurrentPage(1);
   };
 
@@ -251,12 +251,12 @@ export default function GlobalUserManagement() {
               </div>
             </div>
             
-            <Select value={roleFilter} onValueChange={handleRoleFilterChange}>
+            <Select value={membershipFilter} onValueChange={handleMembershipFilterChange}>
               <SelectTrigger className="w-[150px]">
-                <SelectValue placeholder="All Roles" />
+                <SelectValue placeholder="All Memberships" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Roles</SelectItem>
+                <SelectItem value="">All Memberships</SelectItem>
                 <SelectItem value="super-admin">Super Admin</SelectItem>
                 <SelectItem value="tenant-admin">Tenant Admin</SelectItem>
                 <SelectItem value="team">Team</SelectItem>
@@ -288,7 +288,7 @@ export default function GlobalUserManagement() {
                   <div className="flex items-center gap-3 mb-2">
                     <h3 className="text-lg font-semibold text-gray-900">{user.name}</h3>
                     {getStatusBadge(user.is_active)}
-                    {getRoleBadge(user.role)}
+                    {getMembershipBadge(user.membership)}
                   </div>
                   
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">

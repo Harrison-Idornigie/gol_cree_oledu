@@ -25,7 +25,7 @@ export async function inviteAdmin(formData: AdminInviteFormData) {
   try {
     const response = await axiosInstance.post<{ invite: AdminInvite }>('/api/admin/invites', {
       ...formData,
-      role: UserType.ADMIN
+      membership: UserType.ADMIN
     });
     revalidatePath('/admin/users', 'page');
     return { data: response.data };
@@ -91,5 +91,5 @@ export async function acceptInvite(token: string) {
 
 // Helper function to check if a user is an admin
 export function checkIsAdmin(user?: User | null): boolean {
-  return user?.role === UserType.ADMIN;
+  return user?.membership === UserType.ADMIN;
 }

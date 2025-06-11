@@ -129,7 +129,7 @@ describe("WritingExercise", () => {
     fireEvent.click(estasButtons[0]);
 
     // Check that the words appear in the selected area
-    const selectedButtons = screen.getAllByRole("button", {
+    const selectedButtons = screen.getAllByMembership("button", {
       name: /Hola|cómo|estás/,
     });
     expect(selectedButtons.length).toBeGreaterThanOrEqual(3);

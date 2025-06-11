@@ -42,7 +42,7 @@ export interface GlobalUser {
   id: number;
   name: string;
   email: string;
-  role: string;
+  membership: string;
   tenant_id: number;
   tenant_name: string;
   is_active: boolean;

@@ -27,7 +27,7 @@ describe("ForgotPasswordPage", () => {
 
     // Check for heading and instructions
     expect(
-      screen.getByRole("heading", { name: "Reset Your Password" })
+      screen.getByMembership("heading", { name: "Reset Your Password" })
     ).toBeInTheDocument();
     expect(
       screen.getByText(
@@ -38,12 +38,12 @@ describe("ForgotPasswordPage", () => {
     // Check for form elements
     expect(screen.getByLabelText("Email address")).toBeInTheDocument();
     expect(
-      screen.getByRole("button", { name: "Send Reset Link" })
+      screen.getByMembership("button", { name: "Send Reset Link" })
     ).toBeInTheDocument();
 
     // Check for back link
     expect(
-      screen.getByRole("link", { name: "Back to Login" })
+      screen.getByMembership("link", { name: "Back to Login" })
     ).toBeInTheDocument();
   });
 
@@ -61,11 +61,11 @@ describe("ForgotPasswordPage", () => {
     });
 
     // Submit the form
-    fireEvent.click(screen.getByRole("button", { name: "Send Reset Link" }));
+    fireEvent.click(screen.getByMembership("button", { name: "Send Reset Link" }));
 
     // Check if the button shows loading state
     expect(
-      screen.getByRole("button", { name: "Sending..." })
+      screen.getByMembership("button", { name: "Sending..." })
     ).toBeInTheDocument();
 
     // Wait for the async operation to complete
@@ -95,7 +95,7 @@ describe("ForgotPasswordPage", () => {
     });
 
     // Submit the form
-    fireEvent.click(screen.getByRole("button", { name: "Send Reset Link" }));
+    fireEvent.click(screen.getByMembership("button", { name: "Send Reset Link" }));
 
     // Wait for the async operation to complete
     await waitFor(() => {

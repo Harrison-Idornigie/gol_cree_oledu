@@ -14,32 +14,32 @@ export interface TenantInfo {
 
 export interface TenantContext {
   tenant: TenantInfo | null;
-  role: string | null;
+  membership: string | null;
   isValidPath: boolean;
 }
 
 /**
- * Extract tenant slug and role from URL path
- * Expected format: /{tenant-slug}/{role}/...
+ * Extract tenant slug and membership from URL path
+ * Expected format: /{tenant-slug}/{membership}/...
  */
 export function extractTenantContext(pathname: string): TenantContext {
   // Remove leading slash and split path
   const pathSegments = pathname.replace(/^\//, '').split('/');
   
-  // Check if we have at least tenant and role segments
+  // Check if we have at least tenant and membership segments
   if (pathSegments.length < 2) {
     return {
       tenant: null,
-      role: null,
+      membership: null,
       isValidPath: false
     };
   }
   
-  const [tenantSlug, role] = pathSegments;
+  const [tenantSlug, membership] = pathSegments;
   
-  // Validate role
-  const validRoles = ['admin', 'team', 'student'];
-  const isValidRole = validRoles.includes(role);
+  // Validate membership
+  const validMemberships = ['admin', 'team', 'student'];
+  const isValidMembership = validMemberships.includes(membership);
   
   // Validate tenant slug format (lowercase letters, numbers, hyphens)
   const isValidTenantSlug = /^[a-z0-9-]+$/.test(tenantSlug);
@@ -51,8 +51,8 @@ export function extractTenantContext(pathname: string): TenantContext {
       slug: tenantSlug,
       status: 'active'
     } : null,
-    role: isValidRole ? role : null,
-    isValidPath: isValidTenantSlug && isValidRole
+    membership: isValidMembership ? membership : null,
+    isValidPath: isValidTenantSlug && isValidMembership
   };
 }
 
@@ -87,25 +87,25 @@ export function isCentralPath(pathname: string): boolean {
 /**
  * Build tenant-specific URL
  */
-export function buildTenantUrl(tenantSlug: string, role: string, path: string = ''): string {
-  const basePath = `/${tenantSlug}/${role}`;
+export function buildTenantUrl(tenantSlug: string, membership: string, path: string = ''): string {
+  const basePath = `/${tenantSlug}/${membership}`;
   return path ? `${basePath}${path.startsWith('/') ? path : `/${path}`}` : basePath;
 }
 
 /**
- * Get redirect path based on user role and tenant context
+ * Get redirect path based on user membership and tenant context
  */
-export function getTenantRedirectPath(userRole: string, tenantSlug: string): string {
-  const roleMapping: Record<string, string> = {
+export function getTenantRedirectPath(userMembership: string, tenantSlug: string): string {
+  const membershipMapping: Record<string, string> = {
     'super-admin': '/super', // Central path for super admins
-    'tenant-admin': buildTenantUrl(tenantSlug, 'admin'),
-    'admin': buildTenantUrl(tenantSlug, 'admin'), // Legacy support
-    'team': buildTenantUrl(tenantSlug, 'team'),
-    'student': buildTenantUrl(tenantSlug, 'student'),
-    'user': buildTenantUrl(tenantSlug, 'student'), // Legacy support
+    'tenant-admin': buildTenantUrl(tenantSlug, 'admin', '/dashboard'),
+    'admin': buildTenantUrl(tenantSlug, 'admin', '/dashboard'), // Legacy support
+    'team': buildTenantUrl(tenantSlug, 'team', '/dashboard'),
+    'student': buildTenantUrl(tenantSlug, 'student', '/dashboard'),
+    'user': buildTenantUrl(tenantSlug, 'student', '/dashboard'), // Legacy support
   };
-  
-  return roleMapping[userRole] || buildTenantUrl(tenantSlug, 'student');
+
+  return membershipMapping[userMembership] || buildTenantUrl(tenantSlug, 'student', '/dashboard');
 }
 
 /**
@@ -140,24 +140,24 @@ export function getCurrentTenantSlug(pathname: string): string | null {
 }
 
 /**
- * Extract role from current URL
+ * Extract membership from current URL
  */
-export function getCurrentRole(pathname: string): string | null {
+export function getCurrentMembership(pathname: string): string | null {
   const context = extractTenantContext(pathname);
-  return context.role;
+  return context.membership;
 }
 
 /**
- * Check if user has access to the requested tenant/role combination
+ * Check if user has access to the requested tenant/membership combination
  */
-export function hasAccessToTenantRole(
-  userRole: string, 
+export function hasAccessToTenantMembership(
+  userMembership: string, 
   userTenantSlug: string | null, 
   requestedTenantSlug: string, 
-  requestedRole: string
+  requestedMembership: string
 ): boolean {
   // Super admins can access any tenant
-  if (userRole === 'super-admin') {
+  if (userMembership === 'super-admin') {
     return true;
   }
   
@@ -166,8 +166,8 @@ export function hasAccessToTenantRole(
     return false;
   }
   
-  // Role-based access within tenant
-  const roleHierarchy: Record<string, string[]> = {
+  // Membership-based access within tenant
+  const membershipHierarchy: Record<string, string[]> = {
     'tenant-admin': ['admin', 'team', 'student'],
     'admin': ['admin', 'team', 'student'], // Legacy support
     'team': ['team', 'student'],
@@ -175,6 +175,6 @@ export function hasAccessToTenantRole(
     'user': ['student'], // Legacy support
   };
   
-  const allowedRoles = roleHierarchy[userRole] || [];
-  return allowedRoles.includes(requestedRole);
+  const allowedMemberships = membershipHierarchy[userMembership] || [];
+  return allowedMemberships.includes(requestedMembership);
 }

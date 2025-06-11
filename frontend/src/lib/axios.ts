@@ -12,10 +12,10 @@ function getCurrentTenantSlug(): string | null {
   const pathSegments = window.location.pathname.replace(/^\//, '').split('/');
   if (pathSegments.length < 2) return null;
 
-  const [tenantSlug, role] = pathSegments;
-  const validRoles = ['admin', 'team', 'student'];
+  const [tenantSlug, membership] = pathSegments;
+  const validMemberships = ['admin', 'team', 'student'];
 
-  return /^[a-z0-9-]+$/.test(tenantSlug) && validRoles.includes(role) ? tenantSlug : null;
+  return /^[a-z0-9-]+$/.test(tenantSlug) && validMemberships.includes(membership) ? tenantSlug : null;
 }
 
 // Helper function to transform URL to include tenant context

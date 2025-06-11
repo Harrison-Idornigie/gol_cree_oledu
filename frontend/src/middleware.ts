@@ -1,7 +1,6 @@
 import { type NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import {
-  extractTenantFromPath,
   isTenantPath,
   isCentralPath
 } from "@/types/tenant/user";
@@ -44,18 +43,17 @@ export async function middleware(request: NextRequest) {
   const isAuthenticated = hasValidToken(request.headers.get("cookie"));
 
   // Extract tenant context from path
-  const { tenantSlug, role } = extractTenantFromPath(pathname);
   const isValidTenantPath = isTenantPath(pathname);
   const isCentralRoute = isCentralPath(pathname);
 
-  // Handle tenant-specific paths: /{tenant-slug}/{role}/*
+  // Handle tenant-specific paths: /{tenant-slug}/{membership}/*
   if (isValidTenantPath) {
     // Require authentication for all tenant paths
     if (!isAuthenticated) {
       return NextResponse.redirect(new URL("/login", request.url));
     }
 
-    // TODO: Add tenant validation and user role checking here
+    // TODO: Add tenant validation and user membership checking here
     // For now, allow access to valid tenant paths
     return NextResponse.next();
   }
@@ -63,13 +61,16 @@ export async function middleware(request: NextRequest) {
   // Check if this looks like a tenant path but is invalid
   const pathSegments = pathname.split('/').filter(Boolean);
   if (pathSegments.length >= 2) {
-    const [potentialTenant, potentialRole] = pathSegments;
-    const validRoles = ['admin', 'team', 'student'];
+    const [potentialTenant, potentialMembership] = pathSegments;
+    const validMemberships = ['admin', 'team', 'student'];
 
-    // If it looks like a tenant path but is invalid, show 404
-    if (potentialTenant && potentialRole && validRoles.includes(potentialRole)) {
-      // This looks like a tenant path but tenant validation failed
-      return NextResponse.rewrite(new URL("/not-found", request.url));
+    // If it looks like a tenant path but has invalid format, show 404
+    if (potentialTenant && potentialMembership && validMemberships.includes(potentialMembership)) {
+      // Check if tenant slug format is valid
+      if (!/^[a-z0-9-]+$/.test(potentialTenant)) {
+        return NextResponse.rewrite(new URL("/not-found", request.url));
+      }
+      // If format is valid, let it proceed to tenant validation in the layout
     }
   }
 
@@ -80,7 +81,7 @@ export async function middleware(request: NextRequest) {
       if (!isAuthenticated) {
         return NextResponse.redirect(new URL("/login", request.url));
       }
-      // TODO: Add super admin role validation
+      // TODO: Add super admin membership validation
       return NextResponse.next();
     }
 
@@ -106,7 +107,7 @@ export async function middleware(request: NextRequest) {
   if (pathname === "/") {
     if (isAuthenticated) {
       // TODO: Redirect to user's appropriate tenant dashboard
-      // For now, redirect to login to handle role-based routing
+      // For now, redirect to login to handle membership-based routing
       return NextResponse.redirect(new URL("/login", request.url));
     }
     // Redirect unauthenticated users to login

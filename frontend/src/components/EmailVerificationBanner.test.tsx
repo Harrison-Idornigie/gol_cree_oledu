@@ -44,14 +44,14 @@ describe("EmailVerificationBanner", () => {
       )
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("button", { name: "Resend Email" })
+      screen.getByMembership("button", { name: "Resend Email" })
     ).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Dismiss" })).toBeInTheDocument();
+    expect(screen.getByMembership("button", { name: "Dismiss" })).toBeInTheDocument();
   });
 
   it("hides the banner when dismiss button is clicked", () => {
     render(<EmailVerificationBanner user={mockUser} />);
-    fireEvent.click(screen.getByRole("button", { name: "Dismiss" }));
+    fireEvent.click(screen.getByMembership("button", { name: "Dismiss" }));
     expect(screen.queryByText("Verify your email")).not.toBeInTheDocument();
   });
 
@@ -62,11 +62,11 @@ describe("EmailVerificationBanner", () => {
     ).mockResolvedValue({ success: true });
 
     render(<EmailVerificationBanner user={mockUser} />);
-    fireEvent.click(screen.getByRole("button", { name: "Resend Email" }));
+    fireEvent.click(screen.getByMembership("button", { name: "Resend Email" }));
 
     // Check if the button shows loading state
     expect(
-      screen.getByRole("button", { name: "Sending..." })
+      screen.getByMembership("button", { name: "Sending..." })
     ).toBeInTheDocument();
 
     // Wait for the async operation to complete
@@ -88,7 +88,7 @@ describe("EmailVerificationBanner", () => {
     });
 
     render(<EmailVerificationBanner user={mockUser} />);
-    fireEvent.click(screen.getByRole("button", { name: "Resend Email" }));
+    fireEvent.click(screen.getByMembership("button", { name: "Resend Email" }));
 
     // Wait for the async operation to complete
     await waitFor(() => {

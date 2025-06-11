@@ -13,7 +13,7 @@ interface AuthResponse {
     id: number;
     name: string;
     email: string;
-    role: UserType;
+    membership: UserType;
     email_verified_at?: string | null;
     avatar_url?: string | null;
     avatar?: string | null;
@@ -87,7 +87,7 @@ export async function login(formData: FormData, tenantSlug?: string) {
 
     revalidatePath("/login", "page");
 
-    // Use proper role-based redirection with tenant context
+    // Use proper membership-based redirection with tenant context
     const redirectPath = getDefaultRedirectPath(response.data?.user as User | null);
     return {
       success: true,
@@ -115,7 +115,7 @@ export async function register(formData: FormData) {
 
     revalidatePath("/register", "page");
 
-    // Use proper role-based redirection
+    // Use proper membership-based redirection
     const redirectPath = getDefaultRedirectPath(response.data?.user as User | null);
     return { ...response.data, redirect: redirectPath };
   } catch (error) {
@@ -154,8 +154,24 @@ export async function logout() {
 
 export async function getCurrentUser() {
   try {
-    const response = await axiosInstance.get<AuthResponse>("/auth/me");
-    return response.data;
+    const cookieStore = await cookies();
+    const token = cookieStore.get('auth_token')?.value;
+
+    if (!token) {
+      return { error: 'No authentication token' };
+    }
+
+    // Configure axios to use the token
+    const response = await axiosInstance.get<AuthResponse>("/auth/me", {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    return {
+      user: response.data.user,
+      success: true
+    };
   } catch (error) {
     return { error: getErrorMessage(error) };
   }
@@ -271,8 +287,8 @@ export async function registerTenantAdmin(data: TenantRegistrationData) {
 
     // Build tenant-specific redirect path
     const redirectPath = response.data?.user?.tenant?.slug
-      ? `/${response.data.user.tenant.slug}/admin`
-      : "/admin";
+      ? `/${response.data.user.tenant.slug}/admin/dashboard`
+      : "/admin/dashboard";
 
     console.log('🎯 Built redirect path:', redirectPath);
 
@@ -281,13 +297,14 @@ export async function registerTenantAdmin(data: TenantRegistrationData) {
       redirect: redirectPath,
       data: response.data
     };
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('💥 Registration error:', error);
-    if (error.response) {
+    if (error && typeof error === 'object' && 'response' in error) {
+      const axiosError = error as { response?: { status?: number; data?: unknown; headers?: unknown } };
       console.error('📋 Error response:', {
-        status: error.response.status,
-        data: error.response.data,
-        headers: error.response.headers
+        status: axiosError.response?.status,
+        data: axiosError.response?.data,
+        headers: axiosError.response?.headers
       });
     }
     return { error: getErrorMessage(error) };
@@ -310,20 +327,20 @@ export async function handleTenantGoogleCallback(code: string, state?: string, t
     // Build tenant-specific redirect path
     if (response.data?.user?.tenant?.slug) {
       const userTenantSlug = response.data.user.tenant.slug;
-      const userRole = response.data.user.role;
+      const userMembership = response.data.user.membership;
 
       let redirectPath = `/${userTenantSlug}/student`; // Default
 
-      switch (userRole) {
+      switch (userMembership) {
         case UserType.TENANT_ADMIN:
-          redirectPath = `/${userTenantSlug}/admin`;
+          redirectPath = `/${userTenantSlug}/admin/dashboard`;
           break;
         case UserType.TEAM:
-          redirectPath = `/${userTenantSlug}/team`;
+          redirectPath = `/${userTenantSlug}/team/dashboard`;
           break;
         case UserType.STUDENT:
         case UserType.USER:
-          redirectPath = `/${userTenantSlug}/student`;
+          redirectPath = `/${userTenantSlug}/student/dashboard`;
           break;
       }
 
@@ -348,6 +365,23 @@ export async function validateTenantSlug(slug: string) {
     return {
       available: false,
       error: "Unable to validate slug availability"
+    };
+  }
+}
+
+// Check if tenant exists (for routing validation)
+export async function checkTenantExists(slug: string) {
+  try {
+    const response = await axiosInstance.get<{available: boolean; error?: string}>(`/auth/validate-tenant-slug/${slug}`);
+    // If available is false, it means the tenant exists
+    return {
+      exists: !response.data.available,
+      error: null
+    };
+  } catch {
+    return {
+      exists: false,
+      error: "Unable to check tenant existence"
     };
   }
 }
