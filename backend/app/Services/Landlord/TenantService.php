@@ -561,10 +561,9 @@ class TenantService
                 throw $e;
             }
 
-            // Create tenant admin membership if it doesn't exist
+            // Create tenant admin membership if it doesn't exist (in tenant context, no tenant_id needed)
             $tenantAdminMembership = Membership::firstOrCreate([
                 'slug' => 'tenant-admin',
-                'tenant_id' => $tenant->id,
             ], [
                 'name' => 'Tenant Administrator',
                 'description' => "Administrator for {$tenant->name}",
@@ -572,7 +571,7 @@ class TenantService
             ]);
 
             // Assign tenant admin membership
-            $adminUsermemberships()->attach($tenantAdminMembership);
+            $adminUser->memberships()->attach($tenantAdminMembership);
         });
 
         if (!$adminUser) {
@@ -636,6 +635,12 @@ class TenantService
             }
 
             // Create tenant admin membership if it doesn't exist
+            Log::info('About to create membership in tenant context', [
+                'tenant_id' => $tenant->id,
+                'current_database' => DB::connection()->getDatabaseName(),
+                'connection_name' => DB::connection()->getName()
+            ]);
+
             $tenantAdminMembership = Membership::firstOrCreate([
                 'slug' => 'tenant-admin',
                 'tenant_id' => $tenant->id,
@@ -646,7 +651,7 @@ class TenantService
             ]);
 
             // Assign tenant admin membership
-            $adminUsermemberships()->attach($tenantAdminMembership);
+            $adminUser->memberships()->attach($tenantAdminMembership);
         });
 
         if (!$adminUser) {

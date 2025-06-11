@@ -55,7 +55,7 @@ class Permission extends Model
      */
     public function isGrantedTo(Membership $membership): bool
     {
-        return $thismemberships()
+        return $this->memberships()
             ->where('memberships.id', $membership->id)
             ->where('is_denied', false)
             ->exists();

@@ -160,7 +160,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function hasMembership(string $membership): bool
     {
-        return $thismemberships()->where('slug', $membership)->exists();
+        return $this->memberships()->where('slug', $membership)->exists();
     }
 
     /**

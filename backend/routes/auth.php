@@ -2,12 +2,26 @@
 
 use App\Http\Controllers\API\Auth\GoogleController;
 use App\Http\Controllers\API\Auth\UserContextController;
+use App\Http\Controllers\API\Landlord\Auth\NewTenantRegistrationController;
 use Illuminate\Support\Facades\Route;
 
 Route::group([
     'prefix'     => 'auth',
    'as'         => 'auth.',
 ], function () {
+    // Public tenant registration (self-service)
+    Route::post('register-tenant-admin', [NewTenantRegistrationController::class, 'registerTenantAdmin'])
+        ->middleware(['throttle:5,1'])
+        ->name('register.tenant.admin');
+
+    Route::get('validate-tenant-slug/{slug}', [NewTenantRegistrationController::class, 'validateSlug'])
+        ->middleware(['throttle:20,1'])
+        ->name('validate.tenant.slug');
+
+    Route::get('tenant-creation-progress/{progressId}', [NewTenantRegistrationController::class, 'checkProgress'])
+        ->middleware(['throttle:30,1'])
+        ->name('tenant.creation.progress');
+
     // User context detection for unified login
     Route::post('detect-user-context', [UserContextController::class, 'detectUserContext'])
         ->middleware(['throttle:10,1'])

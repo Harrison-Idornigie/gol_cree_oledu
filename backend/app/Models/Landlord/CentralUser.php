@@ -78,7 +78,7 @@ class CentralUser extends Authenticatable
      */
     public function hasMembership(string $membership): bool
     {
-        return $thismemberships()->where('slug', $membership)->exists() || $thismembership === $membership;
+        return $this->memberships()->where('slug', $membership)->exists() || $this->membership === $membership;
     }
 
     /**
@@ -86,7 +86,7 @@ class CentralUser extends Authenticatable
      */
     public function isSuperAdmin(): bool
     {
-        return $this->hasMembership('super-admin') || $thismembership === 'admin';
+        return $this->hasMembership('super-admin') || $this->membership === 'admin';
     }
 
     /**
