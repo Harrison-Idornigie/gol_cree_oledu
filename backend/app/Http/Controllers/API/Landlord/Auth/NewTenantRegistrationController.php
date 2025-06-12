@@ -102,7 +102,7 @@ class NewTenantRegistrationController extends BaseAPIController
                         'id' => $adminUser->id,
                         'name' => $adminUser->name,
                         'email' => $adminUser->email,
-                        'membership' => 'tenant-admin', // Set the correct membership
+                        'membership' => $adminUser->membership, 
                         'email_verified_at' => $adminUser->email_verified_at,
                         'tenant_id' => $tenant->id,
                         'tenant' => [
