@@ -1,8 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useTenant, useTenantAccess } from '@/app/providers/tenant-provider';
-import { useAuth } from '@/app/providers/auth-provider';
+import { useAuth, useTenantAccess } from '@/app/providers/auth-provider';
 import UnifiedSidebar from '@/components/portals/UnifiedSidebar';
 import UnifiedTopbar from '@/components/portals/UnifiedTopbar';
 import { Loader2 } from 'lucide-react';
@@ -21,28 +20,55 @@ export default function TenantMembershipLayout({
   params
 }: TenantMembershipLayoutProps) {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
-  const { currentTenant, currentMembership, isLoading: tenantLoading } = useTenant();
-  const { user } = useAuth();
+  const { user, isLoading, currentTenant, currentMembership } = useAuth();
   const { hasAccess } = useTenantAccess();
 
-  // Show loading state while tenant context is being resolved
-  if (tenantLoading || !user) {
+  // Debug logging
+  console.log('🏗️ Layout Debug:', {
+    params,
+    user: user ? {
+      id: user.id,
+      email: user.email,
+      membership: user.membership,
+      tenantSlug: user.tenant?.slug
+    } : null,
+    currentTenant,
+    currentMembership,
+    isLoading,
+    hasAccess: user ? hasAccess() : 'no user'
+  });
+
+  // Show loading state while authentication is being resolved
+  if (isLoading || !user) {
+    console.log('⏳ Layout: Showing loading state');
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin" />
+        <div className="text-center space-y-2">
+          <Loader2 className="h-8 w-8 animate-spin mx-auto" />
+          <div className="text-sm text-muted-foreground">
+            {isLoading && "Loading..."}
+            {!user && "Waiting for authentication..."}
+          </div>
+        </div>
       </div>
     );
   }
 
   // Check if user has access to current tenant/membership
-  if (!hasAccess()) {
+  const userHasAccess = hasAccess();
+  console.log('🔐 Layout: Access check result:', userHasAccess);
+
+  if (!userHasAccess) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-red-600">Access Denied</h1>
           <p className="text-muted-foreground">
-            You don't have permission to access this area.
+            You don&apos;t have permission to access this area.
           </p>
+          <div className="mt-4 text-xs text-muted-foreground">
+            User: {user.membership} | Requested: {params.membership}
+          </div>
         </div>
       </div>
     );
@@ -56,7 +82,7 @@ export default function TenantMembershipLayout({
         <div className="text-center">
           <h1 className="text-2xl font-bold text-red-600">Invalid Membership</h1>
           <p className="text-muted-foreground">
-            The membership "{params.membership}" is not valid.
+            The membership &quot;{params.membership}&quot; is not valid.
           </p>
         </div>
       </div>

@@ -19,8 +19,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet';
-import { useAuth } from '@/app/providers/auth-provider';
-import { useTenant, useTenantAccess } from '@/app/providers/tenant-provider';
+import { useAuth, useTenant, useTenantAccess } from '@/app/providers/auth-provider';
 import UnifiedSidebar from './UnifiedSidebar';
 
 interface UnifiedTopbarProps {

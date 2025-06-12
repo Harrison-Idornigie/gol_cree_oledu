@@ -1,8 +1,7 @@
 'use client';
 
 import { ReactNode } from 'react';
-import { useTenantAccess } from '@/app/providers/tenant-provider';
-import { useAuth } from '@/app/providers/auth-provider';
+import { useAuth, useTenantAccess } from '@/app/providers/auth-provider';
 import { AlertTriangle, Lock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';

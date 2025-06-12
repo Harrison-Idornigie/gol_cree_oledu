@@ -1,8 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useTenant, useTenantAccess } from '@/app/providers/tenant-provider';
-import { useAuth } from '@/app/providers/auth-provider';
+import { useAuth, useTenant, useTenantAccess } from '@/app/providers/auth-provider';
 import UnifiedSidebar from './UnifiedSidebar';
 import UnifiedTopbar from './UnifiedTopbar';
 import { Loader2 } from 'lucide-react';

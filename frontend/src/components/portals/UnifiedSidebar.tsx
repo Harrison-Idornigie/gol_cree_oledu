@@ -18,8 +18,7 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { useTenant, useTenantAccess } from '@/app/providers/tenant-provider';
-import { useAuth } from '@/app/providers/auth-provider';
+import { useAuth, useTenant, useTenantAccess } from '@/app/providers/auth-provider';
 
 interface NavigationItem {
   label: string;

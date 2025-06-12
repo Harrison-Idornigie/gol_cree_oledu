@@ -5,9 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Users, BookOpen, TrendingUp, Settings, Plus, GraduationCap, Globe } from 'lucide-react';
 import Link from 'next/link';
-import { useTenant } from '@/app/providers/tenant-provider';
-import { useAuth } from '@/app/providers/auth-provider';
-import MembershipGuard, { AdminOnly, TeamOnly, StudentOnly } from '@/components/portals/MembershipGuard';
+import { useAuth, useTenantAccess } from '@/app/providers/auth-provider';
 
 interface DashboardPageProps {
   params: {
@@ -33,55 +31,137 @@ interface StudentStats {
 }
 
 export default function DashboardPage({ params }: DashboardPageProps) {
-  const { currentTenant, tenantSlug } = useTenant();
-  const { user } = useAuth();
-  const [loading, setLoading] = useState(true);
+  const { user, isLoading, currentTenant, tenantSlug } = useAuth();
+  const { canAccessMembership } = useTenantAccess();
 
   // Build URL helper
   const buildUrl = (path: string) => `/${tenantSlug}/${params.membership}${path}`;
 
+  // Debug logging
   useEffect(() => {
-    // Simulate loading
-    setTimeout(() => setLoading(false), 1000);
-  }, []);
+    console.log('🔍 Dashboard Debug Info:', {
+      user: user ? {
+        id: user.id,
+        email: user.email,
+        membership: user.membership,
+        tenantSlug: user.tenant?.slug
+      } : null,
+      currentTenant,
+      tenantSlug,
+      requestedMembership: params.membership,
+      isLoading,
+      canAccessAdmin: canAccessMembership('admin'),
+      canAccessTeam: canAccessMembership('team'),
+      canAccessStudent: canAccessMembership('student')
+    });
+  }, [user, currentTenant, tenantSlug, params.membership, isLoading, canAccessMembership]);
 
-  if (loading) {
+  // Show loading state while authentication is being resolved
+  if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <div className="text-lg">Loading dashboard...</div>
+        <div className="text-center space-y-2">
+          <div className="text-lg">Loading dashboard...</div>
+          <div className="text-sm text-muted-foreground">
+            Initializing...
+          </div>
+        </div>
       </div>
     );
   }
 
+  // Check if user is authenticated
+  if (!user) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="text-center">
+          <h2 className="text-xl font-semibold text-red-600">Authentication Required</h2>
+          <p className="text-muted-foreground">Please log in to access the dashboard.</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Check if tenant context is available
+  if (!currentTenant || !tenantSlug) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="text-center">
+          <h2 className="text-xl font-semibold text-red-600">Tenant Not Found</h2>
+          <p className="text-muted-foreground">Unable to load tenant context.</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Render appropriate dashboard based on user membership and requested path
+  const renderDashboard = () => {
+    console.log('🎯 Rendering dashboard for:', {
+      userMembership: user.membership,
+      requestedMembership: params.membership,
+      canAccessAdmin: canAccessMembership('admin'),
+      canAccessTeam: canAccessMembership('team'),
+      canAccessStudent: canAccessMembership('student')
+    });
+
+    // Check if user can access the requested membership level
+    if (!canAccessMembership(params.membership)) {
+      return (
+        <div className="flex items-center justify-center min-h-[400px]">
+          <div className="text-center">
+            <h2 className="text-xl font-semibold text-red-600">Access Denied</h2>
+            <p className="text-muted-foreground">
+              You don&apos;t have permission to access the {params.membership} dashboard.
+            </p>
+          </div>
+        </div>
+      );
+    }
+
+    // Render dashboard based on requested membership
+    switch (params.membership) {
+      case 'admin':
+        return (
+          <AdminDashboard
+            tenant={currentTenant}
+            buildUrl={buildUrl}
+            membership={params.membership}
+          />
+        );
+      case 'team':
+        return (
+          <TeamDashboard
+            tenant={currentTenant}
+            buildUrl={buildUrl}
+            membership={params.membership}
+          />
+        );
+      case 'student':
+        return (
+          <StudentDashboard
+            tenant={currentTenant}
+            buildUrl={buildUrl}
+            membership={params.membership}
+            user={user}
+          />
+        );
+      default:
+        return (
+          <div className="flex items-center justify-center min-h-[400px]">
+            <div className="text-center">
+              <h2 className="text-xl font-semibold text-red-600">Invalid Dashboard</h2>
+              <p className="text-muted-foreground">
+                Unknown membership type: {params.membership}
+              </p>
+            </div>
+          </div>
+        );
+    }
+  };
+
   return (
     <div className="space-y-6">
-      {/* Admin Dashboard */}
-      <AdminOnly>
-        <AdminDashboard 
-          tenant={currentTenant} 
-          buildUrl={buildUrl}
-          membership={params.membership}
-        />
-      </AdminOnly>
-
-      {/* Team Dashboard */}
-      <TeamOnly>
-        <TeamDashboard 
-          tenant={currentTenant} 
-          buildUrl={buildUrl}
-          membership={params.membership}
-        />
-      </TeamOnly>
-
-      {/* Student Dashboard */}
-      <StudentOnly>
-        <StudentDashboard 
-          tenant={currentTenant} 
-          buildUrl={buildUrl}
-          membership={params.membership}
-          user={user}
-        />
-      </StudentOnly>
+      {renderDashboard()}
     </div>
   );
 }

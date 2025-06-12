@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Plus, BookOpen, Users, Clock } from 'lucide-react';
 import Link from 'next/link';
-import { useTenant } from '@/app/providers/tenant-provider';
+import { useTenant } from '@/app/providers/auth-provider';
 import { AdminOrTeam } from '@/components/portals/MembershipGuard';
 
 interface LearningPathsPageProps {

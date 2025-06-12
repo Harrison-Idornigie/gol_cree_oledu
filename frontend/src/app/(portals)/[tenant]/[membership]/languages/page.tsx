@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Globe, Play, BookOpen, Trophy, Clock } from 'lucide-react';
 import Link from 'next/link';
-import { useTenant } from '@/app/providers/tenant-provider';
+import { useTenant } from '@/app/providers/auth-provider';
 import { StudentOnly } from '@/components/portals/MembershipGuard';
 
 interface LanguagesPageProps {

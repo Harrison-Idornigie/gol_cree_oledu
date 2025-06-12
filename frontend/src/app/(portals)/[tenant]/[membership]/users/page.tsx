@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Plus, Search, Users, UserCheck, UserX, Mail } from 'lucide-react';
 import Link from 'next/link';
-import { useTenant } from '@/app/providers/tenant-provider';
+import { useTenant } from '@/app/providers/auth-provider';
 import { AdminOnly } from '@/components/portals/MembershipGuard';
 
 interface UsersPageProps {
