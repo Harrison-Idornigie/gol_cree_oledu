@@ -25,15 +25,26 @@ class CentralUser extends Authenticatable
 
     /**
      * The database connection that should be used by the model.
-     * Always use the central/landlord database connection.
+     * Uses the central/landlord database connection configured in tenancy.php
      */
-    protected $connection = 'mysql';
+    protected $connection;
 
     /**
      * The table associated with the model.
      * Uses the central database, not tenant databases.
      */
     protected $table = 'central_users';
+
+    /**
+     * Create a new Eloquent model instance.
+     */
+    public function __construct(array $attributes = [])
+    {
+        // Set connection to the central connection configured in tenancy
+        $this->connection = config('tenancy.database.central_connection');
+
+        parent::__construct($attributes);
+    }
 
     /**
      * The attributes that are mass assignable.

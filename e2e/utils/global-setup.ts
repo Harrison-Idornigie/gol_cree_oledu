@@ -17,13 +17,19 @@ async function globalSetup(config: FullConfig) {
   try {
     // 1. Setup backend test environment
     console.log('📦 Setting up backend test environment...');
-    
-    // Copy test environment file
-    execSync('cd ../backend && cp .env.example .env.testing', { stdio: 'inherit' });
-    
-    // Set test-specific environment variables
+
+    // Ensure .env.testing exists (don't overwrite if it already exists)
+    try {
+      execSync('cd ../backend && test -f .env.testing', { stdio: 'pipe' });
+      console.log('✅ .env.testing already exists, using existing configuration');
+    } catch {
+      console.log('📝 Creating .env.testing from .env.example');
+      execSync('cd ../backend && cp .env.example .env.testing', { stdio: 'inherit' });
+    }
+
+    // Clear configuration cache to ensure fresh config is loaded
     execSync('cd ../backend && php artisan config:clear --env=testing', { stdio: 'inherit' });
-    
+
     // Run landlord migrations and seeding for central database
     console.log('🏢 Running landlord migrations and seeding...');
     execSync('cd ../backend && echo "y" | php artisan migrate:landlord --fresh --seed --force --no-interaction --env=testing', { stdio: 'inherit' });

@@ -29,9 +29,20 @@ class UserTenantAssociation extends Model
 
     /**
      * The database connection that should be used by the model.
-     * Always use the central/landlord database connection.
+     * Uses the central/landlord database connection configured in tenancy.php
      */
-    protected $connection = 'mysql';
+    protected $connection;
+
+    /**
+     * Create a new Eloquent model instance.
+     */
+    public function __construct(array $attributes = [])
+    {
+        // Set connection to the central connection configured in tenancy
+        $this->connection = config('tenancy.database.central_connection');
+
+        parent::__construct($attributes);
+    }
 
     protected $fillable = [
         'email',

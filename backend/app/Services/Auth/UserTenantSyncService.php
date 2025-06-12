@@ -6,6 +6,7 @@ use App\Models\Landlord\Tenant;
 use App\Models\Landlord\UserTenantAssociation;
 use App\Models\Tenants\User;
 use Illuminate\Support\Facades\Log;
+use Stancl\Tenancy\Facades\Tenancy;
 
 /**
  * User Tenant Synchronization Service
@@ -21,10 +22,14 @@ class UserTenantSyncService
     public function syncUserToTenant(string $email, Tenant $tenant, array $userData): void
     {
         try {
-            UserTenantAssociation::syncFromTenant($email, $tenant, $userData);
+            // Temporarily switch to central context to ensure sync operations
+            // target the central database, not the current tenant database
+            $this->runInCentralContext(function () use ($email, $tenant, $userData) {
+                UserTenantAssociation::syncFromTenant($email, $tenant, $userData);
 
-            // Clear cache for this user
-            UserTenantAssociation::clearUserCache($email);
+                // Clear cache for this user
+                UserTenantAssociation::clearUserCache($email);
+            });
 
             Log::info('User tenant association synced', [
                 'email' => $email,
@@ -46,14 +51,17 @@ class UserTenantSyncService
     public function removeUserFromTenant(string $email, string $tenantSlug): void
     {
         try {
-            UserTenantAssociation::removeFromTenant($email, $tenantSlug);
-            
-            // Clear cache for this user
-            UserTenantAssociation::clearUserCache($email);
-            
+            // Temporarily switch to central context to ensure removal operations
+            // target the central database, not the current tenant database
+            $removed = $this->runInCentralContext(function () use ($email, $tenantSlug) {
+                UserTenantAssociation::clearUserCache($email);
+                return UserTenantAssociation::removeFromTenant($email, $tenantSlug);
+            });
+
             Log::info('User tenant association removed', [
                 'email' => $email,
-                'tenant_slug' => $tenantSlug
+                'tenant_slug' => $tenantSlug,
+                'removed' => $removed
             ]);
         } catch (\Exception $e) {
             Log::error('Failed to remove user tenant association', [
@@ -77,12 +85,13 @@ class UserTenantSyncService
                 
                 foreach ($users as $user) {
                     try {
-                        UserTenantAssociation::syncFromTenant($user->email, $tenant, [
+                        // Use the service method which handles central context switching
+                        $this->syncUserToTenant($user->email, $tenant, [
                             'membership' => $user->membership,
                             'permissions' => $user->permissions ?? [],
                             'is_active' => true
                         ]);
-                        
+
                         $stats['synced']++;
                     } catch (\Exception $e) {
                         $stats['errors']++;
@@ -192,5 +201,30 @@ class UserTenantSyncService
         }
         
         return $orphanedCount;
+    }
+
+    /**
+     * Execute a callback in central context, ensuring tenant context is restored
+     */
+    protected function runInCentralContext(callable $callback): mixed
+    {
+        // Store current tenant context
+        $currentTenant = tenant();
+
+        try {
+            // Switch to central context
+            if ($currentTenant) {
+                Tenancy::end();
+            }
+
+            // Execute the callback in central context
+            return $callback();
+
+        } finally {
+            // Restore tenant context if it was active
+            if ($currentTenant) {
+                Tenancy::initialize($currentTenant);
+            }
+        }
     }
 }
