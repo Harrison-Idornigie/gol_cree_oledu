@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useAuth, useTenantAccess } from '@/app/providers/auth-provider';
 import UnifiedSidebar from '@/components/portals/UnifiedSidebar';
 import UnifiedTopbar from '@/components/portals/UnifiedTopbar';
@@ -9,23 +9,24 @@ import { EmailVerificationBanner } from '@/components/EmailVerificationBanner';
 
 interface TenantMembershipLayoutProps {
   children: React.ReactNode;
-  params: {
+  params: Promise<{
     tenant: string;
     membership: string;
-  };
+  }>;
 }
 
 export default function TenantMembershipLayout({
   children,
-  params
+  params: paramsPromise
 }: TenantMembershipLayoutProps) {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const { user, isLoading, currentTenant, currentMembership } = useAuth();
   const { hasAccess } = useTenantAccess();
+  const { tenant, membership } = React.use(paramsPromise);
 
   // Debug logging
   console.log('🏗️ Layout Debug:', {
-    params,
+    params: { tenant, membership },
     user: user ? {
       id: user.id,
       email: user.email,
@@ -67,7 +68,7 @@ export default function TenantMembershipLayout({
             You don&apos;t have permission to access this area.
           </p>
           <div className="mt-4 text-xs text-muted-foreground">
-            User: {user.membership} | Requested: {params.membership}
+            User: {user.membership} | Requested: {membership}
           </div>
         </div>
       </div>
@@ -76,13 +77,13 @@ export default function TenantMembershipLayout({
 
   // Validate that URL membership matches expected membership
   const validMemberships = ['admin', 'team', 'student'];
-  if (!validMemberships.includes(params.membership)) {
+  if (!validMemberships.includes(membership)) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-red-600">Invalid Membership</h1>
           <p className="text-muted-foreground">
-            The membership &quot;{params.membership}&quot; is not valid.
+            The membership &quot;{membership}&quot; is not valid.
           </p>
         </div>
       </div>
@@ -90,7 +91,7 @@ export default function TenantMembershipLayout({
   }
 
   // Determine layout style based on membership
-  const isStudentLayout = params.membership === 'student';
+  const isStudentLayout = membership === 'student';
 
   if (isStudentLayout) {
     // Student layout: Top navigation with mobile sidebar
@@ -101,7 +102,7 @@ export default function TenantMembershipLayout({
             <UnifiedTopbar
               onSidebarToggle={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
               showMobileSidebar={true}
-              membership={params.membership}
+              membership={membership}
             />
           </div>
           <main className="flex justify-center w-full">
@@ -119,7 +120,7 @@ export default function TenantMembershipLayout({
   return (
     <div className="min-h-screen">
       <div className="fixed inset-y-0 z-50 hidden h-full w-72 flex-col md:flex">
-        <UnifiedSidebar membership={params.membership} />
+        <UnifiedSidebar membership={membership} />
       </div>
       <div
         className={`fixed top-0 z-50 w-full flex-col md:pl-72 ${
@@ -129,7 +130,7 @@ export default function TenantMembershipLayout({
         <UnifiedTopbar
           onSidebarToggle={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
           showMobileSidebar={false}
-          membership={params.membership}
+          membership={membership}
         />
       </div>
       <div

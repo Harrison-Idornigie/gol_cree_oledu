@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Users, BookOpen, TrendingUp, Settings, Plus, GraduationCap, Globe } from 'lucide-react';
@@ -8,10 +8,10 @@ import Link from 'next/link';
 import { useAuth, useTenantAccess } from '@/app/providers/auth-provider';
 
 interface DashboardPageProps {
-  params: {
+  params: Promise<{
     tenant: string;
     membership: string;
-  };
+  }>;
 }
 
 interface AdminStats {
@@ -30,12 +30,27 @@ interface StudentStats {
   activePaths: number;
 }
 
-export default function DashboardPage({ params }: DashboardPageProps) {
+interface TenantInfo {
+  id?: string;
+  name?: string;
+  slug?: string;
+  status?: string;
+}
+
+interface User {
+  id?: number;
+  name?: string;
+  email?: string;
+  membership?: string;
+}
+
+export default function DashboardPage({ params: paramsPromise }: DashboardPageProps) {
   const { user, isLoading, currentTenant, tenantSlug } = useAuth();
   const { canAccessMembership } = useTenantAccess();
+  const { membership } = React.use(paramsPromise);
 
   // Build URL helper
-  const buildUrl = (path: string) => `/${tenantSlug}/${params.membership}${path}`;
+  const buildUrl = (path: string) => `/${tenantSlug}/${membership}${path}`;
 
   // Debug logging
   useEffect(() => {
@@ -48,13 +63,13 @@ export default function DashboardPage({ params }: DashboardPageProps) {
       } : null,
       currentTenant,
       tenantSlug,
-      requestedMembership: params.membership,
+      requestedMembership: membership,
       isLoading,
       canAccessAdmin: canAccessMembership('admin'),
       canAccessTeam: canAccessMembership('team'),
       canAccessStudent: canAccessMembership('student')
     });
-  }, [user, currentTenant, tenantSlug, params.membership, isLoading, canAccessMembership]);
+  }, [user, currentTenant, tenantSlug, membership, isLoading, canAccessMembership]);
 
   // Show loading state while authentication is being resolved
   if (isLoading) {
@@ -98,20 +113,20 @@ export default function DashboardPage({ params }: DashboardPageProps) {
   const renderDashboard = () => {
     console.log('🎯 Rendering dashboard for:', {
       userMembership: user.membership,
-      requestedMembership: params.membership,
+      requestedMembership: membership,
       canAccessAdmin: canAccessMembership('admin'),
       canAccessTeam: canAccessMembership('team'),
       canAccessStudent: canAccessMembership('student')
     });
 
     // Check if user can access the requested membership level
-    if (!canAccessMembership(params.membership)) {
+    if (!canAccessMembership(membership)) {
       return (
         <div className="flex items-center justify-center min-h-[400px]">
           <div className="text-center">
             <h2 className="text-xl font-semibold text-red-600">Access Denied</h2>
             <p className="text-muted-foreground">
-              You don&apos;t have permission to access the {params.membership} dashboard.
+              You don&apos;t have permission to access the {membership} dashboard.
             </p>
           </div>
         </div>
@@ -119,13 +134,12 @@ export default function DashboardPage({ params }: DashboardPageProps) {
     }
 
     // Render dashboard based on requested membership
-    switch (params.membership) {
+    switch (membership) {
       case 'admin':
         return (
           <AdminDashboard
             tenant={currentTenant}
             buildUrl={buildUrl}
-            membership={params.membership}
           />
         );
       case 'team':
@@ -133,15 +147,12 @@ export default function DashboardPage({ params }: DashboardPageProps) {
           <TeamDashboard
             tenant={currentTenant}
             buildUrl={buildUrl}
-            membership={params.membership}
           />
         );
       case 'student':
         return (
           <StudentDashboard
-            tenant={currentTenant}
             buildUrl={buildUrl}
-            membership={params.membership}
             user={user}
           />
         );
@@ -151,7 +162,7 @@ export default function DashboardPage({ params }: DashboardPageProps) {
             <div className="text-center">
               <h2 className="text-xl font-semibold text-red-600">Invalid Dashboard</h2>
               <p className="text-muted-foreground">
-                Unknown membership type: {params.membership}
+                Unknown membership type: {membership}
               </p>
             </div>
           </div>
@@ -167,8 +178,8 @@ export default function DashboardPage({ params }: DashboardPageProps) {
 }
 
 // Admin Dashboard Component
-function AdminDashboard({ tenant, buildUrl, membership }: any) {
-  const [stats, setStats] = useState<AdminStats>({
+function AdminDashboard({ tenant, buildUrl }: { tenant: TenantInfo | null; buildUrl: (path: string) => string }) {
+  const [stats] = useState<AdminStats>({
     totalUsers: 156,
     totalTeachers: 12,
     totalStudents: 144,
@@ -318,7 +329,7 @@ function AdminDashboard({ tenant, buildUrl, membership }: any) {
 }
 
 // Team Dashboard Component
-function TeamDashboard({ tenant, buildUrl, membership }: any) {
+function TeamDashboard({ tenant, buildUrl }: { tenant: TenantInfo | null; buildUrl: (path: string) => string }) {
   return (
     <>
       <div className="flex items-center justify-between">
@@ -382,8 +393,8 @@ function TeamDashboard({ tenant, buildUrl, membership }: any) {
 }
 
 // Student Dashboard Component  
-function StudentDashboard({ tenant, buildUrl, membership, user }: any) {
-  const [stats, setStats] = useState<StudentStats>({
+function StudentDashboard({ buildUrl, user }: { buildUrl: (path: string) => string; user: User }) {
+  const [stats] = useState<StudentStats>({
     completedLessons: 24,
     currentStreak: 7,
     totalPoints: 2450,
