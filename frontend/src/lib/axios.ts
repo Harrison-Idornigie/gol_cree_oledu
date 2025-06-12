@@ -5,6 +5,38 @@ const axiosInstance = axios.create({
   withCredentials: true,
 });
 
+// Type for axios config that we need to modify
+interface ConfigWithHeaders {
+  headers?: Record<string, string>;
+  url?: string;
+  method?: string;
+}
+
+// Helper function to set auth token for server-side requests
+export async function setServerAuthToken(config: ConfigWithHeaders) {
+  if (typeof window === "undefined") {
+    try {
+      const { cookies } = await import("next/headers");
+      const cookieStore = await cookies();
+
+      let token = cookieStore.get("auth_token")?.value;
+      if (token) {
+        token = decodeURIComponent(token);
+        if (!config.headers) {
+          config.headers = {};
+        }
+        config.headers.Authorization = `Bearer ${token}`;
+        console.log("[Server] Setting auth token:", token.substring(0, 10) + "...");
+      } else {
+        console.log("[Server] No auth token found in cookies");
+      }
+    } catch (error) {
+      console.error("Error setting auth token in server component:", error);
+    }
+  }
+  return config;
+}
+
 // Helper function to extract tenant slug from current URL
 function getCurrentTenantSlug(): string | null {
   if (typeof window === "undefined") return null;
@@ -58,7 +90,7 @@ function transformUrlWithTenant(url: string, tenantSlug: string | null): string 
 
 // Request interceptor to add auth token and tenant context
 axiosInstance.interceptors.request.use(
-  async (config) => {
+  (config) => {
     // Add tenant context to URL if needed
     const tenantSlug = getCurrentTenantSlug();
     if (config.url && tenantSlug) {
@@ -68,27 +100,12 @@ axiosInstance.interceptors.request.use(
     // In server components, we can get the token from the cookie directly
     if (typeof window === "undefined") {
       try {
-        // For server components, extract token from the request headers
-        // This is a more reliable way to get the token in server components
-        const { cookies } = await import("next/headers");
-        const cookieStore = await cookies();
-
-        // Get the token and make sure it's properly decoded
-        let token = cookieStore.get("auth_token")?.value;
-        if (token) {
-          // Ensure the token is properly decoded
-          token = decodeURIComponent(token);
-
-          if (config.headers) {
-            // Set the Authorization header with the Bearer token
-            config.headers.Authorization = `Bearer ${token}`;
-            console.log("[Server] Setting auth token:", token.substring(0, 10) + "...");
-          }
-        } else {
-          console.log("[Server] No auth token found in cookies");
-        }
+        // For server components, we need to handle this synchronously
+        // The async import will be handled at the module level or in the calling code
+        // For now, we'll skip server-side token handling in the interceptor
+        console.log("[Server] Skipping token handling in interceptor - should be handled at request level");
       } catch (error) {
-        console.error("Error setting auth token in server component:", error);
+        console.error("Error in server component interceptor:", error);
       }
     } else {
       // In client components, we can get the token from document.cookie
@@ -138,22 +155,15 @@ axiosInstance.interceptors.response.use(
     }
     return response;
   },
-  async (error) => {
+  (error) => {
     // Check if error is from axios
     if (error?.isAxiosError) {
       // Handle token expiration
       if (error.response?.status === 401) {
         if (typeof window === "undefined") {
-          try {
-            const { cookies } = await import("next/headers");
-            const cookieStore = await cookies();
-            cookieStore.set("auth_token", "", { maxAge: 0 }); // This effectively deletes the cookie
-          } catch (error) {
-            console.error(
-              "Error handling token expiration in server component:",
-              error
-            );
-          }
+          // For server-side, we can't easily clear cookies in interceptors
+          // This should be handled at the application level
+          console.log("[Server] Token expired - should be handled at application level");
         } else {
           // In client components, we can set the cookie directly
           document.cookie = "auth_token=; max-age=0; path=/;";

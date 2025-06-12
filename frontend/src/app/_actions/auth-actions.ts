@@ -152,7 +152,14 @@ export async function logout() {
   }
 }
 
-export async function getCurrentUser() {
+/**
+ * Get current user information based on context
+ * Manually determines the correct endpoint since server actions can't use axios interceptor tenant detection
+ *
+ * Security: Uses URL-based tenant identification with backend validation.
+ * The backend middleware validates tenant access regardless of URL manipulation.
+ */
+export async function getCurrentUser(tenantSlug?: string) {
   try {
     const cookieStore = await cookies();
     const token = cookieStore.get('auth_token')?.value;
@@ -161,18 +168,35 @@ export async function getCurrentUser() {
       return { error: 'No authentication token' };
     }
 
-    // Configure axios to use the token
-    const response = await axiosInstance.get<AuthResponse>("/auth/me", {
+    // Manually determine endpoint since server actions can't use axios interceptor tenant detection
+    const endpoint = tenantSlug
+      ? `/api/${tenantSlug}/auth/me`
+      : '/api/auth/central-me';
+
+    console.log('🔍 getCurrentUser: Using endpoint:', endpoint, tenantSlug ? `(tenant: ${tenantSlug})` : '(central)');
+
+    // Make the API call with the determined endpoint
+    const response = await axiosInstance.get<AuthResponse>(endpoint, {
       headers: {
         'Authorization': `Bearer ${token}`
       }
     });
+
+    // Security validation: Ensure returned user data matches expected tenant context
+    if (tenantSlug && response.data.user?.tenant?.slug !== tenantSlug) {
+      console.error('🚨 Security: Tenant mismatch detected', {
+        urlTenant: tenantSlug,
+        userTenant: response.data.user?.tenant?.slug
+      });
+      return { error: 'Tenant access validation failed' };
+    }
 
     return {
       user: response.data.user,
       success: true
     };
   } catch (error) {
+    console.error('❌ getCurrentUser error:', error);
     return { error: getErrorMessage(error) };
   }
 }

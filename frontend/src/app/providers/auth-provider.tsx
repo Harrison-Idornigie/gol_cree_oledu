@@ -187,15 +187,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       try {
         console.log('🔄 AuthProvider: Initializing authentication...');
 
+        // Extract tenant slug from current path for context-aware user fetching
+        const { tenantSlug: extractedSlug } = extractTenantFromPath(pathname);
+
+        console.log('🏢 AuthProvider: Detected tenant context:', extractedSlug);
+
         // Always try to fetch user data using server action
         // This handles httpOnly cookies properly on the server side
         const { getCurrentUser } = await import('@/app/_actions/auth-actions');
-        const result = await getCurrentUser();
+        const result = await getCurrentUser(extractedSlug || undefined);
 
         console.log('🔍 AuthProvider: getCurrentUser result:', {
           hasUser: !!result.user,
           hasError: !!result.error,
-          error: result.error
+          error: result.error,
+          endpoint: extractedSlug ? `tenant: ${extractedSlug}` : 'central'
         });
 
         if (result.user) {
@@ -223,7 +229,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     };
 
     initializeAuth();
-  }, []);
+  }, [pathname]);
 
   return (
     <AuthContext.Provider value={{
