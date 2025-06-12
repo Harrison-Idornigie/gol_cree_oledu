@@ -581,6 +581,7 @@ class TenantService
                     'password' => $centralUser->password, // Already hashed
                     'interface_language' => $centralUser->interface_language,
                     'email_verified_at' => now(),
+                    'membership' => 'admin', // Set to 'admin' (allowed enum value)
                     'tenant_id' => $tenant->id,
                     // 'central_user_id' => $centralUser->id, // TODO: Enable after migration
                 ]);

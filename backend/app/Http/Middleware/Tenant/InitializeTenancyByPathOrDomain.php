@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Stancl\Tenancy\Resolvers\DomainTenantResolver;
 use Stancl\Tenancy\Tenancy;
 use App\Models\Landlord\Tenant;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Hybrid Tenant Identification Middleware
@@ -101,9 +102,13 @@ class InitializeTenancyByPathOrDomain
     {
         $path = $request->path();
 
+        // console log the path for debugging
+        Log::info('url Path from request: ' . $path);
+
         // Check if path matches pattern: api/{tenant-slug}/...
         // This covers both api/{tenant-slug}/auth/* and api/{tenant-slug}/student/* etc.
         if (preg_match('/^api\/([^\/]+)\//', $path, $matches)) {
+            Log::info('slug url Matches: ' . $matches[1]);
             $tenantSlug = $matches[1];
 
             // Skip if this looks like a non-tenant API route
@@ -111,16 +116,28 @@ class InitializeTenancyByPathOrDomain
                 return null;
             }
 
-            // Use caching for better performance
-            $cacheKey = "tenant_slug_{$tenantSlug}";
-            $tenant = cache()->remember($cacheKey, 300, function () use ($tenantSlug) {
-                return Tenant::where('slug', $tenantSlug)
-                            ->where('status', 'active')
+            // // Use caching for better performance
+            // $cacheKey = "tenant_slug_{$tenantSlug}";
+            // $tenant = cache()->remember($cacheKey, 300, function () use ($tenantSlug) {
+            //     return Tenant::where('slug', $tenantSlug)
+            //                 ->where('status', 'active')
+            //                 ->first();
+            // });
+
+            // Directly query the tenant model
+            $tenant = Tenant::where('slug', $tenantSlug)
+                            // ->where('status', 'active')
                             ->first();
-            });
+            Log::info('Tenant found from path: ' . ($tenant ? $tenant->slug : 'null'));
+            
+            
+            // If tenant is found, initialize tenancy
+            // and set tenant slug in request for controllers
 
             if ($tenant) {
                 // Add tenant slug to route parameters for controllers
+                Log::info('Tenant identified from path: ' . $tenant);
+                Log::info('Tenant slug: ' . $tenantSlug);
                 if ($request->route()) {
                     $request->route()->setParameter('tenant', $tenantSlug);
                 }

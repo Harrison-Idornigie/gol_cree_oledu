@@ -14,12 +14,13 @@ class TenantHelper
 {
     /**
      * Get the current tenant from the request context
-     * 
+     *
      * @return Tenant|null
      */
     public static function current(): ?Tenant
     {
-        return app('current_tenant') ?? Request::get('current_tenant');
+        // Use Stancl's tenant() helper function to get the current tenant
+        return tenant();
     }
 
     /**

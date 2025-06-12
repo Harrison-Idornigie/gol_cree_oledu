@@ -15,13 +15,18 @@ return new class extends Migration
             $table->id();
             $table->string('tenant_id')->nullable()->comment('Reference to tenant in landlord database');
             $table->unsignedBigInteger('central_user_id')
-                  ->nullable()
-                  ->comment('Link to central_users table for admin users');
+                ->nullable()
+                ->comment('Link to central_users table for admin users');
+            $table->string('google_id')->nullable();
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
+            $table->enum('membership', ['user', 'team', 'student', 'admin'])->default('user'); // Add membership column with default value
+            $table->integer('points')->default(0);
+            $table->string('avatar_url')->nullable();
+            $table->string('interface_language', 5)->default('en');
             $table->timestamps();
 
             $table->index(['tenant_id', 'email']);
