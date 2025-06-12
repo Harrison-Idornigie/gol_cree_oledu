@@ -72,7 +72,7 @@ const deleteCookie = async () => {
 export async function login(formData: FormData, tenantSlug?: string) {
   try {
     // Use tenant-specific login endpoint if tenant slug is provided
-    const loginUrl = tenantSlug ? `/api/${tenantSlug}/auth/login` : "/auth/login";
+    const loginUrl = tenantSlug ? `/${tenantSlug}/auth/login` : "/auth/login";
 
     const response = await axiosInstance.post<AuthResponse>(loginUrl, {
       email: formData.get("email"),
@@ -168,10 +168,11 @@ export async function getCurrentUser(tenantSlug?: string) {
       return { error: 'No authentication token' };
     }
 
+    console.log("********************* Tenant slug in getCurrentuser method before api call: " +  tenantSlug)
     // Manually determine endpoint since server actions can't use axios interceptor tenant detection
     const endpoint = tenantSlug
-      ? `/api/${tenantSlug}/auth/me`
-      : '/api/auth/central-me';
+      ? `/${tenantSlug}/auth/me`
+      : '/auth/central-me';
 
     console.log('🔍 getCurrentUser: Using endpoint:', endpoint, tenantSlug ? `(tenant: ${tenantSlug})` : '(central)');
 
@@ -181,6 +182,8 @@ export async function getCurrentUser(tenantSlug?: string) {
         'Authorization': `Bearer ${token}`
       }
     });
+
+    console.log("********************* Tenant slug in getCurrentuser method after api call: " +  tenantSlug)
 
     // Security validation: Ensure returned user data matches expected tenant context
     if (tenantSlug && response.data.user?.tenant?.slug !== tenantSlug) {
