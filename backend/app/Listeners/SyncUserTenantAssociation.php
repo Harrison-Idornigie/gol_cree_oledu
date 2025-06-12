@@ -3,8 +3,6 @@
 namespace App\Listeners;
 
 use App\Services\Auth\UserTenantSyncService;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Log;
 
 /**
@@ -13,9 +11,8 @@ use Illuminate\Support\Facades\Log;
  * Automatically syncs user tenant associations when users are
  * created, updated, or deleted in tenant databases.
  */
-class SyncUserTenantAssociation implements ShouldQueue
+class SyncUserTenantAssociation
 {
-    use InteractsWithQueue;
 
     protected UserTenantSyncService $syncService;
 
@@ -29,18 +26,45 @@ class SyncUserTenantAssociation implements ShouldQueue
      */
     public function handleUserCreated($event): void
     {
+        Log::info('SyncUserTenantAssociation: User created event triggered', [
+            'event_class' => get_class($event),
+            'event_data' => [
+                'user' => $event->user ?? null,
+                'model' => $event->model ?? null,
+                'event_properties' => get_object_vars($event)
+            ],
+            'tenant_context' => tenant()?->id,
+            'should_sync' => $this->shouldSync($event)
+        ]);
+
         if (!$this->shouldSync($event)) {
             return;
         }
 
-        $user = $event->user ?? $event->model;
+        // For eloquent events, the event object itself is the model
+        $user = $event;
         $tenant = $this->getCurrentTenant();
 
-        if ($user && $tenant) {
+        Log::info('SyncUserTenantAssociation: Processing user creation', [
+            'user_email' => $user->email ?? null,
+            'user_id' => $user->id ?? null,
+            'user_membership' => $user->membership ?? null,
+            'user_class' => get_class($user),
+            'tenant_id' => $tenant?->id,
+            'tenant_slug' => $tenant?->slug
+        ]);
+
+        if ($user && $tenant && $user->email) {
             $this->syncService->syncUserToTenant($user->email, $tenant, [
-                'membership' => $user->membership,
+                'membership' => $user->membership ?? 'admin',
                 'permissions' => $user->permissions ?? [],
                 'is_active' => true
+            ]);
+        } else {
+            Log::warning('SyncUserTenantAssociation: Missing required data', [
+                'has_user' => $user !== null,
+                'has_tenant' => $tenant !== null,
+                'has_email' => isset($user->email) && !empty($user->email)
             ]);
         }
     }
@@ -107,15 +131,5 @@ class SyncUserTenantAssociation implements ShouldQueue
         return \App\Models\Landlord\Tenant::find($currentTenant->id);
     }
 
-    /**
-     * Handle failed job
-     */
-    public function failed($event, $exception): void
-    {
-        Log::error('Failed to sync user tenant association', [
-            'event' => class_basename($event),
-            'exception' => $exception->getMessage(),
-            'tenant_id' => tenant()?->id
-        ]);
-    }
+
 }

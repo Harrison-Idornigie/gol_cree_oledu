@@ -24,6 +24,12 @@ class CentralUser extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
 
     /**
+     * The database connection that should be used by the model.
+     * Always use the central/landlord database connection.
+     */
+    protected $connection = 'mysql';
+
+    /**
      * The table associated with the model.
      * Uses the central database, not tenant databases.
      */

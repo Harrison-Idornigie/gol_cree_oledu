@@ -22,10 +22,10 @@ class UserTenantSyncService
     {
         try {
             UserTenantAssociation::syncFromTenant($email, $tenant, $userData);
-            
+
             // Clear cache for this user
             UserTenantAssociation::clearUserCache($email);
-            
+
             Log::info('User tenant association synced', [
                 'email' => $email,
                 'tenant_slug' => $tenant->slug,

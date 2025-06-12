@@ -27,6 +27,12 @@ class UserTenantAssociation extends Model
 {
     use HasFactory;
 
+    /**
+     * The database connection that should be used by the model.
+     * Always use the central/landlord database connection.
+     */
+    protected $connection = 'mysql';
+
     protected $fillable = [
         'email',
         'tenant_id',
@@ -129,22 +135,35 @@ class UserTenantAssociation extends Model
 
     /**
      * Sync user association when user is created/updated in tenant
+     * Optimized for high-volume operations
      */
     public static function syncFromTenant(string $email, Tenant $tenant, array $userData): self
     {
-        return static::updateOrCreate(
-            [
-                'email' => $email,
-                'tenant_id' => $tenant->id,
-            ],
-            [
-                'tenant_slug' => $tenant->slug,
-                'membership' => $userData['membership'] ?? null,
-                'permissions' => $userData['permissions'] ?? null,
-                'is_active' => $userData['is_active'] ?? true,
-                'last_accessed_at' => now(),
-            ]
-        );
+        // Use upsert for better performance with high volume
+        $attributes = [
+            'email' => $email,
+            'tenant_id' => $tenant->id,
+            'tenant_slug' => $tenant->slug,
+            'membership' => $userData['membership'] ?? null,
+            'permissions' => $userData['permissions'] ?? null,
+            'is_active' => $userData['is_active'] ?? true,
+            'last_accessed_at' => now(),
+            'updated_at' => now(),
+        ];
+
+        // Try to update first, then create if not exists
+        $updated = static::where('email', $email)
+                        ->where('tenant_id', $tenant->id)
+                        ->update($attributes);
+
+        if (!$updated) {
+            $attributes['created_at'] = now();
+            return static::create($attributes);
+        }
+
+        return static::where('email', $email)
+                    ->where('tenant_id', $tenant->id)
+                    ->first();
     }
 
     /**
