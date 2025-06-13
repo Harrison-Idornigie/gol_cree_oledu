@@ -32,7 +32,7 @@ class StudentWordController extends BaseAPIController
     public function __construct(WordManagementService $wordService)
     {
         $this->wordService = $wordService;
-        $this->middleware(['auth:sanctum', 'verified', 'tenant', 'membership:student']);
+
     }
 
     /**

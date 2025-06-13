@@ -64,22 +64,22 @@
   },
   "suites": [
     {
-      "title": "Tenant/frontend/API/Word/team-word-controller.spec.ts",
-      "file": "Tenant/frontend/API/Word/team-word-controller.spec.ts",
+      "title": "Tenant/backend/API/Word/team-word-controller.spec.ts",
+      "file": "Tenant/backend/API/Word/team-word-controller.spec.ts",
       "column": 0,
       "line": 0,
       "specs": [],
       "suites": [
         {
           "title": "Team Word Controller API - Comprehensive E2E Tests",
-          "file": "Tenant/frontend/API/Word/team-word-controller.spec.ts",
+          "file": "Tenant/backend/API/Word/team-word-controller.spec.ts",
           "line": 19,
           "column": 6,
           "specs": [],
           "suites": [
             {
               "title": "Authentication & Authorization Tests",
-              "file": "Tenant/frontend/API/Word/team-word-controller.spec.ts",
+              "file": "Tenant/backend/API/Word/team-word-controller.spec.ts",
               "line": 75,
               "column": 8,
               "specs": [
@@ -99,67 +99,80 @@
                           "workerIndex": 0,
                           "parallelIndex": 0,
                           "status": "failed",
-                          "duration": 3,
+                          "duration": 2929,
                           "error": {
-                            "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m",
-                            "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n    at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/frontend/API/Word/team-word-controller.spec.ts:57:41",
+                            "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mfalse\u001b[39m\nReceived: \u001b[31mundefined\u001b[39m",
+                            "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mfalse\u001b[39m\nReceived: \u001b[31mundefined\u001b[39m\n    at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:93:28",
                             "location": {
-                              "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/frontend/API/Word/team-word-controller.spec.ts",
-                              "column": 41,
-                              "line": 57
+                              "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts",
+                              "column": 28,
+                              "line": 93
                             },
-                            "snippet": "\u001b[0m \u001b[90m 55 |\u001b[39m     \u001b[36mconst\u001b[39m tenant2Registration \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m apiHelper\u001b[33m.\u001b[39mregisterTenantAdmin(tenant2Data)\u001b[33m;\u001b[39m\n \u001b[90m 56 |\u001b[39m     \n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 57 |\u001b[39m     expect(tenant1Registration\u001b[33m.\u001b[39msuccess)\u001b[33m.\u001b[39mtoBe(\u001b[36mtrue\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                         \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 58 |\u001b[39m     expect(tenant2Registration\u001b[33m.\u001b[39msuccess)\u001b[33m.\u001b[39mtoBe(\u001b[36mtrue\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 59 |\u001b[39m     \n \u001b[90m 60 |\u001b[39m     tenant1Token \u001b[33m=\u001b[39m tenant1Registration\u001b[33m.\u001b[39mdata\u001b[33m?\u001b[39m\u001b[33m.\u001b[39mtoken\u001b[33m;\u001b[39m\u001b[0m"
+                            "snippet": "\u001b[0m \u001b[90m 91 |\u001b[39m       }\n \u001b[90m 92 |\u001b[39m       \n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 93 |\u001b[39m       expect(data\u001b[33m.\u001b[39msuccess)\u001b[33m.\u001b[39mtoBe(\u001b[36mfalse\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                            \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 94 |\u001b[39m       expect(data\u001b[33m.\u001b[39mmessage)\u001b[33m.\u001b[39mtoContain(\u001b[32m'Unauthenticated'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 95 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 96 |\u001b[39m\u001b[0m"
                           },
                           "errors": [
                             {
                               "location": {
-                                "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/frontend/API/Word/team-word-controller.spec.ts",
-                                "column": 41,
-                                "line": 57
+                                "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts",
+                                "column": 28,
+                                "line": 93
                               },
-                              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n\n\u001b[0m \u001b[90m 55 |\u001b[39m     \u001b[36mconst\u001b[39m tenant2Registration \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m apiHelper\u001b[33m.\u001b[39mregisterTenantAdmin(tenant2Data)\u001b[33m;\u001b[39m\n \u001b[90m 56 |\u001b[39m     \n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 57 |\u001b[39m     expect(tenant1Registration\u001b[33m.\u001b[39msuccess)\u001b[33m.\u001b[39mtoBe(\u001b[36mtrue\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                         \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 58 |\u001b[39m     expect(tenant2Registration\u001b[33m.\u001b[39msuccess)\u001b[33m.\u001b[39mtoBe(\u001b[36mtrue\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 59 |\u001b[39m     \n \u001b[90m 60 |\u001b[39m     tenant1Token \u001b[33m=\u001b[39m tenant1Registration\u001b[33m.\u001b[39mdata\u001b[33m?\u001b[39m\u001b[33m.\u001b[39mtoken\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/frontend/API/Word/team-word-controller.spec.ts:57:41\u001b[22m"
+                              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mfalse\u001b[39m\nReceived: \u001b[31mundefined\u001b[39m\n\n\u001b[0m \u001b[90m 91 |\u001b[39m       }\n \u001b[90m 92 |\u001b[39m       \n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 93 |\u001b[39m       expect(data\u001b[33m.\u001b[39msuccess)\u001b[33m.\u001b[39mtoBe(\u001b[36mfalse\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                            \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 94 |\u001b[39m       expect(data\u001b[33m.\u001b[39mmessage)\u001b[33m.\u001b[39mtoContain(\u001b[32m'Unauthenticated'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 95 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 96 |\u001b[39m\u001b[0m\n\u001b[2m    at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:93:28\u001b[22m"
                             }
                           ],
                           "stdout": [
                             {
-                              "text": "📡 API Response 500: {\"success\":false,\"message\":\"Registration failed\",\"errors\":{\"error\":\"An unexpected error occurred\"}}\n"
+                              "text": "📡 API Response 201: {\"success\":true,\"data\":{\"token\":\"1|OCOV2fZl5uIBzYTxlYfQpZbSN1n6uhjPDUXdbKibee73c548\",\"progress_id\":\"tenant_684c576cbdb72\",\"user\":{\"id\":1,\"name\":\"John Admin\",\"email\":\"admin-e2e-test-1749833580613-20950-ktn2ug-066150@e2e-test.local\",\"membership\":\"admin\",\"email_verified_at\":null,\"tenant_id\":\"8ff28f23-f080-462b-8f61-3002cd22b916\",\"tenant\":{\"id\":\"8ff28f23-f080-462b-8f61-3002cd22b916\",\"name\":\"Word Test School 1\",\"slug\":\"e2e-test-1749833580613-20950-ktn2ug-066150\",\"status\":\"trial\"}}},\"message\":\"Organiz...\n"
                             },
                             {
-                              "text": "📡 API Response 500: {\"success\":false,\"message\":\"Registration failed\",\"errors\":{\"error\":\"An unexpected error occurred\"}}\n"
+                              "text": "📡 API Response 201: {\"success\":true,\"data\":{\"token\":\"1|4vFF3pA887yV4mQNRTKmIbmI5doCGf2gSFlQOpHb39c240eb\",\"progress_id\":\"tenant_684c577362ac7\",\"user\":{\"id\":1,\"name\":\"John Admin\",\"email\":\"admin-e2e-test-1749833580614-20950-pnsgwi-127350@e2e-test.local\",\"membership\":\"admin\",\"email_verified_at\":null,\"tenant_id\":\"59b86f68-e226-46b7-957d-cd3b380085be\",\"tenant\":{\"id\":\"59b86f68-e226-46b7-957d-cd3b380085be\",\"name\":\"Word Test School 2\",\"slug\":\"e2e-test-1749833580614-20950-pnsgwi-127350\",\"status\":\"trial\"}}},\"message\":\"Organiz...\n"
+                            },
+                            {
+                              "text": "📡 Raw response: {\"message\":\"Unauthenticated.\"}\n"
                             },
                             {
                               "text": "🗑️  Cleaning up all test tenants...\n"
                             },
                             {
-                              "text": "🗑️  Cleaning up tenant: e2e-test-1749826182698-210355-3hd778-361199\n"
+                              "text": "🗑️  Cleaning up tenant: e2e-test-1749833580613-20950-ktn2ug-066150\n"
                             },
                             {
-                              "text": "🗑️  Cleaning up tenant: e2e-test-1749826182698-210355-lzhhj6-415499\n"
+                              "text": "🗑️  Cleaning up tenant: e2e-test-1749833580614-20950-pnsgwi-127350\n"
                             }
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-06-13T14:49:42.665Z",
+                          "startTime": "2025-06-13T16:53:00.578Z",
                           "annotations": [],
                           "attachments": [
                             {
+                              "name": "screenshot",
+                              "contentType": "image/png",
+                              "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/Tenant-backend-API-Word-te-03351-or-unauthenticated-requests-chromium/test-failed-1.png"
+                            },
+                            {
+                              "name": "video",
+                              "contentType": "video/webm",
+                              "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/Tenant-backend-API-Word-te-03351-or-unauthenticated-requests-chromium/video.webm"
+                            },
+                            {
                               "name": "_error-context-0",
                               "contentType": "text/markdown",
-                              "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/Tenant-frontend-API-Word-t-60571-or-unauthenticated-requests-chromium/error-context.md"
+                              "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/Tenant-backend-API-Word-te-03351-or-unauthenticated-requests-chromium/error-context.md"
                             }
                           ],
                           "errorLocation": {
-                            "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/frontend/API/Word/team-word-controller.spec.ts",
-                            "column": 41,
-                            "line": 57
+                            "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts",
+                            "column": 28,
+                            "line": 93
                           }
                         }
                       ],
                       "status": "unexpected"
                     }
                   ],
-                  "id": "9e84d37b5ec4a66913bb-72f7cd65a69894c8026e",
-                  "file": "Tenant/frontend/API/Word/team-word-controller.spec.ts",
+                  "id": "58318020fce36547f6b8-d40858966c89973d1cb1",
+                  "file": "Tenant/backend/API/Word/team-word-controller.spec.ts",
                   "line": 76,
                   "column": 9
                 },
@@ -176,30 +189,37 @@
                       "projectName": "chromium",
                       "results": [
                         {
-                          "workerIndex": -1,
-                          "parallelIndex": -1,
-                          "status": "skipped",
-                          "duration": 0,
+                          "workerIndex": 1,
+                          "parallelIndex": 0,
+                          "status": "passed",
+                          "duration": 1140,
                           "errors": [],
-                          "stdout": [],
+                          "stdout": [
+                            {
+                              "text": "📡 API Response 201: {\"success\":true,\"data\":{\"token\":\"1|mndR8LHAurx6nqjsUCxjcKBqZzxMgDmCX3ucQrL281372a2a\",\"progress_id\":\"tenant_684c5782dd740\",\"user\":{\"id\":1,\"name\":\"John Admin\",\"email\":\"admin-e2e-test-1749833602701-21929-e2y2db-467624@e2e-test.local\",\"membership\":\"admin\",\"email_verified_at\":null,\"tenant_id\":\"2f656738-c6e9-4791-b3ad-c2e54305423d\",\"tenant\":{\"id\":\"2f656738-c6e9-4791-b3ad-c2e54305423d\",\"name\":\"Word Test School 1\",\"slug\":\"e2e-test-1749833602701-21929-e2y2db-467624\",\"status\":\"trial\"}}},\"message\":\"Organiz...\n"
+                            },
+                            {
+                              "text": "📡 API Response 201: {\"success\":true,\"data\":{\"token\":\"1|GRiYVdAJdCAnVkTwVm1HEOUDacdX6vCEqeS8lDqW29d3dc67\",\"progress_id\":\"tenant_684c5789399ac\",\"user\":{\"id\":1,\"name\":\"John Admin\",\"email\":\"admin-e2e-test-1749833602701-21929-wgoq8s-556223@e2e-test.local\",\"membership\":\"admin\",\"email_verified_at\":null,\"tenant_id\":\"ad876caf-45cd-466b-b8c3-8b5812c859c3\",\"tenant\":{\"id\":\"ad876caf-45cd-466b-b8c3-8b5812c859c3\",\"name\":\"Word Test School 2\",\"slug\":\"e2e-test-1749833602701-21929-wgoq8s-556223\",\"status\":\"trial\"}}},\"message\":\"Organiz...\n"
+                            }
+                          ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-06-13T14:49:45.114Z",
+                          "startTime": "2025-06-13T16:53:22.662Z",
                           "annotations": [],
                           "attachments": []
                         }
                       ],
-                      "status": "skipped"
+                      "status": "expected"
                     }
                   ],
-                  "id": "9e84d37b5ec4a66913bb-97cf66ce755a3794b0df",
-                  "file": "Tenant/frontend/API/Word/team-word-controller.spec.ts",
+                  "id": "58318020fce36547f6b8-f50005fbb0aa06549f3e",
+                  "file": "Tenant/backend/API/Word/team-word-controller.spec.ts",
                   "line": 97,
                   "column": 9
                 },
                 {
                   "title": "should allow valid team authentication",
-                  "ok": true,
+                  "ok": false,
                   "tags": [],
                   "tests": [
                     {
@@ -210,24 +230,74 @@
                       "projectName": "chromium",
                       "results": [
                         {
-                          "workerIndex": -1,
-                          "parallelIndex": -1,
-                          "status": "skipped",
-                          "duration": 0,
-                          "errors": [],
-                          "stdout": [],
+                          "workerIndex": 1,
+                          "parallelIndex": 0,
+                          "status": "failed",
+                          "duration": 1132,
+                          "error": {
+                            "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m200\u001b[39m\nReceived: \u001b[31m403\u001b[39m",
+                            "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m200\u001b[39m\nReceived: \u001b[31m403\u001b[39m\n    at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:109:31",
+                            "location": {
+                              "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts",
+                              "column": 31,
+                              "line": 109
+                            },
+                            "snippet": "\u001b[0m \u001b[90m 107 |\u001b[39m         token\u001b[33m:\u001b[39m tenant1Token\n \u001b[90m 108 |\u001b[39m       })\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 109 |\u001b[39m       expect(response\u001b[33m.\u001b[39mstatus)\u001b[33m.\u001b[39mtoBe(\u001b[35m200\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                               \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 110 |\u001b[39m       \n \u001b[90m 111 |\u001b[39m       \u001b[36mconst\u001b[39m data \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m response\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\n \u001b[90m 112 |\u001b[39m       expect(data\u001b[33m.\u001b[39msuccess)\u001b[33m.\u001b[39mtoBe(\u001b[36mtrue\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts",
+                                "column": 31,
+                                "line": 109
+                              },
+                              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m200\u001b[39m\nReceived: \u001b[31m403\u001b[39m\n\n\u001b[0m \u001b[90m 107 |\u001b[39m         token\u001b[33m:\u001b[39m tenant1Token\n \u001b[90m 108 |\u001b[39m       })\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 109 |\u001b[39m       expect(response\u001b[33m.\u001b[39mstatus)\u001b[33m.\u001b[39mtoBe(\u001b[35m200\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                               \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 110 |\u001b[39m       \n \u001b[90m 111 |\u001b[39m       \u001b[36mconst\u001b[39m data \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m response\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\n \u001b[90m 112 |\u001b[39m       expect(data\u001b[33m.\u001b[39msuccess)\u001b[33m.\u001b[39mtoBe(\u001b[36mtrue\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:109:31\u001b[22m"
+                            }
+                          ],
+                          "stdout": [
+                            {
+                              "text": "🗑️  Cleaning up all test tenants...\n"
+                            },
+                            {
+                              "text": "🗑️  Cleaning up tenant: e2e-test-1749833602701-21929-e2y2db-467624\n"
+                            },
+                            {
+                              "text": "🗑️  Cleaning up tenant: e2e-test-1749833602701-21929-wgoq8s-556223\n"
+                            }
+                          ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-06-13T14:49:45.124Z",
+                          "startTime": "2025-06-13T16:53:36.804Z",
                           "annotations": [],
-                          "attachments": []
+                          "attachments": [
+                            {
+                              "name": "screenshot",
+                              "contentType": "image/png",
+                              "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/Tenant-backend-API-Word-te-33c69-w-valid-team-authentication-chromium/test-failed-1.png"
+                            },
+                            {
+                              "name": "video",
+                              "contentType": "video/webm",
+                              "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/Tenant-backend-API-Word-te-33c69-w-valid-team-authentication-chromium/video.webm"
+                            },
+                            {
+                              "name": "_error-context-0",
+                              "contentType": "text/markdown",
+                              "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/Tenant-backend-API-Word-te-33c69-w-valid-team-authentication-chromium/error-context.md"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts",
+                            "column": 31,
+                            "line": 109
+                          }
                         }
                       ],
-                      "status": "skipped"
+                      "status": "unexpected"
                     }
                   ],
-                  "id": "9e84d37b5ec4a66913bb-133ffa1099ac8a425810",
-                  "file": "Tenant/frontend/API/Word/team-word-controller.spec.ts",
+                  "id": "58318020fce36547f6b8-be75e4bf3cf48c0549eb",
+                  "file": "Tenant/backend/API/Word/team-word-controller.spec.ts",
                   "line": 105,
                   "column": 9
                 }
@@ -235,13 +305,13 @@
             },
             {
               "title": "Tenant Isolation Tests",
-              "file": "Tenant/frontend/API/Word/team-word-controller.spec.ts",
+              "file": "Tenant/backend/API/Word/team-word-controller.spec.ts",
               "line": 117,
               "column": 8,
               "specs": [
                 {
                   "title": "should only access words from own tenant",
-                  "ok": true,
+                  "ok": false,
                   "tags": [],
                   "tests": [
                     {
@@ -252,30 +322,86 @@
                       "projectName": "chromium",
                       "results": [
                         {
-                          "workerIndex": -1,
-                          "parallelIndex": -1,
-                          "status": "skipped",
-                          "duration": 0,
-                          "errors": [],
-                          "stdout": [],
+                          "workerIndex": 2,
+                          "parallelIndex": 0,
+                          "status": "failed",
+                          "duration": 1330,
+                          "error": {
+                            "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m201\u001b[39m\nReceived: \u001b[31m403\u001b[39m",
+                            "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m201\u001b[39m\nReceived: \u001b[31m403\u001b[39m\n    at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:132:37",
+                            "location": {
+                              "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts",
+                              "column": 37,
+                              "line": 132
+                            },
+                            "snippet": "\u001b[0m \u001b[90m 130 |\u001b[39m         token\u001b[33m:\u001b[39m tenant1Token\n \u001b[90m 131 |\u001b[39m       })\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 132 |\u001b[39m       expect(createResponse\u001b[33m.\u001b[39mstatus)\u001b[33m.\u001b[39mtoBe(\u001b[35m201\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                     \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 133 |\u001b[39m       \n \u001b[90m 134 |\u001b[39m       \u001b[36mconst\u001b[39m createdWord \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m createResponse\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\n \u001b[90m 135 |\u001b[39m       \u001b[36mconst\u001b[39m wordId \u001b[33m=\u001b[39m createdWord\u001b[33m.\u001b[39mdata\u001b[33m.\u001b[39mid\u001b[33m;\u001b[39m\u001b[0m"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts",
+                                "column": 37,
+                                "line": 132
+                              },
+                              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m201\u001b[39m\nReceived: \u001b[31m403\u001b[39m\n\n\u001b[0m \u001b[90m 130 |\u001b[39m         token\u001b[33m:\u001b[39m tenant1Token\n \u001b[90m 131 |\u001b[39m       })\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 132 |\u001b[39m       expect(createResponse\u001b[33m.\u001b[39mstatus)\u001b[33m.\u001b[39mtoBe(\u001b[35m201\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                     \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 133 |\u001b[39m       \n \u001b[90m 134 |\u001b[39m       \u001b[36mconst\u001b[39m createdWord \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m createResponse\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\n \u001b[90m 135 |\u001b[39m       \u001b[36mconst\u001b[39m wordId \u001b[33m=\u001b[39m createdWord\u001b[33m.\u001b[39mdata\u001b[33m.\u001b[39mid\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:132:37\u001b[22m"
+                            }
+                          ],
+                          "stdout": [
+                            {
+                              "text": "📡 API Response 201: {\"success\":true,\"data\":{\"token\":\"1|MsuErjlBmJAiia7OuVpdSpsZX64Ieh18HfFyD48r042d4301\",\"progress_id\":\"tenant_684c57971ea67\",\"user\":{\"id\":1,\"name\":\"John Admin\",\"email\":\"admin-e2e-test-1749833622951-22863-ro6ktc-773211@e2e-test.local\",\"membership\":\"admin\",\"email_verified_at\":null,\"tenant_id\":\"a25abd55-f949-4633-bf2b-793feaccd23b\",\"tenant\":{\"id\":\"a25abd55-f949-4633-bf2b-793feaccd23b\",\"name\":\"Word Test School 1\",\"slug\":\"e2e-test-1749833622951-22863-ro6ktc-773211\",\"status\":\"trial\"}}},\"message\":\"Organiz...\n"
+                            },
+                            {
+                              "text": "📡 API Response 201: {\"success\":true,\"data\":{\"token\":\"1|n4vznG5HBmWqrzTfD4oDK84dkOoKE7PLZXK4lBiy1cff2106\",\"progress_id\":\"tenant_684c579db59c0\",\"user\":{\"id\":1,\"name\":\"John Admin\",\"email\":\"admin-e2e-test-1749833622951-22863-vdr6ia-827111@e2e-test.local\",\"membership\":\"admin\",\"email_verified_at\":null,\"tenant_id\":\"017b2526-8132-4bd8-94ed-8d756edcee60\",\"tenant\":{\"id\":\"017b2526-8132-4bd8-94ed-8d756edcee60\",\"name\":\"Word Test School 2\",\"slug\":\"e2e-test-1749833622951-22863-vdr6ia-827111\",\"status\":\"trial\"}}},\"message\":\"Organiz...\n"
+                            },
+                            {
+                              "text": "🗑️  Cleaning up all test tenants...\n"
+                            },
+                            {
+                              "text": "🗑️  Cleaning up tenant: e2e-test-1749833622951-22863-ro6ktc-773211\n"
+                            },
+                            {
+                              "text": "🗑️  Cleaning up tenant: e2e-test-1749833622951-22863-vdr6ia-827111\n"
+                            }
+                          ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-06-13T14:49:45.131Z",
+                          "startTime": "2025-06-13T16:53:42.920Z",
                           "annotations": [],
-                          "attachments": []
+                          "attachments": [
+                            {
+                              "name": "screenshot",
+                              "contentType": "image/png",
+                              "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/Tenant-backend-API-Word-te-029a5-ccess-words-from-own-tenant-chromium/test-failed-1.png"
+                            },
+                            {
+                              "name": "video",
+                              "contentType": "video/webm",
+                              "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/Tenant-backend-API-Word-te-029a5-ccess-words-from-own-tenant-chromium/video.webm"
+                            },
+                            {
+                              "name": "_error-context-0",
+                              "contentType": "text/markdown",
+                              "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/Tenant-backend-API-Word-te-029a5-ccess-words-from-own-tenant-chromium/error-context.md"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts",
+                            "column": 37,
+                            "line": 132
+                          }
                         }
                       ],
-                      "status": "skipped"
+                      "status": "unexpected"
                     }
                   ],
-                  "id": "9e84d37b5ec4a66913bb-e581acdc0380bc450a43",
-                  "file": "Tenant/frontend/API/Word/team-word-controller.spec.ts",
+                  "id": "58318020fce36547f6b8-1b4c05784e90e4292a5b",
+                  "file": "Tenant/backend/API/Word/team-word-controller.spec.ts",
                   "line": 118,
                   "column": 9
                 },
                 {
                   "title": "should block cross-tenant word access",
-                  "ok": true,
+                  "ok": false,
                   "tags": [],
                   "tests": [
                     {
@@ -286,24 +412,80 @@
                       "projectName": "chromium",
                       "results": [
                         {
-                          "workerIndex": -1,
-                          "parallelIndex": -1,
-                          "status": "skipped",
-                          "duration": 0,
-                          "errors": [],
-                          "stdout": [],
+                          "workerIndex": 3,
+                          "parallelIndex": 0,
+                          "status": "failed",
+                          "duration": 1237,
+                          "error": {
+                            "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m201\u001b[39m\nReceived: \u001b[31m403\u001b[39m",
+                            "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m201\u001b[39m\nReceived: \u001b[31m403\u001b[39m\n    at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:158:37",
+                            "location": {
+                              "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts",
+                              "column": 37,
+                              "line": 158
+                            },
+                            "snippet": "\u001b[0m \u001b[90m 156 |\u001b[39m         token\u001b[33m:\u001b[39m tenant2Token\n \u001b[90m 157 |\u001b[39m       })\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 158 |\u001b[39m       expect(createResponse\u001b[33m.\u001b[39mstatus)\u001b[33m.\u001b[39mtoBe(\u001b[35m201\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                     \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 159 |\u001b[39m\n \u001b[90m 160 |\u001b[39m       \u001b[90m// Try to access with tenant1 token\u001b[39m\n \u001b[90m 161 |\u001b[39m       \u001b[36mconst\u001b[39m listResponse \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m apiHelper\u001b[33m.\u001b[39mtenantRequest(tenant1Slug\u001b[33m,\u001b[39m \u001b[32m'/team/words'\u001b[39m\u001b[33m,\u001b[39m {\u001b[0m"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts",
+                                "column": 37,
+                                "line": 158
+                              },
+                              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m201\u001b[39m\nReceived: \u001b[31m403\u001b[39m\n\n\u001b[0m \u001b[90m 156 |\u001b[39m         token\u001b[33m:\u001b[39m tenant2Token\n \u001b[90m 157 |\u001b[39m       })\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 158 |\u001b[39m       expect(createResponse\u001b[33m.\u001b[39mstatus)\u001b[33m.\u001b[39mtoBe(\u001b[35m201\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                     \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 159 |\u001b[39m\n \u001b[90m 160 |\u001b[39m       \u001b[90m// Try to access with tenant1 token\u001b[39m\n \u001b[90m 161 |\u001b[39m       \u001b[36mconst\u001b[39m listResponse \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m apiHelper\u001b[33m.\u001b[39mtenantRequest(tenant1Slug\u001b[33m,\u001b[39m \u001b[32m'/team/words'\u001b[39m\u001b[33m,\u001b[39m {\u001b[0m\n\u001b[2m    at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:158:37\u001b[22m"
+                            }
+                          ],
+                          "stdout": [
+                            {
+                              "text": "📡 API Response 201: {\"success\":true,\"data\":{\"token\":\"1|YrsCwsU4EEEHfc3EWMxeWWwMjZUpBNzOr1PvoBQLcaa89cd3\",\"progress_id\":\"tenant_684c57aba05ca\",\"user\":{\"id\":1,\"name\":\"John Admin\",\"email\":\"admin-e2e-test-1749833643514-23751-zuyfhg-364056@e2e-test.local\",\"membership\":\"admin\",\"email_verified_at\":null,\"tenant_id\":\"e776ec0b-2a88-4688-833b-2f411f03e31c\",\"tenant\":{\"id\":\"e776ec0b-2a88-4688-833b-2f411f03e31c\",\"name\":\"Word Test School 1\",\"slug\":\"e2e-test-1749833643514-23751-zuyfhg-364056\",\"status\":\"trial\"}}},\"message\":\"Organiz...\n"
+                            },
+                            {
+                              "text": "📡 API Response 201: {\"success\":true,\"data\":{\"token\":\"1|7z19kykwQNHbuHSTgzhFkiBswLlxdxpFUiRO2HmD2268598c\",\"progress_id\":\"tenant_684c57b20d878\",\"user\":{\"id\":1,\"name\":\"John Admin\",\"email\":\"admin-e2e-test-1749833643514-23751-oyvfgx-417055@e2e-test.local\",\"membership\":\"admin\",\"email_verified_at\":null,\"tenant_id\":\"d0640554-ee85-45bf-b17b-a0b156ac27a9\",\"tenant\":{\"id\":\"d0640554-ee85-45bf-b17b-a0b156ac27a9\",\"name\":\"Word Test School 2\",\"slug\":\"e2e-test-1749833643514-23751-oyvfgx-417055\",\"status\":\"trial\"}}},\"message\":\"Organiz...\n"
+                            },
+                            {
+                              "text": "🗑️  Cleaning up all test tenants...\n"
+                            },
+                            {
+                              "text": "🗑️  Cleaning up tenant: e2e-test-1749833643514-23751-zuyfhg-364056\n"
+                            },
+                            {
+                              "text": "🗑️  Cleaning up tenant: e2e-test-1749833643514-23751-oyvfgx-417055\n"
+                            }
+                          ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-06-13T14:49:45.147Z",
+                          "startTime": "2025-06-13T16:54:03.485Z",
                           "annotations": [],
-                          "attachments": []
+                          "attachments": [
+                            {
+                              "name": "screenshot",
+                              "contentType": "image/png",
+                              "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/Tenant-backend-API-Word-te-56af1-ck-cross-tenant-word-access-chromium/test-failed-1.png"
+                            },
+                            {
+                              "name": "video",
+                              "contentType": "video/webm",
+                              "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/Tenant-backend-API-Word-te-56af1-ck-cross-tenant-word-access-chromium/video.webm"
+                            },
+                            {
+                              "name": "_error-context-0",
+                              "contentType": "text/markdown",
+                              "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/Tenant-backend-API-Word-te-56af1-ck-cross-tenant-word-access-chromium/error-context.md"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts",
+                            "column": 37,
+                            "line": 158
+                          }
                         }
                       ],
-                      "status": "skipped"
+                      "status": "unexpected"
                     }
                   ],
-                  "id": "9e84d37b5ec4a66913bb-85284f1ffc32b9280853",
-                  "file": "Tenant/frontend/API/Word/team-word-controller.spec.ts",
+                  "id": "58318020fce36547f6b8-ed388ffc171739c7cfdf",
+                  "file": "Tenant/backend/API/Word/team-word-controller.spec.ts",
                   "line": 144,
                   "column": 9
                 },
@@ -320,24 +502,31 @@
                       "projectName": "chromium",
                       "results": [
                         {
-                          "workerIndex": -1,
-                          "parallelIndex": -1,
-                          "status": "skipped",
-                          "duration": 0,
+                          "workerIndex": 4,
+                          "parallelIndex": 0,
+                          "status": "passed",
+                          "duration": 2361,
                           "errors": [],
-                          "stdout": [],
+                          "stdout": [
+                            {
+                              "text": "📡 API Response 201: {\"success\":true,\"data\":{\"token\":\"1|MZ4vMtlFkoZkBoa8j98G5aRgIA5XBHCfpLyDj2f995816732\",\"progress_id\":\"tenant_684c57bfb350c\",\"user\":{\"id\":1,\"name\":\"John Admin\",\"email\":\"admin-e2e-test-1749833663574-24646-qwuxvp-577335@e2e-test.local\",\"membership\":\"admin\",\"email_verified_at\":null,\"tenant_id\":\"7885aa33-cd67-424d-8a2f-dc22cf823c0a\",\"tenant\":{\"id\":\"7885aa33-cd67-424d-8a2f-dc22cf823c0a\",\"name\":\"Word Test School 1\",\"slug\":\"e2e-test-1749833663574-24646-qwuxvp-577335\",\"status\":\"trial\"}}},\"message\":\"Organiz...\n"
+                            },
+                            {
+                              "text": "📡 API Response 201: {\"success\":true,\"data\":{\"token\":\"1|7oj38jHt8P6v2gtvm3q53Wh80fdxLB6R7lMxaaIA82a018c2\",\"progress_id\":\"tenant_684c57c608efe\",\"user\":{\"id\":1,\"name\":\"John Admin\",\"email\":\"admin-e2e-test-1749833663574-24646-uvxquw-636935@e2e-test.local\",\"membership\":\"admin\",\"email_verified_at\":null,\"tenant_id\":\"79743f1b-14fe-49b4-9db6-bb6e93122924\",\"tenant\":{\"id\":\"79743f1b-14fe-49b4-9db6-bb6e93122924\",\"name\":\"Word Test School 2\",\"slug\":\"e2e-test-1749833663574-24646-uvxquw-636935\",\"status\":\"trial\"}}},\"message\":\"Organiz...\n"
+                            }
+                          ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-06-13T14:49:45.156Z",
+                          "startTime": "2025-06-13T16:54:23.516Z",
                           "annotations": [],
                           "attachments": []
                         }
                       ],
-                      "status": "skipped"
+                      "status": "expected"
                     }
                   ],
-                  "id": "9e84d37b5ec4a66913bb-086ca2aa0f641bac34c9",
-                  "file": "Tenant/frontend/API/Word/team-word-controller.spec.ts",
+                  "id": "58318020fce36547f6b8-e6d4950496ff1aa918f0",
+                  "file": "Tenant/backend/API/Word/team-word-controller.spec.ts",
                   "line": 171,
                   "column": 9
                 }
@@ -345,13 +534,13 @@
             },
             {
               "title": "Data Validation Tests",
-              "file": "Tenant/frontend/API/Word/team-word-controller.spec.ts",
+              "file": "Tenant/backend/API/Word/team-word-controller.spec.ts",
               "line": 190,
               "column": 8,
               "specs": [
                 {
                   "title": "should validate required fields",
-                  "ok": true,
+                  "ok": false,
                   "tags": [],
                   "tests": [
                     {
@@ -362,30 +551,80 @@
                       "projectName": "chromium",
                       "results": [
                         {
-                          "workerIndex": -1,
-                          "parallelIndex": -1,
-                          "status": "skipped",
-                          "duration": 0,
-                          "errors": [],
-                          "stdout": [],
+                          "workerIndex": 4,
+                          "parallelIndex": 0,
+                          "status": "failed",
+                          "duration": 832,
+                          "error": {
+                            "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m422\u001b[39m\nReceived: \u001b[31m403\u001b[39m",
+                            "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m422\u001b[39m\nReceived: \u001b[31m403\u001b[39m\n    at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:200:31",
+                            "location": {
+                              "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts",
+                              "column": 31,
+                              "line": 200
+                            },
+                            "snippet": "\u001b[0m \u001b[90m 198 |\u001b[39m       })\u001b[33m;\u001b[39m\n \u001b[90m 199 |\u001b[39m       \n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 200 |\u001b[39m       expect(response\u001b[33m.\u001b[39mstatus)\u001b[33m.\u001b[39mtoBe(\u001b[35m422\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                               \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 201 |\u001b[39m       \u001b[36mconst\u001b[39m data \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m response\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\n \u001b[90m 202 |\u001b[39m       expect(data\u001b[33m.\u001b[39msuccess)\u001b[33m.\u001b[39mtoBe(\u001b[36mfalse\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 203 |\u001b[39m       expect(data\u001b[33m.\u001b[39mmessage)\u001b[33m.\u001b[39mtoContain(\u001b[32m'validation'\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts",
+                                "column": 31,
+                                "line": 200
+                              },
+                              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m422\u001b[39m\nReceived: \u001b[31m403\u001b[39m\n\n\u001b[0m \u001b[90m 198 |\u001b[39m       })\u001b[33m;\u001b[39m\n \u001b[90m 199 |\u001b[39m       \n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 200 |\u001b[39m       expect(response\u001b[33m.\u001b[39mstatus)\u001b[33m.\u001b[39mtoBe(\u001b[35m422\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                               \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 201 |\u001b[39m       \u001b[36mconst\u001b[39m data \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m response\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\n \u001b[90m 202 |\u001b[39m       expect(data\u001b[33m.\u001b[39msuccess)\u001b[33m.\u001b[39mtoBe(\u001b[36mfalse\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 203 |\u001b[39m       expect(data\u001b[33m.\u001b[39mmessage)\u001b[33m.\u001b[39mtoContain(\u001b[32m'validation'\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:200:31\u001b[22m"
+                            }
+                          ],
+                          "stdout": [
+                            {
+                              "text": "🗑️  Cleaning up all test tenants...\n"
+                            },
+                            {
+                              "text": "🗑️  Cleaning up tenant: e2e-test-1749833663574-24646-qwuxvp-577335\n"
+                            },
+                            {
+                              "text": "🗑️  Cleaning up tenant: e2e-test-1749833663574-24646-uvxquw-636935\n"
+                            }
+                          ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-06-13T14:49:45.165Z",
+                          "startTime": "2025-06-13T16:54:38.976Z",
                           "annotations": [],
-                          "attachments": []
+                          "attachments": [
+                            {
+                              "name": "screenshot",
+                              "contentType": "image/png",
+                              "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/Tenant-backend-API-Word-te-f0ae5-ld-validate-required-fields-chromium/test-failed-1.png"
+                            },
+                            {
+                              "name": "video",
+                              "contentType": "video/webm",
+                              "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/Tenant-backend-API-Word-te-f0ae5-ld-validate-required-fields-chromium/video.webm"
+                            },
+                            {
+                              "name": "_error-context-0",
+                              "contentType": "text/markdown",
+                              "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/Tenant-backend-API-Word-te-f0ae5-ld-validate-required-fields-chromium/error-context.md"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts",
+                            "column": 31,
+                            "line": 200
+                          }
                         }
                       ],
-                      "status": "skipped"
+                      "status": "unexpected"
                     }
                   ],
-                  "id": "9e84d37b5ec4a66913bb-8ac40e284aae3882ed9c",
-                  "file": "Tenant/frontend/API/Word/team-word-controller.spec.ts",
+                  "id": "58318020fce36547f6b8-0d6ad6c788ebfbbbcc78",
+                  "file": "Tenant/backend/API/Word/team-word-controller.spec.ts",
                   "line": 191,
                   "column": 9
                 },
                 {
                   "title": "should validate parameter types",
-                  "ok": true,
+                  "ok": false,
                   "tags": [],
                   "tests": [
                     {
@@ -396,30 +635,86 @@
                       "projectName": "chromium",
                       "results": [
                         {
-                          "workerIndex": -1,
-                          "parallelIndex": -1,
-                          "status": "skipped",
-                          "duration": 0,
-                          "errors": [],
-                          "stdout": [],
+                          "workerIndex": 5,
+                          "parallelIndex": 0,
+                          "status": "failed",
+                          "duration": 1274,
+                          "error": {
+                            "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m422\u001b[39m\nReceived: \u001b[31m403\u001b[39m",
+                            "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m422\u001b[39m\nReceived: \u001b[31m403\u001b[39m\n    at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:215:31",
+                            "location": {
+                              "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts",
+                              "column": 31,
+                              "line": 215
+                            },
+                            "snippet": "\u001b[0m \u001b[90m 213 |\u001b[39m       })\u001b[33m;\u001b[39m\n \u001b[90m 214 |\u001b[39m       \n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 215 |\u001b[39m       expect(response\u001b[33m.\u001b[39mstatus)\u001b[33m.\u001b[39mtoBe(\u001b[35m422\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                               \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 216 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 217 |\u001b[39m\n \u001b[90m 218 |\u001b[39m     test(\u001b[32m'should enforce pagination limits'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\u001b[0m"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts",
+                                "column": 31,
+                                "line": 215
+                              },
+                              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m422\u001b[39m\nReceived: \u001b[31m403\u001b[39m\n\n\u001b[0m \u001b[90m 213 |\u001b[39m       })\u001b[33m;\u001b[39m\n \u001b[90m 214 |\u001b[39m       \n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 215 |\u001b[39m       expect(response\u001b[33m.\u001b[39mstatus)\u001b[33m.\u001b[39mtoBe(\u001b[35m422\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                               \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 216 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 217 |\u001b[39m\n \u001b[90m 218 |\u001b[39m     test(\u001b[32m'should enforce pagination limits'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\u001b[0m\n\u001b[2m    at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:215:31\u001b[22m"
+                            }
+                          ],
+                          "stdout": [
+                            {
+                              "text": "📡 API Response 201: {\"success\":true,\"data\":{\"token\":\"1|1dPDh07VLFTV03SIZiuaOzVatqkoNhl5EcNIfa1Ee46aaba9\",\"progress_id\":\"tenant_684c57d47dd27\",\"user\":{\"id\":1,\"name\":\"John Admin\",\"email\":\"admin-e2e-test-1749833684353-25582-lw2y2i-500592@e2e-test.local\",\"membership\":\"admin\",\"email_verified_at\":null,\"tenant_id\":\"11eb8ac4-f93a-437f-9bfd-4b2a45262a38\",\"tenant\":{\"id\":\"11eb8ac4-f93a-437f-9bfd-4b2a45262a38\",\"name\":\"Word Test School 1\",\"slug\":\"e2e-test-1749833684353-25582-lw2y2i-500592\",\"status\":\"trial\"}}},\"message\":\"Organiz...\n"
+                            },
+                            {
+                              "text": "📡 API Response 201: {\"success\":true,\"data\":{\"token\":\"1|8aYZft1pNWiaLpxoambk8DThHSh4BHtlb4T2RQQB306f5439\",\"progress_id\":\"tenant_684c57da89f3d\",\"user\":{\"id\":1,\"name\":\"John Admin\",\"email\":\"admin-e2e-test-1749833684353-25582-vdsrjs-623491@e2e-test.local\",\"membership\":\"admin\",\"email_verified_at\":null,\"tenant_id\":\"5a77d8bb-9460-4227-8d13-2896ab4c8bba\",\"tenant\":{\"id\":\"5a77d8bb-9460-4227-8d13-2896ab4c8bba\",\"name\":\"Word Test School 2\",\"slug\":\"e2e-test-1749833684353-25582-vdsrjs-623491\",\"status\":\"trial\"}}},\"message\":\"Organiz...\n"
+                            },
+                            {
+                              "text": "🗑️  Cleaning up all test tenants...\n"
+                            },
+                            {
+                              "text": "🗑️  Cleaning up tenant: e2e-test-1749833684353-25582-lw2y2i-500592\n"
+                            },
+                            {
+                              "text": "🗑️  Cleaning up tenant: e2e-test-1749833684353-25582-vdsrjs-623491\n"
+                            }
+                          ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-06-13T14:49:45.173Z",
+                          "startTime": "2025-06-13T16:54:44.321Z",
                           "annotations": [],
-                          "attachments": []
+                          "attachments": [
+                            {
+                              "name": "screenshot",
+                              "contentType": "image/png",
+                              "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/Tenant-backend-API-Word-te-caa64-ld-validate-parameter-types-chromium/test-failed-1.png"
+                            },
+                            {
+                              "name": "video",
+                              "contentType": "video/webm",
+                              "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/Tenant-backend-API-Word-te-caa64-ld-validate-parameter-types-chromium/video.webm"
+                            },
+                            {
+                              "name": "_error-context-0",
+                              "contentType": "text/markdown",
+                              "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/Tenant-backend-API-Word-te-caa64-ld-validate-parameter-types-chromium/error-context.md"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts",
+                            "column": 31,
+                            "line": 215
+                          }
                         }
                       ],
-                      "status": "skipped"
+                      "status": "unexpected"
                     }
                   ],
-                  "id": "9e84d37b5ec4a66913bb-3a10d450db2b1007d508",
-                  "file": "Tenant/frontend/API/Word/team-word-controller.spec.ts",
+                  "id": "58318020fce36547f6b8-912092af27ab9eb233ef",
+                  "file": "Tenant/backend/API/Word/team-word-controller.spec.ts",
                   "line": 206,
                   "column": 9
                 },
                 {
                   "title": "should enforce pagination limits",
-                  "ok": true,
+                  "ok": false,
                   "tags": [],
                   "tests": [
                     {
@@ -430,30 +725,86 @@
                       "projectName": "chromium",
                       "results": [
                         {
-                          "workerIndex": -1,
-                          "parallelIndex": -1,
-                          "status": "skipped",
-                          "duration": 0,
-                          "errors": [],
-                          "stdout": [],
+                          "workerIndex": 6,
+                          "parallelIndex": 0,
+                          "status": "failed",
+                          "duration": 1440,
+                          "error": {
+                            "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m200\u001b[39m\nReceived: \u001b[31m403\u001b[39m",
+                            "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m200\u001b[39m\nReceived: \u001b[31m403\u001b[39m\n    at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:223:31",
+                            "location": {
+                              "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts",
+                              "column": 31,
+                              "line": 223
+                            },
+                            "snippet": "\u001b[0m \u001b[90m 221 |\u001b[39m       })\u001b[33m;\u001b[39m\n \u001b[90m 222 |\u001b[39m       \n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 223 |\u001b[39m       expect(response\u001b[33m.\u001b[39mstatus)\u001b[33m.\u001b[39mtoBe(\u001b[35m200\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                               \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 224 |\u001b[39m       \u001b[36mconst\u001b[39m data \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m response\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\n \u001b[90m 225 |\u001b[39m       \u001b[90m// Should be limited to max 100\u001b[39m\n \u001b[90m 226 |\u001b[39m       expect(data\u001b[33m.\u001b[39mdata\u001b[33m.\u001b[39mper_page)\u001b[33m.\u001b[39mtoBeLessThanOrEqual(\u001b[35m100\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts",
+                                "column": 31,
+                                "line": 223
+                              },
+                              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m200\u001b[39m\nReceived: \u001b[31m403\u001b[39m\n\n\u001b[0m \u001b[90m 221 |\u001b[39m       })\u001b[33m;\u001b[39m\n \u001b[90m 222 |\u001b[39m       \n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 223 |\u001b[39m       expect(response\u001b[33m.\u001b[39mstatus)\u001b[33m.\u001b[39mtoBe(\u001b[35m200\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                               \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 224 |\u001b[39m       \u001b[36mconst\u001b[39m data \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m response\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\n \u001b[90m 225 |\u001b[39m       \u001b[90m// Should be limited to max 100\u001b[39m\n \u001b[90m 226 |\u001b[39m       expect(data\u001b[33m.\u001b[39mdata\u001b[33m.\u001b[39mper_page)\u001b[33m.\u001b[39mtoBeLessThanOrEqual(\u001b[35m100\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:223:31\u001b[22m"
+                            }
+                          ],
+                          "stdout": [
+                            {
+                              "text": "📡 API Response 201: {\"success\":true,\"data\":{\"token\":\"1|XD37nr5oy5xRiG1UP9vk8XG5RAvjlCOEDSZKzesad30d4e0d\",\"progress_id\":\"tenant_684c57e8cc933\",\"user\":{\"id\":1,\"name\":\"John Admin\",\"email\":\"admin-e2e-test-1749833704082-26463-gqawlf-447612@e2e-test.local\",\"membership\":\"admin\",\"email_verified_at\":null,\"tenant_id\":\"1faa22cf-6489-4791-8000-7660704d529f\",\"tenant\":{\"id\":\"1faa22cf-6489-4791-8000-7660704d529f\",\"name\":\"Word Test School 1\",\"slug\":\"e2e-test-1749833704082-26463-gqawlf-447612\",\"status\":\"trial\"}}},\"message\":\"Organiz...\n"
+                            },
+                            {
+                              "text": "📡 API Response 201: {\"success\":true,\"data\":{\"token\":\"1|wDmY48Pe1Fu1rXhkR6QNBDXQZCUxcSLvPFrmKomW166e34cc\",\"progress_id\":\"tenant_684c57f01c9f9\",\"user\":{\"id\":1,\"name\":\"John Admin\",\"email\":\"admin-e2e-test-1749833704082-26463-olqyd1-524911@e2e-test.local\",\"membership\":\"admin\",\"email_verified_at\":null,\"tenant_id\":\"b926a00a-378e-4f78-99f0-6c822db9d5de\",\"tenant\":{\"id\":\"b926a00a-378e-4f78-99f0-6c822db9d5de\",\"name\":\"Word Test School 2\",\"slug\":\"e2e-test-1749833704082-26463-olqyd1-524911\",\"status\":\"trial\"}}},\"message\":\"Organiz...\n"
+                            },
+                            {
+                              "text": "🗑️  Cleaning up all test tenants...\n"
+                            },
+                            {
+                              "text": "🗑️  Cleaning up tenant: e2e-test-1749833704082-26463-gqawlf-447612\n"
+                            },
+                            {
+                              "text": "🗑️  Cleaning up tenant: e2e-test-1749833704082-26463-olqyd1-524911\n"
+                            }
+                          ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-06-13T14:49:45.182Z",
+                          "startTime": "2025-06-13T16:55:04.050Z",
                           "annotations": [],
-                          "attachments": []
+                          "attachments": [
+                            {
+                              "name": "screenshot",
+                              "contentType": "image/png",
+                              "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/Tenant-backend-API-Word-te-0fcd7-d-enforce-pagination-limits-chromium/test-failed-1.png"
+                            },
+                            {
+                              "name": "video",
+                              "contentType": "video/webm",
+                              "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/Tenant-backend-API-Word-te-0fcd7-d-enforce-pagination-limits-chromium/video.webm"
+                            },
+                            {
+                              "name": "_error-context-0",
+                              "contentType": "text/markdown",
+                              "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/Tenant-backend-API-Word-te-0fcd7-d-enforce-pagination-limits-chromium/error-context.md"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts",
+                            "column": 31,
+                            "line": 223
+                          }
                         }
                       ],
-                      "status": "skipped"
+                      "status": "unexpected"
                     }
                   ],
-                  "id": "9e84d37b5ec4a66913bb-d391b1b3ec321c86330e",
-                  "file": "Tenant/frontend/API/Word/team-word-controller.spec.ts",
+                  "id": "58318020fce36547f6b8-1308f2c9aaf74e03989c",
+                  "file": "Tenant/backend/API/Word/team-word-controller.spec.ts",
                   "line": 218,
                   "column": 9
                 },
                 {
                   "title": "should validate audio file uploads",
-                  "ok": true,
+                  "ok": false,
                   "tags": [],
                   "tests": [
                     {
@@ -464,24 +815,80 @@
                       "projectName": "chromium",
                       "results": [
                         {
-                          "workerIndex": -1,
-                          "parallelIndex": -1,
-                          "status": "skipped",
-                          "duration": 0,
-                          "errors": [],
-                          "stdout": [],
+                          "workerIndex": 7,
+                          "parallelIndex": 0,
+                          "status": "failed",
+                          "duration": 1646,
+                          "error": {
+                            "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m422\u001b[39m\nReceived: \u001b[31m403\u001b[39m",
+                            "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m422\u001b[39m\nReceived: \u001b[31m403\u001b[39m\n    at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:249:31",
+                            "location": {
+                              "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts",
+                              "column": 31,
+                              "line": 249
+                            },
+                            "snippet": "\u001b[0m \u001b[90m 247 |\u001b[39m       })\u001b[33m;\u001b[39m\n \u001b[90m 248 |\u001b[39m       \n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 249 |\u001b[39m       expect(response\u001b[33m.\u001b[39mstatus)\u001b[33m.\u001b[39mtoBe(\u001b[35m422\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                               \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 250 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 251 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 252 |\u001b[39m\u001b[0m"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts",
+                                "column": 31,
+                                "line": 249
+                              },
+                              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m422\u001b[39m\nReceived: \u001b[31m403\u001b[39m\n\n\u001b[0m \u001b[90m 247 |\u001b[39m       })\u001b[33m;\u001b[39m\n \u001b[90m 248 |\u001b[39m       \n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 249 |\u001b[39m       expect(response\u001b[33m.\u001b[39mstatus)\u001b[33m.\u001b[39mtoBe(\u001b[35m422\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                               \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 250 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 251 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 252 |\u001b[39m\u001b[0m\n\u001b[2m    at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:249:31\u001b[22m"
+                            }
+                          ],
+                          "stdout": [
+                            {
+                              "text": "📡 API Response 201: {\"success\":true,\"data\":{\"token\":\"1|k6psYaZqkixLsaK0koqe1mJ2FOLb7Hu6lPnTTaSX2612ad63\",\"progress_id\":\"tenant_684c57fdb8429\",\"user\":{\"id\":1,\"name\":\"John Admin\",\"email\":\"admin-e2e-test-1749833725547-27355-zzr8x0-426083@e2e-test.local\",\"membership\":\"admin\",\"email_verified_at\":null,\"tenant_id\":\"ff170841-ee76-49d1-a264-15121b864c34\",\"tenant\":{\"id\":\"ff170841-ee76-49d1-a264-15121b864c34\",\"name\":\"Word Test School 1\",\"slug\":\"e2e-test-1749833725547-27355-zzr8x0-426083\",\"status\":\"trial\"}}},\"message\":\"Organiz...\n"
+                            },
+                            {
+                              "text": "📡 API Response 201: {\"success\":true,\"data\":{\"token\":\"1|8IShrfaECfjGrEN9XZSeBVlstML1qollmUe4t5xG5a483783\",\"progress_id\":\"tenant_684c5804b962b\",\"user\":{\"id\":1,\"name\":\"John Admin\",\"email\":\"admin-e2e-test-1749833725547-27355-m71ls9-482083@e2e-test.local\",\"membership\":\"admin\",\"email_verified_at\":null,\"tenant_id\":\"8d926fec-9a46-4c5d-a54b-e998c0aee451\",\"tenant\":{\"id\":\"8d926fec-9a46-4c5d-a54b-e998c0aee451\",\"name\":\"Word Test School 2\",\"slug\":\"e2e-test-1749833725547-27355-m71ls9-482083\",\"status\":\"trial\"}}},\"message\":\"Organiz...\n"
+                            },
+                            {
+                              "text": "🗑️  Cleaning up all test tenants...\n"
+                            },
+                            {
+                              "text": "🗑️  Cleaning up tenant: e2e-test-1749833725547-27355-zzr8x0-426083\n"
+                            },
+                            {
+                              "text": "🗑️  Cleaning up tenant: e2e-test-1749833725547-27355-m71ls9-482083\n"
+                            }
+                          ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-06-13T14:49:45.191Z",
+                          "startTime": "2025-06-13T16:55:25.490Z",
                           "annotations": [],
-                          "attachments": []
+                          "attachments": [
+                            {
+                              "name": "screenshot",
+                              "contentType": "image/png",
+                              "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/Tenant-backend-API-Word-te-45655-validate-audio-file-uploads-chromium/test-failed-1.png"
+                            },
+                            {
+                              "name": "video",
+                              "contentType": "video/webm",
+                              "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/Tenant-backend-API-Word-te-45655-validate-audio-file-uploads-chromium/video.webm"
+                            },
+                            {
+                              "name": "_error-context-0",
+                              "contentType": "text/markdown",
+                              "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/Tenant-backend-API-Word-te-45655-validate-audio-file-uploads-chromium/error-context.md"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts",
+                            "column": 31,
+                            "line": 249
+                          }
                         }
                       ],
-                      "status": "skipped"
+                      "status": "unexpected"
                     }
                   ],
-                  "id": "9e84d37b5ec4a66913bb-cf1d50e90ac50ee6e3bb",
-                  "file": "Tenant/frontend/API/Word/team-word-controller.spec.ts",
+                  "id": "58318020fce36547f6b8-3f5a9aec0552a69c1e4d",
+                  "file": "Tenant/backend/API/Word/team-word-controller.spec.ts",
                   "line": 229,
                   "column": 9
                 }
@@ -489,13 +896,13 @@
             },
             {
               "title": "Functional Testing - CRUD Operations",
-              "file": "Tenant/frontend/API/Word/team-word-controller.spec.ts",
+              "file": "Tenant/backend/API/Word/team-word-controller.spec.ts",
               "line": 253,
               "column": 8,
               "specs": [
                 {
                   "title": "GET /team/words - list words with filtering",
-                  "ok": true,
+                  "ok": false,
                   "tags": [],
                   "tests": [
                     {
@@ -506,30 +913,86 @@
                       "projectName": "chromium",
                       "results": [
                         {
-                          "workerIndex": -1,
-                          "parallelIndex": -1,
-                          "status": "skipped",
-                          "duration": 0,
-                          "errors": [],
-                          "stdout": [],
+                          "workerIndex": 8,
+                          "parallelIndex": 0,
+                          "status": "failed",
+                          "duration": 1818,
+                          "error": {
+                            "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m201\u001b[39m\nReceived: \u001b[31m403\u001b[39m",
+                            "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m201\u001b[39m\nReceived: \u001b[31m403\u001b[39m\n    at createTestWord (/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:770:29)\n    at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:256:21",
+                            "location": {
+                              "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts",
+                              "column": 29,
+                              "line": 770
+                            },
+                            "snippet": "\u001b[0m \u001b[90m 768 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 769 |\u001b[39m     \n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 770 |\u001b[39m     expect(response\u001b[33m.\u001b[39mstatus)\u001b[33m.\u001b[39mtoBe(\u001b[35m201\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                             \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 771 |\u001b[39m     \u001b[36mconst\u001b[39m result \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m response\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\n \u001b[90m 772 |\u001b[39m     \u001b[36mreturn\u001b[39m result\u001b[33m.\u001b[39mdata\u001b[33m;\u001b[39m\n \u001b[90m 773 |\u001b[39m   }\u001b[0m"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts",
+                                "column": 29,
+                                "line": 770
+                              },
+                              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m201\u001b[39m\nReceived: \u001b[31m403\u001b[39m\n\n\u001b[0m \u001b[90m 768 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 769 |\u001b[39m     \n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 770 |\u001b[39m     expect(response\u001b[33m.\u001b[39mstatus)\u001b[33m.\u001b[39mtoBe(\u001b[35m201\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                             \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 771 |\u001b[39m     \u001b[36mconst\u001b[39m result \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m response\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\n \u001b[90m 772 |\u001b[39m     \u001b[36mreturn\u001b[39m result\u001b[33m.\u001b[39mdata\u001b[33m;\u001b[39m\n \u001b[90m 773 |\u001b[39m   }\u001b[0m\n\u001b[2m    at createTestWord (/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:770:29)\u001b[22m\n\u001b[2m    at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:256:21\u001b[22m"
+                            }
+                          ],
+                          "stdout": [
+                            {
+                              "text": "📡 API Response 201: {\"success\":true,\"data\":{\"token\":\"1|Rcb5CKRzDx2EE7AO5SvClNmkafO5Uc6xGNvYM60fdd4e6f2b\",\"progress_id\":\"tenant_684c5812617c6\",\"user\":{\"id\":1,\"name\":\"John Admin\",\"email\":\"admin-e2e-test-1749833746213-28255-dvhm1z-695764@e2e-test.local\",\"membership\":\"admin\",\"email_verified_at\":null,\"tenant_id\":\"1eee347e-9f9e-4bb2-b5d0-7e3fc29c27aa\",\"tenant\":{\"id\":\"1eee347e-9f9e-4bb2-b5d0-7e3fc29c27aa\",\"name\":\"Word Test School 1\",\"slug\":\"e2e-test-1749833746213-28255-dvhm1z-695764\",\"status\":\"trial\"}}},\"message\":\"Organiz...\n"
+                            },
+                            {
+                              "text": "📡 API Response 201: {\"success\":true,\"data\":{\"token\":\"1|75NA5j3BFRN0rrKznVpuPB4HWKoL4LqpIHCCA3yK1f859f10\",\"progress_id\":\"tenant_684c581917fea\",\"user\":{\"id\":1,\"name\":\"John Admin\",\"email\":\"admin-e2e-test-1749833746213-28255-y1bnye-750664@e2e-test.local\",\"membership\":\"admin\",\"email_verified_at\":null,\"tenant_id\":\"f09b30bd-ffbe-467c-9e70-d3b73649a305\",\"tenant\":{\"id\":\"f09b30bd-ffbe-467c-9e70-d3b73649a305\",\"name\":\"Word Test School 2\",\"slug\":\"e2e-test-1749833746213-28255-y1bnye-750664\",\"status\":\"trial\"}}},\"message\":\"Organiz...\n"
+                            },
+                            {
+                              "text": "🗑️  Cleaning up all test tenants...\n"
+                            },
+                            {
+                              "text": "🗑️  Cleaning up tenant: e2e-test-1749833746213-28255-dvhm1z-695764\n"
+                            },
+                            {
+                              "text": "🗑️  Cleaning up tenant: e2e-test-1749833746213-28255-y1bnye-750664\n"
+                            }
+                          ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-06-13T14:49:45.199Z",
+                          "startTime": "2025-06-13T16:55:46.180Z",
                           "annotations": [],
-                          "attachments": []
+                          "attachments": [
+                            {
+                              "name": "screenshot",
+                              "contentType": "image/png",
+                              "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/Tenant-backend-API-Word-te-6ce91---list-words-with-filtering-chromium/test-failed-1.png"
+                            },
+                            {
+                              "name": "video",
+                              "contentType": "video/webm",
+                              "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/Tenant-backend-API-Word-te-6ce91---list-words-with-filtering-chromium/video.webm"
+                            },
+                            {
+                              "name": "_error-context-0",
+                              "contentType": "text/markdown",
+                              "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/Tenant-backend-API-Word-te-6ce91---list-words-with-filtering-chromium/error-context.md"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts",
+                            "column": 29,
+                            "line": 770
+                          }
                         }
                       ],
-                      "status": "skipped"
+                      "status": "unexpected"
                     }
                   ],
-                  "id": "9e84d37b5ec4a66913bb-9d80f79191444988b8e2",
-                  "file": "Tenant/frontend/API/Word/team-word-controller.spec.ts",
+                  "id": "58318020fce36547f6b8-a0a985e9426d7b9b2bc2",
+                  "file": "Tenant/backend/API/Word/team-word-controller.spec.ts",
                   "line": 254,
                   "column": 9
                 },
                 {
                   "title": "GET /team/words/{id} - get single word",
-                  "ok": true,
+                  "ok": false,
                   "tags": [],
                   "tests": [
                     {
@@ -540,30 +1003,86 @@
                       "projectName": "chromium",
                       "results": [
                         {
-                          "workerIndex": -1,
-                          "parallelIndex": -1,
-                          "status": "skipped",
-                          "duration": 0,
-                          "errors": [],
-                          "stdout": [],
+                          "workerIndex": 9,
+                          "parallelIndex": 0,
+                          "status": "failed",
+                          "duration": 1258,
+                          "error": {
+                            "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m201\u001b[39m\nReceived: \u001b[31m403\u001b[39m",
+                            "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m201\u001b[39m\nReceived: \u001b[31m403\u001b[39m\n    at createTestWord (/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:770:29)\n    at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:291:20",
+                            "location": {
+                              "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts",
+                              "column": 29,
+                              "line": 770
+                            },
+                            "snippet": "\u001b[0m \u001b[90m 768 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 769 |\u001b[39m     \n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 770 |\u001b[39m     expect(response\u001b[33m.\u001b[39mstatus)\u001b[33m.\u001b[39mtoBe(\u001b[35m201\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                             \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 771 |\u001b[39m     \u001b[36mconst\u001b[39m result \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m response\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\n \u001b[90m 772 |\u001b[39m     \u001b[36mreturn\u001b[39m result\u001b[33m.\u001b[39mdata\u001b[33m;\u001b[39m\n \u001b[90m 773 |\u001b[39m   }\u001b[0m"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts",
+                                "column": 29,
+                                "line": 770
+                              },
+                              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m201\u001b[39m\nReceived: \u001b[31m403\u001b[39m\n\n\u001b[0m \u001b[90m 768 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 769 |\u001b[39m     \n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 770 |\u001b[39m     expect(response\u001b[33m.\u001b[39mstatus)\u001b[33m.\u001b[39mtoBe(\u001b[35m201\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                             \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 771 |\u001b[39m     \u001b[36mconst\u001b[39m result \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m response\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\n \u001b[90m 772 |\u001b[39m     \u001b[36mreturn\u001b[39m result\u001b[33m.\u001b[39mdata\u001b[33m;\u001b[39m\n \u001b[90m 773 |\u001b[39m   }\u001b[0m\n\u001b[2m    at createTestWord (/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:770:29)\u001b[22m\n\u001b[2m    at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:291:20\u001b[22m"
+                            }
+                          ],
+                          "stdout": [
+                            {
+                              "text": "📡 API Response 201: {\"success\":true,\"data\":{\"token\":\"1|XrR2Ydg9BZSqzvkElXQWgXM6kfv7qkTXpD3r5vQZ59694840\",\"progress_id\":\"tenant_684c582708341\",\"user\":{\"id\":1,\"name\":\"John Admin\",\"email\":\"admin-e2e-test-1749833766864-29152-25cq34-296781@e2e-test.local\",\"membership\":\"admin\",\"email_verified_at\":null,\"tenant_id\":\"00f07720-4b37-4408-9951-84fd0c461302\",\"tenant\":{\"id\":\"00f07720-4b37-4408-9951-84fd0c461302\",\"name\":\"Word Test School 1\",\"slug\":\"e2e-test-1749833766864-29152-25cq34-296781\",\"status\":\"trial\"}}},\"message\":\"Organiz...\n"
+                            },
+                            {
+                              "text": "📡 API Response 201: {\"success\":true,\"data\":{\"token\":\"1|J1aMqooWGrD1x2JfpRal4jBZ1OY2rIbkM88R9gxf2652f1cd\",\"progress_id\":\"tenant_684c582d4d658\",\"user\":{\"id\":1,\"name\":\"John Admin\",\"email\":\"admin-e2e-test-1749833766864-29152-tjlgro-342781@e2e-test.local\",\"membership\":\"admin\",\"email_verified_at\":null,\"tenant_id\":\"92df9cd6-e84e-4d79-80b8-6397a8f76d4c\",\"tenant\":{\"id\":\"92df9cd6-e84e-4d79-80b8-6397a8f76d4c\",\"name\":\"Word Test School 2\",\"slug\":\"e2e-test-1749833766864-29152-tjlgro-342781\",\"status\":\"trial\"}}},\"message\":\"Organiz...\n"
+                            },
+                            {
+                              "text": "🗑️  Cleaning up all test tenants...\n"
+                            },
+                            {
+                              "text": "🗑️  Cleaning up tenant: e2e-test-1749833766864-29152-25cq34-296781\n"
+                            },
+                            {
+                              "text": "🗑️  Cleaning up tenant: e2e-test-1749833766864-29152-tjlgro-342781\n"
+                            }
+                          ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-06-13T14:49:45.212Z",
+                          "startTime": "2025-06-13T16:56:06.832Z",
                           "annotations": [],
-                          "attachments": []
+                          "attachments": [
+                            {
+                              "name": "screenshot",
+                              "contentType": "image/png",
+                              "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/Tenant-backend-API-Word-te-ec0c0--words-id---get-single-word-chromium/test-failed-1.png"
+                            },
+                            {
+                              "name": "video",
+                              "contentType": "video/webm",
+                              "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/Tenant-backend-API-Word-te-ec0c0--words-id---get-single-word-chromium/video.webm"
+                            },
+                            {
+                              "name": "_error-context-0",
+                              "contentType": "text/markdown",
+                              "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/Tenant-backend-API-Word-te-ec0c0--words-id---get-single-word-chromium/error-context.md"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts",
+                            "column": 29,
+                            "line": 770
+                          }
                         }
                       ],
-                      "status": "skipped"
+                      "status": "unexpected"
                     }
                   ],
-                  "id": "9e84d37b5ec4a66913bb-36220bc760db9561f82c",
-                  "file": "Tenant/frontend/API/Word/team-word-controller.spec.ts",
+                  "id": "58318020fce36547f6b8-cdb9e864f552d2efdc19",
+                  "file": "Tenant/backend/API/Word/team-word-controller.spec.ts",
                   "line": 290,
                   "column": 9
                 },
                 {
                   "title": "POST /team/words - create word",
-                  "ok": true,
+                  "ok": false,
                   "tags": [],
                   "tests": [
                     {
@@ -574,30 +1093,86 @@
                       "projectName": "chromium",
                       "results": [
                         {
-                          "workerIndex": -1,
-                          "parallelIndex": -1,
-                          "status": "skipped",
-                          "duration": 0,
-                          "errors": [],
-                          "stdout": [],
+                          "workerIndex": 10,
+                          "parallelIndex": 0,
+                          "status": "failed",
+                          "duration": 1174,
+                          "error": {
+                            "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m201\u001b[39m\nReceived: \u001b[31m403\u001b[39m",
+                            "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m201\u001b[39m\nReceived: \u001b[31m403\u001b[39m\n    at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:319:31",
+                            "location": {
+                              "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts",
+                              "column": 31,
+                              "line": 319
+                            },
+                            "snippet": "\u001b[0m \u001b[90m 317 |\u001b[39m       })\u001b[33m;\u001b[39m\n \u001b[90m 318 |\u001b[39m       \n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 319 |\u001b[39m       expect(response\u001b[33m.\u001b[39mstatus)\u001b[33m.\u001b[39mtoBe(\u001b[35m201\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                               \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 320 |\u001b[39m       \u001b[36mconst\u001b[39m data \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m response\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\n \u001b[90m 321 |\u001b[39m       expect(data\u001b[33m.\u001b[39msuccess)\u001b[33m.\u001b[39mtoBe(\u001b[36mtrue\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 322 |\u001b[39m       expect(data\u001b[33m.\u001b[39mdata\u001b[33m.\u001b[39mtext)\u001b[33m.\u001b[39mtoBe(wordData\u001b[33m.\u001b[39mtext)\u001b[33m;\u001b[39m\u001b[0m"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts",
+                                "column": 31,
+                                "line": 319
+                              },
+                              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m201\u001b[39m\nReceived: \u001b[31m403\u001b[39m\n\n\u001b[0m \u001b[90m 317 |\u001b[39m       })\u001b[33m;\u001b[39m\n \u001b[90m 318 |\u001b[39m       \n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 319 |\u001b[39m       expect(response\u001b[33m.\u001b[39mstatus)\u001b[33m.\u001b[39mtoBe(\u001b[35m201\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                               \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 320 |\u001b[39m       \u001b[36mconst\u001b[39m data \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m response\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\n \u001b[90m 321 |\u001b[39m       expect(data\u001b[33m.\u001b[39msuccess)\u001b[33m.\u001b[39mtoBe(\u001b[36mtrue\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 322 |\u001b[39m       expect(data\u001b[33m.\u001b[39mdata\u001b[33m.\u001b[39mtext)\u001b[33m.\u001b[39mtoBe(wordData\u001b[33m.\u001b[39mtext)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:319:31\u001b[22m"
+                            }
+                          ],
+                          "stdout": [
+                            {
+                              "text": "📡 API Response 201: {\"success\":true,\"data\":{\"token\":\"1|HviJCajNXLxjON5Z9DsOngcP6hnMlbSmBS3cAkEf8779de3b\",\"progress_id\":\"tenant_684c583af0c9a\",\"user\":{\"id\":1,\"name\":\"John Admin\",\"email\":\"admin-e2e-test-1749833786820-30050-qigrcf-619332@e2e-test.local\",\"membership\":\"admin\",\"email_verified_at\":null,\"tenant_id\":\"b4eae4cc-5f37-4d12-a9c5-e655250a3bad\",\"tenant\":{\"id\":\"b4eae4cc-5f37-4d12-a9c5-e655250a3bad\",\"name\":\"Word Test School 1\",\"slug\":\"e2e-test-1749833786820-30050-qigrcf-619332\",\"status\":\"trial\"}}},\"message\":\"Organiz...\n"
+                            },
+                            {
+                              "text": "📡 API Response 201: {\"success\":true,\"data\":{\"token\":\"1|0ipNK32valQEUN0UkOR44x7E3kpGS4Hmh1Nx7Dvvea510f0e\",\"progress_id\":\"tenant_684c58416387e\",\"user\":{\"id\":1,\"name\":\"John Admin\",\"email\":\"admin-e2e-test-1749833786820-30050-pc1vcn-666032@e2e-test.local\",\"membership\":\"admin\",\"email_verified_at\":null,\"tenant_id\":\"57c8c24c-bf02-4455-8eee-16b1c6ff6728\",\"tenant\":{\"id\":\"57c8c24c-bf02-4455-8eee-16b1c6ff6728\",\"name\":\"Word Test School 2\",\"slug\":\"e2e-test-1749833786820-30050-pc1vcn-666032\",\"status\":\"trial\"}}},\"message\":\"Organiz...\n"
+                            },
+                            {
+                              "text": "🗑️  Cleaning up all test tenants...\n"
+                            },
+                            {
+                              "text": "🗑️  Cleaning up tenant: e2e-test-1749833786820-30050-qigrcf-619332\n"
+                            },
+                            {
+                              "text": "🗑️  Cleaning up tenant: e2e-test-1749833786820-30050-pc1vcn-666032\n"
+                            }
+                          ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-06-13T14:49:45.221Z",
+                          "startTime": "2025-06-13T16:56:26.791Z",
                           "annotations": [],
-                          "attachments": []
+                          "attachments": [
+                            {
+                              "name": "screenshot",
+                              "contentType": "image/png",
+                              "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/Tenant-backend-API-Word-te-dbb54-ST-team-words---create-word-chromium/test-failed-1.png"
+                            },
+                            {
+                              "name": "video",
+                              "contentType": "video/webm",
+                              "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/Tenant-backend-API-Word-te-dbb54-ST-team-words---create-word-chromium/video.webm"
+                            },
+                            {
+                              "name": "_error-context-0",
+                              "contentType": "text/markdown",
+                              "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/Tenant-backend-API-Word-te-dbb54-ST-team-words---create-word-chromium/error-context.md"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts",
+                            "column": 31,
+                            "line": 319
+                          }
                         }
                       ],
-                      "status": "skipped"
+                      "status": "unexpected"
                     }
                   ],
-                  "id": "9e84d37b5ec4a66913bb-d19aa6be18c544590292",
-                  "file": "Tenant/frontend/API/Word/team-word-controller.spec.ts",
+                  "id": "58318020fce36547f6b8-a9369145a7b18bcd9d83",
+                  "file": "Tenant/backend/API/Word/team-word-controller.spec.ts",
                   "line": 306,
                   "column": 9
                 },
                 {
                   "title": "PUT /team/words/{id} - update word",
-                  "ok": true,
+                  "ok": false,
                   "tags": [],
                   "tests": [
                     {
@@ -608,30 +1183,86 @@
                       "projectName": "chromium",
                       "results": [
                         {
-                          "workerIndex": -1,
-                          "parallelIndex": -1,
-                          "status": "skipped",
-                          "duration": 0,
-                          "errors": [],
-                          "stdout": [],
+                          "workerIndex": 11,
+                          "parallelIndex": 0,
+                          "status": "failed",
+                          "duration": 1357,
+                          "error": {
+                            "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m201\u001b[39m\nReceived: \u001b[31m403\u001b[39m",
+                            "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m201\u001b[39m\nReceived: \u001b[31m403\u001b[39m\n    at createTestWord (/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:770:29)\n    at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:330:20",
+                            "location": {
+                              "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts",
+                              "column": 29,
+                              "line": 770
+                            },
+                            "snippet": "\u001b[0m \u001b[90m 768 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 769 |\u001b[39m     \n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 770 |\u001b[39m     expect(response\u001b[33m.\u001b[39mstatus)\u001b[33m.\u001b[39mtoBe(\u001b[35m201\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                             \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 771 |\u001b[39m     \u001b[36mconst\u001b[39m result \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m response\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\n \u001b[90m 772 |\u001b[39m     \u001b[36mreturn\u001b[39m result\u001b[33m.\u001b[39mdata\u001b[33m;\u001b[39m\n \u001b[90m 773 |\u001b[39m   }\u001b[0m"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts",
+                                "column": 29,
+                                "line": 770
+                              },
+                              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m201\u001b[39m\nReceived: \u001b[31m403\u001b[39m\n\n\u001b[0m \u001b[90m 768 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 769 |\u001b[39m     \n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 770 |\u001b[39m     expect(response\u001b[33m.\u001b[39mstatus)\u001b[33m.\u001b[39mtoBe(\u001b[35m201\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                             \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 771 |\u001b[39m     \u001b[36mconst\u001b[39m result \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m response\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\n \u001b[90m 772 |\u001b[39m     \u001b[36mreturn\u001b[39m result\u001b[33m.\u001b[39mdata\u001b[33m;\u001b[39m\n \u001b[90m 773 |\u001b[39m   }\u001b[0m\n\u001b[2m    at createTestWord (/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:770:29)\u001b[22m\n\u001b[2m    at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:330:20\u001b[22m"
+                            }
+                          ],
+                          "stdout": [
+                            {
+                              "text": "📡 API Response 201: {\"success\":true,\"data\":{\"token\":\"1|vahQxoD7LKXH1PEg0XEtcT0U018vY7IydMHK9yBH5c6dd1d1\",\"progress_id\":\"tenant_684c584ea7997\",\"user\":{\"id\":1,\"name\":\"John Admin\",\"email\":\"admin-e2e-test-1749833806524-30941-xei5b5-699696@e2e-test.local\",\"membership\":\"admin\",\"email_verified_at\":null,\"tenant_id\":\"b0c6a7f1-cea7-4bf6-855a-a0c38ef4b5ed\",\"tenant\":{\"id\":\"b0c6a7f1-cea7-4bf6-855a-a0c38ef4b5ed\",\"name\":\"Word Test School 1\",\"slug\":\"e2e-test-1749833806524-30941-xei5b5-699696\",\"status\":\"trial\"}}},\"message\":\"Organiz...\n"
+                            },
+                            {
+                              "text": "📡 API Response 201: {\"success\":true,\"data\":{\"token\":\"1|9xeGdEVRsr0IoqYszpumfGcDx3DZio2NFnTgdGaLe175c800\",\"progress_id\":\"tenant_684c585520bd9\",\"user\":{\"id\":1,\"name\":\"John Admin\",\"email\":\"admin-e2e-test-1749833806524-30941-a9zip5-754595@e2e-test.local\",\"membership\":\"admin\",\"email_verified_at\":null,\"tenant_id\":\"cbf48970-3a55-4379-8aaa-c75b65716135\",\"tenant\":{\"id\":\"cbf48970-3a55-4379-8aaa-c75b65716135\",\"name\":\"Word Test School 2\",\"slug\":\"e2e-test-1749833806524-30941-a9zip5-754595\",\"status\":\"trial\"}}},\"message\":\"Organiz...\n"
+                            },
+                            {
+                              "text": "🗑️  Cleaning up all test tenants...\n"
+                            },
+                            {
+                              "text": "🗑️  Cleaning up tenant: e2e-test-1749833806524-30941-xei5b5-699696\n"
+                            },
+                            {
+                              "text": "🗑️  Cleaning up tenant: e2e-test-1749833806524-30941-a9zip5-754595\n"
+                            }
+                          ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-06-13T14:49:45.237Z",
+                          "startTime": "2025-06-13T16:56:46.479Z",
                           "annotations": [],
-                          "attachments": []
+                          "attachments": [
+                            {
+                              "name": "screenshot",
+                              "contentType": "image/png",
+                              "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/Tenant-backend-API-Word-te-3a3fa-team-words-id---update-word-chromium/test-failed-1.png"
+                            },
+                            {
+                              "name": "video",
+                              "contentType": "video/webm",
+                              "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/Tenant-backend-API-Word-te-3a3fa-team-words-id---update-word-chromium/video.webm"
+                            },
+                            {
+                              "name": "_error-context-0",
+                              "contentType": "text/markdown",
+                              "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/Tenant-backend-API-Word-te-3a3fa-team-words-id---update-word-chromium/error-context.md"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts",
+                            "column": 29,
+                            "line": 770
+                          }
                         }
                       ],
-                      "status": "skipped"
+                      "status": "unexpected"
                     }
                   ],
-                  "id": "9e84d37b5ec4a66913bb-10a73f2561dd71076610",
-                  "file": "Tenant/frontend/API/Word/team-word-controller.spec.ts",
+                  "id": "58318020fce36547f6b8-9bd9a9c2560980df9893",
+                  "file": "Tenant/backend/API/Word/team-word-controller.spec.ts",
                   "line": 329,
                   "column": 9
                 },
                 {
                   "title": "DELETE /team/words/{id} - delete word",
-                  "ok": true,
+                  "ok": false,
                   "tags": [],
                   "tests": [
                     {
@@ -642,24 +1273,80 @@
                       "projectName": "chromium",
                       "results": [
                         {
-                          "workerIndex": -1,
-                          "parallelIndex": -1,
-                          "status": "skipped",
-                          "duration": 0,
-                          "errors": [],
-                          "stdout": [],
+                          "workerIndex": 12,
+                          "parallelIndex": 0,
+                          "status": "failed",
+                          "duration": 1478,
+                          "error": {
+                            "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m201\u001b[39m\nReceived: \u001b[31m403\u001b[39m",
+                            "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m201\u001b[39m\nReceived: \u001b[31m403\u001b[39m\n    at createTestWord (/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:770:29)\n    at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:355:20",
+                            "location": {
+                              "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts",
+                              "column": 29,
+                              "line": 770
+                            },
+                            "snippet": "\u001b[0m \u001b[90m 768 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 769 |\u001b[39m     \n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 770 |\u001b[39m     expect(response\u001b[33m.\u001b[39mstatus)\u001b[33m.\u001b[39mtoBe(\u001b[35m201\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                             \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 771 |\u001b[39m     \u001b[36mconst\u001b[39m result \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m response\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\n \u001b[90m 772 |\u001b[39m     \u001b[36mreturn\u001b[39m result\u001b[33m.\u001b[39mdata\u001b[33m;\u001b[39m\n \u001b[90m 773 |\u001b[39m   }\u001b[0m"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts",
+                                "column": 29,
+                                "line": 770
+                              },
+                              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m201\u001b[39m\nReceived: \u001b[31m403\u001b[39m\n\n\u001b[0m \u001b[90m 768 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 769 |\u001b[39m     \n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 770 |\u001b[39m     expect(response\u001b[33m.\u001b[39mstatus)\u001b[33m.\u001b[39mtoBe(\u001b[35m201\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                             \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 771 |\u001b[39m     \u001b[36mconst\u001b[39m result \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m response\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\n \u001b[90m 772 |\u001b[39m     \u001b[36mreturn\u001b[39m result\u001b[33m.\u001b[39mdata\u001b[33m;\u001b[39m\n \u001b[90m 773 |\u001b[39m   }\u001b[0m\n\u001b[2m    at createTestWord (/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:770:29)\u001b[22m\n\u001b[2m    at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:355:20\u001b[22m"
+                            }
+                          ],
+                          "stdout": [
+                            {
+                              "text": "📡 API Response 201: {\"success\":true,\"data\":{\"token\":\"1|puG8vvUb2MrdNw9ePAH5NWj6J8IWIy3GvZ5jpB2V1a123fa9\",\"progress_id\":\"tenant_684c586321394\",\"user\":{\"id\":1,\"name\":\"John Admin\",\"email\":\"admin-e2e-test-1749833826942-31850-h27yju-156670@e2e-test.local\",\"membership\":\"admin\",\"email_verified_at\":null,\"tenant_id\":\"d6984d00-fcea-4b0c-8a74-5441ae75ac36\",\"tenant\":{\"id\":\"d6984d00-fcea-4b0c-8a74-5441ae75ac36\",\"name\":\"Word Test School 1\",\"slug\":\"e2e-test-1749833826942-31850-h27yju-156670\",\"status\":\"trial\"}}},\"message\":\"Organiz...\n"
+                            },
+                            {
+                              "text": "📡 API Response 201: {\"success\":true,\"data\":{\"token\":\"1|bgxAmHaE8leWADf3CBivTcwXPDL8DCxCl77TkPe19250df5d\",\"progress_id\":\"tenant_684c586b055c5\",\"user\":{\"id\":1,\"name\":\"John Admin\",\"email\":\"admin-e2e-test-1749833826943-31850-hzzksq-212969@e2e-test.local\",\"membership\":\"admin\",\"email_verified_at\":null,\"tenant_id\":\"dbf51e88-6d0e-4bc9-9a7c-63d35606a1d4\",\"tenant\":{\"id\":\"dbf51e88-6d0e-4bc9-9a7c-63d35606a1d4\",\"name\":\"Word Test School 2\",\"slug\":\"e2e-test-1749833826943-31850-hzzksq-212969\",\"status\":\"trial\"}}},\"message\":\"Organiz...\n"
+                            },
+                            {
+                              "text": "🗑️  Cleaning up all test tenants...\n"
+                            },
+                            {
+                              "text": "🗑️  Cleaning up tenant: e2e-test-1749833826942-31850-h27yju-156670\n"
+                            },
+                            {
+                              "text": "🗑️  Cleaning up tenant: e2e-test-1749833826943-31850-hzzksq-212969\n"
+                            }
+                          ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-06-13T14:49:45.243Z",
+                          "startTime": "2025-06-13T16:57:06.910Z",
                           "annotations": [],
-                          "attachments": []
+                          "attachments": [
+                            {
+                              "name": "screenshot",
+                              "contentType": "image/png",
+                              "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/Tenant-backend-API-Word-te-fd167-team-words-id---delete-word-chromium/test-failed-1.png"
+                            },
+                            {
+                              "name": "video",
+                              "contentType": "video/webm",
+                              "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/Tenant-backend-API-Word-te-fd167-team-words-id---delete-word-chromium/video.webm"
+                            },
+                            {
+                              "name": "_error-context-0",
+                              "contentType": "text/markdown",
+                              "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/Tenant-backend-API-Word-te-fd167-team-words-id---delete-word-chromium/error-context.md"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts",
+                            "column": 29,
+                            "line": 770
+                          }
                         }
                       ],
-                      "status": "skipped"
+                      "status": "unexpected"
                     }
                   ],
-                  "id": "9e84d37b5ec4a66913bb-b0579ce0110cc38df950",
-                  "file": "Tenant/frontend/API/Word/team-word-controller.spec.ts",
+                  "id": "58318020fce36547f6b8-3c7d0bc0ac18d9221793",
+                  "file": "Tenant/backend/API/Word/team-word-controller.spec.ts",
                   "line": 354,
                   "column": 9
                 }
@@ -667,13 +1354,13 @@
             },
             {
               "title": "Bulk Operations Testing",
-              "file": "Tenant/frontend/API/Word/team-word-controller.spec.ts",
+              "file": "Tenant/backend/API/Word/team-word-controller.spec.ts",
               "line": 374,
               "column": 8,
               "specs": [
                 {
                   "title": "POST /team/words/bulk - bulk create words",
-                  "ok": true,
+                  "ok": false,
                   "tags": [],
                   "tests": [
                     {
@@ -684,30 +1371,86 @@
                       "projectName": "chromium",
                       "results": [
                         {
-                          "workerIndex": -1,
-                          "parallelIndex": -1,
-                          "status": "skipped",
-                          "duration": 0,
-                          "errors": [],
-                          "stdout": [],
+                          "workerIndex": 13,
+                          "parallelIndex": 0,
+                          "status": "failed",
+                          "duration": 1250,
+                          "error": {
+                            "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m200\u001b[39m\nReceived: \u001b[31m403\u001b[39m",
+                            "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m200\u001b[39m\nReceived: \u001b[31m403\u001b[39m\n    at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:388:31",
+                            "location": {
+                              "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts",
+                              "column": 31,
+                              "line": 388
+                            },
+                            "snippet": "\u001b[0m \u001b[90m 386 |\u001b[39m       })\u001b[33m;\u001b[39m\n \u001b[90m 387 |\u001b[39m       \n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 388 |\u001b[39m       expect(response\u001b[33m.\u001b[39mstatus)\u001b[33m.\u001b[39mtoBe(\u001b[35m200\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                               \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 389 |\u001b[39m       \u001b[36mconst\u001b[39m data \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m response\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\n \u001b[90m 390 |\u001b[39m       expect(data\u001b[33m.\u001b[39msuccess)\u001b[33m.\u001b[39mtoBe(\u001b[36mtrue\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 391 |\u001b[39m       expect(data\u001b[33m.\u001b[39mdata\u001b[33m.\u001b[39msuccessful)\u001b[33m.\u001b[39mtoBe(\u001b[35m2\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts",
+                                "column": 31,
+                                "line": 388
+                              },
+                              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m200\u001b[39m\nReceived: \u001b[31m403\u001b[39m\n\n\u001b[0m \u001b[90m 386 |\u001b[39m       })\u001b[33m;\u001b[39m\n \u001b[90m 387 |\u001b[39m       \n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 388 |\u001b[39m       expect(response\u001b[33m.\u001b[39mstatus)\u001b[33m.\u001b[39mtoBe(\u001b[35m200\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                               \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 389 |\u001b[39m       \u001b[36mconst\u001b[39m data \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m response\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\n \u001b[90m 390 |\u001b[39m       expect(data\u001b[33m.\u001b[39msuccess)\u001b[33m.\u001b[39mtoBe(\u001b[36mtrue\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 391 |\u001b[39m       expect(data\u001b[33m.\u001b[39mdata\u001b[33m.\u001b[39msuccessful)\u001b[33m.\u001b[39mtoBe(\u001b[35m2\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:388:31\u001b[22m"
+                            }
+                          ],
+                          "stdout": [
+                            {
+                              "text": "📡 API Response 201: {\"success\":true,\"data\":{\"token\":\"1|V9WkQ3uZk91eaBpjV7rZs9txJ5bbloHGqB3h4FZH7b578ac2\",\"progress_id\":\"tenant_684c587a49717\",\"user\":{\"id\":1,\"name\":\"John Admin\",\"email\":\"admin-e2e-test-1749833850102-32854-81h75e-833107@e2e-test.local\",\"membership\":\"admin\",\"email_verified_at\":null,\"tenant_id\":\"343dce99-15f7-4bb4-b028-95041c443109\",\"tenant\":{\"id\":\"343dce99-15f7-4bb4-b028-95041c443109\",\"name\":\"Word Test School 1\",\"slug\":\"e2e-test-1749833850102-32854-81h75e-833107\",\"status\":\"trial\"}}},\"message\":\"Organiz...\n"
+                            },
+                            {
+                              "text": "📡 API Response 201: {\"success\":true,\"data\":{\"token\":\"1|QnbFCA656N1lWMozqO3l4ETPZKtcJXDsVpwF2ZLHd6cd7eb5\",\"progress_id\":\"tenant_684c588043cab\",\"user\":{\"id\":1,\"name\":\"John Admin\",\"email\":\"admin-e2e-test-1749833850102-32854-rxsmze-882007@e2e-test.local\",\"membership\":\"admin\",\"email_verified_at\":null,\"tenant_id\":\"c3bf5151-5e9e-4037-9848-17daffec7471\",\"tenant\":{\"id\":\"c3bf5151-5e9e-4037-9848-17daffec7471\",\"name\":\"Word Test School 2\",\"slug\":\"e2e-test-1749833850102-32854-rxsmze-882007\",\"status\":\"trial\"}}},\"message\":\"Organiz...\n"
+                            },
+                            {
+                              "text": "🗑️  Cleaning up all test tenants...\n"
+                            },
+                            {
+                              "text": "🗑️  Cleaning up tenant: e2e-test-1749833850102-32854-81h75e-833107\n"
+                            },
+                            {
+                              "text": "🗑️  Cleaning up tenant: e2e-test-1749833850102-32854-rxsmze-882007\n"
+                            }
+                          ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-06-13T14:49:45.251Z",
+                          "startTime": "2025-06-13T16:57:30.034Z",
                           "annotations": [],
-                          "attachments": []
+                          "attachments": [
+                            {
+                              "name": "screenshot",
+                              "contentType": "image/png",
+                              "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/Tenant-backend-API-Word-te-acf73-ds-bulk---bulk-create-words-chromium/test-failed-1.png"
+                            },
+                            {
+                              "name": "video",
+                              "contentType": "video/webm",
+                              "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/Tenant-backend-API-Word-te-acf73-ds-bulk---bulk-create-words-chromium/video.webm"
+                            },
+                            {
+                              "name": "_error-context-0",
+                              "contentType": "text/markdown",
+                              "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/Tenant-backend-API-Word-te-acf73-ds-bulk---bulk-create-words-chromium/error-context.md"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts",
+                            "column": 31,
+                            "line": 388
+                          }
                         }
                       ],
-                      "status": "skipped"
+                      "status": "unexpected"
                     }
                   ],
-                  "id": "9e84d37b5ec4a66913bb-a1d183c453e1099bd718",
-                  "file": "Tenant/frontend/API/Word/team-word-controller.spec.ts",
+                  "id": "58318020fce36547f6b8-183e9927e4840ba5ea50",
+                  "file": "Tenant/backend/API/Word/team-word-controller.spec.ts",
                   "line": 375,
                   "column": 9
                 },
                 {
                   "title": "DELETE /team/words/bulk-delete - bulk delete words",
-                  "ok": true,
+                  "ok": false,
                   "tags": [],
                   "tests": [
                     {
@@ -718,24 +1461,80 @@
                       "projectName": "chromium",
                       "results": [
                         {
-                          "workerIndex": -1,
-                          "parallelIndex": -1,
-                          "status": "skipped",
-                          "duration": 0,
-                          "errors": [],
-                          "stdout": [],
+                          "workerIndex": 14,
+                          "parallelIndex": 0,
+                          "status": "failed",
+                          "duration": 1133,
+                          "error": {
+                            "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m201\u001b[39m\nReceived: \u001b[31m403\u001b[39m",
+                            "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m201\u001b[39m\nReceived: \u001b[31m403\u001b[39m\n    at createTestWord (/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:770:29)\n    at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:397:21",
+                            "location": {
+                              "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts",
+                              "column": 29,
+                              "line": 770
+                            },
+                            "snippet": "\u001b[0m \u001b[90m 768 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 769 |\u001b[39m     \n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 770 |\u001b[39m     expect(response\u001b[33m.\u001b[39mstatus)\u001b[33m.\u001b[39mtoBe(\u001b[35m201\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                             \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 771 |\u001b[39m     \u001b[36mconst\u001b[39m result \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m response\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\n \u001b[90m 772 |\u001b[39m     \u001b[36mreturn\u001b[39m result\u001b[33m.\u001b[39mdata\u001b[33m;\u001b[39m\n \u001b[90m 773 |\u001b[39m   }\u001b[0m"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts",
+                                "column": 29,
+                                "line": 770
+                              },
+                              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m201\u001b[39m\nReceived: \u001b[31m403\u001b[39m\n\n\u001b[0m \u001b[90m 768 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 769 |\u001b[39m     \n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 770 |\u001b[39m     expect(response\u001b[33m.\u001b[39mstatus)\u001b[33m.\u001b[39mtoBe(\u001b[35m201\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                             \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 771 |\u001b[39m     \u001b[36mconst\u001b[39m result \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m response\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\n \u001b[90m 772 |\u001b[39m     \u001b[36mreturn\u001b[39m result\u001b[33m.\u001b[39mdata\u001b[33m;\u001b[39m\n \u001b[90m 773 |\u001b[39m   }\u001b[0m\n\u001b[2m    at createTestWord (/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:770:29)\u001b[22m\n\u001b[2m    at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:397:21\u001b[22m"
+                            }
+                          ],
+                          "stdout": [
+                            {
+                              "text": "📡 API Response 201: {\"success\":true,\"data\":{\"token\":\"1|vcRyo3XKp1sK39OFQacnq0eX1IZnwQS3HXXPxFUv6f6deafa\",\"progress_id\":\"tenant_684c588d7762d\",\"user\":{\"id\":1,\"name\":\"John Admin\",\"email\":\"admin-e2e-test-1749833869330-33744-un8qcc-272665@e2e-test.local\",\"membership\":\"admin\",\"email_verified_at\":null,\"tenant_id\":\"925bb000-97bf-4616-b7e8-6e2f2147ea15\",\"tenant\":{\"id\":\"925bb000-97bf-4616-b7e8-6e2f2147ea15\",\"name\":\"Word Test School 1\",\"slug\":\"e2e-test-1749833869330-33744-un8qcc-272665\",\"status\":\"trial\"}}},\"message\":\"Organiz...\n"
+                            },
+                            {
+                              "text": "📡 API Response 201: {\"success\":true,\"data\":{\"token\":\"1|tGfoXy8ia7LiaYN7NWD1FvgvzpfERa7edXrtrduhee3a630f\",\"progress_id\":\"tenant_684c58939d3e5\",\"user\":{\"id\":1,\"name\":\"John Admin\",\"email\":\"admin-e2e-test-1749833869330-33744-02nwdo-366165@e2e-test.local\",\"membership\":\"admin\",\"email_verified_at\":null,\"tenant_id\":\"d0fd39a1-baf5-4363-be19-ccaf22985975\",\"tenant\":{\"id\":\"d0fd39a1-baf5-4363-be19-ccaf22985975\",\"name\":\"Word Test School 2\",\"slug\":\"e2e-test-1749833869330-33744-02nwdo-366165\",\"status\":\"trial\"}}},\"message\":\"Organiz...\n"
+                            },
+                            {
+                              "text": "🗑️  Cleaning up all test tenants...\n"
+                            },
+                            {
+                              "text": "🗑️  Cleaning up tenant: e2e-test-1749833869330-33744-un8qcc-272665\n"
+                            },
+                            {
+                              "text": "🗑️  Cleaning up tenant: e2e-test-1749833869330-33744-02nwdo-366165\n"
+                            }
+                          ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-06-13T14:49:45.257Z",
+                          "startTime": "2025-06-13T16:57:49.299Z",
                           "annotations": [],
-                          "attachments": []
+                          "attachments": [
+                            {
+                              "name": "screenshot",
+                              "contentType": "image/png",
+                              "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/Tenant-backend-API-Word-te-07a33--delete---bulk-delete-words-chromium/test-failed-1.png"
+                            },
+                            {
+                              "name": "video",
+                              "contentType": "video/webm",
+                              "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/Tenant-backend-API-Word-te-07a33--delete---bulk-delete-words-chromium/video.webm"
+                            },
+                            {
+                              "name": "_error-context-0",
+                              "contentType": "text/markdown",
+                              "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/Tenant-backend-API-Word-te-07a33--delete---bulk-delete-words-chromium/error-context.md"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts",
+                            "column": 29,
+                            "line": 770
+                          }
                         }
                       ],
-                      "status": "skipped"
+                      "status": "unexpected"
                     }
                   ],
-                  "id": "9e84d37b5ec4a66913bb-764b5e8375ffc601859b",
-                  "file": "Tenant/frontend/API/Word/team-word-controller.spec.ts",
+                  "id": "58318020fce36547f6b8-77e42ef6f4e37e244a43",
+                  "file": "Tenant/backend/API/Word/team-word-controller.spec.ts",
                   "line": 395,
                   "column": 9
                 }
@@ -743,13 +1542,13 @@
             },
             {
               "title": "Translation Management",
-              "file": "Tenant/frontend/API/Word/team-word-controller.spec.ts",
+              "file": "Tenant/backend/API/Word/team-word-controller.spec.ts",
               "line": 417,
               "column": 8,
               "specs": [
                 {
                   "title": "POST /team/words/{id}/translations - add translation",
-                  "ok": true,
+                  "ok": false,
                   "tags": [],
                   "tests": [
                     {
@@ -760,30 +1559,86 @@
                       "projectName": "chromium",
                       "results": [
                         {
-                          "workerIndex": -1,
-                          "parallelIndex": -1,
-                          "status": "skipped",
-                          "duration": 0,
-                          "errors": [],
-                          "stdout": [],
+                          "workerIndex": 15,
+                          "parallelIndex": 0,
+                          "status": "failed",
+                          "duration": 1314,
+                          "error": {
+                            "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m201\u001b[39m\nReceived: \u001b[31m403\u001b[39m",
+                            "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m201\u001b[39m\nReceived: \u001b[31m403\u001b[39m\n    at createTestWord (/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:770:29)\n    at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:419:20",
+                            "location": {
+                              "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts",
+                              "column": 29,
+                              "line": 770
+                            },
+                            "snippet": "\u001b[0m \u001b[90m 768 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 769 |\u001b[39m     \n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 770 |\u001b[39m     expect(response\u001b[33m.\u001b[39mstatus)\u001b[33m.\u001b[39mtoBe(\u001b[35m201\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                             \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 771 |\u001b[39m     \u001b[36mconst\u001b[39m result \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m response\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\n \u001b[90m 772 |\u001b[39m     \u001b[36mreturn\u001b[39m result\u001b[33m.\u001b[39mdata\u001b[33m;\u001b[39m\n \u001b[90m 773 |\u001b[39m   }\u001b[0m"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts",
+                                "column": 29,
+                                "line": 770
+                              },
+                              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m201\u001b[39m\nReceived: \u001b[31m403\u001b[39m\n\n\u001b[0m \u001b[90m 768 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 769 |\u001b[39m     \n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 770 |\u001b[39m     expect(response\u001b[33m.\u001b[39mstatus)\u001b[33m.\u001b[39mtoBe(\u001b[35m201\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                             \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 771 |\u001b[39m     \u001b[36mconst\u001b[39m result \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m response\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\n \u001b[90m 772 |\u001b[39m     \u001b[36mreturn\u001b[39m result\u001b[33m.\u001b[39mdata\u001b[33m;\u001b[39m\n \u001b[90m 773 |\u001b[39m   }\u001b[0m\n\u001b[2m    at createTestWord (/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:770:29)\u001b[22m\n\u001b[2m    at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:419:20\u001b[22m"
+                            }
+                          ],
+                          "stdout": [
+                            {
+                              "text": "📡 API Response 201: {\"success\":true,\"data\":{\"token\":\"1|BbsvgXxka60auQVxqOOn32fYiXrfxwrdmLDYS9M4153046b7\",\"progress_id\":\"tenant_684c58a0e83f8\",\"user\":{\"id\":1,\"name\":\"John Admin\",\"email\":\"admin-e2e-test-1749833888799-34616-1jlwx6-779371@e2e-test.local\",\"membership\":\"admin\",\"email_verified_at\":null,\"tenant_id\":\"1164dbc6-dcdc-43a4-ba41-b14fb7d720c5\",\"tenant\":{\"id\":\"1164dbc6-dcdc-43a4-ba41-b14fb7d720c5\",\"name\":\"Word Test School 1\",\"slug\":\"e2e-test-1749833888799-34616-1jlwx6-779371\",\"status\":\"trial\"}}},\"message\":\"Organiz...\n"
+                            },
+                            {
+                              "text": "📡 API Response 201: {\"success\":true,\"data\":{\"token\":\"1|SUSHggRm8qH04VyEJQNlNivv5jaEk19hBniZBZeTeeeae0f1\",\"progress_id\":\"tenant_684c58a743f27\",\"user\":{\"id\":1,\"name\":\"John Admin\",\"email\":\"admin-e2e-test-1749833888799-34616-64k8vm-826070@e2e-test.local\",\"membership\":\"admin\",\"email_verified_at\":null,\"tenant_id\":\"a9b41330-f48a-46dc-938a-4f8001feafa6\",\"tenant\":{\"id\":\"a9b41330-f48a-46dc-938a-4f8001feafa6\",\"name\":\"Word Test School 2\",\"slug\":\"e2e-test-1749833888799-34616-64k8vm-826070\",\"status\":\"trial\"}}},\"message\":\"Organiz...\n"
+                            },
+                            {
+                              "text": "🗑️  Cleaning up all test tenants...\n"
+                            },
+                            {
+                              "text": "🗑️  Cleaning up tenant: e2e-test-1749833888799-34616-1jlwx6-779371\n"
+                            },
+                            {
+                              "text": "🗑️  Cleaning up tenant: e2e-test-1749833888799-34616-64k8vm-826070\n"
+                            }
+                          ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-06-13T14:49:45.266Z",
+                          "startTime": "2025-06-13T16:58:08.771Z",
                           "annotations": [],
-                          "attachments": []
+                          "attachments": [
+                            {
+                              "name": "screenshot",
+                              "contentType": "image/png",
+                              "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/Tenant-backend-API-Word-te-24126-nslations---add-translation-chromium/test-failed-1.png"
+                            },
+                            {
+                              "name": "video",
+                              "contentType": "video/webm",
+                              "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/Tenant-backend-API-Word-te-24126-nslations---add-translation-chromium/video.webm"
+                            },
+                            {
+                              "name": "_error-context-0",
+                              "contentType": "text/markdown",
+                              "path": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results/Tenant-backend-API-Word-te-24126-nslations---add-translation-chromium/error-context.md"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts",
+                            "column": 29,
+                            "line": 770
+                          }
                         }
                       ],
-                      "status": "skipped"
+                      "status": "unexpected"
                     }
                   ],
-                  "id": "9e84d37b5ec4a66913bb-c84b14ccd26bdb5a2d5e",
-                  "file": "Tenant/frontend/API/Word/team-word-controller.spec.ts",
+                  "id": "58318020fce36547f6b8-6068f2e8f8d5f8bad279",
+                  "file": "Tenant/backend/API/Word/team-word-controller.spec.ts",
                   "line": 418,
                   "column": 9
                 },
                 {
                   "title": "PUT /team/words/{id}/translations/{translationId} - update translation",
-                  "ok": true,
+                  "ok": false,
                   "tags": [],
                   "tests": [
                     {
@@ -794,24 +1649,61 @@
                       "projectName": "chromium",
                       "results": [
                         {
-                          "workerIndex": -1,
-                          "parallelIndex": -1,
-                          "status": "skipped",
-                          "duration": 0,
-                          "errors": [],
-                          "stdout": [],
+                          "workerIndex": 16,
+                          "parallelIndex": 0,
+                          "status": "failed",
+                          "duration": 1,
+                          "error": {
+                            "message": "TimeoutError: The operation was aborted due to timeout",
+                            "stack": "TimeoutError: The operation was aborted due to timeout\n    at ApiHelper.request (/home/onionlake-admin/PROJECT/gol_2025/e2e/utils/api-helpers.ts:63:22)\n    at ApiHelper.registerTenantAdmin (/home/onionlake-admin/PROJECT/gol_2025/e2e/utils/api-helpers.ts:89:22)\n    at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:55:33",
+                            "location": {
+                              "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/utils/api-helpers.ts",
+                              "column": 22,
+                              "line": 63
+                            },
+                            "snippet": "\u001b[90m   at \u001b[39m../utils/api-helpers.ts:63\n\n\u001b[0m \u001b[90m 61 |\u001b[39m     }\n \u001b[90m 62 |\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 63 |\u001b[39m     \u001b[36mconst\u001b[39m response \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m fetch(url\u001b[33m,\u001b[39m requestOptions)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                      \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 64 |\u001b[39m\n \u001b[90m 65 |\u001b[39m     \u001b[36mif\u001b[39m (process\u001b[33m.\u001b[39menv\u001b[33m.\u001b[39m\u001b[33mDEBUG_API_CALLS\u001b[39m \u001b[33m===\u001b[39m \u001b[32m'true'\u001b[39m) {\n \u001b[90m 66 |\u001b[39m       console\u001b[33m.\u001b[39mlog(\u001b[32m`📡 API Response ${response.status}`\u001b[39m\u001b[33m,\u001b[39m \u001b[36mawait\u001b[39m response\u001b[33m.\u001b[39mclone()\u001b[33m.\u001b[39mtext())\u001b[33m;\u001b[39m\u001b[0m"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/utils/api-helpers.ts",
+                                "column": 22,
+                                "line": 63
+                              },
+                              "message": "TimeoutError: The operation was aborted due to timeout\n\n\u001b[90m   at \u001b[39m../utils/api-helpers.ts:63\n\n\u001b[0m \u001b[90m 61 |\u001b[39m     }\n \u001b[90m 62 |\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 63 |\u001b[39m     \u001b[36mconst\u001b[39m response \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m fetch(url\u001b[33m,\u001b[39m requestOptions)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                      \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 64 |\u001b[39m\n \u001b[90m 65 |\u001b[39m     \u001b[36mif\u001b[39m (process\u001b[33m.\u001b[39menv\u001b[33m.\u001b[39m\u001b[33mDEBUG_API_CALLS\u001b[39m \u001b[33m===\u001b[39m \u001b[32m'true'\u001b[39m) {\n \u001b[90m 66 |\u001b[39m       console\u001b[33m.\u001b[39mlog(\u001b[32m`📡 API Response ${response.status}`\u001b[39m\u001b[33m,\u001b[39m \u001b[36mawait\u001b[39m response\u001b[33m.\u001b[39mclone()\u001b[33m.\u001b[39mtext())\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at ApiHelper.request (/home/onionlake-admin/PROJECT/gol_2025/e2e/utils/api-helpers.ts:63:22)\u001b[22m\n\u001b[2m    at ApiHelper.registerTenantAdmin (/home/onionlake-admin/PROJECT/gol_2025/e2e/utils/api-helpers.ts:89:22)\u001b[22m\n\u001b[2m    at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:55:33\u001b[22m"
+                            }
+                          ],
+                          "stdout": [
+                            {
+                              "text": "📡 API Response 201: {\"success\":true,\"data\":{\"token\":\"1|YLWDtgXb3JFwB3hQqGMC2NNWK0iZaaK6tlZDrYRm0bab9b39\",\"progress_id\":\"tenant_684c58b7a8738\",\"user\":{\"id\":1,\"name\":\"John Admin\",\"email\":\"admin-e2e-test-1749833911535-35884-5mk0da-922042@e2e-test.local\",\"membership\":\"admin\",\"email_verified_at\":null,\"tenant_id\":\"fadb1daa-b712-4c4c-b3b8-4f6069abf796\",\"tenant\":{\"id\":\"fadb1daa-b712-4c4c-b3b8-4f6069abf796\",\"name\":\"Word Test School 1\",\"slug\":\"e2e-test-1749833911535-35884-5mk0da-922042\",\"status\":\"trial\"}}},\"message\":\"Organiz...\n"
+                            },
+                            {
+                              "text": "🗑️  Cleaning up all test tenants...\n"
+                            },
+                            {
+                              "text": "🗑️  Cleaning up tenant: e2e-test-1749833911535-35884-5mk0da-922042\n"
+                            },
+                            {
+                              "text": "🗑️  Cleaning up tenant: e2e-test-1749833911535-35884-tk5v21-970042\n"
+                            }
+                          ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-06-13T14:49:45.272Z",
+                          "startTime": "2025-06-13T16:58:31.494Z",
                           "annotations": [],
-                          "attachments": []
+                          "attachments": [],
+                          "errorLocation": {
+                            "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/utils/api-helpers.ts",
+                            "column": 22,
+                            "line": 63
+                          }
                         }
                       ],
-                      "status": "skipped"
+                      "status": "unexpected"
                     }
                   ],
-                  "id": "9e84d37b5ec4a66913bb-2817b2eebce0c0c35f67",
-                  "file": "Tenant/frontend/API/Word/team-word-controller.spec.ts",
+                  "id": "58318020fce36547f6b8-78b37fc2646508b86af9",
+                  "file": "Tenant/backend/API/Word/team-word-controller.spec.ts",
                   "line": 443,
                   "column": 9
                 },
@@ -836,7 +1728,7 @@
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-06-13T14:49:45.280Z",
+                          "startTime": "2025-06-13T16:58:54.388Z",
                           "annotations": [],
                           "attachments": []
                         }
@@ -844,8 +1736,8 @@
                       "status": "skipped"
                     }
                   ],
-                  "id": "9e84d37b5ec4a66913bb-1492334a5a391c089b66",
-                  "file": "Tenant/frontend/API/Word/team-word-controller.spec.ts",
+                  "id": "58318020fce36547f6b8-29cc4d4522845f3bd3f5",
+                  "file": "Tenant/backend/API/Word/team-word-controller.spec.ts",
                   "line": 481,
                   "column": 9
                 }
@@ -853,7 +1745,7 @@
             },
             {
               "title": "Audio Upload Testing",
-              "file": "Tenant/frontend/API/Word/team-word-controller.spec.ts",
+              "file": "Tenant/backend/API/Word/team-word-controller.spec.ts",
               "line": 511,
               "column": 8,
               "specs": [
@@ -878,7 +1770,7 @@
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-06-13T14:49:45.304Z",
+                          "startTime": "2025-06-13T16:58:54.428Z",
                           "annotations": [],
                           "attachments": []
                         }
@@ -886,8 +1778,8 @@
                       "status": "skipped"
                     }
                   ],
-                  "id": "9e84d37b5ec4a66913bb-6fc5d24ff14ddaf55f53",
-                  "file": "Tenant/frontend/API/Word/team-word-controller.spec.ts",
+                  "id": "58318020fce36547f6b8-efad353872c857d250f5",
+                  "file": "Tenant/backend/API/Word/team-word-controller.spec.ts",
                   "line": 512,
                   "column": 9
                 }
@@ -895,7 +1787,7 @@
             },
             {
               "title": "Filter & Search Testing",
-              "file": "Tenant/frontend/API/Word/team-word-controller.spec.ts",
+              "file": "Tenant/backend/API/Word/team-word-controller.spec.ts",
               "line": 538,
               "column": 8,
               "specs": [
@@ -920,7 +1812,7 @@
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-06-13T14:49:45.311Z",
+                          "startTime": "2025-06-13T16:58:54.459Z",
                           "annotations": [],
                           "attachments": []
                         }
@@ -928,8 +1820,8 @@
                       "status": "skipped"
                     }
                   ],
-                  "id": "9e84d37b5ec4a66913bb-9f52bbc72bfbbedbef63",
-                  "file": "Tenant/frontend/API/Word/team-word-controller.spec.ts",
+                  "id": "58318020fce36547f6b8-8ee2ccb1a850e0ddf062",
+                  "file": "Tenant/backend/API/Word/team-word-controller.spec.ts",
                   "line": 539,
                   "column": 9
                 },
@@ -954,7 +1846,7 @@
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-06-13T14:49:45.316Z",
+                          "startTime": "2025-06-13T16:58:54.488Z",
                           "annotations": [],
                           "attachments": []
                         }
@@ -962,8 +1854,8 @@
                       "status": "skipped"
                     }
                   ],
-                  "id": "9e84d37b5ec4a66913bb-dd3699e889ed672aea8a",
-                  "file": "Tenant/frontend/API/Word/team-word-controller.spec.ts",
+                  "id": "58318020fce36547f6b8-1c80008074c7b50f88a9",
+                  "file": "Tenant/backend/API/Word/team-word-controller.spec.ts",
                   "line": 562,
                   "column": 9
                 },
@@ -988,7 +1880,7 @@
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-06-13T14:49:45.328Z",
+                          "startTime": "2025-06-13T16:58:54.560Z",
                           "annotations": [],
                           "attachments": []
                         }
@@ -996,8 +1888,8 @@
                       "status": "skipped"
                     }
                   ],
-                  "id": "9e84d37b5ec4a66913bb-c4cabc55efefbe93a9c7",
-                  "file": "Tenant/frontend/API/Word/team-word-controller.spec.ts",
+                  "id": "58318020fce36547f6b8-37d5744eb7c78cb5d386",
+                  "file": "Tenant/backend/API/Word/team-word-controller.spec.ts",
                   "line": 577,
                   "column": 9
                 },
@@ -1022,7 +1914,7 @@
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-06-13T14:49:45.345Z",
+                          "startTime": "2025-06-13T16:58:54.691Z",
                           "annotations": [],
                           "attachments": []
                         }
@@ -1030,8 +1922,8 @@
                       "status": "skipped"
                     }
                   ],
-                  "id": "9e84d37b5ec4a66913bb-276c338f24c6e1b4a34e",
-                  "file": "Tenant/frontend/API/Word/team-word-controller.spec.ts",
+                  "id": "58318020fce36547f6b8-c06c947a00961cdd7412",
+                  "file": "Tenant/backend/API/Word/team-word-controller.spec.ts",
                   "line": 592,
                   "column": 9
                 }
@@ -1039,7 +1931,7 @@
             },
             {
               "title": "Word Constraint System",
-              "file": "Tenant/frontend/API/Word/team-word-controller.spec.ts",
+              "file": "Tenant/backend/API/Word/team-word-controller.spec.ts",
               "line": 605,
               "column": 8,
               "specs": [
@@ -1064,7 +1956,7 @@
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-06-13T14:49:45.353Z",
+                          "startTime": "2025-06-13T16:58:54.819Z",
                           "annotations": [],
                           "attachments": []
                         }
@@ -1072,8 +1964,8 @@
                       "status": "skipped"
                     }
                   ],
-                  "id": "9e84d37b5ec4a66913bb-58bf1a0ddcc6f6845329",
-                  "file": "Tenant/frontend/API/Word/team-word-controller.spec.ts",
+                  "id": "58318020fce36547f6b8-25f3dfcff4ba96523cdd",
+                  "file": "Tenant/backend/API/Word/team-word-controller.spec.ts",
                   "line": 606,
                   "column": 9
                 },
@@ -1098,7 +1990,7 @@
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-06-13T14:49:45.361Z",
+                          "startTime": "2025-06-13T16:58:54.877Z",
                           "annotations": [],
                           "attachments": []
                         }
@@ -1106,8 +1998,8 @@
                       "status": "skipped"
                     }
                   ],
-                  "id": "9e84d37b5ec4a66913bb-0f5e1f4fcf3fd8f5575d",
-                  "file": "Tenant/frontend/API/Word/team-word-controller.spec.ts",
+                  "id": "58318020fce36547f6b8-45a6bc65aeac7001d1e8",
+                  "file": "Tenant/backend/API/Word/team-word-controller.spec.ts",
                   "line": 617,
                   "column": 9
                 },
@@ -1132,7 +2024,7 @@
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-06-13T14:49:45.375Z",
+                          "startTime": "2025-06-13T16:58:55.028Z",
                           "annotations": [],
                           "attachments": []
                         }
@@ -1140,8 +2032,8 @@
                       "status": "skipped"
                     }
                   ],
-                  "id": "9e84d37b5ec4a66913bb-7e3983859a1d7647685c",
-                  "file": "Tenant/frontend/API/Word/team-word-controller.spec.ts",
+                  "id": "58318020fce36547f6b8-5a7ede052ba2da6c564b",
+                  "file": "Tenant/backend/API/Word/team-word-controller.spec.ts",
                   "line": 627,
                   "column": 9
                 }
@@ -1149,7 +2041,7 @@
             },
             {
               "title": "Edge Cases & Error Handling",
-              "file": "Tenant/frontend/API/Word/team-word-controller.spec.ts",
+              "file": "Tenant/backend/API/Word/team-word-controller.spec.ts",
               "line": 648,
               "column": 8,
               "specs": [
@@ -1174,7 +2066,7 @@
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-06-13T14:49:45.380Z",
+                          "startTime": "2025-06-13T16:58:55.106Z",
                           "annotations": [],
                           "attachments": []
                         }
@@ -1182,8 +2074,8 @@
                       "status": "skipped"
                     }
                   ],
-                  "id": "9e84d37b5ec4a66913bb-539cd44eb58d2d9564ab",
-                  "file": "Tenant/frontend/API/Word/team-word-controller.spec.ts",
+                  "id": "58318020fce36547f6b8-0afac2d2b2945e025de8",
+                  "file": "Tenant/backend/API/Word/team-word-controller.spec.ts",
                   "line": 649,
                   "column": 9
                 },
@@ -1208,7 +2100,7 @@
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-06-13T14:49:45.387Z",
+                          "startTime": "2025-06-13T16:58:55.217Z",
                           "annotations": [],
                           "attachments": []
                         }
@@ -1216,8 +2108,8 @@
                       "status": "skipped"
                     }
                   ],
-                  "id": "9e84d37b5ec4a66913bb-285fec75f885d08cbab1",
-                  "file": "Tenant/frontend/API/Word/team-word-controller.spec.ts",
+                  "id": "58318020fce36547f6b8-219a2272561629ee32b1",
+                  "file": "Tenant/backend/API/Word/team-word-controller.spec.ts",
                   "line": 661,
                   "column": 9
                 },
@@ -1242,7 +2134,7 @@
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-06-13T14:49:45.393Z",
+                          "startTime": "2025-06-13T16:58:55.310Z",
                           "annotations": [],
                           "attachments": []
                         }
@@ -1250,8 +2142,8 @@
                       "status": "skipped"
                     }
                   ],
-                  "id": "9e84d37b5ec4a66913bb-8f8364798f81cedfc4cd",
-                  "file": "Tenant/frontend/API/Word/team-word-controller.spec.ts",
+                  "id": "58318020fce36547f6b8-049f499b32582fb54382",
+                  "file": "Tenant/backend/API/Word/team-word-controller.spec.ts",
                   "line": 669,
                   "column": 9
                 },
@@ -1276,7 +2168,7 @@
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-06-13T14:49:45.398Z",
+                          "startTime": "2025-06-13T16:58:55.376Z",
                           "annotations": [],
                           "attachments": []
                         }
@@ -1284,8 +2176,8 @@
                       "status": "skipped"
                     }
                   ],
-                  "id": "9e84d37b5ec4a66913bb-6a2ef2b45bf328ddad0f",
-                  "file": "Tenant/frontend/API/Word/team-word-controller.spec.ts",
+                  "id": "58318020fce36547f6b8-f1c252595c983145e24f",
+                  "file": "Tenant/backend/API/Word/team-word-controller.spec.ts",
                   "line": 686,
                   "column": 9
                 }
@@ -1293,7 +2185,7 @@
             },
             {
               "title": "Response Format Validation",
-              "file": "Tenant/frontend/API/Word/team-word-controller.spec.ts",
+              "file": "Tenant/backend/API/Word/team-word-controller.spec.ts",
               "line": 701,
               "column": 8,
               "specs": [
@@ -1318,7 +2210,7 @@
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-06-13T14:49:45.403Z",
+                          "startTime": "2025-06-13T16:58:55.479Z",
                           "annotations": [],
                           "attachments": []
                         }
@@ -1326,8 +2218,8 @@
                       "status": "skipped"
                     }
                   ],
-                  "id": "9e84d37b5ec4a66913bb-2af1d43a8648c14d3faa",
-                  "file": "Tenant/frontend/API/Word/team-word-controller.spec.ts",
+                  "id": "58318020fce36547f6b8-0672edcb141a5f79605a",
+                  "file": "Tenant/backend/API/Word/team-word-controller.spec.ts",
                   "line": 702,
                   "column": 9
                 },
@@ -1352,7 +2244,7 @@
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-06-13T14:49:45.409Z",
+                          "startTime": "2025-06-13T16:58:55.524Z",
                           "annotations": [],
                           "attachments": []
                         }
@@ -1360,8 +2252,8 @@
                       "status": "skipped"
                     }
                   ],
-                  "id": "9e84d37b5ec4a66913bb-103190102772e58d81b9",
-                  "file": "Tenant/frontend/API/Word/team-word-controller.spec.ts",
+                  "id": "58318020fce36547f6b8-fb7351e24c5fc6ceb3f8",
+                  "file": "Tenant/backend/API/Word/team-word-controller.spec.ts",
                   "line": 720,
                   "column": 9
                 },
@@ -1386,7 +2278,7 @@
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-06-13T14:49:45.424Z",
+                          "startTime": "2025-06-13T16:58:55.572Z",
                           "annotations": [],
                           "attachments": []
                         }
@@ -1394,8 +2286,8 @@
                       "status": "skipped"
                     }
                   ],
-                  "id": "9e84d37b5ec4a66913bb-cc52365e9c8ae757c972",
-                  "file": "Tenant/frontend/API/Word/team-word-controller.spec.ts",
+                  "id": "58318020fce36547f6b8-23d4d50409e3bbb91a8f",
+                  "file": "Tenant/backend/API/Word/team-word-controller.spec.ts",
                   "line": 744,
                   "column": 9
                 }
@@ -1408,11 +2300,11 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2025-06-13T14:49:31.768Z",
-    "duration": 14157.66,
-    "expected": 0,
-    "skipped": 34,
-    "unexpected": 1,
+    "startTime": "2025-06-13T16:52:56.757Z",
+    "duration": 360509.211,
+    "expected": 2,
+    "skipped": 16,
+    "unexpected": 17,
     "flaky": 0
   }
 }

@@ -40,7 +40,7 @@ Route::prefix('student')->middleware(['auth:sanctum'])->group(function () {
 });
 
 // Routes that require both authentication and email verification
-Route::prefix('student')->middleware(['auth:tenant', 'verified', 'membership:student'])->group(function () {
+Route::prefix('student')->middleware(['auth:tenant', 'verified'])->group(function () {
     // Learning Content Routes - Read-only access for regular users
     // These routes should only provide access to published content
 

@@ -27,8 +27,7 @@ class TeamLessonController extends BaseAPIController
      */
     public function __construct()
     {
-        $this->middleware(['auth:sanctum', 'verified', 'tenant', 'membership:team']);
-    }
+     }
 
     /**
      * Display a listing of lessons.

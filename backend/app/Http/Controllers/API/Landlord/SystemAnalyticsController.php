@@ -23,7 +23,7 @@ class SystemAnalyticsController extends BaseAPIController
      */
     public function __construct()
     {
-        $this->middleware(['auth:sanctum', 'verified', 'membership:super-admin']);
+        $this->middleware(['auth:sanctum', 'verified']);
     }
 
     /**

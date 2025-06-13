@@ -39,7 +39,7 @@ return Application::configure(basePath: dirname(__DIR__))
         if (class_exists(EnsureEmailIsVerified::class)) {
             $middleware->alias(['verified' => EnsureEmailIsVerified::class]);
         }
-        
+
         if (class_exists(CheckSequentialAccess::class)) {
             $middleware->alias(['sequential-learning' => CheckSequentialAccess::class]);
         }

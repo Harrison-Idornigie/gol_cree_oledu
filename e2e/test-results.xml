@@ -1,170 +1,815 @@
-<testsuites id="" name="" tests="35" failures="1" skipped="34" errors="0" time="14.15766">
-<testsuite name="Tenant/frontend/API/Word/team-word-controller.spec.ts" timestamp="2025-06-13T14:49:41.389Z" hostname="chromium" tests="35" failures="1" skipped="34" time="0.003" errors="0">
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Authentication &amp; Authorization Tests › should return 401 for unauthenticated requests" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0.003">
+<testsuites id="" name="" tests="35" failures="17" skipped="16" errors="0" time="360.509211">
+<testsuite name="Tenant/backend/API/Word/team-word-controller.spec.ts" timestamp="2025-06-13T16:52:58.894Z" hostname="chromium" tests="35" failures="17" skipped="16" time="26.104" errors="0">
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Authentication &amp; Authorization Tests › should return 401 for unauthenticated requests" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="2.929">
 <failure message="team-word-controller.spec.ts:76:9 should return 401 for unauthenticated requests" type="FAILURE">
-<![CDATA[  [chromium] › Tenant/frontend/API/Word/team-word-controller.spec.ts:76:9 › Team Word Controller API - Comprehensive E2E Tests › Authentication & Authorization Tests › should return 401 for unauthenticated requests 
+<![CDATA[  [chromium] › Tenant/backend/API/Word/team-word-controller.spec.ts:76:9 › Team Word Controller API - Comprehensive E2E Tests › Authentication & Authorization Tests › should return 401 for unauthenticated requests 
 
     Error: expect(received).toBe(expected) // Object.is equality
 
-    Expected: true
-    Received: false
+    Expected: false
+    Received: undefined
 
-      55 |     const tenant2Registration = await apiHelper.registerTenantAdmin(tenant2Data);
-      56 |     
-    > 57 |     expect(tenant1Registration.success).toBe(true);
-         |                                         ^
-      58 |     expect(tenant2Registration.success).toBe(true);
-      59 |     
-      60 |     tenant1Token = tenant1Registration.data?.token;
-        at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/frontend/API/Word/team-word-controller.spec.ts:57:41
+      91 |       }
+      92 |       
+    > 93 |       expect(data.success).toBe(false);
+         |                            ^
+      94 |       expect(data.message).toContain('Unauthenticated');
+      95 |     });
+      96 |
+        at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:93:28
 
-    Error Context: ../test-results/Tenant-frontend-API-Word-t-60571-or-unauthenticated-requests-chromium/error-context.md
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/Tenant-backend-API-Word-te-03351-or-unauthenticated-requests-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/Tenant-backend-API-Word-te-03351-or-unauthenticated-requests-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/Tenant-backend-API-Word-te-03351-or-unauthenticated-requests-chromium/error-context.md
 ]]>
 </failure>
 <system-out>
-<![CDATA[📡 API Response 500: {"success":false,"message":"Registration failed","errors":{"error":"An unexpected error occurred"}}
-📡 API Response 500: {"success":false,"message":"Registration failed","errors":{"error":"An unexpected error occurred"}}
+<![CDATA[📡 API Response 201: {"success":true,"data":{"token":"1|OCOV2fZl5uIBzYTxlYfQpZbSN1n6uhjPDUXdbKibee73c548","progress_id":"tenant_684c576cbdb72","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1749833580613-20950-ktn2ug-066150@e2e-test.local","membership":"admin","email_verified_at":null,"tenant_id":"8ff28f23-f080-462b-8f61-3002cd22b916","tenant":{"id":"8ff28f23-f080-462b-8f61-3002cd22b916","name":"Word Test School 1","slug":"e2e-test-1749833580613-20950-ktn2ug-066150","status":"trial"}}},"message":"Organiz...
+📡 API Response 201: {"success":true,"data":{"token":"1|4vFF3pA887yV4mQNRTKmIbmI5doCGf2gSFlQOpHb39c240eb","progress_id":"tenant_684c577362ac7","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1749833580614-20950-pnsgwi-127350@e2e-test.local","membership":"admin","email_verified_at":null,"tenant_id":"59b86f68-e226-46b7-957d-cd3b380085be","tenant":{"id":"59b86f68-e226-46b7-957d-cd3b380085be","name":"Word Test School 2","slug":"e2e-test-1749833580614-20950-pnsgwi-127350","status":"trial"}}},"message":"Organiz...
+📡 Raw response: {"message":"Unauthenticated."}
 🗑️  Cleaning up all test tenants...
-🗑️  Cleaning up tenant: e2e-test-1749826182698-210355-3hd778-361199
-🗑️  Cleaning up tenant: e2e-test-1749826182698-210355-lzhhj6-415499
+🗑️  Cleaning up tenant: e2e-test-1749833580613-20950-ktn2ug-066150
+🗑️  Cleaning up tenant: e2e-test-1749833580614-20950-pnsgwi-127350
 
-[[ATTACHMENT|test-results/Tenant-frontend-API-Word-t-60571-or-unauthenticated-requests-chromium/error-context.md]]
+[[ATTACHMENT|test-results/Tenant-backend-API-Word-te-03351-or-unauthenticated-requests-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|test-results/Tenant-backend-API-Word-te-03351-or-unauthenticated-requests-chromium/video.webm]]
+
+[[ATTACHMENT|test-results/Tenant-backend-API-Word-te-03351-or-unauthenticated-requests-chromium/error-context.md]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Authentication &amp; Authorization Tests › should return 403 for non-team users accessing team endpoints" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0">
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Authentication &amp; Authorization Tests › should return 403 for non-team users accessing team endpoints" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="1.14">
+<system-out>
+<![CDATA[📡 API Response 201: {"success":true,"data":{"token":"1|mndR8LHAurx6nqjsUCxjcKBqZzxMgDmCX3ucQrL281372a2a","progress_id":"tenant_684c5782dd740","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1749833602701-21929-e2y2db-467624@e2e-test.local","membership":"admin","email_verified_at":null,"tenant_id":"2f656738-c6e9-4791-b3ad-c2e54305423d","tenant":{"id":"2f656738-c6e9-4791-b3ad-c2e54305423d","name":"Word Test School 1","slug":"e2e-test-1749833602701-21929-e2y2db-467624","status":"trial"}}},"message":"Organiz...
+📡 API Response 201: {"success":true,"data":{"token":"1|GRiYVdAJdCAnVkTwVm1HEOUDacdX6vCEqeS8lDqW29d3dc67","progress_id":"tenant_684c5789399ac","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1749833602701-21929-wgoq8s-556223@e2e-test.local","membership":"admin","email_verified_at":null,"tenant_id":"ad876caf-45cd-466b-b8c3-8b5812c859c3","tenant":{"id":"ad876caf-45cd-466b-b8c3-8b5812c859c3","name":"Word Test School 2","slug":"e2e-test-1749833602701-21929-wgoq8s-556223","status":"trial"}}},"message":"Organiz...
+]]>
+</system-out>
+</testcase>
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Authentication &amp; Authorization Tests › should allow valid team authentication" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="1.132">
+<failure message="team-word-controller.spec.ts:105:9 should allow valid team authentication" type="FAILURE">
+<![CDATA[  [chromium] › Tenant/backend/API/Word/team-word-controller.spec.ts:105:9 › Team Word Controller API - Comprehensive E2E Tests › Authentication & Authorization Tests › should allow valid team authentication 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 200
+    Received: 403
+
+      107 |         token: tenant1Token
+      108 |       });
+    > 109 |       expect(response.status).toBe(200);
+          |                               ^
+      110 |       
+      111 |       const data = await response.json();
+      112 |       expect(data.success).toBe(true);
+        at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:109:31
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/Tenant-backend-API-Word-te-33c69-w-valid-team-authentication-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/Tenant-backend-API-Word-te-33c69-w-valid-team-authentication-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/Tenant-backend-API-Word-te-33c69-w-valid-team-authentication-chromium/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[🗑️  Cleaning up all test tenants...
+🗑️  Cleaning up tenant: e2e-test-1749833602701-21929-e2y2db-467624
+🗑️  Cleaning up tenant: e2e-test-1749833602701-21929-wgoq8s-556223
+
+[[ATTACHMENT|test-results/Tenant-backend-API-Word-te-33c69-w-valid-team-authentication-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|test-results/Tenant-backend-API-Word-te-33c69-w-valid-team-authentication-chromium/video.webm]]
+
+[[ATTACHMENT|test-results/Tenant-backend-API-Word-te-33c69-w-valid-team-authentication-chromium/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Tenant Isolation Tests › should only access words from own tenant" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="1.33">
+<failure message="team-word-controller.spec.ts:118:9 should only access words from own tenant" type="FAILURE">
+<![CDATA[  [chromium] › Tenant/backend/API/Word/team-word-controller.spec.ts:118:9 › Team Word Controller API - Comprehensive E2E Tests › Tenant Isolation Tests › should only access words from own tenant 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 201
+    Received: 403
+
+      130 |         token: tenant1Token
+      131 |       });
+    > 132 |       expect(createResponse.status).toBe(201);
+          |                                     ^
+      133 |       
+      134 |       const createdWord = await createResponse.json();
+      135 |       const wordId = createdWord.data.id;
+        at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:132:37
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/Tenant-backend-API-Word-te-029a5-ccess-words-from-own-tenant-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/Tenant-backend-API-Word-te-029a5-ccess-words-from-own-tenant-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/Tenant-backend-API-Word-te-029a5-ccess-words-from-own-tenant-chromium/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[📡 API Response 201: {"success":true,"data":{"token":"1|MsuErjlBmJAiia7OuVpdSpsZX64Ieh18HfFyD48r042d4301","progress_id":"tenant_684c57971ea67","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1749833622951-22863-ro6ktc-773211@e2e-test.local","membership":"admin","email_verified_at":null,"tenant_id":"a25abd55-f949-4633-bf2b-793feaccd23b","tenant":{"id":"a25abd55-f949-4633-bf2b-793feaccd23b","name":"Word Test School 1","slug":"e2e-test-1749833622951-22863-ro6ktc-773211","status":"trial"}}},"message":"Organiz...
+📡 API Response 201: {"success":true,"data":{"token":"1|n4vznG5HBmWqrzTfD4oDK84dkOoKE7PLZXK4lBiy1cff2106","progress_id":"tenant_684c579db59c0","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1749833622951-22863-vdr6ia-827111@e2e-test.local","membership":"admin","email_verified_at":null,"tenant_id":"017b2526-8132-4bd8-94ed-8d756edcee60","tenant":{"id":"017b2526-8132-4bd8-94ed-8d756edcee60","name":"Word Test School 2","slug":"e2e-test-1749833622951-22863-vdr6ia-827111","status":"trial"}}},"message":"Organiz...
+🗑️  Cleaning up all test tenants...
+🗑️  Cleaning up tenant: e2e-test-1749833622951-22863-ro6ktc-773211
+🗑️  Cleaning up tenant: e2e-test-1749833622951-22863-vdr6ia-827111
+
+[[ATTACHMENT|test-results/Tenant-backend-API-Word-te-029a5-ccess-words-from-own-tenant-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|test-results/Tenant-backend-API-Word-te-029a5-ccess-words-from-own-tenant-chromium/video.webm]]
+
+[[ATTACHMENT|test-results/Tenant-backend-API-Word-te-029a5-ccess-words-from-own-tenant-chromium/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Tenant Isolation Tests › should block cross-tenant word access" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="1.237">
+<failure message="team-word-controller.spec.ts:144:9 should block cross-tenant word access" type="FAILURE">
+<![CDATA[  [chromium] › Tenant/backend/API/Word/team-word-controller.spec.ts:144:9 › Team Word Controller API - Comprehensive E2E Tests › Tenant Isolation Tests › should block cross-tenant word access 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 201
+    Received: 403
+
+      156 |         token: tenant2Token
+      157 |       });
+    > 158 |       expect(createResponse.status).toBe(201);
+          |                                     ^
+      159 |
+      160 |       // Try to access with tenant1 token
+      161 |       const listResponse = await apiHelper.tenantRequest(tenant1Slug, '/team/words', {
+        at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:158:37
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/Tenant-backend-API-Word-te-56af1-ck-cross-tenant-word-access-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/Tenant-backend-API-Word-te-56af1-ck-cross-tenant-word-access-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/Tenant-backend-API-Word-te-56af1-ck-cross-tenant-word-access-chromium/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[📡 API Response 201: {"success":true,"data":{"token":"1|YrsCwsU4EEEHfc3EWMxeWWwMjZUpBNzOr1PvoBQLcaa89cd3","progress_id":"tenant_684c57aba05ca","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1749833643514-23751-zuyfhg-364056@e2e-test.local","membership":"admin","email_verified_at":null,"tenant_id":"e776ec0b-2a88-4688-833b-2f411f03e31c","tenant":{"id":"e776ec0b-2a88-4688-833b-2f411f03e31c","name":"Word Test School 1","slug":"e2e-test-1749833643514-23751-zuyfhg-364056","status":"trial"}}},"message":"Organiz...
+📡 API Response 201: {"success":true,"data":{"token":"1|7z19kykwQNHbuHSTgzhFkiBswLlxdxpFUiRO2HmD2268598c","progress_id":"tenant_684c57b20d878","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1749833643514-23751-oyvfgx-417055@e2e-test.local","membership":"admin","email_verified_at":null,"tenant_id":"d0640554-ee85-45bf-b17b-a0b156ac27a9","tenant":{"id":"d0640554-ee85-45bf-b17b-a0b156ac27a9","name":"Word Test School 2","slug":"e2e-test-1749833643514-23751-oyvfgx-417055","status":"trial"}}},"message":"Organiz...
+🗑️  Cleaning up all test tenants...
+🗑️  Cleaning up tenant: e2e-test-1749833643514-23751-zuyfhg-364056
+🗑️  Cleaning up tenant: e2e-test-1749833643514-23751-oyvfgx-417055
+
+[[ATTACHMENT|test-results/Tenant-backend-API-Word-te-56af1-ck-cross-tenant-word-access-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|test-results/Tenant-backend-API-Word-te-56af1-ck-cross-tenant-word-access-chromium/video.webm]]
+
+[[ATTACHMENT|test-results/Tenant-backend-API-Word-te-56af1-ck-cross-tenant-word-access-chromium/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Tenant Isolation Tests › should validate tenant context in all endpoints" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="2.361">
+<system-out>
+<![CDATA[📡 API Response 201: {"success":true,"data":{"token":"1|MZ4vMtlFkoZkBoa8j98G5aRgIA5XBHCfpLyDj2f995816732","progress_id":"tenant_684c57bfb350c","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1749833663574-24646-qwuxvp-577335@e2e-test.local","membership":"admin","email_verified_at":null,"tenant_id":"7885aa33-cd67-424d-8a2f-dc22cf823c0a","tenant":{"id":"7885aa33-cd67-424d-8a2f-dc22cf823c0a","name":"Word Test School 1","slug":"e2e-test-1749833663574-24646-qwuxvp-577335","status":"trial"}}},"message":"Organiz...
+📡 API Response 201: {"success":true,"data":{"token":"1|7oj38jHt8P6v2gtvm3q53Wh80fdxLB6R7lMxaaIA82a018c2","progress_id":"tenant_684c57c608efe","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1749833663574-24646-uvxquw-636935@e2e-test.local","membership":"admin","email_verified_at":null,"tenant_id":"79743f1b-14fe-49b4-9db6-bb6e93122924","tenant":{"id":"79743f1b-14fe-49b4-9db6-bb6e93122924","name":"Word Test School 2","slug":"e2e-test-1749833663574-24646-uvxquw-636935","status":"trial"}}},"message":"Organiz...
+]]>
+</system-out>
+</testcase>
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Data Validation Tests › should validate required fields" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="0.832">
+<failure message="team-word-controller.spec.ts:191:9 should validate required fields" type="FAILURE">
+<![CDATA[  [chromium] › Tenant/backend/API/Word/team-word-controller.spec.ts:191:9 › Team Word Controller API - Comprehensive E2E Tests › Data Validation Tests › should validate required fields 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 422
+    Received: 403
+
+      198 |       });
+      199 |       
+    > 200 |       expect(response.status).toBe(422);
+          |                               ^
+      201 |       const data = await response.json();
+      202 |       expect(data.success).toBe(false);
+      203 |       expect(data.message).toContain('validation');
+        at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:200:31
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/Tenant-backend-API-Word-te-f0ae5-ld-validate-required-fields-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/Tenant-backend-API-Word-te-f0ae5-ld-validate-required-fields-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/Tenant-backend-API-Word-te-f0ae5-ld-validate-required-fields-chromium/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[🗑️  Cleaning up all test tenants...
+🗑️  Cleaning up tenant: e2e-test-1749833663574-24646-qwuxvp-577335
+🗑️  Cleaning up tenant: e2e-test-1749833663574-24646-uvxquw-636935
+
+[[ATTACHMENT|test-results/Tenant-backend-API-Word-te-f0ae5-ld-validate-required-fields-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|test-results/Tenant-backend-API-Word-te-f0ae5-ld-validate-required-fields-chromium/video.webm]]
+
+[[ATTACHMENT|test-results/Tenant-backend-API-Word-te-f0ae5-ld-validate-required-fields-chromium/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Data Validation Tests › should validate parameter types" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="1.274">
+<failure message="team-word-controller.spec.ts:206:9 should validate parameter types" type="FAILURE">
+<![CDATA[  [chromium] › Tenant/backend/API/Word/team-word-controller.spec.ts:206:9 › Team Word Controller API - Comprehensive E2E Tests › Data Validation Tests › should validate parameter types 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 422
+    Received: 403
+
+      213 |       });
+      214 |       
+    > 215 |       expect(response.status).toBe(422);
+          |                               ^
+      216 |     });
+      217 |
+      218 |     test('should enforce pagination limits', async ({ page }) => {
+        at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:215:31
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/Tenant-backend-API-Word-te-caa64-ld-validate-parameter-types-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/Tenant-backend-API-Word-te-caa64-ld-validate-parameter-types-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/Tenant-backend-API-Word-te-caa64-ld-validate-parameter-types-chromium/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[📡 API Response 201: {"success":true,"data":{"token":"1|1dPDh07VLFTV03SIZiuaOzVatqkoNhl5EcNIfa1Ee46aaba9","progress_id":"tenant_684c57d47dd27","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1749833684353-25582-lw2y2i-500592@e2e-test.local","membership":"admin","email_verified_at":null,"tenant_id":"11eb8ac4-f93a-437f-9bfd-4b2a45262a38","tenant":{"id":"11eb8ac4-f93a-437f-9bfd-4b2a45262a38","name":"Word Test School 1","slug":"e2e-test-1749833684353-25582-lw2y2i-500592","status":"trial"}}},"message":"Organiz...
+📡 API Response 201: {"success":true,"data":{"token":"1|8aYZft1pNWiaLpxoambk8DThHSh4BHtlb4T2RQQB306f5439","progress_id":"tenant_684c57da89f3d","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1749833684353-25582-vdsrjs-623491@e2e-test.local","membership":"admin","email_verified_at":null,"tenant_id":"5a77d8bb-9460-4227-8d13-2896ab4c8bba","tenant":{"id":"5a77d8bb-9460-4227-8d13-2896ab4c8bba","name":"Word Test School 2","slug":"e2e-test-1749833684353-25582-vdsrjs-623491","status":"trial"}}},"message":"Organiz...
+🗑️  Cleaning up all test tenants...
+🗑️  Cleaning up tenant: e2e-test-1749833684353-25582-lw2y2i-500592
+🗑️  Cleaning up tenant: e2e-test-1749833684353-25582-vdsrjs-623491
+
+[[ATTACHMENT|test-results/Tenant-backend-API-Word-te-caa64-ld-validate-parameter-types-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|test-results/Tenant-backend-API-Word-te-caa64-ld-validate-parameter-types-chromium/video.webm]]
+
+[[ATTACHMENT|test-results/Tenant-backend-API-Word-te-caa64-ld-validate-parameter-types-chromium/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Data Validation Tests › should enforce pagination limits" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="1.44">
+<failure message="team-word-controller.spec.ts:218:9 should enforce pagination limits" type="FAILURE">
+<![CDATA[  [chromium] › Tenant/backend/API/Word/team-word-controller.spec.ts:218:9 › Team Word Controller API - Comprehensive E2E Tests › Data Validation Tests › should enforce pagination limits 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 200
+    Received: 403
+
+      221 |       });
+      222 |       
+    > 223 |       expect(response.status).toBe(200);
+          |                               ^
+      224 |       const data = await response.json();
+      225 |       // Should be limited to max 100
+      226 |       expect(data.data.per_page).toBeLessThanOrEqual(100);
+        at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:223:31
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/Tenant-backend-API-Word-te-0fcd7-d-enforce-pagination-limits-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/Tenant-backend-API-Word-te-0fcd7-d-enforce-pagination-limits-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/Tenant-backend-API-Word-te-0fcd7-d-enforce-pagination-limits-chromium/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[📡 API Response 201: {"success":true,"data":{"token":"1|XD37nr5oy5xRiG1UP9vk8XG5RAvjlCOEDSZKzesad30d4e0d","progress_id":"tenant_684c57e8cc933","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1749833704082-26463-gqawlf-447612@e2e-test.local","membership":"admin","email_verified_at":null,"tenant_id":"1faa22cf-6489-4791-8000-7660704d529f","tenant":{"id":"1faa22cf-6489-4791-8000-7660704d529f","name":"Word Test School 1","slug":"e2e-test-1749833704082-26463-gqawlf-447612","status":"trial"}}},"message":"Organiz...
+📡 API Response 201: {"success":true,"data":{"token":"1|wDmY48Pe1Fu1rXhkR6QNBDXQZCUxcSLvPFrmKomW166e34cc","progress_id":"tenant_684c57f01c9f9","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1749833704082-26463-olqyd1-524911@e2e-test.local","membership":"admin","email_verified_at":null,"tenant_id":"b926a00a-378e-4f78-99f0-6c822db9d5de","tenant":{"id":"b926a00a-378e-4f78-99f0-6c822db9d5de","name":"Word Test School 2","slug":"e2e-test-1749833704082-26463-olqyd1-524911","status":"trial"}}},"message":"Organiz...
+🗑️  Cleaning up all test tenants...
+🗑️  Cleaning up tenant: e2e-test-1749833704082-26463-gqawlf-447612
+🗑️  Cleaning up tenant: e2e-test-1749833704082-26463-olqyd1-524911
+
+[[ATTACHMENT|test-results/Tenant-backend-API-Word-te-0fcd7-d-enforce-pagination-limits-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|test-results/Tenant-backend-API-Word-te-0fcd7-d-enforce-pagination-limits-chromium/video.webm]]
+
+[[ATTACHMENT|test-results/Tenant-backend-API-Word-te-0fcd7-d-enforce-pagination-limits-chromium/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Data Validation Tests › should validate audio file uploads" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="1.646">
+<failure message="team-word-controller.spec.ts:229:9 should validate audio file uploads" type="FAILURE">
+<![CDATA[  [chromium] › Tenant/backend/API/Word/team-word-controller.spec.ts:229:9 › Team Word Controller API - Comprehensive E2E Tests › Data Validation Tests › should validate audio file uploads 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 422
+    Received: 403
+
+      247 |       });
+      248 |       
+    > 249 |       expect(response.status).toBe(422);
+          |                               ^
+      250 |     });
+      251 |   });
+      252 |
+        at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:249:31
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/Tenant-backend-API-Word-te-45655-validate-audio-file-uploads-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/Tenant-backend-API-Word-te-45655-validate-audio-file-uploads-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/Tenant-backend-API-Word-te-45655-validate-audio-file-uploads-chromium/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[📡 API Response 201: {"success":true,"data":{"token":"1|k6psYaZqkixLsaK0koqe1mJ2FOLb7Hu6lPnTTaSX2612ad63","progress_id":"tenant_684c57fdb8429","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1749833725547-27355-zzr8x0-426083@e2e-test.local","membership":"admin","email_verified_at":null,"tenant_id":"ff170841-ee76-49d1-a264-15121b864c34","tenant":{"id":"ff170841-ee76-49d1-a264-15121b864c34","name":"Word Test School 1","slug":"e2e-test-1749833725547-27355-zzr8x0-426083","status":"trial"}}},"message":"Organiz...
+📡 API Response 201: {"success":true,"data":{"token":"1|8IShrfaECfjGrEN9XZSeBVlstML1qollmUe4t5xG5a483783","progress_id":"tenant_684c5804b962b","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1749833725547-27355-m71ls9-482083@e2e-test.local","membership":"admin","email_verified_at":null,"tenant_id":"8d926fec-9a46-4c5d-a54b-e998c0aee451","tenant":{"id":"8d926fec-9a46-4c5d-a54b-e998c0aee451","name":"Word Test School 2","slug":"e2e-test-1749833725547-27355-m71ls9-482083","status":"trial"}}},"message":"Organiz...
+🗑️  Cleaning up all test tenants...
+🗑️  Cleaning up tenant: e2e-test-1749833725547-27355-zzr8x0-426083
+🗑️  Cleaning up tenant: e2e-test-1749833725547-27355-m71ls9-482083
+
+[[ATTACHMENT|test-results/Tenant-backend-API-Word-te-45655-validate-audio-file-uploads-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|test-results/Tenant-backend-API-Word-te-45655-validate-audio-file-uploads-chromium/video.webm]]
+
+[[ATTACHMENT|test-results/Tenant-backend-API-Word-te-45655-validate-audio-file-uploads-chromium/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Functional Testing - CRUD Operations › GET /team/words - list words with filtering" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="1.818">
+<failure message="team-word-controller.spec.ts:254:9 GET /team/words - list words with filtering" type="FAILURE">
+<![CDATA[  [chromium] › Tenant/backend/API/Word/team-word-controller.spec.ts:254:9 › Team Word Controller API - Comprehensive E2E Tests › Functional Testing - CRUD Operations › GET /team/words - list words with filtering 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 201
+    Received: 403
+
+      768 |     });
+      769 |     
+    > 770 |     expect(response.status).toBe(201);
+          |                             ^
+      771 |     const result = await response.json();
+      772 |     return result.data;
+      773 |   }
+        at createTestWord (/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:770:29)
+        at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:256:21
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/Tenant-backend-API-Word-te-6ce91---list-words-with-filtering-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/Tenant-backend-API-Word-te-6ce91---list-words-with-filtering-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/Tenant-backend-API-Word-te-6ce91---list-words-with-filtering-chromium/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[📡 API Response 201: {"success":true,"data":{"token":"1|Rcb5CKRzDx2EE7AO5SvClNmkafO5Uc6xGNvYM60fdd4e6f2b","progress_id":"tenant_684c5812617c6","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1749833746213-28255-dvhm1z-695764@e2e-test.local","membership":"admin","email_verified_at":null,"tenant_id":"1eee347e-9f9e-4bb2-b5d0-7e3fc29c27aa","tenant":{"id":"1eee347e-9f9e-4bb2-b5d0-7e3fc29c27aa","name":"Word Test School 1","slug":"e2e-test-1749833746213-28255-dvhm1z-695764","status":"trial"}}},"message":"Organiz...
+📡 API Response 201: {"success":true,"data":{"token":"1|75NA5j3BFRN0rrKznVpuPB4HWKoL4LqpIHCCA3yK1f859f10","progress_id":"tenant_684c581917fea","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1749833746213-28255-y1bnye-750664@e2e-test.local","membership":"admin","email_verified_at":null,"tenant_id":"f09b30bd-ffbe-467c-9e70-d3b73649a305","tenant":{"id":"f09b30bd-ffbe-467c-9e70-d3b73649a305","name":"Word Test School 2","slug":"e2e-test-1749833746213-28255-y1bnye-750664","status":"trial"}}},"message":"Organiz...
+🗑️  Cleaning up all test tenants...
+🗑️  Cleaning up tenant: e2e-test-1749833746213-28255-dvhm1z-695764
+🗑️  Cleaning up tenant: e2e-test-1749833746213-28255-y1bnye-750664
+
+[[ATTACHMENT|test-results/Tenant-backend-API-Word-te-6ce91---list-words-with-filtering-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|test-results/Tenant-backend-API-Word-te-6ce91---list-words-with-filtering-chromium/video.webm]]
+
+[[ATTACHMENT|test-results/Tenant-backend-API-Word-te-6ce91---list-words-with-filtering-chromium/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Functional Testing - CRUD Operations › GET /team/words/{id} - get single word" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="1.258">
+<failure message="team-word-controller.spec.ts:290:9 GET /team/words/{id} - get single word" type="FAILURE">
+<![CDATA[  [chromium] › Tenant/backend/API/Word/team-word-controller.spec.ts:290:9 › Team Word Controller API - Comprehensive E2E Tests › Functional Testing - CRUD Operations › GET /team/words/{id} - get single word 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 201
+    Received: 403
+
+      768 |     });
+      769 |     
+    > 770 |     expect(response.status).toBe(201);
+          |                             ^
+      771 |     const result = await response.json();
+      772 |     return result.data;
+      773 |   }
+        at createTestWord (/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:770:29)
+        at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:291:20
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/Tenant-backend-API-Word-te-ec0c0--words-id---get-single-word-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/Tenant-backend-API-Word-te-ec0c0--words-id---get-single-word-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/Tenant-backend-API-Word-te-ec0c0--words-id---get-single-word-chromium/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[📡 API Response 201: {"success":true,"data":{"token":"1|XrR2Ydg9BZSqzvkElXQWgXM6kfv7qkTXpD3r5vQZ59694840","progress_id":"tenant_684c582708341","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1749833766864-29152-25cq34-296781@e2e-test.local","membership":"admin","email_verified_at":null,"tenant_id":"00f07720-4b37-4408-9951-84fd0c461302","tenant":{"id":"00f07720-4b37-4408-9951-84fd0c461302","name":"Word Test School 1","slug":"e2e-test-1749833766864-29152-25cq34-296781","status":"trial"}}},"message":"Organiz...
+📡 API Response 201: {"success":true,"data":{"token":"1|J1aMqooWGrD1x2JfpRal4jBZ1OY2rIbkM88R9gxf2652f1cd","progress_id":"tenant_684c582d4d658","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1749833766864-29152-tjlgro-342781@e2e-test.local","membership":"admin","email_verified_at":null,"tenant_id":"92df9cd6-e84e-4d79-80b8-6397a8f76d4c","tenant":{"id":"92df9cd6-e84e-4d79-80b8-6397a8f76d4c","name":"Word Test School 2","slug":"e2e-test-1749833766864-29152-tjlgro-342781","status":"trial"}}},"message":"Organiz...
+🗑️  Cleaning up all test tenants...
+🗑️  Cleaning up tenant: e2e-test-1749833766864-29152-25cq34-296781
+🗑️  Cleaning up tenant: e2e-test-1749833766864-29152-tjlgro-342781
+
+[[ATTACHMENT|test-results/Tenant-backend-API-Word-te-ec0c0--words-id---get-single-word-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|test-results/Tenant-backend-API-Word-te-ec0c0--words-id---get-single-word-chromium/video.webm]]
+
+[[ATTACHMENT|test-results/Tenant-backend-API-Word-te-ec0c0--words-id---get-single-word-chromium/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Functional Testing - CRUD Operations › POST /team/words - create word" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="1.174">
+<failure message="team-word-controller.spec.ts:306:9 POST /team/words - create word" type="FAILURE">
+<![CDATA[  [chromium] › Tenant/backend/API/Word/team-word-controller.spec.ts:306:9 › Team Word Controller API - Comprehensive E2E Tests › Functional Testing - CRUD Operations › POST /team/words - create word 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 201
+    Received: 403
+
+      317 |       });
+      318 |       
+    > 319 |       expect(response.status).toBe(201);
+          |                               ^
+      320 |       const data = await response.json();
+      321 |       expect(data.success).toBe(true);
+      322 |       expect(data.data.text).toBe(wordData.text);
+        at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:319:31
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/Tenant-backend-API-Word-te-dbb54-ST-team-words---create-word-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/Tenant-backend-API-Word-te-dbb54-ST-team-words---create-word-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/Tenant-backend-API-Word-te-dbb54-ST-team-words---create-word-chromium/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[📡 API Response 201: {"success":true,"data":{"token":"1|HviJCajNXLxjON5Z9DsOngcP6hnMlbSmBS3cAkEf8779de3b","progress_id":"tenant_684c583af0c9a","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1749833786820-30050-qigrcf-619332@e2e-test.local","membership":"admin","email_verified_at":null,"tenant_id":"b4eae4cc-5f37-4d12-a9c5-e655250a3bad","tenant":{"id":"b4eae4cc-5f37-4d12-a9c5-e655250a3bad","name":"Word Test School 1","slug":"e2e-test-1749833786820-30050-qigrcf-619332","status":"trial"}}},"message":"Organiz...
+📡 API Response 201: {"success":true,"data":{"token":"1|0ipNK32valQEUN0UkOR44x7E3kpGS4Hmh1Nx7Dvvea510f0e","progress_id":"tenant_684c58416387e","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1749833786820-30050-pc1vcn-666032@e2e-test.local","membership":"admin","email_verified_at":null,"tenant_id":"57c8c24c-bf02-4455-8eee-16b1c6ff6728","tenant":{"id":"57c8c24c-bf02-4455-8eee-16b1c6ff6728","name":"Word Test School 2","slug":"e2e-test-1749833786820-30050-pc1vcn-666032","status":"trial"}}},"message":"Organiz...
+🗑️  Cleaning up all test tenants...
+🗑️  Cleaning up tenant: e2e-test-1749833786820-30050-qigrcf-619332
+🗑️  Cleaning up tenant: e2e-test-1749833786820-30050-pc1vcn-666032
+
+[[ATTACHMENT|test-results/Tenant-backend-API-Word-te-dbb54-ST-team-words---create-word-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|test-results/Tenant-backend-API-Word-te-dbb54-ST-team-words---create-word-chromium/video.webm]]
+
+[[ATTACHMENT|test-results/Tenant-backend-API-Word-te-dbb54-ST-team-words---create-word-chromium/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Functional Testing - CRUD Operations › PUT /team/words/{id} - update word" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="1.357">
+<failure message="team-word-controller.spec.ts:329:9 PUT /team/words/{id} - update word" type="FAILURE">
+<![CDATA[  [chromium] › Tenant/backend/API/Word/team-word-controller.spec.ts:329:9 › Team Word Controller API - Comprehensive E2E Tests › Functional Testing - CRUD Operations › PUT /team/words/{id} - update word 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 201
+    Received: 403
+
+      768 |     });
+      769 |     
+    > 770 |     expect(response.status).toBe(201);
+          |                             ^
+      771 |     const result = await response.json();
+      772 |     return result.data;
+      773 |   }
+        at createTestWord (/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:770:29)
+        at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:330:20
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/Tenant-backend-API-Word-te-3a3fa-team-words-id---update-word-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/Tenant-backend-API-Word-te-3a3fa-team-words-id---update-word-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/Tenant-backend-API-Word-te-3a3fa-team-words-id---update-word-chromium/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[📡 API Response 201: {"success":true,"data":{"token":"1|vahQxoD7LKXH1PEg0XEtcT0U018vY7IydMHK9yBH5c6dd1d1","progress_id":"tenant_684c584ea7997","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1749833806524-30941-xei5b5-699696@e2e-test.local","membership":"admin","email_verified_at":null,"tenant_id":"b0c6a7f1-cea7-4bf6-855a-a0c38ef4b5ed","tenant":{"id":"b0c6a7f1-cea7-4bf6-855a-a0c38ef4b5ed","name":"Word Test School 1","slug":"e2e-test-1749833806524-30941-xei5b5-699696","status":"trial"}}},"message":"Organiz...
+📡 API Response 201: {"success":true,"data":{"token":"1|9xeGdEVRsr0IoqYszpumfGcDx3DZio2NFnTgdGaLe175c800","progress_id":"tenant_684c585520bd9","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1749833806524-30941-a9zip5-754595@e2e-test.local","membership":"admin","email_verified_at":null,"tenant_id":"cbf48970-3a55-4379-8aaa-c75b65716135","tenant":{"id":"cbf48970-3a55-4379-8aaa-c75b65716135","name":"Word Test School 2","slug":"e2e-test-1749833806524-30941-a9zip5-754595","status":"trial"}}},"message":"Organiz...
+🗑️  Cleaning up all test tenants...
+🗑️  Cleaning up tenant: e2e-test-1749833806524-30941-xei5b5-699696
+🗑️  Cleaning up tenant: e2e-test-1749833806524-30941-a9zip5-754595
+
+[[ATTACHMENT|test-results/Tenant-backend-API-Word-te-3a3fa-team-words-id---update-word-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|test-results/Tenant-backend-API-Word-te-3a3fa-team-words-id---update-word-chromium/video.webm]]
+
+[[ATTACHMENT|test-results/Tenant-backend-API-Word-te-3a3fa-team-words-id---update-word-chromium/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Functional Testing - CRUD Operations › DELETE /team/words/{id} - delete word" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="1.478">
+<failure message="team-word-controller.spec.ts:354:9 DELETE /team/words/{id} - delete word" type="FAILURE">
+<![CDATA[  [chromium] › Tenant/backend/API/Word/team-word-controller.spec.ts:354:9 › Team Word Controller API - Comprehensive E2E Tests › Functional Testing - CRUD Operations › DELETE /team/words/{id} - delete word 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 201
+    Received: 403
+
+      768 |     });
+      769 |     
+    > 770 |     expect(response.status).toBe(201);
+          |                             ^
+      771 |     const result = await response.json();
+      772 |     return result.data;
+      773 |   }
+        at createTestWord (/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:770:29)
+        at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:355:20
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/Tenant-backend-API-Word-te-fd167-team-words-id---delete-word-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/Tenant-backend-API-Word-te-fd167-team-words-id---delete-word-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/Tenant-backend-API-Word-te-fd167-team-words-id---delete-word-chromium/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[📡 API Response 201: {"success":true,"data":{"token":"1|puG8vvUb2MrdNw9ePAH5NWj6J8IWIy3GvZ5jpB2V1a123fa9","progress_id":"tenant_684c586321394","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1749833826942-31850-h27yju-156670@e2e-test.local","membership":"admin","email_verified_at":null,"tenant_id":"d6984d00-fcea-4b0c-8a74-5441ae75ac36","tenant":{"id":"d6984d00-fcea-4b0c-8a74-5441ae75ac36","name":"Word Test School 1","slug":"e2e-test-1749833826942-31850-h27yju-156670","status":"trial"}}},"message":"Organiz...
+📡 API Response 201: {"success":true,"data":{"token":"1|bgxAmHaE8leWADf3CBivTcwXPDL8DCxCl77TkPe19250df5d","progress_id":"tenant_684c586b055c5","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1749833826943-31850-hzzksq-212969@e2e-test.local","membership":"admin","email_verified_at":null,"tenant_id":"dbf51e88-6d0e-4bc9-9a7c-63d35606a1d4","tenant":{"id":"dbf51e88-6d0e-4bc9-9a7c-63d35606a1d4","name":"Word Test School 2","slug":"e2e-test-1749833826943-31850-hzzksq-212969","status":"trial"}}},"message":"Organiz...
+🗑️  Cleaning up all test tenants...
+🗑️  Cleaning up tenant: e2e-test-1749833826942-31850-h27yju-156670
+🗑️  Cleaning up tenant: e2e-test-1749833826943-31850-hzzksq-212969
+
+[[ATTACHMENT|test-results/Tenant-backend-API-Word-te-fd167-team-words-id---delete-word-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|test-results/Tenant-backend-API-Word-te-fd167-team-words-id---delete-word-chromium/video.webm]]
+
+[[ATTACHMENT|test-results/Tenant-backend-API-Word-te-fd167-team-words-id---delete-word-chromium/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Bulk Operations Testing › POST /team/words/bulk - bulk create words" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="1.25">
+<failure message="team-word-controller.spec.ts:375:9 POST /team/words/bulk - bulk create words" type="FAILURE">
+<![CDATA[  [chromium] › Tenant/backend/API/Word/team-word-controller.spec.ts:375:9 › Team Word Controller API - Comprehensive E2E Tests › Bulk Operations Testing › POST /team/words/bulk - bulk create words 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 200
+    Received: 403
+
+      386 |       });
+      387 |       
+    > 388 |       expect(response.status).toBe(200);
+          |                               ^
+      389 |       const data = await response.json();
+      390 |       expect(data.success).toBe(true);
+      391 |       expect(data.data.successful).toBe(2);
+        at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:388:31
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/Tenant-backend-API-Word-te-acf73-ds-bulk---bulk-create-words-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/Tenant-backend-API-Word-te-acf73-ds-bulk---bulk-create-words-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/Tenant-backend-API-Word-te-acf73-ds-bulk---bulk-create-words-chromium/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[📡 API Response 201: {"success":true,"data":{"token":"1|V9WkQ3uZk91eaBpjV7rZs9txJ5bbloHGqB3h4FZH7b578ac2","progress_id":"tenant_684c587a49717","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1749833850102-32854-81h75e-833107@e2e-test.local","membership":"admin","email_verified_at":null,"tenant_id":"343dce99-15f7-4bb4-b028-95041c443109","tenant":{"id":"343dce99-15f7-4bb4-b028-95041c443109","name":"Word Test School 1","slug":"e2e-test-1749833850102-32854-81h75e-833107","status":"trial"}}},"message":"Organiz...
+📡 API Response 201: {"success":true,"data":{"token":"1|QnbFCA656N1lWMozqO3l4ETPZKtcJXDsVpwF2ZLHd6cd7eb5","progress_id":"tenant_684c588043cab","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1749833850102-32854-rxsmze-882007@e2e-test.local","membership":"admin","email_verified_at":null,"tenant_id":"c3bf5151-5e9e-4037-9848-17daffec7471","tenant":{"id":"c3bf5151-5e9e-4037-9848-17daffec7471","name":"Word Test School 2","slug":"e2e-test-1749833850102-32854-rxsmze-882007","status":"trial"}}},"message":"Organiz...
+🗑️  Cleaning up all test tenants...
+🗑️  Cleaning up tenant: e2e-test-1749833850102-32854-81h75e-833107
+🗑️  Cleaning up tenant: e2e-test-1749833850102-32854-rxsmze-882007
+
+[[ATTACHMENT|test-results/Tenant-backend-API-Word-te-acf73-ds-bulk---bulk-create-words-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|test-results/Tenant-backend-API-Word-te-acf73-ds-bulk---bulk-create-words-chromium/video.webm]]
+
+[[ATTACHMENT|test-results/Tenant-backend-API-Word-te-acf73-ds-bulk---bulk-create-words-chromium/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Bulk Operations Testing › DELETE /team/words/bulk-delete - bulk delete words" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="1.133">
+<failure message="team-word-controller.spec.ts:395:9 DELETE /team/words/bulk-delete - bulk delete words" type="FAILURE">
+<![CDATA[  [chromium] › Tenant/backend/API/Word/team-word-controller.spec.ts:395:9 › Team Word Controller API - Comprehensive E2E Tests › Bulk Operations Testing › DELETE /team/words/bulk-delete - bulk delete words 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 201
+    Received: 403
+
+      768 |     });
+      769 |     
+    > 770 |     expect(response.status).toBe(201);
+          |                             ^
+      771 |     const result = await response.json();
+      772 |     return result.data;
+      773 |   }
+        at createTestWord (/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:770:29)
+        at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:397:21
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/Tenant-backend-API-Word-te-07a33--delete---bulk-delete-words-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/Tenant-backend-API-Word-te-07a33--delete---bulk-delete-words-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/Tenant-backend-API-Word-te-07a33--delete---bulk-delete-words-chromium/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[📡 API Response 201: {"success":true,"data":{"token":"1|vcRyo3XKp1sK39OFQacnq0eX1IZnwQS3HXXPxFUv6f6deafa","progress_id":"tenant_684c588d7762d","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1749833869330-33744-un8qcc-272665@e2e-test.local","membership":"admin","email_verified_at":null,"tenant_id":"925bb000-97bf-4616-b7e8-6e2f2147ea15","tenant":{"id":"925bb000-97bf-4616-b7e8-6e2f2147ea15","name":"Word Test School 1","slug":"e2e-test-1749833869330-33744-un8qcc-272665","status":"trial"}}},"message":"Organiz...
+📡 API Response 201: {"success":true,"data":{"token":"1|tGfoXy8ia7LiaYN7NWD1FvgvzpfERa7edXrtrduhee3a630f","progress_id":"tenant_684c58939d3e5","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1749833869330-33744-02nwdo-366165@e2e-test.local","membership":"admin","email_verified_at":null,"tenant_id":"d0fd39a1-baf5-4363-be19-ccaf22985975","tenant":{"id":"d0fd39a1-baf5-4363-be19-ccaf22985975","name":"Word Test School 2","slug":"e2e-test-1749833869330-33744-02nwdo-366165","status":"trial"}}},"message":"Organiz...
+🗑️  Cleaning up all test tenants...
+🗑️  Cleaning up tenant: e2e-test-1749833869330-33744-un8qcc-272665
+🗑️  Cleaning up tenant: e2e-test-1749833869330-33744-02nwdo-366165
+
+[[ATTACHMENT|test-results/Tenant-backend-API-Word-te-07a33--delete---bulk-delete-words-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|test-results/Tenant-backend-API-Word-te-07a33--delete---bulk-delete-words-chromium/video.webm]]
+
+[[ATTACHMENT|test-results/Tenant-backend-API-Word-te-07a33--delete---bulk-delete-words-chromium/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Translation Management › POST /team/words/{id}/translations - add translation" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="1.314">
+<failure message="team-word-controller.spec.ts:418:9 POST /team/words/{id}/translations - add translation" type="FAILURE">
+<![CDATA[  [chromium] › Tenant/backend/API/Word/team-word-controller.spec.ts:418:9 › Team Word Controller API - Comprehensive E2E Tests › Translation Management › POST /team/words/{id}/translations - add translation 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 201
+    Received: 403
+
+      768 |     });
+      769 |     
+    > 770 |     expect(response.status).toBe(201);
+          |                             ^
+      771 |     const result = await response.json();
+      772 |     return result.data;
+      773 |   }
+        at createTestWord (/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:770:29)
+        at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:419:20
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/Tenant-backend-API-Word-te-24126-nslations---add-translation-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/Tenant-backend-API-Word-te-24126-nslations---add-translation-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/Tenant-backend-API-Word-te-24126-nslations---add-translation-chromium/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[📡 API Response 201: {"success":true,"data":{"token":"1|BbsvgXxka60auQVxqOOn32fYiXrfxwrdmLDYS9M4153046b7","progress_id":"tenant_684c58a0e83f8","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1749833888799-34616-1jlwx6-779371@e2e-test.local","membership":"admin","email_verified_at":null,"tenant_id":"1164dbc6-dcdc-43a4-ba41-b14fb7d720c5","tenant":{"id":"1164dbc6-dcdc-43a4-ba41-b14fb7d720c5","name":"Word Test School 1","slug":"e2e-test-1749833888799-34616-1jlwx6-779371","status":"trial"}}},"message":"Organiz...
+📡 API Response 201: {"success":true,"data":{"token":"1|SUSHggRm8qH04VyEJQNlNivv5jaEk19hBniZBZeTeeeae0f1","progress_id":"tenant_684c58a743f27","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1749833888799-34616-64k8vm-826070@e2e-test.local","membership":"admin","email_verified_at":null,"tenant_id":"a9b41330-f48a-46dc-938a-4f8001feafa6","tenant":{"id":"a9b41330-f48a-46dc-938a-4f8001feafa6","name":"Word Test School 2","slug":"e2e-test-1749833888799-34616-64k8vm-826070","status":"trial"}}},"message":"Organiz...
+🗑️  Cleaning up all test tenants...
+🗑️  Cleaning up tenant: e2e-test-1749833888799-34616-1jlwx6-779371
+🗑️  Cleaning up tenant: e2e-test-1749833888799-34616-64k8vm-826070
+
+[[ATTACHMENT|test-results/Tenant-backend-API-Word-te-24126-nslations---add-translation-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|test-results/Tenant-backend-API-Word-te-24126-nslations---add-translation-chromium/video.webm]]
+
+[[ATTACHMENT|test-results/Tenant-backend-API-Word-te-24126-nslations---add-translation-chromium/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Translation Management › PUT /team/words/{id}/translations/{translationId} - update translation" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="0.001">
+<failure message="team-word-controller.spec.ts:443:9 PUT /team/words/{id}/translations/{translationId} - update translation" type="FAILURE">
+<![CDATA[  [chromium] › Tenant/backend/API/Word/team-word-controller.spec.ts:443:9 › Team Word Controller API - Comprehensive E2E Tests › Translation Management › PUT /team/words/{id}/translations/{translationId} - update translation 
+
+    TimeoutError: The operation was aborted due to timeout
+
+       at ../utils/api-helpers.ts:63
+
+      61 |     }
+      62 |
+    > 63 |     const response = await fetch(url, requestOptions);
+         |                      ^
+      64 |
+      65 |     if (process.env.DEBUG_API_CALLS === 'true') {
+      66 |       console.log(`📡 API Response ${response.status}`, await response.clone().text());
+        at ApiHelper.request (/home/onionlake-admin/PROJECT/gol_2025/e2e/utils/api-helpers.ts:63:22)
+        at ApiHelper.registerTenantAdmin (/home/onionlake-admin/PROJECT/gol_2025/e2e/utils/api-helpers.ts:89:22)
+        at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:55:33
+]]>
+</failure>
+<system-out>
+<![CDATA[📡 API Response 201: {"success":true,"data":{"token":"1|YLWDtgXb3JFwB3hQqGMC2NNWK0iZaaK6tlZDrYRm0bab9b39","progress_id":"tenant_684c58b7a8738","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1749833911535-35884-5mk0da-922042@e2e-test.local","membership":"admin","email_verified_at":null,"tenant_id":"fadb1daa-b712-4c4c-b3b8-4f6069abf796","tenant":{"id":"fadb1daa-b712-4c4c-b3b8-4f6069abf796","name":"Word Test School 1","slug":"e2e-test-1749833911535-35884-5mk0da-922042","status":"trial"}}},"message":"Organiz...
+🗑️  Cleaning up all test tenants...
+🗑️  Cleaning up tenant: e2e-test-1749833911535-35884-5mk0da-922042
+🗑️  Cleaning up tenant: e2e-test-1749833911535-35884-tk5v21-970042
+]]>
+</system-out>
+</testcase>
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Translation Management › DELETE /team/words/{id}/translations/{translationId} - delete translation" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="0">
 <skipped>
 </skipped>
 </testcase>
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Authentication &amp; Authorization Tests › should allow valid team authentication" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0">
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Audio Upload Testing › POST /team/words/{id}/audio - upload word audio" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="0">
 <skipped>
 </skipped>
 </testcase>
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Tenant Isolation Tests › should only access words from own tenant" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0">
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Filter &amp; Search Testing › should filter by language_id" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="0">
 <skipped>
 </skipped>
 </testcase>
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Tenant Isolation Tests › should block cross-tenant word access" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0">
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Filter &amp; Search Testing › should search by text" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="0">
 <skipped>
 </skipped>
 </testcase>
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Tenant Isolation Tests › should validate tenant context in all endpoints" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0">
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Filter &amp; Search Testing › should sort by different fields" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="0">
 <skipped>
 </skipped>
 </testcase>
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Data Validation Tests › should validate required fields" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0">
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Filter &amp; Search Testing › should handle pagination correctly" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="0">
 <skipped>
 </skipped>
 </testcase>
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Data Validation Tests › should validate parameter types" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0">
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Word Constraint System › GET /team/words/available - get available words for exercises" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="0">
 <skipped>
 </skipped>
 </testcase>
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Data Validation Tests › should enforce pagination limits" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0">
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Word Constraint System › GET /team/words/available/{exerciseType} - get words for specific exercise" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="0">
 <skipped>
 </skipped>
 </testcase>
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Data Validation Tests › should validate audio file uploads" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0">
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Word Constraint System › POST /team/words/validate-constraints - validate word constraints" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="0">
 <skipped>
 </skipped>
 </testcase>
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Functional Testing - CRUD Operations › GET /team/words - list words with filtering" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0">
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Edge Cases &amp; Error Handling › should handle empty result sets" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="0">
 <skipped>
 </skipped>
 </testcase>
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Functional Testing - CRUD Operations › GET /team/words/{id} - get single word" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0">
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Edge Cases &amp; Error Handling › should return 404 for non-existent word IDs" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="0">
 <skipped>
 </skipped>
 </testcase>
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Functional Testing - CRUD Operations › POST /team/words - create word" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0">
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Edge Cases &amp; Error Handling › should handle batch requests with invalid word IDs" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="0">
 <skipped>
 </skipped>
 </testcase>
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Functional Testing - CRUD Operations › PUT /team/words/{id} - update word" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0">
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Edge Cases &amp; Error Handling › should enforce large batch request limits" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="0">
 <skipped>
 </skipped>
 </testcase>
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Functional Testing - CRUD Operations › DELETE /team/words/{id} - delete word" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0">
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Response Format Validation › should follow BaseAPIController format for success responses" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="0">
 <skipped>
 </skipped>
 </testcase>
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Bulk Operations Testing › POST /team/words/bulk - bulk create words" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0">
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Response Format Validation › should return proper HTTP status codes" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="0">
 <skipped>
 </skipped>
 </testcase>
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Bulk Operations Testing › DELETE /team/words/bulk-delete - bulk delete words" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Translation Management › POST /team/words/{id}/translations - add translation" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Translation Management › PUT /team/words/{id}/translations/{translationId} - update translation" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Translation Management › DELETE /team/words/{id}/translations/{translationId} - delete translation" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Audio Upload Testing › POST /team/words/{id}/audio - upload word audio" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Filter &amp; Search Testing › should filter by language_id" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Filter &amp; Search Testing › should search by text" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Filter &amp; Search Testing › should sort by different fields" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Filter &amp; Search Testing › should handle pagination correctly" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Word Constraint System › GET /team/words/available - get available words for exercises" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Word Constraint System › GET /team/words/available/{exerciseType} - get words for specific exercise" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Word Constraint System › POST /team/words/validate-constraints - validate word constraints" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Edge Cases &amp; Error Handling › should handle empty result sets" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Edge Cases &amp; Error Handling › should return 404 for non-existent word IDs" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Edge Cases &amp; Error Handling › should handle batch requests with invalid word IDs" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Edge Cases &amp; Error Handling › should enforce large batch request limits" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Response Format Validation › should follow BaseAPIController format for success responses" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Response Format Validation › should return proper HTTP status codes" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Response Format Validation › should include audio URLs when pronunciation files exist" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0">
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Response Format Validation › should include audio URLs when pronunciation files exist" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="0">
 <skipped>
 </skipped>
 </testcase>

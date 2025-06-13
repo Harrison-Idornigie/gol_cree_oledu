@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Event;
 use Laravel\Sanctum\Sanctum;
+use Stancl\Tenancy\Events\TenantCreated;
 use Tests\TestCase;
 use Tests\Traits\InteractsWithTenancy;
 
@@ -181,7 +182,7 @@ abstract class TenantTestCase extends TestCase
 
             // Assert admin user has tenant admin membership
             $adminUser = User::where('email', $expectedAdminData['email'])->first();
-            $this->assertTrue($adminUser->hasMembership('tenant-admin'));
+            $this->assertTrue($adminUser->isTenantAdmin());
         });
     }
 
@@ -190,8 +191,8 @@ abstract class TenantTestCase extends TestCase
      */
     protected function assertTenantCreationEvents(): void
     {
-        Event::assertDispatched(\App\Events\Landlord\TenantCreated::class);
-        Event::assertDispatched(\App\Events\Landlord\TenantSeedingRequested::class);
+        Event::assertDispatched(TenantCreated::class);
+        Event::assertDispatched(TenantSeedingRequested::class);
     }
 
     /**

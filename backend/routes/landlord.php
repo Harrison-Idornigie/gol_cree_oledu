@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
  * and have access to system-wide functionality.
  */
 
-Route::prefix('super-admin')->middleware(['auth:central', 'verified', 'membership:super-admin'])->group(function () {
+Route::prefix('super-admin')->middleware(['auth:central', 'verified'])->group(function () {
 
     // Tenant Management
     Route::prefix('tenants')->group(function () {

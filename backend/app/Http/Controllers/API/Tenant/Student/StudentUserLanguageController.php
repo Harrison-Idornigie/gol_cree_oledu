@@ -26,7 +26,7 @@ class StudentUserLanguageController extends BaseAPIController
      */
     public function __construct()
     {
-        $this->middleware(['auth:sanctum', 'verified', 'tenant', 'membership:student']);
+
     }
 
     /**

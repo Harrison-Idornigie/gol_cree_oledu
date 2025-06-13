@@ -155,12 +155,15 @@ class User extends Authenticatable implements MustVerifyEmail
         ];
     }
 
+  
+
+ 
     /**
      * Check if user has a specific membership.
      */
     public function hasMembership(string $membership): bool
     {
-        return $this->memberships()->where('slug', $membership)->exists();
+        return $this->membership === $membership;
     }
 
     /**
@@ -168,7 +171,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function isAdmin(): bool
     {
-        return $this->hasMembership('admin');
+        return $this->membership === 'admin';
     }
 
     /**
@@ -176,7 +179,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function isSuperAdmin(): bool
     {
-        return $this->hasMembership('super-admin');
+        return $this->membership === 'super-admin' ;
     }
 
     /**
@@ -184,7 +187,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function isTenantAdmin(): bool
     {
-        return $this->hasMembership('tenant-admin');
+        return $this->membership === 'tenant-admin' || $this->membership === 'admin' ;
     }
 
     /**
@@ -192,7 +195,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function isTeam(): bool
     {
-        return $this->hasMembership('team');
+        return $this->membership === 'team' || $this->membership === 'admin';
     }
 
     /**
@@ -200,7 +203,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function isStudent(): bool
     {
-        return $this->hasMembership('student');
+        return $this->membership === 'student';
     }
 
     /**

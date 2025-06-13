@@ -27,7 +27,7 @@ class TeamTopicController extends BaseAPIController
      */
     public function __construct()
     {
-        $this->middleware(['auth:sanctum', 'verified', 'tenant', 'membership:team']);
+        
     }
 
     /**

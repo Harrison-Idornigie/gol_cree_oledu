@@ -90,20 +90,14 @@ class CentralUser extends Authenticatable
             ->withTimestamps();
     }
 
-    /**
-     * Check if user has a specific membership.
-     */
-    public function hasMembership(string $membership): bool
-    {
-        return $this->memberships()->where('slug', $membership)->exists() || $this->membership === $membership;
-    }
+ 
 
     /**
      * Super Admin Membership Check
      */
     public function isSuperAdmin(): bool
     {
-        return $this->hasMembership('super-admin') || $this->membership === 'admin';
+        return $this->membership === 'super-admin';
     }
 
     /**
