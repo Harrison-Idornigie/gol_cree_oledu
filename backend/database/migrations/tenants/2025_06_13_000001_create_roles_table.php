@@ -8,24 +8,26 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('memberships', function (Blueprint $table) {
+        Schema::create('roles', function (Blueprint $table) {
             $table->id();
             $table->string('tenant_id')->nullable()->comment('Reference to tenant in landlord database');
-            $table->string('name')->unique();
+            $table->string('name');
             $table->string('slug')->unique();
             $table->text('description')->nullable();
             $table->boolean('is_system')->default(false)
-                ->comment('System memberships cannot be modified or deleted');
+                ->comment('System roles cannot be modified or deleted');
             $table->json('metadata')->nullable()
-                ->comment('Additional membership configuration');
+                ->comment('Additional role configuration');
             $table->timestamps();
 
+            // Add indexes for performance
             $table->index(['tenant_id', 'slug']);
+            $table->index('is_system');
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('memberships');
+        Schema::dropIfExists('roles');
     }
 };

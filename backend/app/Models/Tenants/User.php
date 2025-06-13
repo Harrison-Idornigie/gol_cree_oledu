@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Cache;
 use Laravel\Sanctum\HasApiTokens;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 
@@ -77,12 +78,28 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(XpHistory::class);
     }
 
+
     /**
-     * Get the memberships that belong to the user.
+     * Roles that belong to the user.
      */
-    public function memberships(): BelongsToMany
+    public function roles(): BelongsToMany
     {
-        return $this->belongsToMany(Membership::class);
+        return $this->belongsToMany(Role::class, 'user_roles')
+            ->withPivot(['conditions', 'is_active', 'assigned_at', 'expires_at'])
+            ->withTimestamps();
+    }
+
+    /**
+     * Get only active roles for this user.
+     */
+    public function activeRoles(): BelongsToMany
+    {
+        return $this->roles()
+            ->wherePivot('is_active', true)
+            ->wherePivot(function ($query) {
+                $query->whereNull('expires_at')
+                    ->orWhere('expires_at', '>', now());
+            });
     }
 
     /**

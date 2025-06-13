@@ -3,6 +3,7 @@
 use App\Http\Middleware\Tenant\InitializeTenancyByPathOrDomain;
 use App\Http\Middleware\Tenant\EnsureEmailIsVerified;
 use App\Http\Middleware\Tenant\CheckSequentialAccess;
+use App\Http\Middleware\Tenant\RolePermissionMiddleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -42,6 +43,13 @@ return Application::configure(basePath: dirname(__DIR__))
 
         if (class_exists(CheckSequentialAccess::class)) {
             $middleware->alias(['sequential-learning' => CheckSequentialAccess::class]);
+        }
+
+        if (class_exists(RolePermissionMiddleware::class)) {
+            $middleware->alias([
+                'permission' => RolePermissionMiddleware::class,
+                'role_permission' => RolePermissionMiddleware::class
+            ]);
         }
     })
     ->withExceptions(function (Exceptions $exceptions) {

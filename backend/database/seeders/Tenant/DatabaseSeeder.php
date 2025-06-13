@@ -35,6 +35,11 @@ class DatabaseSeeder extends Seeder
             ConversationExerciseSeeder::class,
             ListeningExerciseSeeder::class,
             PictureExerciseSeeder::class,
+
+            // Role seeders
+            RoleSeeder::class,
+            PermissionSeeder::class,
+            RolePermissionSeeder::class
         ]);
     }
 }

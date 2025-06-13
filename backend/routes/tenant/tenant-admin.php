@@ -4,7 +4,7 @@ use App\Http\Controllers\API\Tenant\Admin\TenantAdminAnalyticsController;
 use App\Http\Controllers\API\Tenant\Admin\TenantAdminAuditController;
 use App\Http\Controllers\API\Tenant\Admin\TenantAdminDashboardController;
 use App\Http\Controllers\API\Tenant\Admin\TenantAdminUserController;
-use App\Http\Controllers\API\Tenant\Admin\TenantAdminMembershipController;
+use App\Http\Controllers\API\Tenant\Admin\TenantAdminRoleController;
 use App\Http\Controllers\API\Tenant\Admin\TenantAdminSettingsController;
 use App\Http\Controllers\API\Tenant\Admin\TenantAdminContentController;
 use Illuminate\Support\Facades\Route;
@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
  * URL Pattern: api/{tenant-slug}/tenant-admin/*
  */
 
-Route::prefix('tenant-admin')->middleware(['auth:tenant', 'verified'])->group(function () {
+Route::prefix('tenant-admin')->middleware(['auth:tenant', 'verified', 'permission:admin,tenant-admin'])->group(function () {
 
     // Dashboard & Analytics
     Route::get('dashboard', [TenantAdminDashboardController::class, 'index']);
@@ -45,19 +45,21 @@ Route::prefix('tenant-admin')->middleware(['auth:tenant', 'verified'])->group(fu
         Route::post('invite', [TenantAdminUserController::class, 'sendInvite']);
         Route::delete('invite/{invite}', [TenantAdminUserController::class, 'cancelInvite']);
         Route::post('invite/{invite}/resend', [TenantAdminUserController::class, 'resendInvite']);
-        Route::patch('{user}/membership', [TenantAdminUserController::class, 'updateMembership']);
+        Route::patch('{user}/role', [TenantAdminUserController::class, 'updateRole']);
         Route::patch('{user}/status', [TenantAdminUserController::class, 'updateUserStatus']);
         Route::get('{user}/activity', [TenantAdminUserController::class, 'getUserActivity']);
     });
 
-    // Memberships & Permissions Management
-    Route::prefix('memberships')->group(function () {
-        Route::get('/', [TenantAdminMembershipController::class, 'index']);
-        Route::post('/', [TenantAdminMembershipController::class, 'store']);
-        Route::get('{membership}', [TenantAdminMembershipController::class, 'show']);
-        Route::put('{membership}', [TenantAdminMembershipController::class, 'update']);
-        Route::delete('{membership}', [TenantAdminMembershipController::class, 'destroy']);
-        Route::post('{membership}/permissions', [TenantAdminMembershipController::class, 'updatePermissions']);
+    // Roles & Permissions Management
+    Route::prefix('roles')->group(function () {
+        Route::get('/', [TenantAdminRoleController::class, 'index']);
+        Route::post('/', [TenantAdminRoleController::class, 'store']);
+        Route::get('{role}', [TenantAdminRoleController::class, 'show']);
+        Route::put('{role}', [TenantAdminRoleController::class, 'update']);
+        Route::delete('{role}', [TenantAdminRoleController::class, 'destroy']);
+        Route::post('{role}/permissions', [TenantAdminRoleController::class, 'updatePermissions']);
+        Route::post('{role}/users', [TenantAdminRoleController::class, 'assignUsers']);
+        Route::delete('{role}/users', [TenantAdminRoleController::class, 'removeUsers']);
     });
 
     // Audit Logs for Tenant

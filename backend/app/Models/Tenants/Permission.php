@@ -27,37 +27,62 @@ class Permission extends Model
         'conditions' => 'array'
     ];
 
+ 
+
     /**
-     * Memberships that have this permission.
+     * Roles that have this permission.
      */
-    public function memberships(): BelongsToMany
+    public function roles(): BelongsToMany
     {
-        return $this->belongsToMany(Membership::class)
+        return $this->belongsToMany(Role::class, 'role_permissions')
             ->withPivot(['conditions', 'is_denied'])
             ->withTimestamps();
     }
 
     /**
-     * Get all users that have this permission through their memberships.
+     * Get all users that have this permission through their memberships or roles.
      */
     public function users()
     {
-        return User::whereHas('memberships', function ($query) {
-            $query->whereHas('permissions', function ($query) {
-                $query->where('permissions.id', $this->id)
-                    ->where('permission_membership.is_denied', false);
+        return User::where(function ($query) {
+            // Users with this permission through memberships
+            $query->whereHas('memberships', function ($membershipQuery) {
+                $membershipQuery->whereHas('permissions', function ($permissionQuery) {
+                    $permissionQuery->where('permissions.id', $this->id)
+                        ->where('permission_membership.is_denied', false);
+                });
+            })
+            // Users with this permission through roles
+            ->orWhereHas('activeRoles', function ($roleQuery) {
+                $roleQuery->whereHas('permissions', function ($permissionQuery) {
+                    $permissionQuery->where('permissions.id', $this->id)
+                        ->where('role_permissions.is_denied', false);
+                });
             });
         });
     }
 
+    
+
     /**
-     * Check if the permission is granted to a specific membership.
+     * Check if the permission is granted to a specific role.
      */
-    public function isGrantedTo(Membership $membership): bool
+    public function isGrantedToRole(Role $role): bool
     {
-        return $this->memberships()
-            ->where('memberships.id', $membership->id)
+        return $this->roles()
+            ->where('roles.id', $role->id)
             ->where('is_denied', false)
+            ->exists();
+    }
+
+    /**
+     * Check if the permission is denied to a specific role.
+     */
+    public function isDeniedToRole(Role $role): bool
+    {
+        return $this->roles()
+            ->where('roles.id', $role->id)
+            ->where('is_denied', true)
             ->exists();
     }
 
