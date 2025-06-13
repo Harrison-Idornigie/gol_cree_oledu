@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\API\Tenant\Team;
 
 use App\Http\Controllers\API\BaseAPIController;
+use App\Models\Tenants\VocabularyItem;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
-use App\Models\Tenants\Vocabulary;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 
 /**
- * Team Vocabulary Controller
+ * Team VocabularyItem Controller
  * 
  * Handles vocabulary management operations for team members.
  * Access Level: Team (Teams/Content Creators)
@@ -65,10 +65,10 @@ class TeamVocabularyController extends BaseAPIController
      * Display the specified vocabulary item.
      * 
      * @param Request $request
-     * @param Vocabulary $vocabulary
+     * @param VocabularyItem $vocabulary
      * @return JsonResponse
      */
-    public function show(Request $request, Vocabulary $vocabulary): JsonResponse
+    public function show(Request $request, VocabularyItem $vocabulary): JsonResponse
     {
         // TODO: Implement vocabulary details
         // - Validate vocabulary belongs to tenant
@@ -81,27 +81,27 @@ class TeamVocabularyController extends BaseAPIController
      * Update the specified vocabulary item.
      * 
      * @param Request $request
-     * @param Vocabulary $vocabulary
+     * @param VocabularyItem $vocabulary
      * @return JsonResponse
      */
-    public function update(Request $request, Vocabulary $vocabulary): JsonResponse
+    public function update(Request $request, VocabularyItem $vocabulary): JsonResponse
     {
         // TODO: Implement vocabulary update
         // - Validate vocabulary belongs to tenant
         // - Update vocabulary content
         // - Handle translation updates
         // - Update metadata
-        return $this->sendResponse($vocabulary, 'Vocabulary item updated successfully.');
+        return $this->sendResponse($vocabulary, 'VocabularyItem item updated successfully.');
     }
 
     /**
      * Remove the specified vocabulary item.
      * 
      * @param Request $request
-     * @param Vocabulary $vocabulary
+     * @param VocabularyItem $vocabulary
      * @return JsonResponse
      */
-    public function destroy(Request $request, Vocabulary $vocabulary): JsonResponse
+    public function destroy(Request $request, VocabularyItem $vocabulary): JsonResponse
     {
         // TODO: Implement vocabulary deletion
         // - Validate vocabulary belongs to tenant

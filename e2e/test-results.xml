@@ -1,848 +1,170 @@
-<testsuites id="" name="" tests="161" failures="4" skipped="155" errors="0" time="208.314354">
-<testsuite name="tenant-isolation.spec.ts" timestamp="2025-06-12T15:54:33.955Z" hostname="chromium" tests="8" failures="4" skipped="2" time="147.142" errors="0">
-<testcase name="Tenant Isolation and Security › should maintain data isolation between tenants" classname="tenant-isolation.spec.ts" time="26.172">
-<system-out>
-<![CDATA[📡 API Response 201: {"success":true,"data":{"token":"1|cRWlJbIa6bKkTfJjMz88aQbX5XZpyHbcRyJBQ6Ul1a2c728f","progress_id":"tenant_684af842037a0","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1749743681601-scszdh@e2e-test.local","membership":"tenant-admin","email_verified_at":null,"tenant_id":"cc0b2be9-e9fc-4819-bb23-6f6571153ee9","tenant":{"id":"cc0b2be9-e9fc-4819-bb23-6f6571153ee9","name":"Tenant One School","slug":"tenant-one","status":"trial"}}},"message":"Organization created successfully. Please chec...
-📡 API Response 201: {"success":true,"data":{"token":"1|v9XLg6qwEeMtH8ktJ1FUNyenqQ56tmtAni980HDdbb407fcf","progress_id":"tenant_684af84ab40c5","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1749743681601-b7cgik@e2e-test.local","membership":"tenant-admin","email_verified_at":null,"tenant_id":"a2d536c6-7aad-4ae2-8d29-073ae417a660","tenant":{"id":"a2d536c6-7aad-4ae2-8d29-073ae417a660","name":"Tenant Two School","slug":"tenant-two","status":"trial"}}},"message":"Organization created successfully. Please chec...
-]]>
-</system-out>
-</testcase>
-<testcase name="Tenant Isolation and Security › should prevent cross-tenant API access" classname="tenant-isolation.spec.ts" time="20.671">
-<system-out>
-<![CDATA[📡 API Response 201: {"success":true,"data":{"token":"1|SE5xEou49K3Gia0QC254TEyR7fO0JqO3ohfGA9Bc83d19f40","progress_id":"tenant_684af85b3f368","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1749743707105-gwr819@e2e-test.local","membership":"tenant-admin","email_verified_at":null,"tenant_id":"9fb8ee2b-ab59-4fd8-aa8e-f7e1f14e8ada","tenant":{"id":"9fb8ee2b-ab59-4fd8-aa8e-f7e1f14e8ada","name":"Test School District","slug":"e2e-test-1749743707105-gwr819","status":"trial"}}},"message":"Organization created suc...
-📡 API Response 201: {"success":true,"data":{"token":"1|rufhGvykz1hCmM4gBszeFFt8UPbb4ic9ikuywmPQb00aa28d","progress_id":"tenant_684af86384fb0","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1749743707105-9gff3r@e2e-test.local","membership":"tenant-admin","email_verified_at":null,"tenant_id":"64734f4f-a04d-4bcc-9c4d-9c8c681f32ce","tenant":{"id":"64734f4f-a04d-4bcc-9c4d-9c8c681f32ce","name":"Test School District","slug":"e2e-test-1749743707105-9gff3r","status":"trial"}}},"message":"Organization created suc...
-]]>
-</system-out>
-</testcase>
-<testcase name="Tenant Isolation and Security › should handle invalid tenant slugs gracefully" classname="tenant-isolation.spec.ts" time="13.577">
-<failure message="tenant-isolation.spec.ts:88:7 should handle invalid tenant slugs gracefully" type="FAILURE">
-<![CDATA[  [chromium] › tenant-isolation.spec.ts:88:7 › Tenant Isolation and Security › should handle invalid tenant slugs gracefully 
+<testsuites id="" name="" tests="35" failures="1" skipped="34" errors="0" time="14.15766">
+<testsuite name="Tenant/frontend/API/Word/team-word-controller.spec.ts" timestamp="2025-06-13T14:49:41.389Z" hostname="chromium" tests="35" failures="1" skipped="34" time="0.003" errors="0">
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Authentication &amp; Authorization Tests › should return 401 for unauthenticated requests" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0.003">
+<failure message="team-word-controller.spec.ts:76:9 should return 401 for unauthenticated requests" type="FAILURE">
+<![CDATA[  [chromium] › Tenant/frontend/API/Word/team-word-controller.spec.ts:76:9 › Team Word Controller API - Comprehensive E2E Tests › Authentication & Authorization Tests › should return 401 for unauthenticated requests 
 
-    Error: Timed out 10000ms waiting for expect(locator).toBeVisible()
+    Error: expect(received).toBe(expected) // Object.is equality
 
-    Locator: locator('text=404')
-    Expected: visible
-    Received: <element(s) not found>
-    Call log:
-      - expect.toBeVisible with timeout 10000ms
-      - waiting for locator('text=404')
+    Expected: true
+    Received: false
 
+      55 |     const tenant2Registration = await apiHelper.registerTenantAdmin(tenant2Data);
+      56 |     
+    > 57 |     expect(tenant1Registration.success).toBe(true);
+         |                                         ^
+      58 |     expect(tenant2Registration.success).toBe(true);
+      59 |     
+      60 |     tenant1Token = tenant1Registration.data?.token;
+        at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/frontend/API/Word/team-word-controller.spec.ts:57:41
 
-      91 |     
-      92 |     // Should show 404 or redirect to error page
-    > 93 |     await expect(page.locator('text=404')).toBeVisible();
-         |                                            ^
-      94 |   });
-      95 |
-      96 |   test('should validate tenant status before allowing access', async ({ page }) => {
-        at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/tenant-isolation.spec.ts:93:44
-
-    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
-    test-results/tenant-isolation-Tenant-Is-8aa70-lid-tenant-slugs-gracefully-chromium/test-failed-1.png
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
-    test-results/tenant-isolation-Tenant-Is-8aa70-lid-tenant-slugs-gracefully-chromium/video.webm
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    Error Context: ../test-results/tenant-isolation-Tenant-Is-8aa70-lid-tenant-slugs-gracefully-chromium/error-context.md
+    Error Context: ../test-results/Tenant-frontend-API-Word-t-60571-or-unauthenticated-requests-chromium/error-context.md
 ]]>
 </failure>
 <system-out>
-<![CDATA[🗑️  Cleaning up all test tenants...
-🗑️  Cleaning up tenant: e2e-test-1749743681601-scszdh
-🗑️  Cleaning up tenant: e2e-test-1749743681601-b7cgik
-🗑️  Cleaning up tenant: e2e-test-1749743707105-gwr819
-🗑️  Cleaning up tenant: e2e-test-1749743707105-9gff3r
-
-[[ATTACHMENT|test-results/tenant-isolation-Tenant-Is-8aa70-lid-tenant-slugs-gracefully-chromium/test-failed-1.png]]
-
-[[ATTACHMENT|test-results/tenant-isolation-Tenant-Is-8aa70-lid-tenant-slugs-gracefully-chromium/video.webm]]
-
-[[ATTACHMENT|test-results/tenant-isolation-Tenant-Is-8aa70-lid-tenant-slugs-gracefully-chromium/error-context.md]]
-]]>
-</system-out>
-</testcase>
-<testcase name="Tenant Isolation and Security › should validate tenant status before allowing access" classname="tenant-isolation.spec.ts" time="24.761">
-<failure message="tenant-isolation.spec.ts:96:7 should validate tenant status before allowing access" type="FAILURE">
-<![CDATA[  [chromium] › tenant-isolation.spec.ts:96:7 › Tenant Isolation and Security › should validate tenant status before allowing access 
-
-    Error: Timed out 10000ms waiting for expect(locator).toContainText(expected)
-
-    Locator: locator('h1')
-    Expected string: "Dashboard"
-    Received: <element(s) not found>
-    Call log:
-      - expect.toContainText with timeout 10000ms
-      - waiting for locator('h1')
-
-
-      103 |     // Verify tenant is active and accessible
-      104 |     await page.goto(`/${testData.organizationSlug}/admin`);
-    > 105 |     await expect(page.locator('h1')).toContainText('Dashboard');
-          |                                      ^
-      106 |     
-      107 |     // TODO: Add test for suspended/inactive tenant access
-      108 |     // This would require additional API endpoints to change tenant status
-        at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/tenant-isolation.spec.ts:105:38
-
-    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
-    test-results/tenant-isolation-Tenant-Is-3a6f4-atus-before-allowing-access-chromium/test-failed-1.png
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
-    test-results/tenant-isolation-Tenant-Is-3a6f4-atus-before-allowing-access-chromium/video.webm
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    Error Context: ../test-results/tenant-isolation-Tenant-Is-3a6f4-atus-before-allowing-access-chromium/error-context.md
-]]>
-</failure>
-<system-out>
-<![CDATA[📡 API Response 201: {"success":true,"data":{"token":"1|JBB6uGhw2inpGQ3FjrmGUsiNgS3IrN6AQrjAaUFs3b6fcf0c","progress_id":"tenant_684af88351afc","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1749743747031-yfjl7l@e2e-test.local","membership":"tenant-admin","email_verified_at":null,"tenant_id":"6eac34c1-2bb1-4591-8857-b3e4d01a8764","tenant":{"id":"6eac34c1-2bb1-4591-8857-b3e4d01a8764","name":"Test School District","slug":"e2e-test-1749743747031-yfjl7l","status":"trial"}}},"message":"Organization created suc...
+<![CDATA[📡 API Response 500: {"success":false,"message":"Registration failed","errors":{"error":"An unexpected error occurred"}}
+📡 API Response 500: {"success":false,"message":"Registration failed","errors":{"error":"An unexpected error occurred"}}
 🗑️  Cleaning up all test tenants...
-🗑️  Cleaning up tenant: e2e-test-1749743747031-yfjl7l
+🗑️  Cleaning up tenant: e2e-test-1749826182698-210355-3hd778-361199
+🗑️  Cleaning up tenant: e2e-test-1749826182698-210355-lzhhj6-415499
 
-[[ATTACHMENT|test-results/tenant-isolation-Tenant-Is-3a6f4-atus-before-allowing-access-chromium/test-failed-1.png]]
-
-[[ATTACHMENT|test-results/tenant-isolation-Tenant-Is-3a6f4-atus-before-allowing-access-chromium/video.webm]]
-
-[[ATTACHMENT|test-results/tenant-isolation-Tenant-Is-3a6f4-atus-before-allowing-access-chromium/error-context.md]]
+[[ATTACHMENT|test-results/Tenant-frontend-API-Word-t-60571-or-unauthenticated-requests-chromium/error-context.md]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Tenant Isolation and Security › should maintain session isolation between browser contexts" classname="tenant-isolation.spec.ts" time="31.484">
-<failure message="tenant-isolation.spec.ts:111:7 should maintain session isolation between browser contexts" type="FAILURE">
-<![CDATA[  [chromium] › tenant-isolation.spec.ts:111:7 › Tenant Isolation and Security › should maintain session isolation between browser contexts 
-
-    Error: Timed out 10000ms waiting for expect(locator).toBeVisible()
-
-    Locator: locator('text=Test School District')
-    Expected: visible
-    Received: <element(s) not found>
-    Call log:
-      - expect.toBeVisible with timeout 10000ms
-      - waiting for locator('text=Test School District')
-
-
-      129 |
-      130 |     // Verify each context maintains its own session
-    > 131 |     await expect(page1.locator(`text=${tenant1Data.organizationName}`)).toBeVisible();
-          |                                                                         ^
-      132 |     await expect(page2.locator(`text=${tenant2Data.organizationName}`)).toBeVisible();
-      133 |
-      134 |     // Cleanup
-        at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/tenant-isolation.spec.ts:131:73
-
-    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
-    test-results/tenant-isolation-Tenant-Is-334b3-on-between-browser-contexts-chromium/test-failed-1.png
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
-    test-results/tenant-isolation-Tenant-Is-334b3-on-between-browser-contexts-chromium/test-failed-2.png
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    Error Context: ../test-results/tenant-isolation-Tenant-Is-334b3-on-between-browser-contexts-chromium/error-context.md
-]]>
-</failure>
-<system-out>
-<![CDATA[📡 API Response 201: {"success":true,"data":{"token":"1|xausSe47UGBxkIA9LtBvy7o98gB2iZUfKCMwGWRI1ab758bd","progress_id":"tenant_684af89f520f3","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1749743774936-g63nwi@e2e-test.local","membership":"tenant-admin","email_verified_at":null,"tenant_id":"7f370f0a-7d9d-4440-9797-dba1c02f5c27","tenant":{"id":"7f370f0a-7d9d-4440-9797-dba1c02f5c27","name":"Test School District","slug":"e2e-test-1749743774936-g63nwi","status":"trial"}}},"message":"Organization created suc...
-📡 API Response 201: {"success":true,"data":{"token":"1|uJ60jP4Mc5tolUkuwqqFAIECEQkuMQIMCTyyliiL194d87aa","progress_id":"tenant_684af8a7b57e2","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1749743774936-43yq91@e2e-test.local","membership":"tenant-admin","email_verified_at":null,"tenant_id":"249f9ba9-145f-4369-b6e6-c9b694cbeeb2","tenant":{"id":"249f9ba9-145f-4369-b6e6-c9b694cbeeb2","name":"Test School District","slug":"e2e-test-1749743774936-43yq91","status":"trial"}}},"message":"Organization created suc...
-🗑️  Cleaning up all test tenants...
-🗑️  Cleaning up tenant: e2e-test-1749743774936-g63nwi
-🗑️  Cleaning up tenant: e2e-test-1749743774936-43yq91
-
-[[ATTACHMENT|test-results/tenant-isolation-Tenant-Is-334b3-on-between-browser-contexts-chromium/test-failed-1.png]]
-
-[[ATTACHMENT|test-results/tenant-isolation-Tenant-Is-334b3-on-between-browser-contexts-chromium/test-failed-2.png]]
-
-[[ATTACHMENT|test-results/tenant-isolation-Tenant-Is-334b3-on-between-browser-contexts-chromium/error-context.md]]
-]]>
-</system-out>
-</testcase>
-<testcase name="Tenant Isolation and Security › should handle concurrent tenant registrations" classname="tenant-isolation.spec.ts" time="14.796">
-<failure message="tenant-isolation.spec.ts:139:7 should handle concurrent tenant registrations" type="FAILURE">
-<![CDATA[  [chromium] › tenant-isolation.spec.ts:139:7 › Tenant Isolation and Security › should handle concurrent tenant registrations 
-
-    TimeoutError: The operation was aborted due to timeout
-
-       at ../utils/api-helpers.ts:63
-
-      61 |     }
-      62 |
-    > 63 |     const response = await fetch(url, requestOptions);
-         |                      ^
-      64 |
-      65 |     if (process.env.DEBUG_API_CALLS === 'true') {
-      66 |       console.log(`📡 API Response ${response.status}`, await response.clone().text());
-        at ApiHelper.request (/home/onionlake-admin/PROJECT/gol_2025/e2e/utils/api-helpers.ts:63:22)
-        at ApiHelper.registerTenantAdmin (/home/onionlake-admin/PROJECT/gol_2025/e2e/utils/api-helpers.ts:89:22)
-        at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/tenant-isolation.spec.ts:148:21
-
-    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
-    test-results/tenant-isolation-Tenant-Is-19ba7-urrent-tenant-registrations-chromium/test-failed-1.png
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
-    test-results/tenant-isolation-Tenant-Is-19ba7-urrent-tenant-registrations-chromium/video.webm
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-]]>
-</failure>
-<system-out>
-<![CDATA[📡 API Response 201: {"success":true,"data":{"token":"1|nk1wHCDuRGakfpzCbLgDOHN38KgZRDzRAWAQNGwId39c0314","progress_id":"tenant_684af8c36b8e2","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1749743811137-q0d1ce@e2e-test.local","membership":"tenant-admin","email_verified_at":null,"tenant_id":"c38ba96b-78cf-4853-ad71-237fb9e08cd0","tenant":{"id":"c38ba96b-78cf-4853-ad71-237fb9e08cd0","name":"Test School District","slug":"e2e-test-1749743811137-q0d1ce","status":"trial"}}},"message":"Organization created suc...
-🗑️  Cleaning up all test tenants...
-🗑️  Cleaning up tenant: e2e-test-1749743811137-q0d1ce
-🗑️  Cleaning up tenant: e2e-test-1749743811137-u4cvr1
-🗑️  Cleaning up tenant: e2e-test-1749743811137-g5093g
-
-[[ATTACHMENT|test-results/tenant-isolation-Tenant-Is-19ba7-urrent-tenant-registrations-chromium/test-failed-1.png]]
-
-[[ATTACHMENT|test-results/tenant-isolation-Tenant-Is-19ba7-urrent-tenant-registrations-chromium/video.webm]]
-]]>
-</system-out>
-</testcase>
-<testcase name="Tenant Isolation and Security › should prevent SQL injection in tenant identification" classname="tenant-isolation.spec.ts" time="15.681">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Isolation and Security › should handle special characters in tenant slugs safely" classname="tenant-isolation.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-</testsuite>
-<testsuite name="tenant-registration.spec.ts" timestamp="2025-06-12T15:54:33.955Z" hostname="chromium" tests="15" failures="0" skipped="15" time="0" errors="0">
-<testcase name="Tenant Registration E2E Flow › Successful Registration Flow › should complete full tenant registration with valid data" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › Successful Registration Flow › should auto-generate slug when not provided" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › Successful Registration Flow › should handle slug validation and availability checking" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › Form Validation › should show validation errors for missing required fields" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › Form Validation › should validate email format" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › Form Validation › should validate password confirmation match" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › Form Validation › should validate slug format" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › Duplicate Slug Handling › should prevent registration with duplicate slug" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › API Integration › should handle API errors gracefully" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › API Integration › should validate API response structure" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › Tenant Path-Based Access › should enable access via path-based tenant identification" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › Tenant Path-Based Access › should redirect to correct tenant context after registration" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › Edge Cases and Performance › should handle special characters in organization names" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › Edge Cases and Performance › should handle maximum length inputs" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › Edge Cases and Performance › should complete registration within reasonable time" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-</testsuite>
-<testsuite name="tenant-isolation.spec.ts" timestamp="2025-06-12T15:54:33.955Z" hostname="firefox" tests="8" failures="0" skipped="8" time="0" errors="0">
-<testcase name="Tenant Isolation and Security › should maintain data isolation between tenants" classname="tenant-isolation.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Isolation and Security › should prevent cross-tenant API access" classname="tenant-isolation.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Isolation and Security › should handle invalid tenant slugs gracefully" classname="tenant-isolation.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Isolation and Security › should validate tenant status before allowing access" classname="tenant-isolation.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Isolation and Security › should maintain session isolation between browser contexts" classname="tenant-isolation.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Isolation and Security › should handle concurrent tenant registrations" classname="tenant-isolation.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Isolation and Security › should prevent SQL injection in tenant identification" classname="tenant-isolation.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Isolation and Security › should handle special characters in tenant slugs safely" classname="tenant-isolation.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-</testsuite>
-<testsuite name="tenant-registration.spec.ts" timestamp="2025-06-12T15:54:33.955Z" hostname="firefox" tests="15" failures="0" skipped="15" time="0" errors="0">
-<testcase name="Tenant Registration E2E Flow › Successful Registration Flow › should complete full tenant registration with valid data" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › Successful Registration Flow › should auto-generate slug when not provided" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › Successful Registration Flow › should handle slug validation and availability checking" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › Form Validation › should show validation errors for missing required fields" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › Form Validation › should validate email format" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › Form Validation › should validate password confirmation match" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › Form Validation › should validate slug format" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › Duplicate Slug Handling › should prevent registration with duplicate slug" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › API Integration › should handle API errors gracefully" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › API Integration › should validate API response structure" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › Tenant Path-Based Access › should enable access via path-based tenant identification" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › Tenant Path-Based Access › should redirect to correct tenant context after registration" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › Edge Cases and Performance › should handle special characters in organization names" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › Edge Cases and Performance › should handle maximum length inputs" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › Edge Cases and Performance › should complete registration within reasonable time" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-</testsuite>
-<testsuite name="tenant-isolation.spec.ts" timestamp="2025-06-12T15:54:33.955Z" hostname="webkit" tests="8" failures="0" skipped="8" time="0" errors="0">
-<testcase name="Tenant Isolation and Security › should maintain data isolation between tenants" classname="tenant-isolation.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Isolation and Security › should prevent cross-tenant API access" classname="tenant-isolation.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Isolation and Security › should handle invalid tenant slugs gracefully" classname="tenant-isolation.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Isolation and Security › should validate tenant status before allowing access" classname="tenant-isolation.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Isolation and Security › should maintain session isolation between browser contexts" classname="tenant-isolation.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Isolation and Security › should handle concurrent tenant registrations" classname="tenant-isolation.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Isolation and Security › should prevent SQL injection in tenant identification" classname="tenant-isolation.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Isolation and Security › should handle special characters in tenant slugs safely" classname="tenant-isolation.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-</testsuite>
-<testsuite name="tenant-registration.spec.ts" timestamp="2025-06-12T15:54:33.955Z" hostname="webkit" tests="15" failures="0" skipped="15" time="0" errors="0">
-<testcase name="Tenant Registration E2E Flow › Successful Registration Flow › should complete full tenant registration with valid data" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › Successful Registration Flow › should auto-generate slug when not provided" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › Successful Registration Flow › should handle slug validation and availability checking" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › Form Validation › should show validation errors for missing required fields" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › Form Validation › should validate email format" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › Form Validation › should validate password confirmation match" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › Form Validation › should validate slug format" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › Duplicate Slug Handling › should prevent registration with duplicate slug" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › API Integration › should handle API errors gracefully" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › API Integration › should validate API response structure" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › Tenant Path-Based Access › should enable access via path-based tenant identification" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › Tenant Path-Based Access › should redirect to correct tenant context after registration" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › Edge Cases and Performance › should handle special characters in organization names" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › Edge Cases and Performance › should handle maximum length inputs" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › Edge Cases and Performance › should complete registration within reasonable time" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-</testsuite>
-<testsuite name="tenant-isolation.spec.ts" timestamp="2025-06-12T15:54:33.955Z" hostname="Mobile Chrome" tests="8" failures="0" skipped="8" time="0" errors="0">
-<testcase name="Tenant Isolation and Security › should maintain data isolation between tenants" classname="tenant-isolation.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Isolation and Security › should prevent cross-tenant API access" classname="tenant-isolation.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Isolation and Security › should handle invalid tenant slugs gracefully" classname="tenant-isolation.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Isolation and Security › should validate tenant status before allowing access" classname="tenant-isolation.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Isolation and Security › should maintain session isolation between browser contexts" classname="tenant-isolation.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Isolation and Security › should handle concurrent tenant registrations" classname="tenant-isolation.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Isolation and Security › should prevent SQL injection in tenant identification" classname="tenant-isolation.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Isolation and Security › should handle special characters in tenant slugs safely" classname="tenant-isolation.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-</testsuite>
-<testsuite name="tenant-registration.spec.ts" timestamp="2025-06-12T15:54:33.955Z" hostname="Mobile Chrome" tests="15" failures="0" skipped="15" time="0" errors="0">
-<testcase name="Tenant Registration E2E Flow › Successful Registration Flow › should complete full tenant registration with valid data" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › Successful Registration Flow › should auto-generate slug when not provided" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › Successful Registration Flow › should handle slug validation and availability checking" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › Form Validation › should show validation errors for missing required fields" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › Form Validation › should validate email format" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › Form Validation › should validate password confirmation match" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › Form Validation › should validate slug format" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › Duplicate Slug Handling › should prevent registration with duplicate slug" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › API Integration › should handle API errors gracefully" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › API Integration › should validate API response structure" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › Tenant Path-Based Access › should enable access via path-based tenant identification" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › Tenant Path-Based Access › should redirect to correct tenant context after registration" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › Edge Cases and Performance › should handle special characters in organization names" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › Edge Cases and Performance › should handle maximum length inputs" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › Edge Cases and Performance › should complete registration within reasonable time" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-</testsuite>
-<testsuite name="tenant-isolation.spec.ts" timestamp="2025-06-12T15:54:33.955Z" hostname="Mobile Safari" tests="8" failures="0" skipped="8" time="0" errors="0">
-<testcase name="Tenant Isolation and Security › should maintain data isolation between tenants" classname="tenant-isolation.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Isolation and Security › should prevent cross-tenant API access" classname="tenant-isolation.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Isolation and Security › should handle invalid tenant slugs gracefully" classname="tenant-isolation.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Isolation and Security › should validate tenant status before allowing access" classname="tenant-isolation.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Isolation and Security › should maintain session isolation between browser contexts" classname="tenant-isolation.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Isolation and Security › should handle concurrent tenant registrations" classname="tenant-isolation.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Isolation and Security › should prevent SQL injection in tenant identification" classname="tenant-isolation.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Isolation and Security › should handle special characters in tenant slugs safely" classname="tenant-isolation.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-</testsuite>
-<testsuite name="tenant-registration.spec.ts" timestamp="2025-06-12T15:54:33.955Z" hostname="Mobile Safari" tests="15" failures="0" skipped="15" time="0" errors="0">
-<testcase name="Tenant Registration E2E Flow › Successful Registration Flow › should complete full tenant registration with valid data" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › Successful Registration Flow › should auto-generate slug when not provided" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › Successful Registration Flow › should handle slug validation and availability checking" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › Form Validation › should show validation errors for missing required fields" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › Form Validation › should validate email format" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › Form Validation › should validate password confirmation match" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › Form Validation › should validate slug format" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › Duplicate Slug Handling › should prevent registration with duplicate slug" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › API Integration › should handle API errors gracefully" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › API Integration › should validate API response structure" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › Tenant Path-Based Access › should enable access via path-based tenant identification" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › Tenant Path-Based Access › should redirect to correct tenant context after registration" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › Edge Cases and Performance › should handle special characters in organization names" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › Edge Cases and Performance › should handle maximum length inputs" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › Edge Cases and Performance › should complete registration within reasonable time" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-</testsuite>
-<testsuite name="tenant-isolation.spec.ts" timestamp="2025-06-12T15:54:33.955Z" hostname="Microsoft Edge" tests="8" failures="0" skipped="8" time="0" errors="0">
-<testcase name="Tenant Isolation and Security › should maintain data isolation between tenants" classname="tenant-isolation.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Isolation and Security › should prevent cross-tenant API access" classname="tenant-isolation.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Isolation and Security › should handle invalid tenant slugs gracefully" classname="tenant-isolation.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Isolation and Security › should validate tenant status before allowing access" classname="tenant-isolation.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Isolation and Security › should maintain session isolation between browser contexts" classname="tenant-isolation.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Isolation and Security › should handle concurrent tenant registrations" classname="tenant-isolation.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Isolation and Security › should prevent SQL injection in tenant identification" classname="tenant-isolation.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Isolation and Security › should handle special characters in tenant slugs safely" classname="tenant-isolation.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-</testsuite>
-<testsuite name="tenant-registration.spec.ts" timestamp="2025-06-12T15:54:33.955Z" hostname="Microsoft Edge" tests="15" failures="0" skipped="15" time="0" errors="0">
-<testcase name="Tenant Registration E2E Flow › Successful Registration Flow › should complete full tenant registration with valid data" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › Successful Registration Flow › should auto-generate slug when not provided" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › Successful Registration Flow › should handle slug validation and availability checking" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › Form Validation › should show validation errors for missing required fields" classname="tenant-registration.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Tenant Registration E2E Flow › Form Validation › should validate email format" classname="tenant-registration.spec.ts" time="0">
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Authentication &amp; Authorization Tests › should return 403 for non-team users accessing team endpoints" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0">
 <skipped>
 </skipped>
 </testcase>
-<testcase name="Tenant Registration E2E Flow › Form Validation › should validate password confirmation match" classname="tenant-registration.spec.ts" time="0">
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Authentication &amp; Authorization Tests › should allow valid team authentication" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0">
 <skipped>
 </skipped>
 </testcase>
-<testcase name="Tenant Registration E2E Flow › Form Validation › should validate slug format" classname="tenant-registration.spec.ts" time="0">
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Tenant Isolation Tests › should only access words from own tenant" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0">
 <skipped>
 </skipped>
 </testcase>
-<testcase name="Tenant Registration E2E Flow › Duplicate Slug Handling › should prevent registration with duplicate slug" classname="tenant-registration.spec.ts" time="0">
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Tenant Isolation Tests › should block cross-tenant word access" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0">
 <skipped>
 </skipped>
 </testcase>
-<testcase name="Tenant Registration E2E Flow › API Integration › should handle API errors gracefully" classname="tenant-registration.spec.ts" time="0">
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Tenant Isolation Tests › should validate tenant context in all endpoints" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0">
 <skipped>
 </skipped>
 </testcase>
-<testcase name="Tenant Registration E2E Flow › API Integration › should validate API response structure" classname="tenant-registration.spec.ts" time="0">
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Data Validation Tests › should validate required fields" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0">
 <skipped>
 </skipped>
 </testcase>
-<testcase name="Tenant Registration E2E Flow › Tenant Path-Based Access › should enable access via path-based tenant identification" classname="tenant-registration.spec.ts" time="0">
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Data Validation Tests › should validate parameter types" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0">
 <skipped>
 </skipped>
 </testcase>
-<testcase name="Tenant Registration E2E Flow › Tenant Path-Based Access › should redirect to correct tenant context after registration" classname="tenant-registration.spec.ts" time="0">
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Data Validation Tests › should enforce pagination limits" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0">
 <skipped>
 </skipped>
 </testcase>
-<testcase name="Tenant Registration E2E Flow › Edge Cases and Performance › should handle special characters in organization names" classname="tenant-registration.spec.ts" time="0">
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Data Validation Tests › should validate audio file uploads" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0">
 <skipped>
 </skipped>
 </testcase>
-<testcase name="Tenant Registration E2E Flow › Edge Cases and Performance › should handle maximum length inputs" classname="tenant-registration.spec.ts" time="0">
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Functional Testing - CRUD Operations › GET /team/words - list words with filtering" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0">
 <skipped>
 </skipped>
 </testcase>
-<testcase name="Tenant Registration E2E Flow › Edge Cases and Performance › should complete registration within reasonable time" classname="tenant-registration.spec.ts" time="0">
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Functional Testing - CRUD Operations › GET /team/words/{id} - get single word" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0">
 <skipped>
 </skipped>
 </testcase>
-</testsuite>
-<testsuite name="tenant-isolation.spec.ts" timestamp="2025-06-12T15:54:33.955Z" hostname="Google Chrome" tests="8" failures="0" skipped="8" time="0" errors="0">
-<testcase name="Tenant Isolation and Security › should maintain data isolation between tenants" classname="tenant-isolation.spec.ts" time="0">
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Functional Testing - CRUD Operations › POST /team/words - create word" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0">
 <skipped>
 </skipped>
 </testcase>
-<testcase name="Tenant Isolation and Security › should prevent cross-tenant API access" classname="tenant-isolation.spec.ts" time="0">
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Functional Testing - CRUD Operations › PUT /team/words/{id} - update word" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0">
 <skipped>
 </skipped>
 </testcase>
-<testcase name="Tenant Isolation and Security › should handle invalid tenant slugs gracefully" classname="tenant-isolation.spec.ts" time="0">
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Functional Testing - CRUD Operations › DELETE /team/words/{id} - delete word" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0">
 <skipped>
 </skipped>
 </testcase>
-<testcase name="Tenant Isolation and Security › should validate tenant status before allowing access" classname="tenant-isolation.spec.ts" time="0">
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Bulk Operations Testing › POST /team/words/bulk - bulk create words" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0">
 <skipped>
 </skipped>
 </testcase>
-<testcase name="Tenant Isolation and Security › should maintain session isolation between browser contexts" classname="tenant-isolation.spec.ts" time="0">
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Bulk Operations Testing › DELETE /team/words/bulk-delete - bulk delete words" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0">
 <skipped>
 </skipped>
 </testcase>
-<testcase name="Tenant Isolation and Security › should handle concurrent tenant registrations" classname="tenant-isolation.spec.ts" time="0">
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Translation Management › POST /team/words/{id}/translations - add translation" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0">
 <skipped>
 </skipped>
 </testcase>
-<testcase name="Tenant Isolation and Security › should prevent SQL injection in tenant identification" classname="tenant-isolation.spec.ts" time="0">
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Translation Management › PUT /team/words/{id}/translations/{translationId} - update translation" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0">
 <skipped>
 </skipped>
 </testcase>
-<testcase name="Tenant Isolation and Security › should handle special characters in tenant slugs safely" classname="tenant-isolation.spec.ts" time="0">
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Translation Management › DELETE /team/words/{id}/translations/{translationId} - delete translation" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0">
 <skipped>
 </skipped>
 </testcase>
-</testsuite>
-<testsuite name="tenant-registration.spec.ts" timestamp="2025-06-12T15:54:33.955Z" hostname="Google Chrome" tests="15" failures="0" skipped="15" time="0" errors="0">
-<testcase name="Tenant Registration E2E Flow › Successful Registration Flow › should complete full tenant registration with valid data" classname="tenant-registration.spec.ts" time="0">
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Audio Upload Testing › POST /team/words/{id}/audio - upload word audio" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0">
 <skipped>
 </skipped>
 </testcase>
-<testcase name="Tenant Registration E2E Flow › Successful Registration Flow › should auto-generate slug when not provided" classname="tenant-registration.spec.ts" time="0">
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Filter &amp; Search Testing › should filter by language_id" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0">
 <skipped>
 </skipped>
 </testcase>
-<testcase name="Tenant Registration E2E Flow › Successful Registration Flow › should handle slug validation and availability checking" classname="tenant-registration.spec.ts" time="0">
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Filter &amp; Search Testing › should search by text" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0">
 <skipped>
 </skipped>
 </testcase>
-<testcase name="Tenant Registration E2E Flow › Form Validation › should show validation errors for missing required fields" classname="tenant-registration.spec.ts" time="0">
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Filter &amp; Search Testing › should sort by different fields" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0">
 <skipped>
 </skipped>
 </testcase>
-<testcase name="Tenant Registration E2E Flow › Form Validation › should validate email format" classname="tenant-registration.spec.ts" time="0">
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Filter &amp; Search Testing › should handle pagination correctly" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0">
 <skipped>
 </skipped>
 </testcase>
-<testcase name="Tenant Registration E2E Flow › Form Validation › should validate password confirmation match" classname="tenant-registration.spec.ts" time="0">
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Word Constraint System › GET /team/words/available - get available words for exercises" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0">
 <skipped>
 </skipped>
 </testcase>
-<testcase name="Tenant Registration E2E Flow › Form Validation › should validate slug format" classname="tenant-registration.spec.ts" time="0">
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Word Constraint System › GET /team/words/available/{exerciseType} - get words for specific exercise" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0">
 <skipped>
 </skipped>
 </testcase>
-<testcase name="Tenant Registration E2E Flow › Duplicate Slug Handling › should prevent registration with duplicate slug" classname="tenant-registration.spec.ts" time="0">
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Word Constraint System › POST /team/words/validate-constraints - validate word constraints" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0">
 <skipped>
 </skipped>
 </testcase>
-<testcase name="Tenant Registration E2E Flow › API Integration › should handle API errors gracefully" classname="tenant-registration.spec.ts" time="0">
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Edge Cases &amp; Error Handling › should handle empty result sets" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0">
 <skipped>
 </skipped>
 </testcase>
-<testcase name="Tenant Registration E2E Flow › API Integration › should validate API response structure" classname="tenant-registration.spec.ts" time="0">
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Edge Cases &amp; Error Handling › should return 404 for non-existent word IDs" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0">
 <skipped>
 </skipped>
 </testcase>
-<testcase name="Tenant Registration E2E Flow › Tenant Path-Based Access › should enable access via path-based tenant identification" classname="tenant-registration.spec.ts" time="0">
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Edge Cases &amp; Error Handling › should handle batch requests with invalid word IDs" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0">
 <skipped>
 </skipped>
 </testcase>
-<testcase name="Tenant Registration E2E Flow › Tenant Path-Based Access › should redirect to correct tenant context after registration" classname="tenant-registration.spec.ts" time="0">
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Edge Cases &amp; Error Handling › should enforce large batch request limits" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0">
 <skipped>
 </skipped>
 </testcase>
-<testcase name="Tenant Registration E2E Flow › Edge Cases and Performance › should handle special characters in organization names" classname="tenant-registration.spec.ts" time="0">
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Response Format Validation › should follow BaseAPIController format for success responses" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0">
 <skipped>
 </skipped>
 </testcase>
-<testcase name="Tenant Registration E2E Flow › Edge Cases and Performance › should handle maximum length inputs" classname="tenant-registration.spec.ts" time="0">
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Response Format Validation › should return proper HTTP status codes" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0">
 <skipped>
 </skipped>
 </testcase>
-<testcase name="Tenant Registration E2E Flow › Edge Cases and Performance › should complete registration within reasonable time" classname="tenant-registration.spec.ts" time="0">
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Response Format Validation › should include audio URLs when pronunciation files exist" classname="Tenant/frontend/API/Word/team-word-controller.spec.ts" time="0">
 <skipped>
 </skipped>
 </testcase>

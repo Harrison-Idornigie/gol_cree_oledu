@@ -116,7 +116,16 @@ return [
         // This connection is used as a template for tenant databases
         // Stancl will clone this and modify the database name dynamically
         // Note: Cannot be named 'tenant' as that name is reserved by Stancl
-        'tenant_template' => [
+        'tenant_template' => env('DB_CONNECTION') === 'sqlite' ? [
+            'driver' => 'sqlite',
+            'url' => env('DB_URL'),
+            'database' => null, // This will be set dynamically by Stancl
+            'prefix' => '',
+            'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
+            'busy_timeout' => null,
+            'journal_mode' => null,
+            'synchronous' => null,
+        ] : [
             'driver' => 'mysql',
             'url' => env('DB_URL'),
             'host' => env('DB_HOST', '127.0.0.1'),

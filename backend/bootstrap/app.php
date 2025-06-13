@@ -1,9 +1,8 @@
 <?php
 
-use App\Http\Middleware\CheckSequentialAccess;
-use App\Http\Middleware\EnsureEmailIsVerified;
-use App\Http\Middleware\MembershipMiddleware;
 use App\Http\Middleware\Tenant\InitializeTenancyByPathOrDomain;
+use App\Http\Middleware\Tenant\EnsureEmailIsVerified;
+use App\Http\Middleware\Tenant\CheckSequentialAccess;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -36,11 +35,14 @@ return Application::configure(basePath: dirname(__DIR__))
         }
     )
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->alias([
-            // 'membership'                => MembershipMiddleware::class,
-            // 'verified'            => EnsureEmailIsVerified::class,
-            // 'sequential-learning' => CheckSequentialAccess::class,
-        ]);
+        // Only add middleware if the classes exist
+        if (class_exists(EnsureEmailIsVerified::class)) {
+            $middleware->alias(['verified' => EnsureEmailIsVerified::class]);
+        }
+        
+        if (class_exists(CheckSequentialAccess::class)) {
+            $middleware->alias(['sequential-learning' => CheckSequentialAccess::class]);
+        }
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

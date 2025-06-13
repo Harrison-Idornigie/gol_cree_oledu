@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\API\Tenant\Team;
 
 use App\Http\Controllers\API\BaseAPIController;
+use App\Models\Tenants\MediaFile;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
-use App\Models\Tenants\Media;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 
@@ -50,10 +50,10 @@ class TeamMediaController extends BaseAPIController
      * Remove the specified media file.
      * 
      * @param Request $request
-     * @param Media $media
+     * @param MediaFile $media
      * @return JsonResponse
      */
-    public function destroy(Request $request, Media $media): JsonResponse
+    public function destroy(Request $request, MediaFile $media): JsonResponse
     {
         // TODO: Implement media deletion
         // - Validate media belongs to team member and tenant

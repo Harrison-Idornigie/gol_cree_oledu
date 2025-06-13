@@ -28,7 +28,9 @@ export class DatabaseHelper {
   generateTestTenantSlug(): string {
     const timestamp = Date.now();
     const random = Math.random().toString(36).substring(2, 8);
-    const slug = `${this.testTenantPrefix}-${timestamp}-${random}`;
+    const processId = process.pid || Math.floor(Math.random() * 10000);
+    const microtime = process.hrtime.bigint().toString().slice(-6);
+    const slug = `${this.testTenantPrefix}-${timestamp}-${processId}-${random}-${microtime}`;
     this.createdTenants.push(slug);
     return slug;
   }

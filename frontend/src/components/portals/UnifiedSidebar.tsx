@@ -15,6 +15,7 @@ import {
   Globe,
   User,
   Shield,
+  BookText,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -67,6 +68,13 @@ const navigationItems: NavigationItem[] = [
     path: '/content',
     color: 'text-blue-600',
     memberships: ['team'],
+  },
+  {
+    label: 'Word Management',
+    icon: BookText,
+    path: '/words',
+    color: 'text-indigo-600',
+    memberships: ['admin', 'team'],
   },
   
   // Learning (Student)

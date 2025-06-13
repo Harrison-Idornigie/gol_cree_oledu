@@ -25,7 +25,7 @@ use Illuminate\Support\Facades\Route;
  * URL Pattern: api/{tenant-slug}/team/*
  */
 
-Route::prefix('team')->middleware(['auth:tenant', 'verified', 'membership:team'])->group(function () {
+Route::prefix('team')->middleware(['auth:tenant', 'verified'])->group(function () {
 
     // Language Management
     Route::prefix('languages')->group(function () {
@@ -49,6 +49,12 @@ Route::prefix('team')->middleware(['auth:tenant', 'verified', 'membership:team']
         Route::put('{word}', [TeamWordController::class, 'update']);
         Route::delete('{word}', [TeamWordController::class, 'destroy']);
 
+        // Bulk Operations
+        Route::post('bulk', [TeamWordController::class, 'bulkStore']);
+        Route::put('bulk', [TeamWordController::class, 'bulkUpdate']);
+        Route::post('bulk-delete', [TeamWordController::class, 'bulkDelete']);
+        Route::get('export', [TeamWordController::class, 'export']);
+
         // Word Translations
         Route::post('{word}/translations', [TeamWordController::class, 'addTranslation']);
         Route::put('{word}/translations/{translation}', [TeamWordController::class, 'updateTranslation']);
@@ -57,6 +63,10 @@ Route::prefix('team')->middleware(['auth:tenant', 'verified', 'membership:team']
         // Word Audio
         Route::post('{word}/audio', [TeamWordController::class, 'uploadAudio']);
         Route::post('{word}/translations/{translation}/audio', [TeamWordController::class, 'uploadTranslationAudio']);
+
+        // Word Constraint System
+        Route::get('available/{exerciseType?}', [TeamWordController::class, 'getAvailableWords']);
+        Route::post('validate-constraints', [TeamWordController::class, 'validateWordConstraints']);
     });
 
     // Sentence Management

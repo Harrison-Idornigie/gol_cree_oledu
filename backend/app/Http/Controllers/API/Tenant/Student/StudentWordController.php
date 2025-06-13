@@ -5,8 +5,10 @@ namespace App\Http\Controllers\API\Tenant\Student;
 use App\Http\Controllers\API\BaseAPIController;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 use App\Models\Tenants\Word;
+use App\Services\Tenants\Language\WordManagementService;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Validation\ValidationException;
 
 /**
  * Student Word Controller
@@ -22,73 +24,159 @@ class StudentWordController extends BaseAPIController
 {
     use BelongsToTenant;
 
+    protected WordManagementService $wordService;
+
     /**
-     * Constructor - Apply student middleware
+     * Constructor - Apply student middleware and inject dependencies
      */
-    public function __construct()
+    public function __construct(WordManagementService $wordService)
     {
+        $this->wordService = $wordService;
         $this->middleware(['auth:sanctum', 'verified', 'tenant', 'membership:student']);
     }
 
     /**
      * Display a listing of words.
-     * 
+     *
      * @param Request $request
      * @return JsonResponse
      */
     public function index(Request $request): JsonResponse
     {
-        // TODO: Implement words listing
-        // - Available words for student
-        // - Filter by language, difficulty
-        // - Include learning status
-        return $this->sendResponse([], 'Words retrieved successfully.');
+        try {
+            $request->validate([
+                'language_id' => 'sometimes|integer|exists:languages,id',
+                'search' => 'sometimes|string|max:255',
+                'part_of_speech' => 'sometimes|string|max:50',
+                'page' => 'sometimes|integer|min:1',
+                'per_page' => 'sometimes|integer|min:1|max:100',
+                'sort_by' => 'sometimes|string|in:text,created_at,updated_at',
+                'sort_direction' => 'sometimes|string|in:asc,desc'
+            ]);
+
+            $filters = [
+                'language_id' => $request->get('language_id'),
+                'search' => $request->get('search'),
+                'part_of_speech' => $request->get('part_of_speech'),
+                'sort_by' => $request->get('sort_by', 'text'),
+                'sort_direction' => $request->get('sort_direction', 'asc')
+            ];
+
+            $perPage = $request->get('per_page', 20);
+            $page = $request->get('page', 1);
+
+            // Get words with student-appropriate data (read-only, no sensitive info)
+            $result = $this->wordService->getWordsForStudents($filters, $perPage, $page);
+
+            return $this->sendResponse($result, 'Words retrieved successfully.');
+
+        } catch (ValidationException $e) {
+            return $this->sendError('Validation failed.', $e->errors(), 422);
+        } catch (\Exception $e) {
+            return $this->sendError('Failed to retrieve words.', [], 500);
+        }
     }
 
     /**
      * Display the specified word.
-     * 
+     *
      * @param Request $request
      * @param Word $word
      * @return JsonResponse
      */
     public function show(Request $request, Word $word): JsonResponse
     {
-        // TODO: Implement word details
-        // - Validate word is accessible
-        // - Include pronunciation and audio
-        // - Show usage examples
-        return $this->sendResponse($word, 'Word retrieved successfully.');
+        try {
+            // Validate that the word belongs to the current tenant
+            if ($word->tenant_id !== tenant('id')) {
+                return $this->sendError('Word not found.', [], 404);
+            }
+
+            // Get detailed word information for students
+            $wordData = $this->wordService->getWordDetailsForStudent($word);
+
+            return $this->sendResponse($wordData, 'Word retrieved successfully.');
+
+        } catch (\Exception $e) {
+            return $this->sendError('Failed to retrieve word details.', [], 500);
+        }
     }
 
     /**
      * Get translations for a word.
-     * 
+     *
      * @param Request $request
      * @param Word $word
      * @return JsonResponse
      */
     public function translations(Request $request, Word $word): JsonResponse
     {
-        // TODO: Implement word translations
-        // - All available translations for word
-        // - Include pronunciation and audio
-        // - Show context and usage
-        return $this->sendResponse([], 'Word translations retrieved successfully.');
+        try {
+            // Validate that the word belongs to the current tenant
+            if ($word->tenant_id !== tenant('id')) {
+                return $this->sendError('Word not found.', [], 404);
+            }
+
+            $request->validate([
+                'target_language_id' => 'sometimes|integer|exists:languages,id',
+                'include_audio' => 'sometimes|boolean'
+            ]);
+
+            $targetLanguageId = $request->get('target_language_id');
+            $includeAudio = $request->get('include_audio', true);
+
+            // Get translations for students
+            $translations = $this->wordService->getWordTranslationsForStudent(
+                $word,
+                $targetLanguageId,
+                $includeAudio
+            );
+
+            return $this->sendResponse($translations, 'Word translations retrieved successfully.');
+
+        } catch (ValidationException $e) {
+            return $this->sendError('Validation failed.', $e->errors(), 422);
+        } catch (\Exception $e) {
+            return $this->sendError('Failed to retrieve word translations.', [], 500);
+        }
     }
 
     /**
      * Get multiple words in batch.
-     * 
+     *
      * @param Request $request
      * @return JsonResponse
      */
     public function batch(Request $request): JsonResponse
     {
-        // TODO: Implement batch word retrieval
-        // - Multiple words in single request
-        // - Efficient for sentence/text processing
-        // - Include basic translations
-        return $this->sendResponse([], 'Batch words retrieved successfully.');
+        try {
+            $request->validate([
+                'word_ids' => 'required|array|max:50',
+                'word_ids.*' => 'integer|exists:words,id',
+                'include_translations' => 'sometimes|boolean',
+                'include_audio' => 'sometimes|boolean',
+                'target_language_id' => 'sometimes|integer|exists:languages,id'
+            ]);
+
+            $wordIds = $request->get('word_ids');
+            $includeTranslations = $request->get('include_translations', true);
+            $includeAudio = $request->get('include_audio', true);
+            $targetLanguageId = $request->get('target_language_id');
+
+            // Get batch words for students
+            $words = $this->wordService->getBatchWordsForStudent(
+                $wordIds,
+                $includeTranslations,
+                $includeAudio,
+                $targetLanguageId
+            );
+
+            return $this->sendResponse($words, 'Batch words retrieved successfully.');
+
+        } catch (ValidationException $e) {
+            return $this->sendError('Validation failed.', $e->errors(), 422);
+        } catch (\Exception $e) {
+            return $this->sendError('Failed to retrieve batch words.', [], 500);
+        }
     }
 }
