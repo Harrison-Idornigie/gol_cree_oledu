@@ -13,10 +13,11 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Cache;
 use Laravel\Sanctum\HasApiTokens;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
+use App\Traits\Tenant\HasPermissions;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens, HasFactory, Notifiable, BelongsToTenant;
+    use HasApiTokens, HasFactory, Notifiable, BelongsToTenant, HasPermissions;
 
     protected $fillable = [
         'name',
@@ -80,7 +81,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
 
     /**
-     * Roles that belong to the user.
+     * Override trait method: Roles that belong to the user.
      */
     public function roles(): BelongsToMany
     {
@@ -90,15 +91,15 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
-     * Get only active roles for this user.
+     * Override trait method: Get only active roles for this user.
      */
     public function activeRoles(): BelongsToMany
     {
         return $this->roles()
             ->wherePivot('is_active', true)
-            ->wherePivot(function ($query) {
-                $query->whereNull('expires_at')
-                    ->orWhere('expires_at', '>', now());
+            ->where(function ($query) {
+                $query->whereNull('user_roles.expires_at')
+                    ->orWhere('user_roles.expires_at', '>', now());
             });
     }
 
@@ -242,5 +243,30 @@ class User extends Authenticatable implements MustVerifyEmail
     public function sendPasswordResetNotification($token)
     {
         $this->notify(new ResetPasswordNotification($token));
+    }
+
+    /**
+     * Get fixed permissions based on membership for backward compatibility
+     */
+    public function getFixedPermissions(): array
+    {
+        $fixedPermissions = [
+            'admin' => [
+                'system.manage', 'tenants.manage', 'users.manage',
+                'content.manage', 'team', 'admin', 'words.manage', 'lessons.manage'
+            ],
+            'tenant-admin' => [
+                'tenant-admin', 'users.manage', 'content.view',
+                'settings.manage', 'analytics.view', 'reports.view'
+            ],
+            'team' => [
+                'content.create', 'words.manage', 'team', 'lessons.manage'
+            ],
+            'student' => [
+                'content.view', 'progress.track', 'exercises.attempt'
+            ]
+        ];
+        
+        return $fixedPermissions[$this->membership] ?? [];
     }
 }

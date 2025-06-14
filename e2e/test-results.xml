@@ -1,172 +1,42 @@
-<testsuites id="" name="" tests="35" failures="1" skipped="34" errors="0" time="18.424227">
-<testsuite name="Tenant/backend/API/Word/team-word-controller.spec.ts" timestamp="2025-06-13T21:23:31.009Z" hostname="chromium" tests="35" failures="1" skipped="34" time="0.003" errors="0">
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Authentication &amp; Authorization Tests › should return 401 for unauthenticated requests" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="0.003">
-<failure message="team-word-controller.spec.ts:76:9 should return 401 for unauthenticated requests" type="FAILURE">
-<![CDATA[  [chromium] › Tenant/backend/API/Word/team-word-controller.spec.ts:76:9 › Team Word Controller API - Comprehensive E2E Tests › Authentication & Authorization Tests › should return 401 for unauthenticated requests 
+<testsuites id="" name="" tests="1" failures="1" skipped="0" errors="0" time="16.126345">
+<testsuite name="Tenant/backend/API/Word/team-word-controller.spec.ts" timestamp="2025-06-14T22:51:02.823Z" hostname="chromium" tests="1" failures="1" skipped="0" time="0.005" errors="0">
+<testcase name="Team Word Controller API - Comprehensive E2E Tests › Authentication &amp; Authorization Tests › should allow valid team authentication" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="0.005">
+<failure message="team-word-controller.spec.ts:105:9 should allow valid team authentication" type="FAILURE">
+<![CDATA[  [chromium] › Tenant/backend/API/Word/team-word-controller.spec.ts:105:9 › Team Word Controller API - Comprehensive E2E Tests › Authentication & Authorization Tests › should allow valid team authentication 
 
-    Error: expect(received).toBe(expected) // Object.is equality
+    "beforeAll" hook timeout of 10000ms exceeded.
 
-    Expected: true
-    Received: false
+      33 |   let testLanguages: any[] = [];
+      34 |
+    > 35 |   test.beforeAll(async () => {
+         |        ^
+      36 |     fixtures = new TenantFixtures();
+      37 |     wordFixtures = new WordFixtures();
+      38 |     apiHelper = new ApiHelper();
+        at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:35:8
 
-      55 |     const tenant2Registration = await apiHelper.registerTenantAdmin(tenant2Data);
-      56 |     
-    > 57 |     expect(tenant1Registration.success).toBe(true);
-         |                                         ^
-      58 |     expect(tenant2Registration.success).toBe(true);
-      59 |     
-      60 |     tenant1Token = tenant1Registration.data?.token;
-        at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:57:41
+    TimeoutError: The operation was aborted due to timeout
 
-    Error Context: ../test-results/Tenant-backend-API-Word-te-03351-or-unauthenticated-requests-chromium/error-context.md
+       at ../utils/api-helpers.ts:63
+
+      61 |     }
+      62 |
+    > 63 |     const response = await fetch(url, requestOptions);
+         |                      ^
+      64 |
+      65 |     if (process.env.DEBUG_API_CALLS === 'true') {
+      66 |       console.log(`📡 API Response ${response.status}`, await response.clone().text());
+        at ApiHelper.request (/home/onionlake-admin/PROJECT/gol_2025/e2e/utils/api-helpers.ts:63:22)
+        at ApiHelper.registerTenantAdmin (/home/onionlake-admin/PROJECT/gol_2025/e2e/utils/api-helpers.ts:89:22)
+        at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:54:33
 ]]>
 </failure>
 <system-out>
-<![CDATA[📡 API Response 500: {"success":false,"message":"Registration failed","errors":{"error":"An unexpected error occurred"}}
-📡 API Response 500: {"success":false,"message":"Registration failed","errors":{"error":"An unexpected error occurred"}}
-🗑️  Cleaning up all test tenants...
-🗑️  Cleaning up tenant: e2e-test-1749849812193-97983-95zfso-772526
-🗑️  Cleaning up tenant: e2e-test-1749849812193-97983-6dw52o-828725
-
-[[ATTACHMENT|test-results/Tenant-backend-API-Word-te-03351-or-unauthenticated-requests-chromium/error-context.md]]
+<![CDATA[🗑️  Cleaning up all test tenants...
+🗑️  Cleaning up tenant: e2e-test-1749941464575-302450-h91nf2-985338
+🗑️  Cleaning up tenant: e2e-test-1749941464576-302450-e8qnzh-711635
 ]]>
 </system-out>
-</testcase>
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Authentication &amp; Authorization Tests › should return 403 for non-team users accessing team endpoints" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Authentication &amp; Authorization Tests › should allow valid team authentication" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Tenant Isolation Tests › should only access words from own tenant" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Tenant Isolation Tests › should block cross-tenant word access" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Tenant Isolation Tests › should validate tenant context in all endpoints" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Data Validation Tests › should validate required fields" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Data Validation Tests › should validate parameter types" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Data Validation Tests › should enforce pagination limits" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Data Validation Tests › should validate audio file uploads" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Functional Testing - CRUD Operations › GET /team/words - list words with filtering" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Functional Testing - CRUD Operations › GET /team/words/{id} - get single word" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Functional Testing - CRUD Operations › POST /team/words - create word" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Functional Testing - CRUD Operations › PUT /team/words/{id} - update word" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Functional Testing - CRUD Operations › DELETE /team/words/{id} - delete word" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Bulk Operations Testing › POST /team/words/bulk - bulk create words" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Bulk Operations Testing › DELETE /team/words/bulk-delete - bulk delete words" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Translation Management › POST /team/words/{id}/translations - add translation" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Translation Management › PUT /team/words/{id}/translations/{translationId} - update translation" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Translation Management › DELETE /team/words/{id}/translations/{translationId} - delete translation" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Audio Upload Testing › POST /team/words/{id}/audio - upload word audio" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Filter &amp; Search Testing › should filter by language_id" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Filter &amp; Search Testing › should search by text" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Filter &amp; Search Testing › should sort by different fields" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Filter &amp; Search Testing › should handle pagination correctly" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Word Constraint System › GET /team/words/available - get available words for exercises" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Word Constraint System › GET /team/words/available/{exerciseType} - get words for specific exercise" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Word Constraint System › POST /team/words/validate-constraints - validate word constraints" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Edge Cases &amp; Error Handling › should handle empty result sets" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Edge Cases &amp; Error Handling › should return 404 for non-existent word IDs" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Edge Cases &amp; Error Handling › should handle batch requests with invalid word IDs" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Edge Cases &amp; Error Handling › should enforce large batch request limits" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Response Format Validation › should follow BaseAPIController format for success responses" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Response Format Validation › should return proper HTTP status codes" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="0">
-<skipped>
-</skipped>
-</testcase>
-<testcase name="Team Word Controller API - Comprehensive E2E Tests › Response Format Validation › should include audio URLs when pronunciation files exist" classname="Tenant/backend/API/Word/team-word-controller.spec.ts" time="0">
-<skipped>
-</skipped>
 </testcase>
 </testsuite>
 </testsuites>
