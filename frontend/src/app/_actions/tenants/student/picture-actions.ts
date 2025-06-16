@@ -18,7 +18,7 @@ export async function submitPictureAnswer(
         feedback: string;
         attempt_number: number;
       }>
-    >('/api/exercises/picture/check', {
+    >('/exercises/picture/check', {
       exercise_id: exerciseId,
       selected_option: selectedOption,
     });
@@ -63,7 +63,7 @@ export async function getPictureExercises(languageCode: string) {
           } | null;
         }>;
       }>
-    >(`/api/exercises/picture/language/${languageCode}`);
+    >(`/exercises/picture/language/${languageCode}`);
 
     return {
       success: true,

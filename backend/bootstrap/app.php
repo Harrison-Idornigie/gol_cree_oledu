@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\Tenant\InitializeTenancyByPathOrDomain;
 use App\Http\Middleware\Tenant\EnsureEmailIsVerified;
+use App\Http\Middleware\Tenant\EnsureEmailIsVerifiedWithGracePeriod;
 use App\Http\Middleware\Tenant\CheckSequentialAccess;
 use App\Http\Middleware\Tenant\RolePermissionMiddleware;
 use Illuminate\Foundation\Application;
@@ -36,21 +37,14 @@ return Application::configure(basePath: dirname(__DIR__))
         }
     )
     ->withMiddleware(function (Middleware $middleware) {
-        // Only add middleware if the classes exist
-        if (class_exists(EnsureEmailIsVerified::class)) {
-            $middleware->alias(['verified' => EnsureEmailIsVerified::class]);
-        }
-
-        if (class_exists(CheckSequentialAccess::class)) {
-            $middleware->alias(['sequential-learning' => CheckSequentialAccess::class]);
-        }
-
-        if (class_exists(RolePermissionMiddleware::class)) {
-            $middleware->alias([
-                'permission' => RolePermissionMiddleware::class,
-                'role_permission' => RolePermissionMiddleware::class
-            ]);
-        }
+        // Register middleware aliases
+        $middleware->alias([
+            'verified' => EnsureEmailIsVerified::class,
+            'verified-grace' => EnsureEmailIsVerifiedWithGracePeriod::class,
+            'sequential-learning' => CheckSequentialAccess::class,
+            'permission' => RolePermissionMiddleware::class,
+            'role_permission' => RolePermissionMiddleware::class
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

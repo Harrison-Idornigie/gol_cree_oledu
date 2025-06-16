@@ -64,6 +64,38 @@ const setCookie = async (token: string) => {
   });
 };
 
+/**
+ * Set tenant slug cookie for server actions
+ */
+export async function setTenantSlugCookie(tenantSlug: string) {
+  try {
+    const cookieStore = await cookies();
+    cookieStore.set("tenant_slug", tenantSlug, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+      maxAge: 60 * 60 * 24 * 7, // 7 days
+    });
+    console.log("[Server] Set tenant slug cookie:", tenantSlug);
+  } catch (error) {
+    console.error("Error setting tenant slug cookie:", error);
+  }
+}
+
+/**
+ * Clear tenant slug cookie
+ */
+export async function clearTenantSlugCookie() {
+  try {
+    const cookieStore = await cookies();
+    cookieStore.delete("tenant_slug");
+    console.log("[Server] Cleared tenant slug cookie");
+  } catch (error) {
+    console.error("Error clearing tenant slug cookie:", error);
+  }
+}
+
 const deleteCookie = async () => {
   const cookieStore = await cookies();
   cookieStore.delete("auth_token");
@@ -409,6 +441,25 @@ export async function checkTenantExists(slug: string) {
     return {
       exists: false,
       error: "Unable to check tenant existence"
+    };
+  }
+}
+
+/**
+ * Get tenant creation progress
+ */
+export async function getTenantCreationProgress(progressId: string) {
+  try {
+    const response = await axiosInstance.get(`/auth/tenant-creation-progress/${progressId}`);
+    return {
+      data: response.data,
+      error: null
+    };
+  } catch (error) {
+    console.error('Error fetching tenant creation progress:', error);
+    return {
+      data: null,
+      error: 'Failed to fetch progress'
     };
   }
 }

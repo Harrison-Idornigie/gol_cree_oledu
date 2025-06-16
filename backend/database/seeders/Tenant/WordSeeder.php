@@ -18,12 +18,19 @@ class WordSeeder extends Seeder
      */
     public function run(): void
     {
-        // Authenticate as super admin for content versioning (skip for testing)
+        // Try to authenticate as super admin for content versioning (optional)
         $superAdmin = User::where('email', 'test.superadmin@oledu.ca')->first();
         if ($superAdmin) {
             Auth::login($superAdmin);
         } else {
-            $this->command->warn('Super Admin user not found. Proceeding without authentication for testing.');
+            // For automated seeding, try to use any admin user
+            $adminUser = User::where('membership', 'admin')->first();
+            if ($adminUser) {
+                Auth::login($adminUser);
+                $this->command->info('Authenticated as admin user for content versioning.');
+            } else {
+                $this->command->warn('No admin user found. Proceeding without authentication.');
+            }
         }
 
         // Ensure we have the required languages
@@ -36,8 +43,26 @@ class WordSeeder extends Seeder
             return;
         }
 
-        // Clear existing words if needed
-        if ($this->command->confirm('Do you want to clear existing words before seeding?', true)) {
+        // Check if words already exist
+        $existingWordsCount = Word::count();
+        $shouldClearWords = false;
+
+        if ($existingWordsCount > 0) {
+            // Only prompt for confirmation in interactive mode
+            if ($this->command->getOutput()->isVerbose() || app()->runningInConsole()) {
+                $shouldClearWords = $this->command->confirm(
+                    "Found {$existingWordsCount} existing words. Do you want to clear them before seeding?",
+                    false
+                );
+            } else {
+                // In automated mode, skip if words already exist
+                $this->command->info("Words already exist ({$existingWordsCount} found). Skipping seeding to avoid duplicates.");
+                return;
+            }
+        }
+
+        // Clear existing words if requested
+        if ($shouldClearWords) {
             DB::statement('SET FOREIGN_KEY_CHECKS=0');
             Word::truncate();
             WordTranslation::truncate();
@@ -74,7 +99,7 @@ class WordSeeder extends Seeder
      */
     private function loadWordList(string $filename, int $languageId): array
     {
-        $path = database_path('seeders/data/' . $filename);
+        $path = database_path('seeders/Tenant/data/' . $filename);
 
         if (File::exists($path)) {
             return json_decode(File::get($path), true);
@@ -98,8 +123,8 @@ class WordSeeder extends Seeder
         }
 
         // Ensure directory exists
-        if (! File::exists(database_path('seeders/data'))) {
-            File::makeDirectory(database_path('seeders/data'), 0755, true);
+        if (! File::exists(database_path('seeders/Tenant/data'))) {
+            File::makeDirectory(database_path('seeders/Tenant/data'), 0755, true);
         }
 
         // Save generated data for future use

@@ -54,7 +54,7 @@ export async function getSentences(options: {
 } = {}) {
   try {
     const config = {
-      url: '/api/team/sentences',
+      url: '/team/sentences',
       params: {
         search: options.search,
         language_id: options.language_id,
@@ -106,7 +106,7 @@ export async function getSentences(options: {
 export async function createSentence(formData: FormData) {
   try {
     const config = {
-      url: '/api/team/sentences',
+      url: '/team/sentences',
       headers: {
         // Don't set Content-Type for FormData, let browser set it with boundary
       }
@@ -147,7 +147,7 @@ export async function getAvailableWords(options: {
 } = { language_id: 0 }) {
   try {
     const config = {
-      url: '/api/team/sentences/available-words',
+      url: '/team/sentences/available-words',
       params: {
         language_id: options.language_id,
         search: options.search || '',
@@ -195,7 +195,7 @@ export async function validateSentenceWords(data: {
 }) {
   try {
     const config = {
-      url: '/api/team/sentences/validate-words',
+      url: '/team/sentences/validate-words',
       headers: {
         'Content-Type': 'application/json'
       }
@@ -234,7 +234,7 @@ export async function validateSentenceWords(data: {
 export async function getSentence(id: number) {
   try {
     const config = {
-      url: `/api/team/sentences/${id}`,
+      url: `/team/sentences/${id}`,
       headers: {}
     };
 
@@ -269,7 +269,7 @@ export async function getSentence(id: number) {
 export async function updateSentence(id: number, formData: FormData) {
   try {
     const config = {
-      url: `/api/team/sentences/${id}`,
+      url: `/team/sentences/${id}`,
       headers: {
         // Don't set Content-Type for FormData
       }
@@ -306,7 +306,7 @@ export async function updateSentence(id: number, formData: FormData) {
 export async function deleteSentence(id: number) {
   try {
     const config = {
-      url: `/api/team/sentences/${id}`,
+      url: `/team/sentences/${id}`,
       headers: {}
     };
 

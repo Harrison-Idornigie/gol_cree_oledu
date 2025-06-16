@@ -124,4 +124,17 @@ return [
 
     'password_timeout' => env('AUTH_PASSWORD_TIMEOUT', 10800),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Email Verification Grace Period
+    |--------------------------------------------------------------------------
+    |
+    | Number of days to allow unverified users to access the platform
+    | after account creation. This provides a better onboarding experience
+    | for B2B customers while still encouraging email verification.
+    |
+    */
+
+    'email_verification_grace_period_days' => env('AUTH_EMAIL_VERIFICATION_GRACE_DAYS', 2),
+
 ];

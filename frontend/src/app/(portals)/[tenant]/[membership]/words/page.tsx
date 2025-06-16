@@ -20,13 +20,15 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { toast } from 'sonner';
-import axiosInstance from '@/lib/axios';
 import {
   getWords,
   deleteWord,
   bulkDeleteWords,
   exportWords
 } from '@/app/_actions/tenants/team/word-actions';
+import {
+  getLanguages
+} from '@/app/_actions/tenants/team/language-actions';
 import {
   Word,
   WordFilters as WordFiltersType
@@ -110,14 +112,23 @@ export default function WordsPage() {
   // Load languages for filters
   const loadLanguages = async () => {
     try {
-      // For now, we'll use axiosInstance for languages since we don't have a server action for it yet
-      // This can be updated later when language server actions are created
-      const response = await axiosInstance.get('/api/team/languages');
-      if (response.data) {
-        setLanguages(response.data);
+      const result = await getLanguages({
+        with_words_count: true,
+        status: 'active'
+      });
+
+      if (result.error) {
+        console.error('Error loading languages:', result.error);
+        toast.error('Failed to load languages');
+        return;
+      }
+
+      if (result.data) {
+        setLanguages(result.data);
       }
     } catch (error) {
       console.error('Error loading languages:', error);
+      toast.error('Failed to load languages');
     }
   };
 

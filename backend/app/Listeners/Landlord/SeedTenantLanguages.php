@@ -55,16 +55,43 @@ class SeedTenantLanguages
      */
     protected function seedLanguages($tenant): void
     {
-        $languages = config('tenant.default_languages', []);
+        // Define the default languages (same as LanguageSeeder)
+        $languages = [
+            [
+                'code' => 'en',
+                'name' => 'English',
+                'native_name' => 'English',
+                'is_active' => true,
+            ],
+            [
+                'code' => 'es',
+                'name' => 'Spanish',
+                'native_name' => 'Español',
+                'is_active' => true,
+            ],
+            [
+                'code' => 'crk',
+                'name' => 'Plains Cree',
+                'native_name' => 'nēhiyawēwin',
+                'is_active' => true,
+            ],
+        ];
 
         foreach ($languages as $languageData) {
-            Language::firstOrCreate([
-                'code' => $languageData['code'],
-                'tenant_id' => $tenant->id
+            $language = Language::firstOrCreate([
+                'code' => $languageData['code']
             ], [
                 'name' => $languageData['name'],
-                'flag' => $languageData['flag'],
+                'native_name' => $languageData['native_name'],
                 'is_active' => $languageData['is_active'],
+                'tenant_id' => $tenant->id
+            ]);
+
+            Log::info('Language seeded for tenant', [
+                'tenant_id' => $tenant->id,
+                'language_code' => $language->code,
+                'language_name' => $language->name,
+                'created' => $language->wasRecentlyCreated
             ]);
         }
     }

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { Progress } from '@/components/ui/progress';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { CheckCircle, XCircle, Loader2 } from 'lucide-react';
-import axiosInstance from '@/lib/axios';
+import { getTenantCreationProgress } from '@/app/_actions/auth-actions';
 
 interface ProgressData {
   stage: string;
@@ -46,9 +46,18 @@ export function TenantCreationProgress({
 
     const pollProgress = async () => {
       try {
-        const response = await axiosInstance.get(`/auth/tenant-creation-progress/${progressId}`);
-        const progressData = response.data as ProgressData;
-        
+        const result = await getTenantCreationProgress(progressId);
+
+        if (result.error) {
+          console.error('Error polling progress:', result.error);
+          setIsPolling(false);
+          setError(result.error);
+          onComplete?.(false, result.error);
+          onError?.(result.error);
+          return;
+        }
+
+        const progressData = result.data as ProgressData;
         setProgress(progressData);
 
         // Check if completed or failed

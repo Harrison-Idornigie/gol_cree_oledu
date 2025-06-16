@@ -7,7 +7,7 @@ export async function getActivities(
   perPage: number,
   filter?: ActivityFilter
 ) {
-  const response = await axios.post<PaginatedResponse<ActivityResponse>>('/api/admin/audit-logs', {
+  const response = await axios.post<PaginatedResponse<ActivityResponse>>('/admin/audit-logs', {
     page,
     per_page: perPage,
     start_date: filter?.date_from,
@@ -30,7 +30,7 @@ export async function getActivities(
 }
 
 export async function exportActivities(filter?: ActivityFilter): Promise<Blob> {
-  const response = await axios.post<Blob>('/api/admin/audit-logs/export', {
+  const response = await axios.post<Blob>('/admin/audit-logs/export', {
     start_date: filter?.date_from || new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
     end_date: filter?.date_to || new Date().toISOString(),
     action: filter?.action?.[0],
@@ -48,7 +48,7 @@ export async function getActivityStatistics(
   startDate?: string,
   endDate?: string
 ): Promise<AuditStatistics> {
-  const response = await axios.get<APIResponse<AuditStatistics>>('/api/admin/audit-logs/statistics', {
+  const response = await axios.get<APIResponse<AuditStatistics>>('/admin/audit-logs/statistics', {
     params: {
       start_date: startDate,
       end_date: endDate
@@ -64,7 +64,7 @@ export async function getUserActivity(
   perPage = 15
 ) {
   const response = await axios.get<PaginatedResponse<ActivityResponse>>(
-    `/api/admin/audit-logs/users/${userId}`,
+    `/admin/audit-logs/users/${userId}`,
     {
       params: {
         page,
@@ -89,7 +89,7 @@ export async function getContentHistory(
   perPage = 15
 ) {
   const response = await axios.get<PaginatedResponse<ActivityResponse>>(
-    `/api/admin/audit-logs/content/${contentType}/${contentId}`,
+    `/admin/audit-logs/content/${contentType}/${contentId}`,
     {
       params: {
         page,

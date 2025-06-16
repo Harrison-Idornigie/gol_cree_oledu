@@ -31,6 +31,7 @@ class EventServiceProvider extends ServiceProvider
             SeedTenantRoles::class,
             SeedTenantLanguages::class,
             SeedTenantSettings::class,
+            \App\Listeners\Landlord\SeedTenantWords::class,
         ],
 
         TenantSetupCompleted::class => [

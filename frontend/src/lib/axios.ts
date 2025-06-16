@@ -12,7 +12,56 @@ interface ConfigWithHeaders {
   method?: string;
 }
 
-// Helper function to set auth token for server-side requests
+// Helper function to extract tenant slug from JWT token
+function extractTenantSlugFromToken(token: string): string | null {
+  try {
+    // JWT tokens have 3 parts separated by dots
+    const parts = token.split('.');
+    if (parts.length !== 3) {
+      console.log("[Server] Invalid JWT token format");
+      return null;
+    }
+
+    // Decode the payload (second part)
+    const payload = JSON.parse(atob(parts[1]));
+    console.log("[Server] JWT payload:", JSON.stringify(payload, null, 2));
+
+    // Extract tenant slug from the token payload - try multiple possible locations
+    const tenantSlug = payload.tenant_slug ||
+                      payload.tenant?.slug ||
+                      payload.sub?.tenant_slug ||
+                      payload.context?.tenant_slug ||
+                      null;
+
+    console.log("[Server] Extracted tenant slug:", tenantSlug);
+    return tenantSlug;
+  } catch (error) {
+    console.error("Error extracting tenant slug from token:", error);
+    return null;
+  }
+}
+
+// Helper function to extract tenant slug from cookies
+async function extractTenantSlugFromCookies(): Promise<string | null> {
+  try {
+    const { cookies } = await import("next/headers");
+    const cookieStore = await cookies();
+
+    // Get tenant slug from dedicated cookie
+    const tenantSlug = cookieStore.get('tenant_slug')?.value;
+    if (tenantSlug) {
+      console.log("[Server] Extracted tenant slug from cookie:", tenantSlug);
+      return tenantSlug;
+    }
+
+    return null;
+  } catch (error) {
+    console.error("Error extracting tenant slug from cookies:", error);
+    return null;
+  }
+}
+
+// Helper function to set auth token and tenant context for server-side requests
 export async function setServerAuthToken(config: ConfigWithHeaders) {
   if (typeof window === "undefined") {
     try {
@@ -22,10 +71,27 @@ export async function setServerAuthToken(config: ConfigWithHeaders) {
       let token = cookieStore.get("auth_token")?.value;
       if (token) {
         token = decodeURIComponent(token);
+
+        // Set authorization header
         if (!config.headers) {
           config.headers = {};
         }
         config.headers.Authorization = `Bearer ${token}`;
+
+        // Try to extract tenant slug from cookies first, then from token as fallback
+        let tenantSlug = await extractTenantSlugFromCookies();
+        if (!tenantSlug) {
+          tenantSlug = extractTenantSlugFromToken(token);
+          console.log("[Server] Fallback: extracted tenant slug from token:", tenantSlug);
+        }
+
+        if (tenantSlug && config.url) {
+          config.url = transformUrlWithTenant(config.url, tenantSlug);
+          console.log("[Server] Transformed URL with tenant context:", config.url);
+        } else {
+          console.log("[Server] No tenant slug found, URL not transformed");
+        }
+
         console.log("[Server] Setting auth token:", token.substring(0, 10) + "...");
       } else {
         console.log("[Server] No auth token found in cookies");
@@ -52,7 +118,7 @@ function getCurrentTenantSlug(): string | null {
 
 // Helper function to transform URL to include tenant context
 function transformUrlWithTenant(url: string, tenantSlug: string | null): string {
-  if (!url.startsWith('/')) return url;
+  if (!url.startsWith('/') || !tenantSlug) return url;
 
   // Skip if URL already has tenant context or is a central route
   if (url.match(/^\/api\/[a-z0-9-]+\//) ||
@@ -66,23 +132,23 @@ function transformUrlWithTenant(url: string, tenantSlug: string | null): string 
 
   // Special handling for /auth/me endpoint
   if (url === '/auth/me') {
-    if (tenantSlug) {
-      // Transform to tenant-scoped endpoint
-      return `/api/${tenantSlug}/auth/me`;
-    } else {
-      // Transform to central endpoint
-      return '/api/auth/central-me';
-    }
+    return `/api/${tenantSlug}/auth/me`;
   }
 
-  // Transform /api/auth/* to /api/{tenant}/auth/* (only if tenant context exists)
-  if (url.startsWith('/api/auth/') && tenantSlug) {
+  // Transform /api/auth/* to /api/{tenant}/auth/*
+  if (url.startsWith('/api/auth/')) {
     return url.replace('/api/auth/', `/api/${tenantSlug}/auth/`);
   }
 
-  // Transform other API routes to include tenant context (only if tenant context exists)
-  if (url.startsWith('/api/') && tenantSlug) {
+  // Transform other API routes to include tenant context
+  if (url.startsWith('/api/')) {
     return url.replace('/api/', `/api/${tenantSlug}/`);
+  }
+
+  // Handle server action URLs that don't start with /api (e.g., /team/words, /admin/users)
+  // Since baseURL already includes /api, we just need to add the tenant slug
+  if (url.startsWith('/team/') || url.startsWith('/admin/') || url.startsWith('/student/')) {
+    return `/${tenantSlug}${url}`;
   }
 
   return url;

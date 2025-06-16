@@ -31,17 +31,47 @@ class TeamLanguageController extends BaseAPIController
 
     /**
      * Display a listing of languages in the tenant.
-     * 
+     *
      * @param Request $request
      * @return JsonResponse
      */
     public function index(Request $request): JsonResponse
     {
-        // TODO: Implement language listing
-        // - All languages in current tenant
-        // - Include content count per language
-        // - Filter by status, creator
-        return $this->sendResponse([], 'Languages retrieved successfully.');
+        try {
+            // Get all languages for this tenant
+            $languages = Language::query()
+                ->when($request->get('with_words_count'), function ($query) {
+                    $query->withCount('words');
+                })
+                ->orderBy('name')
+                ->get();
+
+            // Transform the data to include additional metadata if requested
+            $languagesData = $languages->map(function ($language) use ($request) {
+                $data = [
+                    'id' => $language->id,
+                    'code' => $language->code,
+                    'name' => $language->name,
+                    'native_name' => $language->native_name,
+                    'direction' => 'ltr', // Default direction since field doesn't exist yet
+                    'status' => $language->is_active ? 'active' : 'inactive',
+                ];
+
+                // Add counts if requested
+                if ($request->get('with_words_count')) {
+                    $data['words_count'] = $language->words_count ?? 0;
+                }
+
+
+
+                return $data;
+            });
+
+            return $this->sendResponse($languagesData, 'Languages retrieved successfully.');
+
+        } catch (\Exception $e) {
+            return $this->sendError('Failed to retrieve languages: ' . $e->getMessage());
+        }
     }
 
     /**

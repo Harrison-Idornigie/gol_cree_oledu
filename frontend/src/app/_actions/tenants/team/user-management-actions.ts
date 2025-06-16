@@ -1,7 +1,7 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import axiosInstance from '@/lib/axios';
+import axiosInstance, { setServerAuthToken } from '@/lib/axios';
 import { AdminInvite, AdminInviteFormData, AdminUserListResponse, User, UserType } from '@/types/tenant/user';
 
 function getErrorMessage(error: unknown): string {
@@ -14,7 +14,7 @@ function getErrorMessage(error: unknown): string {
 
 export async function getAdminUsers() {
   try {
-    const response = await axiosInstance.get<AdminUserListResponse>('/api/admin/users');
+    const response = await axiosInstance.get<AdminUserListResponse>('/admin/users');
     return { data: response.data };
   } catch (error) {
     return { error: getErrorMessage(error) };
@@ -23,7 +23,7 @@ export async function getAdminUsers() {
 
 export async function inviteAdmin(formData: AdminInviteFormData) {
   try {
-    const response = await axiosInstance.post<{ invite: AdminInvite }>('/api/admin/invites', {
+    const response = await axiosInstance.post<{ invite: AdminInvite }>('/admin/invites', {
       ...formData,
       membership: UserType.ADMIN
     });
@@ -36,7 +36,7 @@ export async function inviteAdmin(formData: AdminInviteFormData) {
 
 export async function revokeInvite(inviteId: number) {
   try {
-    await axiosInstance.delete(`/api/admin/invites/${inviteId}`);
+    await axiosInstance.delete(`/admin/invites/${inviteId}`);
     revalidatePath('/admin/users', 'page');
     return { success: true };
   } catch (error) {
@@ -46,7 +46,7 @@ export async function revokeInvite(inviteId: number) {
 
 export async function removeAdmin(userId: number) {
   try {
-    await axiosInstance.delete(`/api/admin/users/${userId}`);
+    await axiosInstance.delete(`/admin/users/${userId}`);
     revalidatePath('/admin/users', 'page');
     return { success: true };
   } catch (error) {
@@ -57,7 +57,7 @@ export async function removeAdmin(userId: number) {
 export async function resendInvite(inviteId: number) {
   try {
     const response = await axiosInstance.post<{ invite: AdminInvite }>(
-      `/api/admin/invites/${inviteId}/resend`
+      `/admin/invites/${inviteId}/resend`
     );
     revalidatePath('/admin/users', 'page');
     return { data: response.data };
@@ -69,7 +69,7 @@ export async function resendInvite(inviteId: number) {
 export async function updateUserStatus(userId: number, isActive: boolean) {
   try {
     const response = await axiosInstance.patch<{ user: User }>(
-      `/api/admin/users/${userId}/status`,
+      `/admin/users/${userId}/status`,
       { is_active: isActive }
     );
     revalidatePath('/admin/users', 'page');
@@ -81,7 +81,7 @@ export async function updateUserStatus(userId: number, isActive: boolean) {
 
 export async function acceptInvite(token: string) {
   try {
-    const response = await axiosInstance.post<{ user: User }>('/api/admin/invites/accept', { token });
+    const response = await axiosInstance.post<{ user: User }>('/admin/invites/accept', { token });
     revalidatePath('/admin/users', 'page');
     return { data: response.data };
   } catch (error) {

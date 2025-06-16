@@ -21,14 +21,14 @@ interface ApiError {
 function isAxiosError(error: unknown): error is { response?: { data?: ApiError; status?: number } } {
   return error != null && typeof error === 'object' && 'isAxiosError' in error;
 }
-
+import {tenantSlug} from '@/lib/tenant';
 /**
  * Get paginated list of words with filtering options
  */
 export async function getWords(filters: WordFilters = {}) {
   try {
     const config = {
-      url: '/api/team/words',
+      url: '/team/words',
       params: {
         search: filters.search,
         language_id: filters.language_id,
@@ -74,7 +74,7 @@ export async function getWords(filters: WordFilters = {}) {
 export async function getWord(id: number) {
   try {
     const config = {
-      url: `/api/team/words/${id}`,
+      url: `/team/words/${id}`,
       headers: {}
     };
 
@@ -107,7 +107,7 @@ export async function getWord(id: number) {
 export async function createWord(formData: FormData) {
   try {
     const config = {
-      url: '/api/team/words',
+      url: '/team/words',
       headers: {
         'Content-Type': 'multipart/form-data'
       }
@@ -145,7 +145,7 @@ export async function createWord(formData: FormData) {
 export async function updateWord(id: number, formData: FormData) {
   try {
     const config = {
-      url: `/api/team/words/${id}`,
+      url: `/team/words/${id}`,
       headers: {
         'Content-Type': 'multipart/form-data'
       }
@@ -184,7 +184,7 @@ export async function updateWord(id: number, formData: FormData) {
 export async function deleteWord(id: number) {
   try {
     const config = {
-      url: `/api/team/words/${id}`,
+      url: `/team/words/${id}`,
       headers: {}
     };
 
@@ -215,7 +215,7 @@ export async function deleteWord(id: number) {
 export async function bulkDeleteWords(wordIds: number[]) {
   try {
     const config = {
-      url: '/api/team/words/bulk-delete',
+      url: '/team/words/bulk-delete',
       headers: {
         'Content-Type': 'application/json'
       }
@@ -255,7 +255,7 @@ export async function bulkDeleteWords(wordIds: number[]) {
 export async function bulkImportWords(formData: FormData) {
   try {
     const config = {
-      url: '/api/team/words/bulk',
+      url: '/team/words/bulk',
       headers: {
         'Content-Type': 'multipart/form-data'
       }
@@ -293,7 +293,7 @@ export async function bulkImportWords(formData: FormData) {
 export async function exportWords(filters: Omit<WordFilters, 'page' | 'per_page'> = {}) {
   try {
     const config = {
-      url: '/api/team/words/export',
+      url: '/team/words/export',
       params: {
         search: filters.search,
         language_id: filters.language_id,
@@ -340,7 +340,7 @@ export async function uploadWordAudio(wordId: number, audioFile: File) {
     formData.append('audio', audioFile);
 
     const config = {
-      url: `/api/team/words/${wordId}/audio`,
+      url: `/team/words/${wordId}/audio`,
       headers: {
         'Content-Type': 'multipart/form-data'
       }
@@ -382,7 +382,7 @@ export async function uploadWordAudio(wordId: number, audioFile: File) {
 export async function addTranslation(wordId: number, formData: FormData) {
   try {
     const config = {
-      url: `/api/team/words/${wordId}/translations`,
+      url: `/team/words/${wordId}/translations`,
       headers: {
         'Content-Type': 'multipart/form-data'
       }
@@ -420,7 +420,7 @@ export async function addTranslation(wordId: number, formData: FormData) {
 export async function updateTranslation(wordId: number, translationId: number, formData: FormData) {
   try {
     const config = {
-      url: `/api/team/words/${wordId}/translations/${translationId}`,
+      url: `/team/words/${wordId}/translations/${translationId}`,
       headers: {
         'Content-Type': 'multipart/form-data'
       }
@@ -458,7 +458,7 @@ export async function updateTranslation(wordId: number, translationId: number, f
 export async function deleteTranslation(wordId: number, translationId: number) {
   try {
     const config = {
-      url: `/api/team/words/${wordId}/translations/${translationId}`,
+      url: `/team/words/${wordId}/translations/${translationId}`,
       headers: {}
     };
 
@@ -492,7 +492,7 @@ export async function uploadTranslationAudio(wordId: number, translationId: numb
     formData.append('audio', audioFile);
 
     const config = {
-      url: `/api/team/words/${wordId}/translations/${translationId}/audio`,
+      url: `/team/words/${wordId}/translations/${translationId}/audio`,
       headers: {
         'Content-Type': 'multipart/form-data'
       }
@@ -541,7 +541,7 @@ export async function getAvailableWords(options: {
 } = {}) {
   try {
     const config = {
-      url: `/api/team/words/available${options.exercise_type ? `/${options.exercise_type}` : ''}`,
+      url: `/team/words/available${options.exercise_type ? `/${options.exercise_type}` : ''}`,
       params: {
         source_language_id: options.source_language_id,
         target_language_id: options.target_language_id,
@@ -582,7 +582,7 @@ export async function getAvailableWords(options: {
 export async function validateWordConstraints(wordIds: number[], context?: string) {
   try {
     const config = {
-      url: '/api/team/words/validate-constraints',
+      url: '/team/words/validate-constraints',
       headers: {
         'Content-Type': 'application/json'
       }

@@ -39,6 +39,11 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
+  // Create response with pathname header for server actions
+  const response = NextResponse.next();
+  response.headers.set('x-pathname', pathname);
+  response.headers.set('x-url', request.url);
+
   // Check if user has a valid token (simple check, no API call)
   const isAuthenticated = hasValidToken(request.headers.get("cookie"));
 
