@@ -251,12 +251,12 @@ export default function GlobalUserManagement() {
               </div>
             </div>
             
-            <Select value={membershipFilter} onValueChange={handleMembershipFilterChange}>
+            <Select value={membershipFilter || "all"} onValueChange={(value) => handleMembershipFilterChange(value === "all" ? "" : value)}>
               <SelectTrigger className="w-[150px]">
                 <SelectValue placeholder="All Memberships" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Memberships</SelectItem>
+                <SelectItem value="all">All Memberships</SelectItem>
                 <SelectItem value="super-admin">Super Admin</SelectItem>
                 <SelectItem value="tenant-admin">Tenant Admin</SelectItem>
                 <SelectItem value="team">Team</SelectItem>
@@ -264,12 +264,12 @@ export default function GlobalUserManagement() {
               </SelectContent>
             </Select>
             
-            <Select value={statusFilter} onValueChange={handleStatusFilterChange}>
+            <Select value={statusFilter || "all"} onValueChange={(value) => handleStatusFilterChange(value === "all" ? "" : value)}>
               <SelectTrigger className="w-[150px]">
                 <SelectValue placeholder="All Status" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Status</SelectItem>
+                <SelectItem value="all">All Status</SelectItem>
                 <SelectItem value="active">Active</SelectItem>
                 <SelectItem value="suspended">Suspended</SelectItem>
               </SelectContent>

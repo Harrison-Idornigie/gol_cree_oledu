@@ -119,11 +119,13 @@ export default function TenantMembershipLayout({
   // Admin/Team layout: Fixed sidebar with topbar
   return (
     <div className="min-h-screen">
-      <div className="fixed inset-y-0 z-50 hidden h-full w-72 flex-col md:flex">
-        <UnifiedSidebar membership={membership} />
+      <div className={`fixed inset-y-0 z-50 hidden h-full flex-col md:flex ${
+        isSidebarCollapsed ? 'w-20' : 'w-72'
+      }`}>
+        <UnifiedSidebar membership={membership} isCollapsed={isSidebarCollapsed} />
       </div>
       <div
-        className={`fixed top-0 z-50 w-full flex-col md:pl-72 ${
+        className={`fixed top-0 z-50 w-full flex-col ${
           isSidebarCollapsed ? 'md:pl-20' : 'md:pl-72'
         }`}
       >

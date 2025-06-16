@@ -1,2 +1,1312 @@
-<testsuites id="" name="" tests="0" failures="0" skipped="0" errors="0" time="2.223386">
+<testsuites id="" name="" tests="12" failures="12" skipped="0" errors="0" time="298.79885199999995">
+<testsuite name="Tenant/backend/API/Word/team-word-controller-enhanced.spec.ts" timestamp="2025-06-16T16:30:31.053Z" hostname="chromium" tests="12" failures="12" skipped="0" time="1.402" errors="0">
+<testcase name="Enhanced Team Word Controller API - Complete Integration Test Suite › Enhanced Authentication &amp; Authorization Tests › should return 401 for unauthenticated requests with detailed error info" classname="Tenant/backend/API/Word/team-word-controller-enhanced.spec.ts" time="0.119">
+<failure message="team-word-controller-enhanced.spec.ts:202:9 should return 401 for unauthenticated requests with detailed error info" type="FAILURE">
+<![CDATA[  [chromium] › Tenant/backend/API/Word/team-word-controller-enhanced.spec.ts:202:9 › Enhanced Team Word Controller API - Complete Integration Test Suite › Enhanced Authentication & Authorization Tests › should return 401 for unauthenticated requests with detailed error info 
+
+    TypeError: Reduce of empty array with no initial value
+
+       at ../validation/core/PerformanceCollector.ts:396
+
+      394 |     
+      395 |     const validatorDurations = allValidators.map(v => v.duration);
+    > 396 |     const fastestValidator = allValidators.reduce((prev, curr) => 
+          |                                            ^
+      397 |       prev.duration < curr.duration ? prev : curr
+      398 |     );
+      399 |     const slowestValidator = allValidators.reduce((prev, curr) => 
+        at PerformanceCollector.generateReport (/home/onionlake-admin/PROJECT/gol_2025/e2e/validation/core/PerformanceCollector.ts:396:44)
+        at PerformanceCollector.endSession (/home/onionlake-admin/PROJECT/gol_2025/e2e/validation/core/PerformanceCollector.ts:372:25)
+        at ValidationManager.validateTenant (/home/onionlake-admin/PROJECT/gol_2025/e2e/validation/core/ValidationManager.ts:158:50)
+        at Object.validateTenant (/home/onionlake-admin/PROJECT/gol_2025/e2e/utils/validation-helpers.ts:421:23)
+        at validateEnhancedTenantSetup (/home/onionlake-admin/PROJECT/gol_2025/e2e/utils/validation-helpers.ts:454:5)
+        at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller-enhanced.spec.ts:183:5
+]]>
+</failure>
+<system-out>
+<![CDATA[[32m[10:30:32 AM] INFO: 🚀 Starting enhanced tenant setup with validation...[0m
+[32m[10:30:32 AM] INFO: 📋 Registering tenant 1...[0m
+🌐 API POST http://localhost:8000/api/auth/register-tenant-admin {
+  headers: { [32m'Content-Type'[39m: [32m'application/json'[39m, Accept: [32m'application/json'[39m },
+  body: {
+    tenant: {
+      name: [32m'Enhanced Word Test School 1'[39m,
+      slug: [32m'e2e-test-1750091432616-881006-erp6fc-965632'[39m,
+      description: [32m'A test school district for language learning'[39m
+    },
+    admin: {
+      name: [32m'John Admin'[39m,
+      email: [32m'admin-e2e-test-1750091432616-881006-erp6fc-965632@e2e-test.local'[39m,
+      password: [32m'TestPassword123!'[39m,
+      password_confirmation: [32m'TestPassword123!'[39m
+    }
+  }
+}
+[32m[10:30:32 AM] INFO: 🔍 Started job monitoring session: e2e-test-1750091432616-881006-erp6fc-965632_1750091432654_0ckayl for tenant: e2e-test-1750091432616-881006-erp6fc-965632[0m
+[31m[10:30:34 AM] ERROR: Failed to discover tenant jobs for e2e-test-1750091432616-881006-erp6fc-965632:[0m
+[32m[10:30:34 AM] INFO: 📭 No tenant creation jobs found for: e2e-test-1750091432616-881006-erp6fc-965632[0m
+[32m[10:30:34 AM] INFO: 🏁 Ended monitoring session: e2e-test-1750091432616-881006-erp6fc-965632_1750091432654_0ckayl[0m
+📡 API Response 201 {"success":true,"data":{"token":"1|D2b1JXSjqIVzMGbG0qntH8U5jNQ2UmPUVwMEARgga88da50e","progress_id":"tenant_685046a8be6f9","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1750091432616-881006-erp6fc-965632@e2e-test.local","membership":null,"email_verified_at":null,"tenant_id":"bc4a9f2b-dcaf-45f9-9422-9d8c69939be5","tenant":{"id":"bc4a9f2b-dcaf-45f9-9422-9d8c69939be5","name":"Enhanced Word Test School 1","slug":"e2e-test-1750091432616-881006-erp6fc-965632","status":"trial"}}},"message":"Organization created successfully. Please check your email to verify your account."}
+📡 API Response 201: {"success":true,"data":{"token":"1|D2b1JXSjqIVzMGbG0qntH8U5jNQ2UmPUVwMEARgga88da50e","progress_id":"tenant_685046a8be6f9","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1750091432616-881006-erp6fc-965632@e2e-test.local","membership":null,"email_verified_at":null,"tenant_id":"bc4a9f2b-dcaf-45f9-9422-9d8c69939be5","tenant":{"id":"bc4a9f2b-dcaf-45f9-9422-9d8c69939be5","name":"Enhanced Word Test School 1","slug":"e2e-test-1750091432616-881006-erp6fc-965632","status":"trial"}}},"message":...
+[32m[10:30:40 AM] INFO: 📋 Registering tenant 2...[0m
+🌐 API POST http://localhost:8000/api/auth/register-tenant-admin {
+  headers: { [32m'Content-Type'[39m: [32m'application/json'[39m, Accept: [32m'application/json'[39m },
+  body: {
+    tenant: {
+      name: [32m'Enhanced Word Test School 2'[39m,
+      slug: [32m'e2e-test-1750091432616-881006-kf4bmd-037933'[39m,
+      description: [32m'A test school district for language learning'[39m
+    },
+    admin: {
+      name: [32m'John Admin'[39m,
+      email: [32m'admin-e2e-test-1750091432616-881006-kf4bmd-037933@e2e-test.local'[39m,
+      password: [32m'TestPassword123!'[39m,
+      password_confirmation: [32m'TestPassword123!'[39m
+    }
+  }
+}
+[32m[10:30:40 AM] INFO: 🔍 Started job monitoring session: e2e-test-1750091432616-881006-kf4bmd-037933_1750091440695_y2migv for tenant: e2e-test-1750091432616-881006-kf4bmd-037933[0m
+[31m[10:30:42 AM] ERROR: Failed to discover tenant jobs for e2e-test-1750091432616-881006-kf4bmd-037933:[0m
+[32m[10:30:42 AM] INFO: 📭 No tenant creation jobs found for: e2e-test-1750091432616-881006-kf4bmd-037933[0m
+[32m[10:30:42 AM] INFO: 🏁 Ended monitoring session: e2e-test-1750091432616-881006-kf4bmd-037933_1750091440695_y2migv[0m
+📡 API Response 201 {"success":true,"data":{"token":"1|tD0sLpTwlcG7K3iQt9yrIreTRmcCqQMrxguyKRCH5cae1dea","progress_id":"tenant_685046b0cad89","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1750091432616-881006-kf4bmd-037933@e2e-test.local","membership":null,"email_verified_at":null,"tenant_id":"2333d846-6bc6-499b-87d0-034dcc417f00","tenant":{"id":"2333d846-6bc6-499b-87d0-034dcc417f00","name":"Enhanced Word Test School 2","slug":"e2e-test-1750091432616-881006-kf4bmd-037933","status":"trial"}}},"message":"Organization created successfully. Please check your email to verify your account."}
+📡 API Response 201: {"success":true,"data":{"token":"1|tD0sLpTwlcG7K3iQt9yrIreTRmcCqQMrxguyKRCH5cae1dea","progress_id":"tenant_685046b0cad89","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1750091432616-881006-kf4bmd-037933@e2e-test.local","membership":null,"email_verified_at":null,"tenant_id":"2333d846-6bc6-499b-87d0-034dcc417f00","tenant":{"id":"2333d846-6bc6-499b-87d0-034dcc417f00","name":"Enhanced Word Test School 2","slug":"e2e-test-1750091432616-881006-kf4bmd-037933","status":"trial"}}},"message":...
+[32m[10:30:48 AM] INFO: ✅ Tenants registered successfully: e2e-test-1750091432616-881006-erp6fc-965632, e2e-test-1750091432616-881006-kf4bmd-037933[0m
+[32m[10:30:50 AM] INFO: ✅ Role-based test users configured[0m
+[32m[10:30:50 AM] INFO: 🚀 Starting enhanced validation for tenant: home[0m
+[32m[10:30:50 AM] INFO: 🔍 Started job monitoring session: home_1750091450231_8a4nm6 for tenant: home[0m
+[32m[10:30:50 AM] INFO: ⏭️ Skipping validation due to environment variable[0m
+[32m[10:30:50 AM] INFO: ✅ Validation completed successfully for tenant: home[0m
+[31m[10:30:50 AM] ERROR: 💥 Test failed: should return 401 for unauthenticated requests with detailed error info[0m
+🗑️  Cleaning up all test tenants...
+🗑️  Cleaning up tenant: e2e-test-1750091432616-881006-erp6fc-965632
+🗑️  Cleaning up tenant: e2e-test-1750091432616-881006-kf4bmd-037933
+[31m[10:30:53 AM] ERROR: ❌ Enhanced cleanup failed:[0m
+]]>
+</system-out>
+<system-err>
+<![CDATA[Enhanced tenant validation failed for home: TypeError: Reduce of empty array with no initial value
+    at Array.reduce (<anonymous>)
+    at PerformanceCollector.generateReport [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mvalidation/core/PerformanceCollector.ts:396:44[90m)[39m
+    at PerformanceCollector.endSession [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mvalidation/core/PerformanceCollector.ts:372:25[90m)[39m
+    at ValidationManager.validateTenant [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mvalidation/core/ValidationManager.ts:158:50[90m)[39m
+    at Object.validateTenant [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mutils/validation-helpers.ts:421:23[90m)[39m
+    at validateEnhancedTenantSetup [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mutils/validation-helpers.ts:454:5[90m)[39m
+    at [90m/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mtests/Tenant/backend/API/Word/team-word-controller-enhanced.spec.ts:183:5
+    at [90m/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/testInfo.js:277:11
+    at TimeoutManager.withRunnable [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/timeoutManager.js:67:14[90m)[39m
+    at TestInfoImpl._runWithTimeout [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/testInfo.js:275:7[90m)[39m
+    at FixtureRunner.resolveParametersAndRunFunction [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/fixtureRunner.js:223:5[90m)[39m
+    at [90m/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:460:11
+    at TestInfoImpl._runAsStep [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/testInfo.js:266:7[90m)[39m
+    at WorkerMain._runEachHooksForSuites [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:459:9[90m)[39m
+    at [90m/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:296:9
+    at TestInfoImpl._runAsStep [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/testInfo.js:266:7[90m)[39m
+    at [90m/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:292:7
+    at WorkerMain._runTest [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:277:5[90m)[39m
+    at WorkerMain.runTestGroup [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:193:11[90m)[39m
+    at process.<anonymous> [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/common/process.js:70:22[90m)[39m
+]]>
+</system-err>
+</testcase>
+<testcase name="Enhanced Team Word Controller API - Complete Integration Test Suite › Enhanced Authentication &amp; Authorization Tests › should enforce role-based permissions for team endpoints" classname="Tenant/backend/API/Word/team-word-controller-enhanced.spec.ts" time="0.103">
+<failure message="team-word-controller-enhanced.spec.ts:240:9 should enforce role-based permissions for team endpoints" type="FAILURE">
+<![CDATA[  [chromium] › Tenant/backend/API/Word/team-word-controller-enhanced.spec.ts:240:9 › Enhanced Team Word Controller API - Complete Integration Test Suite › Enhanced Authentication & Authorization Tests › should enforce role-based permissions for team endpoints 
+
+    TypeError: Reduce of empty array with no initial value
+
+       at ../validation/core/PerformanceCollector.ts:396
+
+      394 |     
+      395 |     const validatorDurations = allValidators.map(v => v.duration);
+    > 396 |     const fastestValidator = allValidators.reduce((prev, curr) => 
+          |                                            ^
+      397 |       prev.duration < curr.duration ? prev : curr
+      398 |     );
+      399 |     const slowestValidator = allValidators.reduce((prev, curr) => 
+        at PerformanceCollector.generateReport (/home/onionlake-admin/PROJECT/gol_2025/e2e/validation/core/PerformanceCollector.ts:396:44)
+        at PerformanceCollector.endSession (/home/onionlake-admin/PROJECT/gol_2025/e2e/validation/core/PerformanceCollector.ts:372:25)
+        at ValidationManager.validateTenant (/home/onionlake-admin/PROJECT/gol_2025/e2e/validation/core/ValidationManager.ts:158:50)
+        at Object.validateTenant (/home/onionlake-admin/PROJECT/gol_2025/e2e/utils/validation-helpers.ts:421:23)
+        at validateEnhancedTenantSetup (/home/onionlake-admin/PROJECT/gol_2025/e2e/utils/validation-helpers.ts:454:5)
+        at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller-enhanced.spec.ts:183:5
+]]>
+</failure>
+<system-out>
+<![CDATA[[32m[10:30:56 AM] INFO: 🚀 Starting enhanced tenant setup with validation...[0m
+[32m[10:30:57 AM] INFO: 📋 Registering tenant 1...[0m
+🌐 API POST http://localhost:8000/api/auth/register-tenant-admin {
+  headers: { [32m'Content-Type'[39m: [32m'application/json'[39m, Accept: [32m'application/json'[39m },
+  body: {
+    tenant: {
+      name: [32m'Enhanced Word Test School 1'[39m,
+      slug: [32m'e2e-test-1750091457003-881894-e3j43t-521124'[39m,
+      description: [32m'A test school district for language learning'[39m
+    },
+    admin: {
+      name: [32m'John Admin'[39m,
+      email: [32m'admin-e2e-test-1750091457003-881894-e3j43t-521124@e2e-test.local'[39m,
+      password: [32m'TestPassword123!'[39m,
+      password_confirmation: [32m'TestPassword123!'[39m
+    }
+  }
+}
+[32m[10:30:57 AM] INFO: 🔍 Started job monitoring session: e2e-test-1750091457003-881894-e3j43t-521124_1750091457078_zeut8y for tenant: e2e-test-1750091457003-881894-e3j43t-521124[0m
+[31m[10:30:58 AM] ERROR: Failed to discover tenant jobs for e2e-test-1750091457003-881894-e3j43t-521124:[0m
+[32m[10:30:58 AM] INFO: 📭 No tenant creation jobs found for: e2e-test-1750091457003-881894-e3j43t-521124[0m
+[32m[10:30:58 AM] INFO: 🏁 Ended monitoring session: e2e-test-1750091457003-881894-e3j43t-521124_1750091457078_zeut8y[0m
+📡 API Response 201 {"success":true,"data":{"token":"1|MRzEdylTX60U2E1XD0k0JlHyCaGoYfhOmfCFsZ5M35a5d888","progress_id":"tenant_685046c12f3d3","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1750091457003-881894-e3j43t-521124@e2e-test.local","membership":null,"email_verified_at":null,"tenant_id":"b785c2e1-bfdd-46cd-8e46-66f228d34ef8","tenant":{"id":"b785c2e1-bfdd-46cd-8e46-66f228d34ef8","name":"Enhanced Word Test School 1","slug":"e2e-test-1750091457003-881894-e3j43t-521124","status":"trial"}}},"message":"Organization created successfully. Please check your email to verify your account."}
+📡 API Response 201: {"success":true,"data":{"token":"1|MRzEdylTX60U2E1XD0k0JlHyCaGoYfhOmfCFsZ5M35a5d888","progress_id":"tenant_685046c12f3d3","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1750091457003-881894-e3j43t-521124@e2e-test.local","membership":null,"email_verified_at":null,"tenant_id":"b785c2e1-bfdd-46cd-8e46-66f228d34ef8","tenant":{"id":"b785c2e1-bfdd-46cd-8e46-66f228d34ef8","name":"Enhanced Word Test School 1","slug":"e2e-test-1750091457003-881894-e3j43t-521124","status":"trial"}}},"message":...
+[32m[10:31:05 AM] INFO: 📋 Registering tenant 2...[0m
+🌐 API POST http://localhost:8000/api/auth/register-tenant-admin {
+  headers: { [32m'Content-Type'[39m: [32m'application/json'[39m, Accept: [32m'application/json'[39m },
+  body: {
+    tenant: {
+      name: [32m'Enhanced Word Test School 2'[39m,
+      slug: [32m'e2e-test-1750091457003-881894-cejnlh-572725'[39m,
+      description: [32m'A test school district for language learning'[39m
+    },
+    admin: {
+      name: [32m'John Admin'[39m,
+      email: [32m'admin-e2e-test-1750091457003-881894-cejnlh-572725@e2e-test.local'[39m,
+      password: [32m'TestPassword123!'[39m,
+      password_confirmation: [32m'TestPassword123!'[39m
+    }
+  }
+}
+[32m[10:31:05 AM] INFO: 🔍 Started job monitoring session: e2e-test-1750091457003-881894-cejnlh-572725_1750091465961_p6g6zv for tenant: e2e-test-1750091457003-881894-cejnlh-572725[0m
+[31m[10:31:08 AM] ERROR: Failed to discover tenant jobs for e2e-test-1750091457003-881894-cejnlh-572725:[0m
+[32m[10:31:08 AM] INFO: 📭 No tenant creation jobs found for: e2e-test-1750091457003-881894-cejnlh-572725[0m
+[32m[10:31:08 AM] INFO: 🏁 Ended monitoring session: e2e-test-1750091457003-881894-cejnlh-572725_1750091465961_p6g6zv[0m
+📡 API Response 201 {"success":true,"data":{"token":"1|W8YG83yQlEETdEnt0uM0UUfG7fyQbGCR74SBKIoi3c0d39cf","progress_id":"tenant_685046ca2550e","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1750091457003-881894-cejnlh-572725@e2e-test.local","membership":null,"email_verified_at":null,"tenant_id":"01d214b6-2787-4211-84ad-a67f847d9e1c","tenant":{"id":"01d214b6-2787-4211-84ad-a67f847d9e1c","name":"Enhanced Word Test School 2","slug":"e2e-test-1750091457003-881894-cejnlh-572725","status":"trial"}}},"message":"Organization created successfully. Please check your email to verify your account."}
+📡 API Response 201: {"success":true,"data":{"token":"1|W8YG83yQlEETdEnt0uM0UUfG7fyQbGCR74SBKIoi3c0d39cf","progress_id":"tenant_685046ca2550e","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1750091457003-881894-cejnlh-572725@e2e-test.local","membership":null,"email_verified_at":null,"tenant_id":"01d214b6-2787-4211-84ad-a67f847d9e1c","tenant":{"id":"01d214b6-2787-4211-84ad-a67f847d9e1c","name":"Enhanced Word Test School 2","slug":"e2e-test-1750091457003-881894-cejnlh-572725","status":"trial"}}},"message":...
+[32m[10:31:14 AM] INFO: ✅ Tenants registered successfully: e2e-test-1750091457003-881894-e3j43t-521124, e2e-test-1750091457003-881894-cejnlh-572725[0m
+[32m[10:31:15 AM] INFO: ✅ Role-based test users configured[0m
+[32m[10:31:15 AM] INFO: 🚀 Starting enhanced validation for tenant: home[0m
+[32m[10:31:15 AM] INFO: 🔍 Started job monitoring session: home_1750091475696_x0ygma for tenant: home[0m
+[32m[10:31:15 AM] INFO: ⏭️ Skipping validation due to environment variable[0m
+[32m[10:31:15 AM] INFO: ✅ Validation completed successfully for tenant: home[0m
+[31m[10:31:15 AM] ERROR: 💥 Test failed: should enforce role-based permissions for team endpoints[0m
+🗑️  Cleaning up all test tenants...
+🗑️  Cleaning up tenant: e2e-test-1750091457003-881894-e3j43t-521124
+🗑️  Cleaning up tenant: e2e-test-1750091457003-881894-cejnlh-572725
+[31m[10:31:19 AM] ERROR: ❌ Enhanced cleanup failed:[0m
+]]>
+</system-out>
+<system-err>
+<![CDATA[Enhanced tenant validation failed for home: TypeError: Reduce of empty array with no initial value
+    at Array.reduce (<anonymous>)
+    at PerformanceCollector.generateReport [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mvalidation/core/PerformanceCollector.ts:396:44[90m)[39m
+    at PerformanceCollector.endSession [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mvalidation/core/PerformanceCollector.ts:372:25[90m)[39m
+    at ValidationManager.validateTenant [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mvalidation/core/ValidationManager.ts:158:50[90m)[39m
+    at Object.validateTenant [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mutils/validation-helpers.ts:421:23[90m)[39m
+    at validateEnhancedTenantSetup [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mutils/validation-helpers.ts:454:5[90m)[39m
+    at [90m/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mtests/Tenant/backend/API/Word/team-word-controller-enhanced.spec.ts:183:5
+    at [90m/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/testInfo.js:277:11
+    at TimeoutManager.withRunnable [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/timeoutManager.js:67:14[90m)[39m
+    at TestInfoImpl._runWithTimeout [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/testInfo.js:275:7[90m)[39m
+    at FixtureRunner.resolveParametersAndRunFunction [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/fixtureRunner.js:223:5[90m)[39m
+    at [90m/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:460:11
+    at TestInfoImpl._runAsStep [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/testInfo.js:266:7[90m)[39m
+    at WorkerMain._runEachHooksForSuites [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:459:9[90m)[39m
+    at [90m/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:296:9
+    at TestInfoImpl._runAsStep [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/testInfo.js:266:7[90m)[39m
+    at [90m/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:292:7
+    at WorkerMain._runTest [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:277:5[90m)[39m
+    at WorkerMain.runTestGroup [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:193:11[90m)[39m
+    at process.<anonymous> [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/common/process.js:70:22[90m)[39m
+]]>
+</system-err>
+</testcase>
+<testcase name="Enhanced Team Word Controller API - Complete Integration Test Suite › Enhanced Authentication &amp; Authorization Tests › should validate tenant-specific permission isolation" classname="Tenant/backend/API/Word/team-word-controller-enhanced.spec.ts" time="0.139">
+<failure message="team-word-controller-enhanced.spec.ts:279:9 should validate tenant-specific permission isolation" type="FAILURE">
+<![CDATA[  [chromium] › Tenant/backend/API/Word/team-word-controller-enhanced.spec.ts:279:9 › Enhanced Team Word Controller API - Complete Integration Test Suite › Enhanced Authentication & Authorization Tests › should validate tenant-specific permission isolation 
+
+    TypeError: Reduce of empty array with no initial value
+
+       at ../validation/core/PerformanceCollector.ts:396
+
+      394 |     
+      395 |     const validatorDurations = allValidators.map(v => v.duration);
+    > 396 |     const fastestValidator = allValidators.reduce((prev, curr) => 
+          |                                            ^
+      397 |       prev.duration < curr.duration ? prev : curr
+      398 |     );
+      399 |     const slowestValidator = allValidators.reduce((prev, curr) => 
+        at PerformanceCollector.generateReport (/home/onionlake-admin/PROJECT/gol_2025/e2e/validation/core/PerformanceCollector.ts:396:44)
+        at PerformanceCollector.endSession (/home/onionlake-admin/PROJECT/gol_2025/e2e/validation/core/PerformanceCollector.ts:372:25)
+        at ValidationManager.validateTenant (/home/onionlake-admin/PROJECT/gol_2025/e2e/validation/core/ValidationManager.ts:158:50)
+        at Object.validateTenant (/home/onionlake-admin/PROJECT/gol_2025/e2e/utils/validation-helpers.ts:421:23)
+        at validateEnhancedTenantSetup (/home/onionlake-admin/PROJECT/gol_2025/e2e/utils/validation-helpers.ts:454:5)
+        at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller-enhanced.spec.ts:183:5
+]]>
+</failure>
+<system-out>
+<![CDATA[[32m[10:31:22 AM] INFO: 🚀 Starting enhanced tenant setup with validation...[0m
+[32m[10:31:22 AM] INFO: 📋 Registering tenant 1...[0m
+🌐 API POST http://localhost:8000/api/auth/register-tenant-admin {
+  headers: { [32m'Content-Type'[39m: [32m'application/json'[39m, Accept: [32m'application/json'[39m },
+  body: {
+    tenant: {
+      name: [32m'Enhanced Word Test School 1'[39m,
+      slug: [32m'e2e-test-1750091482814-882716-8upb3h-517211'[39m,
+      description: [32m'A test school district for language learning'[39m
+    },
+    admin: {
+      name: [32m'John Admin'[39m,
+      email: [32m'admin-e2e-test-1750091482814-882716-8upb3h-517211@e2e-test.local'[39m,
+      password: [32m'TestPassword123!'[39m,
+      password_confirmation: [32m'TestPassword123!'[39m
+    }
+  }
+}
+[32m[10:31:22 AM] INFO: 🔍 Started job monitoring session: e2e-test-1750091482814-882716-8upb3h-517211_1750091482864_czyka0 for tenant: e2e-test-1750091482814-882716-8upb3h-517211[0m
+[31m[10:31:24 AM] ERROR: Failed to discover tenant jobs for e2e-test-1750091482814-882716-8upb3h-517211:[0m
+[32m[10:31:24 AM] INFO: 📭 No tenant creation jobs found for: e2e-test-1750091482814-882716-8upb3h-517211[0m
+[32m[10:31:24 AM] INFO: 🏁 Ended monitoring session: e2e-test-1750091482814-882716-8upb3h-517211_1750091482864_czyka0[0m
+📡 API Response 201 {"success":true,"data":{"token":"1|dJPq4gjA088F2QymnPlVGbOGzI4c94JqQDqWHWpq15d68502","progress_id":"tenant_685046db08775","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1750091482814-882716-8upb3h-517211@e2e-test.local","membership":null,"email_verified_at":null,"tenant_id":"ab5a3768-40a5-48cb-a978-8f60f19b70a5","tenant":{"id":"ab5a3768-40a5-48cb-a978-8f60f19b70a5","name":"Enhanced Word Test School 1","slug":"e2e-test-1750091482814-882716-8upb3h-517211","status":"trial"}}},"message":"Organization created successfully. Please check your email to verify your account."}
+📡 API Response 201: {"success":true,"data":{"token":"1|dJPq4gjA088F2QymnPlVGbOGzI4c94JqQDqWHWpq15d68502","progress_id":"tenant_685046db08775","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1750091482814-882716-8upb3h-517211@e2e-test.local","membership":null,"email_verified_at":null,"tenant_id":"ab5a3768-40a5-48cb-a978-8f60f19b70a5","tenant":{"id":"ab5a3768-40a5-48cb-a978-8f60f19b70a5","name":"Enhanced Word Test School 1","slug":"e2e-test-1750091482814-882716-8upb3h-517211","status":"trial"}}},"message":...
+[32m[10:31:31 AM] INFO: 📋 Registering tenant 2...[0m
+🌐 API POST http://localhost:8000/api/auth/register-tenant-admin {
+  headers: { [32m'Content-Type'[39m: [32m'application/json'[39m, Accept: [32m'application/json'[39m },
+  body: {
+    tenant: {
+      name: [32m'Enhanced Word Test School 2'[39m,
+      slug: [32m'e2e-test-1750091482816-882716-dfqr1i-168632'[39m,
+      description: [32m'A test school district for language learning'[39m
+    },
+    admin: {
+      name: [32m'John Admin'[39m,
+      email: [32m'admin-e2e-test-1750091482816-882716-dfqr1i-168632@e2e-test.local'[39m,
+      password: [32m'TestPassword123!'[39m,
+      password_confirmation: [32m'TestPassword123!'[39m
+    }
+  }
+}
+[32m[10:31:31 AM] INFO: 🔍 Started job monitoring session: e2e-test-1750091482816-882716-dfqr1i-168632_1750091491181_lcny3f for tenant: e2e-test-1750091482816-882716-dfqr1i-168632[0m
+[31m[10:31:33 AM] ERROR: Failed to discover tenant jobs for e2e-test-1750091482816-882716-dfqr1i-168632:[0m
+[32m[10:31:33 AM] INFO: 📭 No tenant creation jobs found for: e2e-test-1750091482816-882716-dfqr1i-168632[0m
+[32m[10:31:33 AM] INFO: 🏁 Ended monitoring session: e2e-test-1750091482816-882716-dfqr1i-168632_1750091491181_lcny3f[0m
+📡 API Response 201 {"success":true,"data":{"token":"1|EnwrjvKRUcsjI2nREmIwlee55NNAxOegLjJgRaYt8e8ae87c","progress_id":"tenant_685046e365046","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1750091482816-882716-dfqr1i-168632@e2e-test.local","membership":null,"email_verified_at":null,"tenant_id":"62cbfbee-272d-4fe4-a225-60467656d9c1","tenant":{"id":"62cbfbee-272d-4fe4-a225-60467656d9c1","name":"Enhanced Word Test School 2","slug":"e2e-test-1750091482816-882716-dfqr1i-168632","status":"trial"}}},"message":"Organization created successfully. Please check your email to verify your account."}
+📡 API Response 201: {"success":true,"data":{"token":"1|EnwrjvKRUcsjI2nREmIwlee55NNAxOegLjJgRaYt8e8ae87c","progress_id":"tenant_685046e365046","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1750091482816-882716-dfqr1i-168632@e2e-test.local","membership":null,"email_verified_at":null,"tenant_id":"62cbfbee-272d-4fe4-a225-60467656d9c1","tenant":{"id":"62cbfbee-272d-4fe4-a225-60467656d9c1","name":"Enhanced Word Test School 2","slug":"e2e-test-1750091482816-882716-dfqr1i-168632","status":"trial"}}},"message":...
+[32m[10:31:39 AM] INFO: ✅ Tenants registered successfully: e2e-test-1750091482814-882716-8upb3h-517211, e2e-test-1750091482816-882716-dfqr1i-168632[0m
+[32m[10:31:40 AM] INFO: ✅ Role-based test users configured[0m
+[32m[10:31:40 AM] INFO: 🚀 Starting enhanced validation for tenant: specific[0m
+[32m[10:31:40 AM] INFO: 🔍 Started job monitoring session: specific_1750091500816_zu46p7 for tenant: specific[0m
+[32m[10:31:40 AM] INFO: ⏭️ Skipping validation due to environment variable[0m
+[32m[10:31:40 AM] INFO: ✅ Validation completed successfully for tenant: specific[0m
+[31m[10:31:40 AM] ERROR: 💥 Test failed: should validate tenant-specific permission isolation[0m
+🗑️  Cleaning up all test tenants...
+🗑️  Cleaning up tenant: e2e-test-1750091482814-882716-8upb3h-517211
+🗑️  Cleaning up tenant: e2e-test-1750091482816-882716-dfqr1i-168632
+[31m[10:31:44 AM] ERROR: ❌ Enhanced cleanup failed:[0m
+]]>
+</system-out>
+<system-err>
+<![CDATA[Enhanced tenant validation failed for specific: TypeError: Reduce of empty array with no initial value
+    at Array.reduce (<anonymous>)
+    at PerformanceCollector.generateReport [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mvalidation/core/PerformanceCollector.ts:396:44[90m)[39m
+    at PerformanceCollector.endSession [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mvalidation/core/PerformanceCollector.ts:372:25[90m)[39m
+    at ValidationManager.validateTenant [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mvalidation/core/ValidationManager.ts:158:50[90m)[39m
+    at Object.validateTenant [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mutils/validation-helpers.ts:421:23[90m)[39m
+    at validateEnhancedTenantSetup [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mutils/validation-helpers.ts:454:5[90m)[39m
+    at [90m/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mtests/Tenant/backend/API/Word/team-word-controller-enhanced.spec.ts:183:5
+    at [90m/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/testInfo.js:277:11
+    at TimeoutManager.withRunnable [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/timeoutManager.js:67:14[90m)[39m
+    at TestInfoImpl._runWithTimeout [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/testInfo.js:275:7[90m)[39m
+    at FixtureRunner.resolveParametersAndRunFunction [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/fixtureRunner.js:223:5[90m)[39m
+    at [90m/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:460:11
+    at TestInfoImpl._runAsStep [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/testInfo.js:266:7[90m)[39m
+    at WorkerMain._runEachHooksForSuites [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:459:9[90m)[39m
+    at [90m/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:296:9
+    at TestInfoImpl._runAsStep [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/testInfo.js:266:7[90m)[39m
+    at [90m/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:292:7
+    at WorkerMain._runTest [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:277:5[90m)[39m
+    at WorkerMain.runTestGroup [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:193:11[90m)[39m
+    at process.<anonymous> [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/common/process.js:70:22[90m)[39m
+]]>
+</system-err>
+</testcase>
+<testcase name="Enhanced Team Word Controller API - Complete Integration Test Suite › Enhanced Authentication &amp; Authorization Tests › should test permission inheritance and context-specific permissions" classname="Tenant/backend/API/Word/team-word-controller-enhanced.spec.ts" time="0.07">
+<failure message="team-word-controller-enhanced.spec.ts:305:9 should test permission inheritance and context-specific permissions" type="FAILURE">
+<![CDATA[  [chromium] › Tenant/backend/API/Word/team-word-controller-enhanced.spec.ts:305:9 › Enhanced Team Word Controller API - Complete Integration Test Suite › Enhanced Authentication & Authorization Tests › should test permission inheritance and context-specific permissions 
+
+    TypeError: Reduce of empty array with no initial value
+
+       at ../validation/core/PerformanceCollector.ts:396
+
+      394 |     
+      395 |     const validatorDurations = allValidators.map(v => v.duration);
+    > 396 |     const fastestValidator = allValidators.reduce((prev, curr) => 
+          |                                            ^
+      397 |       prev.duration < curr.duration ? prev : curr
+      398 |     );
+      399 |     const slowestValidator = allValidators.reduce((prev, curr) => 
+        at PerformanceCollector.generateReport (/home/onionlake-admin/PROJECT/gol_2025/e2e/validation/core/PerformanceCollector.ts:396:44)
+        at PerformanceCollector.endSession (/home/onionlake-admin/PROJECT/gol_2025/e2e/validation/core/PerformanceCollector.ts:372:25)
+        at ValidationManager.validateTenant (/home/onionlake-admin/PROJECT/gol_2025/e2e/validation/core/ValidationManager.ts:158:50)
+        at Object.validateTenant (/home/onionlake-admin/PROJECT/gol_2025/e2e/utils/validation-helpers.ts:421:23)
+        at validateEnhancedTenantSetup (/home/onionlake-admin/PROJECT/gol_2025/e2e/utils/validation-helpers.ts:454:5)
+        at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller-enhanced.spec.ts:183:5
+]]>
+</failure>
+<system-out>
+<![CDATA[[32m[10:31:47 AM] INFO: 🚀 Starting enhanced tenant setup with validation...[0m
+[32m[10:31:47 AM] INFO: 📋 Registering tenant 1...[0m
+🌐 API POST http://localhost:8000/api/auth/register-tenant-admin {
+  headers: { [32m'Content-Type'[39m: [32m'application/json'[39m, Accept: [32m'application/json'[39m },
+  body: {
+    tenant: {
+      name: [32m'Enhanced Word Test School 1'[39m,
+      slug: [32m'e2e-test-1750091507332-883532-fxvzgm-493036'[39m,
+      description: [32m'A test school district for language learning'[39m
+    },
+    admin: {
+      name: [32m'John Admin'[39m,
+      email: [32m'admin-e2e-test-1750091507332-883532-fxvzgm-493036@e2e-test.local'[39m,
+      password: [32m'TestPassword123!'[39m,
+      password_confirmation: [32m'TestPassword123!'[39m
+    }
+  }
+}
+[32m[10:31:47 AM] INFO: 🔍 Started job monitoring session: e2e-test-1750091507332-883532-fxvzgm-493036_1750091507371_jburw1 for tenant: e2e-test-1750091507332-883532-fxvzgm-493036[0m
+[31m[10:31:49 AM] ERROR: Failed to discover tenant jobs for e2e-test-1750091507332-883532-fxvzgm-493036:[0m
+[32m[10:31:49 AM] INFO: 📭 No tenant creation jobs found for: e2e-test-1750091507332-883532-fxvzgm-493036[0m
+[32m[10:31:49 AM] INFO: 🏁 Ended monitoring session: e2e-test-1750091507332-883532-fxvzgm-493036_1750091507371_jburw1[0m
+📡 API Response 201 {"success":true,"data":{"token":"1|D1nWjFBCDAixq1HCXA4wBRaXQtbE52uz2gvlneg47074a7e0","progress_id":"tenant_685046f3786c8","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1750091507332-883532-fxvzgm-493036@e2e-test.local","membership":null,"email_verified_at":null,"tenant_id":"e3d9674d-58f2-41a9-9955-60c58a4ab0eb","tenant":{"id":"e3d9674d-58f2-41a9-9955-60c58a4ab0eb","name":"Enhanced Word Test School 1","slug":"e2e-test-1750091507332-883532-fxvzgm-493036","status":"trial"}}},"message":"Organization created successfully. Please check your email to verify your account."}
+📡 API Response 201: {"success":true,"data":{"token":"1|D1nWjFBCDAixq1HCXA4wBRaXQtbE52uz2gvlneg47074a7e0","progress_id":"tenant_685046f3786c8","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1750091507332-883532-fxvzgm-493036@e2e-test.local","membership":null,"email_verified_at":null,"tenant_id":"e3d9674d-58f2-41a9-9955-60c58a4ab0eb","tenant":{"id":"e3d9674d-58f2-41a9-9955-60c58a4ab0eb","name":"Enhanced Word Test School 1","slug":"e2e-test-1750091507332-883532-fxvzgm-493036","status":"trial"}}},"message":...
+[32m[10:31:55 AM] INFO: 📋 Registering tenant 2...[0m
+🌐 API POST http://localhost:8000/api/auth/register-tenant-admin {
+  headers: { [32m'Content-Type'[39m: [32m'application/json'[39m, Accept: [32m'application/json'[39m },
+  body: {
+    tenant: {
+      name: [32m'Enhanced Word Test School 2'[39m,
+      slug: [32m'e2e-test-1750091507332-883532-ae88de-565437'[39m,
+      description: [32m'A test school district for language learning'[39m
+    },
+    admin: {
+      name: [32m'John Admin'[39m,
+      email: [32m'admin-e2e-test-1750091507332-883532-ae88de-565437@e2e-test.local'[39m,
+      password: [32m'TestPassword123!'[39m,
+      password_confirmation: [32m'TestPassword123!'[39m
+    }
+  }
+}
+[32m[10:31:55 AM] INFO: 🔍 Started job monitoring session: e2e-test-1750091507332-883532-ae88de-565437_1750091515532_7pjevn for tenant: e2e-test-1750091507332-883532-ae88de-565437[0m
+[31m[10:31:57 AM] ERROR: Failed to discover tenant jobs for e2e-test-1750091507332-883532-ae88de-565437:[0m
+[32m[10:31:57 AM] INFO: 📭 No tenant creation jobs found for: e2e-test-1750091507332-883532-ae88de-565437[0m
+[32m[10:31:57 AM] INFO: 🏁 Ended monitoring session: e2e-test-1750091507332-883532-ae88de-565437_1750091515532_7pjevn[0m
+📡 API Response 201 {"success":true,"data":{"token":"1|EqyQSfyEXCh0ItoFEkE5LQoJzxOZ32bviSH9hXARc3bd10a5","progress_id":"tenant_685046fbc1d13","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1750091507332-883532-ae88de-565437@e2e-test.local","membership":null,"email_verified_at":null,"tenant_id":"26b16e69-0640-4710-ab22-7706919427d4","tenant":{"id":"26b16e69-0640-4710-ab22-7706919427d4","name":"Enhanced Word Test School 2","slug":"e2e-test-1750091507332-883532-ae88de-565437","status":"trial"}}},"message":"Organization created successfully. Please check your email to verify your account."}
+📡 API Response 201: {"success":true,"data":{"token":"1|EqyQSfyEXCh0ItoFEkE5LQoJzxOZ32bviSH9hXARc3bd10a5","progress_id":"tenant_685046fbc1d13","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1750091507332-883532-ae88de-565437@e2e-test.local","membership":null,"email_verified_at":null,"tenant_id":"26b16e69-0640-4710-ab22-7706919427d4","tenant":{"id":"26b16e69-0640-4710-ab22-7706919427d4","name":"Enhanced Word Test School 2","slug":"e2e-test-1750091507332-883532-ae88de-565437","status":"trial"}}},"message":...
+[32m[10:32:03 AM] INFO: ✅ Tenants registered successfully: e2e-test-1750091507332-883532-fxvzgm-493036, e2e-test-1750091507332-883532-ae88de-565437[0m
+[32m[10:32:05 AM] INFO: ✅ Role-based test users configured[0m
+[32m[10:32:05 AM] INFO: 🚀 Starting enhanced validation for tenant: home[0m
+[32m[10:32:05 AM] INFO: 🔍 Started job monitoring session: home_1750091525154_t30c6f for tenant: home[0m
+[32m[10:32:05 AM] INFO: ⏭️ Skipping validation due to environment variable[0m
+[32m[10:32:05 AM] INFO: ✅ Validation completed successfully for tenant: home[0m
+[31m[10:32:05 AM] ERROR: 💥 Test failed: should test permission inheritance and context-specific permissions[0m
+🗑️  Cleaning up all test tenants...
+🗑️  Cleaning up tenant: e2e-test-1750091507332-883532-fxvzgm-493036
+🗑️  Cleaning up tenant: e2e-test-1750091507332-883532-ae88de-565437
+[31m[10:32:08 AM] ERROR: ❌ Enhanced cleanup failed:[0m
+]]>
+</system-out>
+<system-err>
+<![CDATA[Enhanced tenant validation failed for home: TypeError: Reduce of empty array with no initial value
+    at Array.reduce (<anonymous>)
+    at PerformanceCollector.generateReport [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mvalidation/core/PerformanceCollector.ts:396:44[90m)[39m
+    at PerformanceCollector.endSession [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mvalidation/core/PerformanceCollector.ts:372:25[90m)[39m
+    at ValidationManager.validateTenant [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mvalidation/core/ValidationManager.ts:158:50[90m)[39m
+    at Object.validateTenant [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mutils/validation-helpers.ts:421:23[90m)[39m
+    at validateEnhancedTenantSetup [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mutils/validation-helpers.ts:454:5[90m)[39m
+    at [90m/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mtests/Tenant/backend/API/Word/team-word-controller-enhanced.spec.ts:183:5
+    at [90m/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/testInfo.js:277:11
+    at TimeoutManager.withRunnable [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/timeoutManager.js:67:14[90m)[39m
+    at TestInfoImpl._runWithTimeout [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/testInfo.js:275:7[90m)[39m
+    at FixtureRunner.resolveParametersAndRunFunction [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/fixtureRunner.js:223:5[90m)[39m
+    at [90m/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:460:11
+    at TestInfoImpl._runAsStep [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/testInfo.js:266:7[90m)[39m
+    at WorkerMain._runEachHooksForSuites [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:459:9[90m)[39m
+    at [90m/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:296:9
+    at TestInfoImpl._runAsStep [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/testInfo.js:266:7[90m)[39m
+    at [90m/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:292:7
+    at WorkerMain._runTest [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:277:5[90m)[39m
+    at WorkerMain.runTestGroup [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:193:11[90m)[39m
+    at process.<anonymous> [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/common/process.js:70:22[90m)[39m
+]]>
+</system-err>
+</testcase>
+<testcase name="Enhanced Team Word Controller API - Complete Integration Test Suite › Enhanced Tenant Isolation Tests › should enforce strict tenant data isolation with monitoring" classname="Tenant/backend/API/Word/team-word-controller-enhanced.spec.ts" time="0.093">
+<failure message="team-word-controller-enhanced.spec.ts:346:9 should enforce strict tenant data isolation with monitoring" type="FAILURE">
+<![CDATA[  [chromium] › Tenant/backend/API/Word/team-word-controller-enhanced.spec.ts:346:9 › Enhanced Team Word Controller API - Complete Integration Test Suite › Enhanced Tenant Isolation Tests › should enforce strict tenant data isolation with monitoring 
+
+    TypeError: Reduce of empty array with no initial value
+
+       at ../validation/core/PerformanceCollector.ts:396
+
+      394 |     
+      395 |     const validatorDurations = allValidators.map(v => v.duration);
+    > 396 |     const fastestValidator = allValidators.reduce((prev, curr) => 
+          |                                            ^
+      397 |       prev.duration < curr.duration ? prev : curr
+      398 |     );
+      399 |     const slowestValidator = allValidators.reduce((prev, curr) => 
+        at PerformanceCollector.generateReport (/home/onionlake-admin/PROJECT/gol_2025/e2e/validation/core/PerformanceCollector.ts:396:44)
+        at PerformanceCollector.endSession (/home/onionlake-admin/PROJECT/gol_2025/e2e/validation/core/PerformanceCollector.ts:372:25)
+        at ValidationManager.validateTenant (/home/onionlake-admin/PROJECT/gol_2025/e2e/validation/core/ValidationManager.ts:158:50)
+        at Object.validateTenant (/home/onionlake-admin/PROJECT/gol_2025/e2e/utils/validation-helpers.ts:421:23)
+        at validateEnhancedTenantSetup (/home/onionlake-admin/PROJECT/gol_2025/e2e/utils/validation-helpers.ts:454:5)
+        at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller-enhanced.spec.ts:183:5
+]]>
+</failure>
+<system-out>
+<![CDATA[[32m[10:32:11 AM] INFO: 🚀 Starting enhanced tenant setup with validation...[0m
+[32m[10:32:11 AM] INFO: 📋 Registering tenant 1...[0m
+🌐 API POST http://localhost:8000/api/auth/register-tenant-admin {
+  headers: { [32m'Content-Type'[39m: [32m'application/json'[39m, Accept: [32m'application/json'[39m },
+  body: {
+    tenant: {
+      name: [32m'Enhanced Word Test School 1'[39m,
+      slug: [32m'e2e-test-1750091531632-884328-j6cqlr-032288'[39m,
+      description: [32m'A test school district for language learning'[39m
+    },
+    admin: {
+      name: [32m'John Admin'[39m,
+      email: [32m'admin-e2e-test-1750091531632-884328-j6cqlr-032288@e2e-test.local'[39m,
+      password: [32m'TestPassword123!'[39m,
+      password_confirmation: [32m'TestPassword123!'[39m
+    }
+  }
+}
+[32m[10:32:11 AM] INFO: 🔍 Started job monitoring session: e2e-test-1750091531632-884328-j6cqlr-032288_1750091531676_0e9e60 for tenant: e2e-test-1750091531632-884328-j6cqlr-032288[0m
+[31m[10:32:13 AM] ERROR: Failed to discover tenant jobs for e2e-test-1750091531632-884328-j6cqlr-032288:[0m
+[32m[10:32:13 AM] INFO: 📭 No tenant creation jobs found for: e2e-test-1750091531632-884328-j6cqlr-032288[0m
+[32m[10:32:13 AM] INFO: 🏁 Ended monitoring session: e2e-test-1750091531632-884328-j6cqlr-032288_1750091531676_0e9e60[0m
+📡 API Response 201 {"success":true,"data":{"token":"1|Tq8r2QOyr0xbGax9IlDi1IpwWEI1vmAQln20fW8m5ea66e8b","progress_id":"tenant_6850470bc414b","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1750091531632-884328-j6cqlr-032288@e2e-test.local","membership":null,"email_verified_at":null,"tenant_id":"898a290c-70c8-4021-b3c1-6b656b5dadbc","tenant":{"id":"898a290c-70c8-4021-b3c1-6b656b5dadbc","name":"Enhanced Word Test School 1","slug":"e2e-test-1750091531632-884328-j6cqlr-032288","status":"trial"}}},"message":"Organization created successfully. Please check your email to verify your account."}
+📡 API Response 201: {"success":true,"data":{"token":"1|Tq8r2QOyr0xbGax9IlDi1IpwWEI1vmAQln20fW8m5ea66e8b","progress_id":"tenant_6850470bc414b","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1750091531632-884328-j6cqlr-032288@e2e-test.local","membership":null,"email_verified_at":null,"tenant_id":"898a290c-70c8-4021-b3c1-6b656b5dadbc","tenant":{"id":"898a290c-70c8-4021-b3c1-6b656b5dadbc","name":"Enhanced Word Test School 1","slug":"e2e-test-1750091531632-884328-j6cqlr-032288","status":"trial"}}},"message":...
+[32m[10:32:20 AM] INFO: 📋 Registering tenant 2...[0m
+🌐 API POST http://localhost:8000/api/auth/register-tenant-admin {
+  headers: { [32m'Content-Type'[39m: [32m'application/json'[39m, Accept: [32m'application/json'[39m },
+  body: {
+    tenant: {
+      name: [32m'Enhanced Word Test School 2'[39m,
+      slug: [32m'e2e-test-1750091531633-884328-2h6lwn-094789'[39m,
+      description: [32m'A test school district for language learning'[39m
+    },
+    admin: {
+      name: [32m'John Admin'[39m,
+      email: [32m'admin-e2e-test-1750091531633-884328-2h6lwn-094789@e2e-test.local'[39m,
+      password: [32m'TestPassword123!'[39m,
+      password_confirmation: [32m'TestPassword123!'[39m
+    }
+  }
+}
+[32m[10:32:20 AM] INFO: 🔍 Started job monitoring session: e2e-test-1750091531633-884328-2h6lwn-094789_1750091540446_hd8ttj for tenant: e2e-test-1750091531633-884328-2h6lwn-094789[0m
+[31m[10:32:22 AM] ERROR: Failed to discover tenant jobs for e2e-test-1750091531633-884328-2h6lwn-094789:[0m
+[32m[10:32:22 AM] INFO: 📭 No tenant creation jobs found for: e2e-test-1750091531633-884328-2h6lwn-094789[0m
+[32m[10:32:22 AM] INFO: 🏁 Ended monitoring session: e2e-test-1750091531633-884328-2h6lwn-094789_1750091540446_hd8ttj[0m
+📡 API Response 201 {"success":true,"data":{"token":"1|tdlKW9etdeJkjbpE1PKJfAr5gJLwKLshvH8oEoctf8d22540","progress_id":"tenant_6850471488b8c","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1750091531633-884328-2h6lwn-094789@e2e-test.local","membership":null,"email_verified_at":null,"tenant_id":"b3adb223-13f5-419e-9fc0-4bcb61fe6dfd","tenant":{"id":"b3adb223-13f5-419e-9fc0-4bcb61fe6dfd","name":"Enhanced Word Test School 2","slug":"e2e-test-1750091531633-884328-2h6lwn-094789","status":"trial"}}},"message":"Organization created successfully. Please check your email to verify your account."}
+📡 API Response 201: {"success":true,"data":{"token":"1|tdlKW9etdeJkjbpE1PKJfAr5gJLwKLshvH8oEoctf8d22540","progress_id":"tenant_6850471488b8c","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1750091531633-884328-2h6lwn-094789@e2e-test.local","membership":null,"email_verified_at":null,"tenant_id":"b3adb223-13f5-419e-9fc0-4bcb61fe6dfd","tenant":{"id":"b3adb223-13f5-419e-9fc0-4bcb61fe6dfd","name":"Enhanced Word Test School 2","slug":"e2e-test-1750091531633-884328-2h6lwn-094789","status":"trial"}}},"message":...
+[32m[10:32:28 AM] INFO: ✅ Tenants registered successfully: e2e-test-1750091531632-884328-j6cqlr-032288, e2e-test-1750091531633-884328-2h6lwn-094789[0m
+[32m[10:32:30 AM] INFO: ✅ Role-based test users configured[0m
+[32m[10:32:30 AM] INFO: 🚀 Starting enhanced validation for tenant: data[0m
+[32m[10:32:30 AM] INFO: 🔍 Started job monitoring session: data_1750091550150_762m6y for tenant: data[0m
+[32m[10:32:30 AM] INFO: ⏭️ Skipping validation due to environment variable[0m
+[32m[10:32:30 AM] INFO: ✅ Validation completed successfully for tenant: data[0m
+[31m[10:32:30 AM] ERROR: 💥 Test failed: should enforce strict tenant data isolation with monitoring[0m
+🗑️  Cleaning up all test tenants...
+🗑️  Cleaning up tenant: e2e-test-1750091531632-884328-j6cqlr-032288
+🗑️  Cleaning up tenant: e2e-test-1750091531633-884328-2h6lwn-094789
+[31m[10:32:33 AM] ERROR: ❌ Enhanced cleanup failed:[0m
+]]>
+</system-out>
+<system-err>
+<![CDATA[Enhanced tenant validation failed for data: TypeError: Reduce of empty array with no initial value
+    at Array.reduce (<anonymous>)
+    at PerformanceCollector.generateReport [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mvalidation/core/PerformanceCollector.ts:396:44[90m)[39m
+    at PerformanceCollector.endSession [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mvalidation/core/PerformanceCollector.ts:372:25[90m)[39m
+    at ValidationManager.validateTenant [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mvalidation/core/ValidationManager.ts:158:50[90m)[39m
+    at Object.validateTenant [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mutils/validation-helpers.ts:421:23[90m)[39m
+    at validateEnhancedTenantSetup [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mutils/validation-helpers.ts:454:5[90m)[39m
+    at [90m/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mtests/Tenant/backend/API/Word/team-word-controller-enhanced.spec.ts:183:5
+    at [90m/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/testInfo.js:277:11
+    at TimeoutManager.withRunnable [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/timeoutManager.js:67:14[90m)[39m
+    at TestInfoImpl._runWithTimeout [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/testInfo.js:275:7[90m)[39m
+    at FixtureRunner.resolveParametersAndRunFunction [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/fixtureRunner.js:223:5[90m)[39m
+    at [90m/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:460:11
+    at TestInfoImpl._runAsStep [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/testInfo.js:266:7[90m)[39m
+    at WorkerMain._runEachHooksForSuites [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:459:9[90m)[39m
+    at [90m/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:296:9
+    at TestInfoImpl._runAsStep [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/testInfo.js:266:7[90m)[39m
+    at [90m/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:292:7
+    at WorkerMain._runTest [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:277:5[90m)[39m
+    at WorkerMain.runTestGroup [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:193:11[90m)[39m
+    at process.<anonymous> [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/common/process.js:70:22[90m)[39m
+]]>
+</system-err>
+</testcase>
+<testcase name="Enhanced Team Word Controller API - Complete Integration Test Suite › Enhanced Tenant Isolation Tests › should validate tenant database isolation at schema level" classname="Tenant/backend/API/Word/team-word-controller-enhanced.spec.ts" time="0.144">
+<failure message="team-word-controller-enhanced.spec.ts:405:9 should validate tenant database isolation at schema level" type="FAILURE">
+<![CDATA[  [chromium] › Tenant/backend/API/Word/team-word-controller-enhanced.spec.ts:405:9 › Enhanced Team Word Controller API - Complete Integration Test Suite › Enhanced Tenant Isolation Tests › should validate tenant database isolation at schema level 
+
+    TypeError: Reduce of empty array with no initial value
+
+       at ../validation/core/PerformanceCollector.ts:396
+
+      394 |     
+      395 |     const validatorDurations = allValidators.map(v => v.duration);
+    > 396 |     const fastestValidator = allValidators.reduce((prev, curr) => 
+          |                                            ^
+      397 |       prev.duration < curr.duration ? prev : curr
+      398 |     );
+      399 |     const slowestValidator = allValidators.reduce((prev, curr) => 
+        at PerformanceCollector.generateReport (/home/onionlake-admin/PROJECT/gol_2025/e2e/validation/core/PerformanceCollector.ts:396:44)
+        at PerformanceCollector.endSession (/home/onionlake-admin/PROJECT/gol_2025/e2e/validation/core/PerformanceCollector.ts:372:25)
+        at ValidationManager.validateTenant (/home/onionlake-admin/PROJECT/gol_2025/e2e/validation/core/ValidationManager.ts:158:50)
+        at Object.validateTenant (/home/onionlake-admin/PROJECT/gol_2025/e2e/utils/validation-helpers.ts:421:23)
+        at validateEnhancedTenantSetup (/home/onionlake-admin/PROJECT/gol_2025/e2e/utils/validation-helpers.ts:454:5)
+        at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller-enhanced.spec.ts:183:5
+]]>
+</failure>
+<system-out>
+<![CDATA[[32m[10:32:36 AM] INFO: 🚀 Starting enhanced tenant setup with validation...[0m
+[32m[10:32:36 AM] INFO: 📋 Registering tenant 1...[0m
+🌐 API POST http://localhost:8000/api/auth/register-tenant-admin {
+  headers: { [32m'Content-Type'[39m: [32m'application/json'[39m, Accept: [32m'application/json'[39m },
+  body: {
+    tenant: {
+      name: [32m'Enhanced Word Test School 1'[39m,
+      slug: [32m'e2e-test-1750091556786-885137-o3dw59-385150'[39m,
+      description: [32m'A test school district for language learning'[39m
+    },
+    admin: {
+      name: [32m'John Admin'[39m,
+      email: [32m'admin-e2e-test-1750091556786-885137-o3dw59-385150@e2e-test.local'[39m,
+      password: [32m'TestPassword123!'[39m,
+      password_confirmation: [32m'TestPassword123!'[39m
+    }
+  }
+}
+[32m[10:32:36 AM] INFO: 🔍 Started job monitoring session: e2e-test-1750091556786-885137-o3dw59-385150_1750091556828_atn3xv for tenant: e2e-test-1750091556786-885137-o3dw59-385150[0m
+[31m[10:32:38 AM] ERROR: Failed to discover tenant jobs for e2e-test-1750091556786-885137-o3dw59-385150:[0m
+[32m[10:32:38 AM] INFO: 📭 No tenant creation jobs found for: e2e-test-1750091556786-885137-o3dw59-385150[0m
+[32m[10:32:38 AM] INFO: 🏁 Ended monitoring session: e2e-test-1750091556786-885137-o3dw59-385150_1750091556828_atn3xv[0m
+📡 API Response 201 {"success":true,"data":{"token":"1|vTaYYEysoKuKiXZ5jA46w04azvS4YmUBzb35dVZp5eaaee92","progress_id":"tenant_68504724ec6c8","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1750091556786-885137-o3dw59-385150@e2e-test.local","membership":null,"email_verified_at":null,"tenant_id":"7bcbb600-ff18-4344-beab-7f129c4fa856","tenant":{"id":"7bcbb600-ff18-4344-beab-7f129c4fa856","name":"Enhanced Word Test School 1","slug":"e2e-test-1750091556786-885137-o3dw59-385150","status":"trial"}}},"message":"Organization created successfully. Please check your email to verify your account."}
+📡 API Response 201: {"success":true,"data":{"token":"1|vTaYYEysoKuKiXZ5jA46w04azvS4YmUBzb35dVZp5eaaee92","progress_id":"tenant_68504724ec6c8","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1750091556786-885137-o3dw59-385150@e2e-test.local","membership":null,"email_verified_at":null,"tenant_id":"7bcbb600-ff18-4344-beab-7f129c4fa856","tenant":{"id":"7bcbb600-ff18-4344-beab-7f129c4fa856","name":"Enhanced Word Test School 1","slug":"e2e-test-1750091556786-885137-o3dw59-385150","status":"trial"}}},"message":...
+[32m[10:32:44 AM] INFO: 📋 Registering tenant 2...[0m
+🌐 API POST http://localhost:8000/api/auth/register-tenant-admin {
+  headers: { [32m'Content-Type'[39m: [32m'application/json'[39m, Accept: [32m'application/json'[39m },
+  body: {
+    tenant: {
+      name: [32m'Enhanced Word Test School 2'[39m,
+      slug: [32m'e2e-test-1750091556786-885137-2w1jqa-444351'[39m,
+      description: [32m'A test school district for language learning'[39m
+    },
+    admin: {
+      name: [32m'John Admin'[39m,
+      email: [32m'admin-e2e-test-1750091556786-885137-2w1jqa-444351@e2e-test.local'[39m,
+      password: [32m'TestPassword123!'[39m,
+      password_confirmation: [32m'TestPassword123!'[39m
+    }
+  }
+}
+[32m[10:32:44 AM] INFO: 🔍 Started job monitoring session: e2e-test-1750091556786-885137-2w1jqa-444351_1750091564640_ebyn8t for tenant: e2e-test-1750091556786-885137-2w1jqa-444351[0m
+[31m[10:32:46 AM] ERROR: Failed to discover tenant jobs for e2e-test-1750091556786-885137-2w1jqa-444351:[0m
+[32m[10:32:46 AM] INFO: 📭 No tenant creation jobs found for: e2e-test-1750091556786-885137-2w1jqa-444351[0m
+[32m[10:32:46 AM] INFO: 🏁 Ended monitoring session: e2e-test-1750091556786-885137-2w1jqa-444351_1750091564640_ebyn8t[0m
+📡 API Response 201 {"success":true,"data":{"token":"1|pv9w1VrOVQJZEbuqhWcjKvf4zH0I8oSbSGo3cH1Idc4a09e5","progress_id":"tenant_6850472ced050","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1750091556786-885137-2w1jqa-444351@e2e-test.local","membership":null,"email_verified_at":null,"tenant_id":"b03727b9-eebe-4db7-91b8-71a0a8a00a41","tenant":{"id":"b03727b9-eebe-4db7-91b8-71a0a8a00a41","name":"Enhanced Word Test School 2","slug":"e2e-test-1750091556786-885137-2w1jqa-444351","status":"trial"}}},"message":"Organization created successfully. Please check your email to verify your account."}
+📡 API Response 201: {"success":true,"data":{"token":"1|pv9w1VrOVQJZEbuqhWcjKvf4zH0I8oSbSGo3cH1Idc4a09e5","progress_id":"tenant_6850472ced050","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1750091556786-885137-2w1jqa-444351@e2e-test.local","membership":null,"email_verified_at":null,"tenant_id":"b03727b9-eebe-4db7-91b8-71a0a8a00a41","tenant":{"id":"b03727b9-eebe-4db7-91b8-71a0a8a00a41","name":"Enhanced Word Test School 2","slug":"e2e-test-1750091556786-885137-2w1jqa-444351","status":"trial"}}},"message":...
+[32m[10:32:52 AM] INFO: ✅ Tenants registered successfully: e2e-test-1750091556786-885137-o3dw59-385150, e2e-test-1750091556786-885137-2w1jqa-444351[0m
+[32m[10:32:55 AM] INFO: ✅ Role-based test users configured[0m
+[32m[10:32:55 AM] INFO: 🚀 Starting enhanced validation for tenant: database[0m
+[32m[10:32:55 AM] INFO: 🔍 Started job monitoring session: database_1750091575536_xfp5gu for tenant: database[0m
+[32m[10:32:55 AM] INFO: ⏭️ Skipping validation due to environment variable[0m
+[32m[10:32:55 AM] INFO: ✅ Validation completed successfully for tenant: database[0m
+[31m[10:32:55 AM] ERROR: 💥 Test failed: should validate tenant database isolation at schema level[0m
+🗑️  Cleaning up all test tenants...
+🗑️  Cleaning up tenant: e2e-test-1750091556786-885137-o3dw59-385150
+🗑️  Cleaning up tenant: e2e-test-1750091556786-885137-2w1jqa-444351
+[31m[10:32:59 AM] ERROR: ❌ Enhanced cleanup failed:[0m
+]]>
+</system-out>
+<system-err>
+<![CDATA[Enhanced tenant validation failed for database: TypeError: Reduce of empty array with no initial value
+    at Array.reduce (<anonymous>)
+    at PerformanceCollector.generateReport [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mvalidation/core/PerformanceCollector.ts:396:44[90m)[39m
+    at PerformanceCollector.endSession [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mvalidation/core/PerformanceCollector.ts:372:25[90m)[39m
+    at ValidationManager.validateTenant [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mvalidation/core/ValidationManager.ts:158:50[90m)[39m
+    at Object.validateTenant [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mutils/validation-helpers.ts:421:23[90m)[39m
+    at validateEnhancedTenantSetup [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mutils/validation-helpers.ts:454:5[90m)[39m
+    at [90m/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mtests/Tenant/backend/API/Word/team-word-controller-enhanced.spec.ts:183:5
+    at [90m/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/testInfo.js:277:11
+    at TimeoutManager.withRunnable [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/timeoutManager.js:67:14[90m)[39m
+    at TestInfoImpl._runWithTimeout [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/testInfo.js:275:7[90m)[39m
+    at FixtureRunner.resolveParametersAndRunFunction [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/fixtureRunner.js:223:5[90m)[39m
+    at [90m/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:460:11
+    at TestInfoImpl._runAsStep [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/testInfo.js:266:7[90m)[39m
+    at WorkerMain._runEachHooksForSuites [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:459:9[90m)[39m
+    at [90m/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:296:9
+    at TestInfoImpl._runAsStep [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/testInfo.js:266:7[90m)[39m
+    at [90m/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:292:7
+    at WorkerMain._runTest [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:277:5[90m)[39m
+    at WorkerMain.runTestGroup [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:193:11[90m)[39m
+    at process.<anonymous> [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/common/process.js:70:22[90m)[39m
+]]>
+</system-err>
+</testcase>
+<testcase name="Enhanced Team Word Controller API - Complete Integration Test Suite › Enhanced Data Validation Tests › should validate with comprehensive error reporting" classname="Tenant/backend/API/Word/team-word-controller-enhanced.spec.ts" time="0.125">
+<failure message="team-word-controller-enhanced.spec.ts:452:9 should validate with comprehensive error reporting" type="FAILURE">
+<![CDATA[  [chromium] › Tenant/backend/API/Word/team-word-controller-enhanced.spec.ts:452:9 › Enhanced Team Word Controller API - Complete Integration Test Suite › Enhanced Data Validation Tests › should validate with comprehensive error reporting 
+
+    TypeError: Reduce of empty array with no initial value
+
+       at ../validation/core/PerformanceCollector.ts:396
+
+      394 |     
+      395 |     const validatorDurations = allValidators.map(v => v.duration);
+    > 396 |     const fastestValidator = allValidators.reduce((prev, curr) => 
+          |                                            ^
+      397 |       prev.duration < curr.duration ? prev : curr
+      398 |     );
+      399 |     const slowestValidator = allValidators.reduce((prev, curr) => 
+        at PerformanceCollector.generateReport (/home/onionlake-admin/PROJECT/gol_2025/e2e/validation/core/PerformanceCollector.ts:396:44)
+        at PerformanceCollector.endSession (/home/onionlake-admin/PROJECT/gol_2025/e2e/validation/core/PerformanceCollector.ts:372:25)
+        at ValidationManager.validateTenant (/home/onionlake-admin/PROJECT/gol_2025/e2e/validation/core/ValidationManager.ts:158:50)
+        at Object.validateTenant (/home/onionlake-admin/PROJECT/gol_2025/e2e/utils/validation-helpers.ts:421:23)
+        at validateEnhancedTenantSetup (/home/onionlake-admin/PROJECT/gol_2025/e2e/utils/validation-helpers.ts:454:5)
+        at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller-enhanced.spec.ts:183:5
+]]>
+</failure>
+<system-out>
+<![CDATA[[32m[10:33:01 AM] INFO: 🚀 Starting enhanced tenant setup with validation...[0m
+[32m[10:33:01 AM] INFO: 📋 Registering tenant 1...[0m
+🌐 API POST http://localhost:8000/api/auth/register-tenant-admin {
+  headers: { [32m'Content-Type'[39m: [32m'application/json'[39m, Accept: [32m'application/json'[39m },
+  body: {
+    tenant: {
+      name: [32m'Enhanced Word Test School 1'[39m,
+      slug: [32m'e2e-test-1750091581516-885943-dbctnx-363709'[39m,
+      description: [32m'A test school district for language learning'[39m
+    },
+    admin: {
+      name: [32m'John Admin'[39m,
+      email: [32m'admin-e2e-test-1750091581516-885943-dbctnx-363709@e2e-test.local'[39m,
+      password: [32m'TestPassword123!'[39m,
+      password_confirmation: [32m'TestPassword123!'[39m
+    }
+  }
+}
+[32m[10:33:01 AM] INFO: 🔍 Started job monitoring session: e2e-test-1750091581516-885943-dbctnx-363709_1750091581563_muu9xf for tenant: e2e-test-1750091581516-885943-dbctnx-363709[0m
+[31m[10:33:03 AM] ERROR: Failed to discover tenant jobs for e2e-test-1750091581516-885943-dbctnx-363709:[0m
+[32m[10:33:03 AM] INFO: 📭 No tenant creation jobs found for: e2e-test-1750091581516-885943-dbctnx-363709[0m
+[32m[10:33:03 AM] INFO: 🏁 Ended monitoring session: e2e-test-1750091581516-885943-dbctnx-363709_1750091581563_muu9xf[0m
+📡 API Response 201 {"success":true,"data":{"token":"1|FcQchF1uSIMkvWCrHHGe8RLpeKgJRhm7SuWtsD1Ab43d7897","progress_id":"tenant_6850473db6f9b","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1750091581516-885943-dbctnx-363709@e2e-test.local","membership":null,"email_verified_at":null,"tenant_id":"bde1bc33-4206-40e2-bcdc-09bfae4d479d","tenant":{"id":"bde1bc33-4206-40e2-bcdc-09bfae4d479d","name":"Enhanced Word Test School 1","slug":"e2e-test-1750091581516-885943-dbctnx-363709","status":"trial"}}},"message":"Organization created successfully. Please check your email to verify your account."}
+📡 API Response 201: {"success":true,"data":{"token":"1|FcQchF1uSIMkvWCrHHGe8RLpeKgJRhm7SuWtsD1Ab43d7897","progress_id":"tenant_6850473db6f9b","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1750091581516-885943-dbctnx-363709@e2e-test.local","membership":null,"email_verified_at":null,"tenant_id":"bde1bc33-4206-40e2-bcdc-09bfae4d479d","tenant":{"id":"bde1bc33-4206-40e2-bcdc-09bfae4d479d","name":"Enhanced Word Test School 1","slug":"e2e-test-1750091581516-885943-dbctnx-363709","status":"trial"}}},"message":...
+[32m[10:33:10 AM] INFO: 📋 Registering tenant 2...[0m
+🌐 API POST http://localhost:8000/api/auth/register-tenant-admin {
+  headers: { [32m'Content-Type'[39m: [32m'application/json'[39m, Accept: [32m'application/json'[39m },
+  body: {
+    tenant: {
+      name: [32m'Enhanced Word Test School 2'[39m,
+      slug: [32m'e2e-test-1750091581516-885943-7oxaqj-414510'[39m,
+      description: [32m'A test school district for language learning'[39m
+    },
+    admin: {
+      name: [32m'John Admin'[39m,
+      email: [32m'admin-e2e-test-1750091581516-885943-7oxaqj-414510@e2e-test.local'[39m,
+      password: [32m'TestPassword123!'[39m,
+      password_confirmation: [32m'TestPassword123!'[39m
+    }
+  }
+}
+[32m[10:33:10 AM] INFO: 🔍 Started job monitoring session: e2e-test-1750091581516-885943-7oxaqj-414510_1750091590065_9qcdvd for tenant: e2e-test-1750091581516-885943-7oxaqj-414510[0m
+[31m[10:33:12 AM] ERROR: Failed to discover tenant jobs for e2e-test-1750091581516-885943-7oxaqj-414510:[0m
+[32m[10:33:12 AM] INFO: 📭 No tenant creation jobs found for: e2e-test-1750091581516-885943-7oxaqj-414510[0m
+[32m[10:33:12 AM] INFO: 🏁 Ended monitoring session: e2e-test-1750091581516-885943-7oxaqj-414510_1750091590065_9qcdvd[0m
+📡 API Response 201 {"success":true,"data":{"token":"1|rnCVPjSrliivZlH3S1oeEI1DV9UVJiIztBr2JGtX29a1ee55","progress_id":"tenant_685047463259a","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1750091581516-885943-7oxaqj-414510@e2e-test.local","membership":null,"email_verified_at":null,"tenant_id":"fc24ee8e-bd74-4fc5-9598-dd8850febbdb","tenant":{"id":"fc24ee8e-bd74-4fc5-9598-dd8850febbdb","name":"Enhanced Word Test School 2","slug":"e2e-test-1750091581516-885943-7oxaqj-414510","status":"trial"}}},"message":"Organization created successfully. Please check your email to verify your account."}
+📡 API Response 201: {"success":true,"data":{"token":"1|rnCVPjSrliivZlH3S1oeEI1DV9UVJiIztBr2JGtX29a1ee55","progress_id":"tenant_685047463259a","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1750091581516-885943-7oxaqj-414510@e2e-test.local","membership":null,"email_verified_at":null,"tenant_id":"fc24ee8e-bd74-4fc5-9598-dd8850febbdb","tenant":{"id":"fc24ee8e-bd74-4fc5-9598-dd8850febbdb","name":"Enhanced Word Test School 2","slug":"e2e-test-1750091581516-885943-7oxaqj-414510","status":"trial"}}},"message":...
+[32m[10:33:17 AM] INFO: ✅ Tenants registered successfully: e2e-test-1750091581516-885943-dbctnx-363709, e2e-test-1750091581516-885943-7oxaqj-414510[0m
+[32m[10:33:18 AM] INFO: ✅ Role-based test users configured[0m
+[32m[10:33:19 AM] INFO: 🚀 Starting enhanced validation for tenant: home[0m
+[32m[10:33:19 AM] INFO: 🔍 Started job monitoring session: home_1750091599066_5kypk6 for tenant: home[0m
+[32m[10:33:19 AM] INFO: ⏭️ Skipping validation due to environment variable[0m
+[32m[10:33:19 AM] INFO: ✅ Validation completed successfully for tenant: home[0m
+[31m[10:33:19 AM] ERROR: 💥 Test failed: should validate with comprehensive error reporting[0m
+🗑️  Cleaning up all test tenants...
+🗑️  Cleaning up tenant: e2e-test-1750091581516-885943-dbctnx-363709
+🗑️  Cleaning up tenant: e2e-test-1750091581516-885943-7oxaqj-414510
+[31m[10:33:22 AM] ERROR: ❌ Enhanced cleanup failed:[0m
+]]>
+</system-out>
+<system-err>
+<![CDATA[Enhanced tenant validation failed for home: TypeError: Reduce of empty array with no initial value
+    at Array.reduce (<anonymous>)
+    at PerformanceCollector.generateReport [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mvalidation/core/PerformanceCollector.ts:396:44[90m)[39m
+    at PerformanceCollector.endSession [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mvalidation/core/PerformanceCollector.ts:372:25[90m)[39m
+    at ValidationManager.validateTenant [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mvalidation/core/ValidationManager.ts:158:50[90m)[39m
+    at Object.validateTenant [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mutils/validation-helpers.ts:421:23[90m)[39m
+    at validateEnhancedTenantSetup [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mutils/validation-helpers.ts:454:5[90m)[39m
+    at [90m/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mtests/Tenant/backend/API/Word/team-word-controller-enhanced.spec.ts:183:5
+    at [90m/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/testInfo.js:277:11
+    at TimeoutManager.withRunnable [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/timeoutManager.js:67:14[90m)[39m
+    at TestInfoImpl._runWithTimeout [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/testInfo.js:275:7[90m)[39m
+    at FixtureRunner.resolveParametersAndRunFunction [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/fixtureRunner.js:223:5[90m)[39m
+    at [90m/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:460:11
+    at TestInfoImpl._runAsStep [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/testInfo.js:266:7[90m)[39m
+    at WorkerMain._runEachHooksForSuites [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:459:9[90m)[39m
+    at [90m/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:296:9
+    at TestInfoImpl._runAsStep [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/testInfo.js:266:7[90m)[39m
+    at [90m/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:292:7
+    at WorkerMain._runTest [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:277:5[90m)[39m
+    at WorkerMain.runTestGroup [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:193:11[90m)[39m
+    at process.<anonymous> [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/common/process.js:70:22[90m)[39m
+]]>
+</system-err>
+</testcase>
+<testcase name="Enhanced Team Word Controller API - Complete Integration Test Suite › Enhanced Data Validation Tests › should enforce enhanced business rules and constraints" classname="Tenant/backend/API/Word/team-word-controller-enhanced.spec.ts" time="0.153">
+<failure message="team-word-controller-enhanced.spec.ts:510:9 should enforce enhanced business rules and constraints" type="FAILURE">
+<![CDATA[  [chromium] › Tenant/backend/API/Word/team-word-controller-enhanced.spec.ts:510:9 › Enhanced Team Word Controller API - Complete Integration Test Suite › Enhanced Data Validation Tests › should enforce enhanced business rules and constraints 
+
+    TypeError: Reduce of empty array with no initial value
+
+       at ../validation/core/PerformanceCollector.ts:396
+
+      394 |     
+      395 |     const validatorDurations = allValidators.map(v => v.duration);
+    > 396 |     const fastestValidator = allValidators.reduce((prev, curr) => 
+          |                                            ^
+      397 |       prev.duration < curr.duration ? prev : curr
+      398 |     );
+      399 |     const slowestValidator = allValidators.reduce((prev, curr) => 
+        at PerformanceCollector.generateReport (/home/onionlake-admin/PROJECT/gol_2025/e2e/validation/core/PerformanceCollector.ts:396:44)
+        at PerformanceCollector.endSession (/home/onionlake-admin/PROJECT/gol_2025/e2e/validation/core/PerformanceCollector.ts:372:25)
+        at ValidationManager.validateTenant (/home/onionlake-admin/PROJECT/gol_2025/e2e/validation/core/ValidationManager.ts:158:50)
+        at Object.validateTenant (/home/onionlake-admin/PROJECT/gol_2025/e2e/utils/validation-helpers.ts:421:23)
+        at validateEnhancedTenantSetup (/home/onionlake-admin/PROJECT/gol_2025/e2e/utils/validation-helpers.ts:454:5)
+        at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller-enhanced.spec.ts:183:5
+]]>
+</failure>
+<system-out>
+<![CDATA[[32m[10:33:25 AM] INFO: 🚀 Starting enhanced tenant setup with validation...[0m
+[32m[10:33:25 AM] INFO: 📋 Registering tenant 1...[0m
+🌐 API POST http://localhost:8000/api/auth/register-tenant-admin {
+  headers: { [32m'Content-Type'[39m: [32m'application/json'[39m, Accept: [32m'application/json'[39m },
+  body: {
+    tenant: {
+      name: [32m'Enhanced Word Test School 1'[39m,
+      slug: [32m'e2e-test-1750091605916-886745-d9uj1p-584580'[39m,
+      description: [32m'A test school district for language learning'[39m
+    },
+    admin: {
+      name: [32m'John Admin'[39m,
+      email: [32m'admin-e2e-test-1750091605916-886745-d9uj1p-584580@e2e-test.local'[39m,
+      password: [32m'TestPassword123!'[39m,
+      password_confirmation: [32m'TestPassword123!'[39m
+    }
+  }
+}
+[32m[10:33:25 AM] INFO: 🔍 Started job monitoring session: e2e-test-1750091605916-886745-d9uj1p-584580_1750091605953_wan6dl for tenant: e2e-test-1750091605916-886745-d9uj1p-584580[0m
+[31m[10:33:27 AM] ERROR: Failed to discover tenant jobs for e2e-test-1750091605916-886745-d9uj1p-584580:[0m
+[32m[10:33:27 AM] INFO: 📭 No tenant creation jobs found for: e2e-test-1750091605916-886745-d9uj1p-584580[0m
+[32m[10:33:27 AM] INFO: 🏁 Ended monitoring session: e2e-test-1750091605916-886745-d9uj1p-584580_1750091605953_wan6dl[0m
+📡 API Response 201 {"success":true,"data":{"token":"1|zOZiT86vqxBBhUwCeERwDVZ8omFcaxHrm3ZmiYBB044631aa","progress_id":"tenant_685047561648e","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1750091605916-886745-d9uj1p-584580@e2e-test.local","membership":null,"email_verified_at":null,"tenant_id":"03bafc40-26ed-45e4-a5b5-9f15d588d1e9","tenant":{"id":"03bafc40-26ed-45e4-a5b5-9f15d588d1e9","name":"Enhanced Word Test School 1","slug":"e2e-test-1750091605916-886745-d9uj1p-584580","status":"trial"}}},"message":"Organization created successfully. Please check your email to verify your account."}
+📡 API Response 201: {"success":true,"data":{"token":"1|zOZiT86vqxBBhUwCeERwDVZ8omFcaxHrm3ZmiYBB044631aa","progress_id":"tenant_685047561648e","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1750091605916-886745-d9uj1p-584580@e2e-test.local","membership":null,"email_verified_at":null,"tenant_id":"03bafc40-26ed-45e4-a5b5-9f15d588d1e9","tenant":{"id":"03bafc40-26ed-45e4-a5b5-9f15d588d1e9","name":"Enhanced Word Test School 1","slug":"e2e-test-1750091605916-886745-d9uj1p-584580","status":"trial"}}},"message":...
+[32m[10:33:33 AM] INFO: 📋 Registering tenant 2...[0m
+🌐 API POST http://localhost:8000/api/auth/register-tenant-admin {
+  headers: { [32m'Content-Type'[39m: [32m'application/json'[39m, Accept: [32m'application/json'[39m },
+  body: {
+    tenant: {
+      name: [32m'Enhanced Word Test School 2'[39m,
+      slug: [32m'e2e-test-1750091605916-886745-6v3ix4-654081'[39m,
+      description: [32m'A test school district for language learning'[39m
+    },
+    admin: {
+      name: [32m'John Admin'[39m,
+      email: [32m'admin-e2e-test-1750091605916-886745-6v3ix4-654081@e2e-test.local'[39m,
+      password: [32m'TestPassword123!'[39m,
+      password_confirmation: [32m'TestPassword123!'[39m
+    }
+  }
+}
+[32m[10:33:33 AM] INFO: 🔍 Started job monitoring session: e2e-test-1750091605916-886745-6v3ix4-654081_1750091613646_kd1fcx for tenant: e2e-test-1750091605916-886745-6v3ix4-654081[0m
+[31m[10:33:35 AM] ERROR: Failed to discover tenant jobs for e2e-test-1750091605916-886745-6v3ix4-654081:[0m
+[32m[10:33:35 AM] INFO: 📭 No tenant creation jobs found for: e2e-test-1750091605916-886745-6v3ix4-654081[0m
+[32m[10:33:35 AM] INFO: 🏁 Ended monitoring session: e2e-test-1750091605916-886745-6v3ix4-654081_1750091613646_kd1fcx[0m
+📡 API Response 201 {"success":true,"data":{"token":"1|yRGemXJOJ0PqOaASrzmNgT3tuirkJ6ehludu38bobeadda6b","progress_id":"tenant_6850475dee222","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1750091605916-886745-6v3ix4-654081@e2e-test.local","membership":null,"email_verified_at":null,"tenant_id":"67a9c808-e8a0-4473-b067-d56d7207ed94","tenant":{"id":"67a9c808-e8a0-4473-b067-d56d7207ed94","name":"Enhanced Word Test School 2","slug":"e2e-test-1750091605916-886745-6v3ix4-654081","status":"trial"}}},"message":"Organization created successfully. Please check your email to verify your account."}
+📡 API Response 201: {"success":true,"data":{"token":"1|yRGemXJOJ0PqOaASrzmNgT3tuirkJ6ehludu38bobeadda6b","progress_id":"tenant_6850475dee222","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1750091605916-886745-6v3ix4-654081@e2e-test.local","membership":null,"email_verified_at":null,"tenant_id":"67a9c808-e8a0-4473-b067-d56d7207ed94","tenant":{"id":"67a9c808-e8a0-4473-b067-d56d7207ed94","name":"Enhanced Word Test School 2","slug":"e2e-test-1750091605916-886745-6v3ix4-654081","status":"trial"}}},"message":...
+[32m[10:33:41 AM] INFO: ✅ Tenants registered successfully: e2e-test-1750091605916-886745-d9uj1p-584580, e2e-test-1750091605916-886745-6v3ix4-654081[0m
+[32m[10:33:43 AM] INFO: ✅ Role-based test users configured[0m
+[32m[10:33:43 AM] INFO: 🚀 Starting enhanced validation for tenant: home[0m
+[32m[10:33:43 AM] INFO: 🔍 Started job monitoring session: home_1750091623230_o83w0x for tenant: home[0m
+[32m[10:33:43 AM] INFO: ⏭️ Skipping validation due to environment variable[0m
+[32m[10:33:43 AM] INFO: ✅ Validation completed successfully for tenant: home[0m
+[31m[10:33:43 AM] ERROR: 💥 Test failed: should enforce enhanced business rules and constraints[0m
+🗑️  Cleaning up all test tenants...
+🗑️  Cleaning up tenant: e2e-test-1750091605916-886745-d9uj1p-584580
+🗑️  Cleaning up tenant: e2e-test-1750091605916-886745-6v3ix4-654081
+[31m[10:33:46 AM] ERROR: ❌ Enhanced cleanup failed:[0m
+]]>
+</system-out>
+<system-err>
+<![CDATA[Enhanced tenant validation failed for home: TypeError: Reduce of empty array with no initial value
+    at Array.reduce (<anonymous>)
+    at PerformanceCollector.generateReport [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mvalidation/core/PerformanceCollector.ts:396:44[90m)[39m
+    at PerformanceCollector.endSession [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mvalidation/core/PerformanceCollector.ts:372:25[90m)[39m
+    at ValidationManager.validateTenant [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mvalidation/core/ValidationManager.ts:158:50[90m)[39m
+    at Object.validateTenant [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mutils/validation-helpers.ts:421:23[90m)[39m
+    at validateEnhancedTenantSetup [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mutils/validation-helpers.ts:454:5[90m)[39m
+    at [90m/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mtests/Tenant/backend/API/Word/team-word-controller-enhanced.spec.ts:183:5
+    at [90m/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/testInfo.js:277:11
+    at TimeoutManager.withRunnable [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/timeoutManager.js:67:14[90m)[39m
+    at TestInfoImpl._runWithTimeout [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/testInfo.js:275:7[90m)[39m
+    at FixtureRunner.resolveParametersAndRunFunction [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/fixtureRunner.js:223:5[90m)[39m
+    at [90m/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:460:11
+    at TestInfoImpl._runAsStep [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/testInfo.js:266:7[90m)[39m
+    at WorkerMain._runEachHooksForSuites [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:459:9[90m)[39m
+    at [90m/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:296:9
+    at TestInfoImpl._runAsStep [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/testInfo.js:266:7[90m)[39m
+    at [90m/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:292:7
+    at WorkerMain._runTest [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:277:5[90m)[39m
+    at WorkerMain.runTestGroup [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:193:11[90m)[39m
+    at process.<anonymous> [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/common/process.js:70:22[90m)[39m
+]]>
+</system-err>
+</testcase>
+<testcase name="Enhanced Team Word Controller API - Complete Integration Test Suite › Enhanced Functional Testing - CRUD Operations › should perform CRUD operations with comprehensive monitoring" classname="Tenant/backend/API/Word/team-word-controller-enhanced.spec.ts" time="0.066">
+<failure message="team-word-controller-enhanced.spec.ts:573:9 should perform CRUD operations with comprehensive monitoring" type="FAILURE">
+<![CDATA[  [chromium] › Tenant/backend/API/Word/team-word-controller-enhanced.spec.ts:573:9 › Enhanced Team Word Controller API - Complete Integration Test Suite › Enhanced Functional Testing - CRUD Operations › should perform CRUD operations with comprehensive monitoring 
+
+    TypeError: Reduce of empty array with no initial value
+
+       at ../validation/core/PerformanceCollector.ts:396
+
+      394 |     
+      395 |     const validatorDurations = allValidators.map(v => v.duration);
+    > 396 |     const fastestValidator = allValidators.reduce((prev, curr) => 
+          |                                            ^
+      397 |       prev.duration < curr.duration ? prev : curr
+      398 |     );
+      399 |     const slowestValidator = allValidators.reduce((prev, curr) => 
+        at PerformanceCollector.generateReport (/home/onionlake-admin/PROJECT/gol_2025/e2e/validation/core/PerformanceCollector.ts:396:44)
+        at PerformanceCollector.endSession (/home/onionlake-admin/PROJECT/gol_2025/e2e/validation/core/PerformanceCollector.ts:372:25)
+        at ValidationManager.validateTenant (/home/onionlake-admin/PROJECT/gol_2025/e2e/validation/core/ValidationManager.ts:158:50)
+        at Object.validateTenant (/home/onionlake-admin/PROJECT/gol_2025/e2e/utils/validation-helpers.ts:421:23)
+        at validateEnhancedTenantSetup (/home/onionlake-admin/PROJECT/gol_2025/e2e/utils/validation-helpers.ts:454:5)
+        at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller-enhanced.spec.ts:183:5
+]]>
+</failure>
+<system-out>
+<![CDATA[[32m[10:33:49 AM] INFO: 🚀 Starting enhanced tenant setup with validation...[0m
+[32m[10:33:49 AM] INFO: 📋 Registering tenant 1...[0m
+🌐 API POST http://localhost:8000/api/auth/register-tenant-admin {
+  headers: { [32m'Content-Type'[39m: [32m'application/json'[39m, Accept: [32m'application/json'[39m },
+  body: {
+    tenant: {
+      name: [32m'Enhanced Word Test School 1'[39m,
+      slug: [32m'e2e-test-1750091629852-887560-8jdatv-626196'[39m,
+      description: [32m'A test school district for language learning'[39m
+    },
+    admin: {
+      name: [32m'John Admin'[39m,
+      email: [32m'admin-e2e-test-1750091629852-887560-8jdatv-626196@e2e-test.local'[39m,
+      password: [32m'TestPassword123!'[39m,
+      password_confirmation: [32m'TestPassword123!'[39m
+    }
+  }
+}
+[32m[10:33:49 AM] INFO: 🔍 Started job monitoring session: e2e-test-1750091629852-887560-8jdatv-626196_1750091629894_xuv73g for tenant: e2e-test-1750091629852-887560-8jdatv-626196[0m
+[31m[10:33:51 AM] ERROR: Failed to discover tenant jobs for e2e-test-1750091629852-887560-8jdatv-626196:[0m
+[32m[10:33:51 AM] INFO: 📭 No tenant creation jobs found for: e2e-test-1750091629852-887560-8jdatv-626196[0m
+[32m[10:33:51 AM] INFO: 🏁 Ended monitoring session: e2e-test-1750091629852-887560-8jdatv-626196_1750091629894_xuv73g[0m
+📡 API Response 201 {"success":true,"data":{"token":"1|XgHVYjJV0GzQ4qUFjee5jWdINlKAsUPAJoZHzrCSfcb1d2f1","progress_id":"tenant_6850476e089a3","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1750091629852-887560-8jdatv-626196@e2e-test.local","membership":null,"email_verified_at":null,"tenant_id":"77836966-0a43-48a5-a662-a8e2dee77554","tenant":{"id":"77836966-0a43-48a5-a662-a8e2dee77554","name":"Enhanced Word Test School 1","slug":"e2e-test-1750091629852-887560-8jdatv-626196","status":"trial"}}},"message":"Organization created successfully. Please check your email to verify your account."}
+📡 API Response 201: {"success":true,"data":{"token":"1|XgHVYjJV0GzQ4qUFjee5jWdINlKAsUPAJoZHzrCSfcb1d2f1","progress_id":"tenant_6850476e089a3","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1750091629852-887560-8jdatv-626196@e2e-test.local","membership":null,"email_verified_at":null,"tenant_id":"77836966-0a43-48a5-a662-a8e2dee77554","tenant":{"id":"77836966-0a43-48a5-a662-a8e2dee77554","name":"Enhanced Word Test School 1","slug":"e2e-test-1750091629852-887560-8jdatv-626196","status":"trial"}}},"message":...
+[32m[10:33:58 AM] INFO: 📋 Registering tenant 2...[0m
+🌐 API POST http://localhost:8000/api/auth/register-tenant-admin {
+  headers: { [32m'Content-Type'[39m: [32m'application/json'[39m, Accept: [32m'application/json'[39m },
+  body: {
+    tenant: {
+      name: [32m'Enhanced Word Test School 2'[39m,
+      slug: [32m'e2e-test-1750091629852-887560-yffjmm-675797'[39m,
+      description: [32m'A test school district for language learning'[39m
+    },
+    admin: {
+      name: [32m'John Admin'[39m,
+      email: [32m'admin-e2e-test-1750091629852-887560-yffjmm-675797@e2e-test.local'[39m,
+      password: [32m'TestPassword123!'[39m,
+      password_confirmation: [32m'TestPassword123!'[39m
+    }
+  }
+}
+[32m[10:33:58 AM] INFO: 🔍 Started job monitoring session: e2e-test-1750091629852-887560-yffjmm-675797_1750091638306_z0uu0z for tenant: e2e-test-1750091629852-887560-yffjmm-675797[0m
+[31m[10:34:00 AM] ERROR: Failed to discover tenant jobs for e2e-test-1750091629852-887560-yffjmm-675797:[0m
+[32m[10:34:00 AM] INFO: 📭 No tenant creation jobs found for: e2e-test-1750091629852-887560-yffjmm-675797[0m
+[32m[10:34:00 AM] INFO: 🏁 Ended monitoring session: e2e-test-1750091629852-887560-yffjmm-675797_1750091638306_z0uu0z[0m
+📡 API Response 201 {"success":true,"data":{"token":"1|9kcr3EMl43WJEK0isRducIkXap0dOkRPKUAZUBE764ae91e1","progress_id":"tenant_6850477688c62","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1750091629852-887560-yffjmm-675797@e2e-test.local","membership":null,"email_verified_at":null,"tenant_id":"444cabb3-1d45-43b0-b21c-957e25787889","tenant":{"id":"444cabb3-1d45-43b0-b21c-957e25787889","name":"Enhanced Word Test School 2","slug":"e2e-test-1750091629852-887560-yffjmm-675797","status":"trial"}}},"message":"Organization created successfully. Please check your email to verify your account."}
+📡 API Response 201: {"success":true,"data":{"token":"1|9kcr3EMl43WJEK0isRducIkXap0dOkRPKUAZUBE764ae91e1","progress_id":"tenant_6850477688c62","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1750091629852-887560-yffjmm-675797@e2e-test.local","membership":null,"email_verified_at":null,"tenant_id":"444cabb3-1d45-43b0-b21c-957e25787889","tenant":{"id":"444cabb3-1d45-43b0-b21c-957e25787889","name":"Enhanced Word Test School 2","slug":"e2e-test-1750091629852-887560-yffjmm-675797","status":"trial"}}},"message":...
+[32m[10:34:06 AM] INFO: ✅ Tenants registered successfully: e2e-test-1750091629852-887560-8jdatv-626196, e2e-test-1750091629852-887560-yffjmm-675797[0m
+[32m[10:34:08 AM] INFO: ✅ Role-based test users configured[0m
+[32m[10:34:08 AM] INFO: 🚀 Starting enhanced validation for tenant: home[0m
+[32m[10:34:08 AM] INFO: 🔍 Started job monitoring session: home_1750091648181_yn2ang for tenant: home[0m
+[32m[10:34:08 AM] INFO: ⏭️ Skipping validation due to environment variable[0m
+[32m[10:34:08 AM] INFO: ✅ Validation completed successfully for tenant: home[0m
+[31m[10:34:08 AM] ERROR: 💥 Test failed: should perform CRUD operations with comprehensive monitoring[0m
+🗑️  Cleaning up all test tenants...
+🗑️  Cleaning up tenant: e2e-test-1750091629852-887560-8jdatv-626196
+🗑️  Cleaning up tenant: e2e-test-1750091629852-887560-yffjmm-675797
+[31m[10:34:11 AM] ERROR: ❌ Enhanced cleanup failed:[0m
+]]>
+</system-out>
+<system-err>
+<![CDATA[Enhanced tenant validation failed for home: TypeError: Reduce of empty array with no initial value
+    at Array.reduce (<anonymous>)
+    at PerformanceCollector.generateReport [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mvalidation/core/PerformanceCollector.ts:396:44[90m)[39m
+    at PerformanceCollector.endSession [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mvalidation/core/PerformanceCollector.ts:372:25[90m)[39m
+    at ValidationManager.validateTenant [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mvalidation/core/ValidationManager.ts:158:50[90m)[39m
+    at Object.validateTenant [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mutils/validation-helpers.ts:421:23[90m)[39m
+    at validateEnhancedTenantSetup [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mutils/validation-helpers.ts:454:5[90m)[39m
+    at [90m/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mtests/Tenant/backend/API/Word/team-word-controller-enhanced.spec.ts:183:5
+    at [90m/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/testInfo.js:277:11
+    at TimeoutManager.withRunnable [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/timeoutManager.js:67:14[90m)[39m
+    at TestInfoImpl._runWithTimeout [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/testInfo.js:275:7[90m)[39m
+    at FixtureRunner.resolveParametersAndRunFunction [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/fixtureRunner.js:223:5[90m)[39m
+    at [90m/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:460:11
+    at TestInfoImpl._runAsStep [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/testInfo.js:266:7[90m)[39m
+    at WorkerMain._runEachHooksForSuites [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:459:9[90m)[39m
+    at [90m/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:296:9
+    at TestInfoImpl._runAsStep [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/testInfo.js:266:7[90m)[39m
+    at [90m/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:292:7
+    at WorkerMain._runTest [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:277:5[90m)[39m
+    at WorkerMain.runTestGroup [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:193:11[90m)[39m
+    at process.<anonymous> [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/common/process.js:70:22[90m)[39m
+]]>
+</system-err>
+</testcase>
+<testcase name="Enhanced Team Word Controller API - Complete Integration Test Suite › Enhanced Bulk Operations Testing › should handle bulk operations with performance monitoring" classname="Tenant/backend/API/Word/team-word-controller-enhanced.spec.ts" time="0.186">
+<failure message="team-word-controller-enhanced.spec.ts:668:9 should handle bulk operations with performance monitoring" type="FAILURE">
+<![CDATA[  [chromium] › Tenant/backend/API/Word/team-word-controller-enhanced.spec.ts:668:9 › Enhanced Team Word Controller API - Complete Integration Test Suite › Enhanced Bulk Operations Testing › should handle bulk operations with performance monitoring 
+
+    TypeError: Reduce of empty array with no initial value
+
+       at ../validation/core/PerformanceCollector.ts:396
+
+      394 |     
+      395 |     const validatorDurations = allValidators.map(v => v.duration);
+    > 396 |     const fastestValidator = allValidators.reduce((prev, curr) => 
+          |                                            ^
+      397 |       prev.duration < curr.duration ? prev : curr
+      398 |     );
+      399 |     const slowestValidator = allValidators.reduce((prev, curr) => 
+        at PerformanceCollector.generateReport (/home/onionlake-admin/PROJECT/gol_2025/e2e/validation/core/PerformanceCollector.ts:396:44)
+        at PerformanceCollector.endSession (/home/onionlake-admin/PROJECT/gol_2025/e2e/validation/core/PerformanceCollector.ts:372:25)
+        at ValidationManager.validateTenant (/home/onionlake-admin/PROJECT/gol_2025/e2e/validation/core/ValidationManager.ts:158:50)
+        at Object.validateTenant (/home/onionlake-admin/PROJECT/gol_2025/e2e/utils/validation-helpers.ts:421:23)
+        at validateEnhancedTenantSetup (/home/onionlake-admin/PROJECT/gol_2025/e2e/utils/validation-helpers.ts:454:5)
+        at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller-enhanced.spec.ts:183:5
+]]>
+</failure>
+<system-out>
+<![CDATA[[32m[10:34:16 AM] INFO: 🚀 Starting enhanced tenant setup with validation...[0m
+[32m[10:34:16 AM] INFO: 📋 Registering tenant 1...[0m
+🌐 API POST http://localhost:8000/api/auth/register-tenant-admin {
+  headers: { [32m'Content-Type'[39m: [32m'application/json'[39m, Accept: [32m'application/json'[39m },
+  body: {
+    tenant: {
+      name: [32m'Enhanced Word Test School 1'[39m,
+      slug: [32m'e2e-test-1750091656129-888459-ozq7en-915685'[39m,
+      description: [32m'A test school district for language learning'[39m
+    },
+    admin: {
+      name: [32m'John Admin'[39m,
+      email: [32m'admin-e2e-test-1750091656129-888459-ozq7en-915685@e2e-test.local'[39m,
+      password: [32m'TestPassword123!'[39m,
+      password_confirmation: [32m'TestPassword123!'[39m
+    }
+  }
+}
+[32m[10:34:16 AM] INFO: 🔍 Started job monitoring session: e2e-test-1750091656129-888459-ozq7en-915685_1750091656166_nckboh for tenant: e2e-test-1750091656129-888459-ozq7en-915685[0m
+[31m[10:34:18 AM] ERROR: Failed to discover tenant jobs for e2e-test-1750091656129-888459-ozq7en-915685:[0m
+[32m[10:34:18 AM] INFO: 📭 No tenant creation jobs found for: e2e-test-1750091656129-888459-ozq7en-915685[0m
+[32m[10:34:18 AM] INFO: 🏁 Ended monitoring session: e2e-test-1750091656129-888459-ozq7en-915685_1750091656166_nckboh[0m
+📡 API Response 201 {"success":true,"data":{"token":"1|0srCnCELhLM6ayLB9LcRUPqR7DyD4zzqEyFVjEsab32666b9","progress_id":"tenant_6850478846ddb","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1750091656129-888459-ozq7en-915685@e2e-test.local","membership":null,"email_verified_at":null,"tenant_id":"60785cef-ba37-4a9f-9f6d-caa29ac4e563","tenant":{"id":"60785cef-ba37-4a9f-9f6d-caa29ac4e563","name":"Enhanced Word Test School 1","slug":"e2e-test-1750091656129-888459-ozq7en-915685","status":"trial"}}},"message":"Organization created successfully. Please check your email to verify your account."}
+📡 API Response 201: {"success":true,"data":{"token":"1|0srCnCELhLM6ayLB9LcRUPqR7DyD4zzqEyFVjEsab32666b9","progress_id":"tenant_6850478846ddb","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1750091656129-888459-ozq7en-915685@e2e-test.local","membership":null,"email_verified_at":null,"tenant_id":"60785cef-ba37-4a9f-9f6d-caa29ac4e563","tenant":{"id":"60785cef-ba37-4a9f-9f6d-caa29ac4e563","name":"Enhanced Word Test School 1","slug":"e2e-test-1750091656129-888459-ozq7en-915685","status":"trial"}}},"message":...
+[32m[10:34:24 AM] INFO: 📋 Registering tenant 2...[0m
+🌐 API POST http://localhost:8000/api/auth/register-tenant-admin {
+  headers: { [32m'Content-Type'[39m: [32m'application/json'[39m, Accept: [32m'application/json'[39m },
+  body: {
+    tenant: {
+      name: [32m'Enhanced Word Test School 2'[39m,
+      slug: [32m'e2e-test-1750091656129-888459-2r7vjn-969986'[39m,
+      description: [32m'A test school district for language learning'[39m
+    },
+    admin: {
+      name: [32m'John Admin'[39m,
+      email: [32m'admin-e2e-test-1750091656129-888459-2r7vjn-969986@e2e-test.local'[39m,
+      password: [32m'TestPassword123!'[39m,
+      password_confirmation: [32m'TestPassword123!'[39m
+    }
+  }
+}
+[32m[10:34:24 AM] INFO: 🔍 Started job monitoring session: e2e-test-1750091656129-888459-2r7vjn-969986_1750091664240_nphosm for tenant: e2e-test-1750091656129-888459-2r7vjn-969986[0m
+[31m[10:34:26 AM] ERROR: Failed to discover tenant jobs for e2e-test-1750091656129-888459-2r7vjn-969986:[0m
+[32m[10:34:26 AM] INFO: 📭 No tenant creation jobs found for: e2e-test-1750091656129-888459-2r7vjn-969986[0m
+[32m[10:34:26 AM] INFO: 🏁 Ended monitoring session: e2e-test-1750091656129-888459-2r7vjn-969986_1750091664240_nphosm[0m
+📡 API Response 201 {"success":true,"data":{"token":"1|jHeTGJzmKdOSGXHUf0wb6MlvlvzX5FBTirqhksJa6f431211","progress_id":"tenant_685047905ebd2","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1750091656129-888459-2r7vjn-969986@e2e-test.local","membership":null,"email_verified_at":null,"tenant_id":"824019f9-8ed6-423d-a270-10664a1e2183","tenant":{"id":"824019f9-8ed6-423d-a270-10664a1e2183","name":"Enhanced Word Test School 2","slug":"e2e-test-1750091656129-888459-2r7vjn-969986","status":"trial"}}},"message":"Organization created successfully. Please check your email to verify your account."}
+📡 API Response 201: {"success":true,"data":{"token":"1|jHeTGJzmKdOSGXHUf0wb6MlvlvzX5FBTirqhksJa6f431211","progress_id":"tenant_685047905ebd2","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1750091656129-888459-2r7vjn-969986@e2e-test.local","membership":null,"email_verified_at":null,"tenant_id":"824019f9-8ed6-423d-a270-10664a1e2183","tenant":{"id":"824019f9-8ed6-423d-a270-10664a1e2183","name":"Enhanced Word Test School 2","slug":"e2e-test-1750091656129-888459-2r7vjn-969986","status":"trial"}}},"message":...
+[32m[10:34:32 AM] INFO: ✅ Tenants registered successfully: e2e-test-1750091656129-888459-ozq7en-915685, e2e-test-1750091656129-888459-2r7vjn-969986[0m
+[32m[10:34:33 AM] INFO: ✅ Role-based test users configured[0m
+[32m[10:34:33 AM] INFO: 🚀 Starting enhanced validation for tenant: home[0m
+[32m[10:34:33 AM] INFO: 🔍 Started job monitoring session: home_1750091673757_h0mdz8 for tenant: home[0m
+[32m[10:34:33 AM] INFO: ⏭️ Skipping validation due to environment variable[0m
+[32m[10:34:33 AM] INFO: ✅ Validation completed successfully for tenant: home[0m
+[31m[10:34:33 AM] ERROR: 💥 Test failed: should handle bulk operations with performance monitoring[0m
+🗑️  Cleaning up all test tenants...
+🗑️  Cleaning up tenant: e2e-test-1750091656129-888459-ozq7en-915685
+🗑️  Cleaning up tenant: e2e-test-1750091656129-888459-2r7vjn-969986
+[31m[10:34:37 AM] ERROR: ❌ Enhanced cleanup failed:[0m
+]]>
+</system-out>
+<system-err>
+<![CDATA[Enhanced tenant validation failed for home: TypeError: Reduce of empty array with no initial value
+    at Array.reduce (<anonymous>)
+    at PerformanceCollector.generateReport [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mvalidation/core/PerformanceCollector.ts:396:44[90m)[39m
+    at PerformanceCollector.endSession [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mvalidation/core/PerformanceCollector.ts:372:25[90m)[39m
+    at ValidationManager.validateTenant [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mvalidation/core/ValidationManager.ts:158:50[90m)[39m
+    at Object.validateTenant [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mutils/validation-helpers.ts:421:23[90m)[39m
+    at validateEnhancedTenantSetup [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mutils/validation-helpers.ts:454:5[90m)[39m
+    at [90m/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mtests/Tenant/backend/API/Word/team-word-controller-enhanced.spec.ts:183:5
+    at [90m/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/testInfo.js:277:11
+    at TimeoutManager.withRunnable [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/timeoutManager.js:67:14[90m)[39m
+    at TestInfoImpl._runWithTimeout [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/testInfo.js:275:7[90m)[39m
+    at FixtureRunner.resolveParametersAndRunFunction [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/fixtureRunner.js:223:5[90m)[39m
+    at [90m/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:460:11
+    at TestInfoImpl._runAsStep [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/testInfo.js:266:7[90m)[39m
+    at WorkerMain._runEachHooksForSuites [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:459:9[90m)[39m
+    at [90m/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:296:9
+    at TestInfoImpl._runAsStep [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/testInfo.js:266:7[90m)[39m
+    at [90m/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:292:7
+    at WorkerMain._runTest [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:277:5[90m)[39m
+    at WorkerMain.runTestGroup [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:193:11[90m)[39m
+    at process.<anonymous> [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/common/process.js:70:22[90m)[39m
+]]>
+</system-err>
+</testcase>
+<testcase name="Enhanced Team Word Controller API - Complete Integration Test Suite › Enhanced Error Handling &amp; Edge Cases › should handle timeout scenarios gracefully" classname="Tenant/backend/API/Word/team-word-controller-enhanced.spec.ts" time="0.113">
+<failure message="team-word-controller-enhanced.spec.ts:707:9 should handle timeout scenarios gracefully" type="FAILURE">
+<![CDATA[  [chromium] › Tenant/backend/API/Word/team-word-controller-enhanced.spec.ts:707:9 › Enhanced Team Word Controller API - Complete Integration Test Suite › Enhanced Error Handling & Edge Cases › should handle timeout scenarios gracefully 
+
+    TypeError: Reduce of empty array with no initial value
+
+       at ../validation/core/PerformanceCollector.ts:396
+
+      394 |     
+      395 |     const validatorDurations = allValidators.map(v => v.duration);
+    > 396 |     const fastestValidator = allValidators.reduce((prev, curr) => 
+          |                                            ^
+      397 |       prev.duration < curr.duration ? prev : curr
+      398 |     );
+      399 |     const slowestValidator = allValidators.reduce((prev, curr) => 
+        at PerformanceCollector.generateReport (/home/onionlake-admin/PROJECT/gol_2025/e2e/validation/core/PerformanceCollector.ts:396:44)
+        at PerformanceCollector.endSession (/home/onionlake-admin/PROJECT/gol_2025/e2e/validation/core/PerformanceCollector.ts:372:25)
+        at ValidationManager.validateTenant (/home/onionlake-admin/PROJECT/gol_2025/e2e/validation/core/ValidationManager.ts:158:50)
+        at Object.validateTenant (/home/onionlake-admin/PROJECT/gol_2025/e2e/utils/validation-helpers.ts:421:23)
+        at validateEnhancedTenantSetup (/home/onionlake-admin/PROJECT/gol_2025/e2e/utils/validation-helpers.ts:454:5)
+        at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller-enhanced.spec.ts:183:5
+]]>
+</failure>
+<system-out>
+<![CDATA[[32m[10:34:40 AM] INFO: 🚀 Starting enhanced tenant setup with validation...[0m
+[32m[10:34:40 AM] INFO: 📋 Registering tenant 1...[0m
+🌐 API POST http://localhost:8000/api/auth/register-tenant-admin {
+  headers: { [32m'Content-Type'[39m: [32m'application/json'[39m, Accept: [32m'application/json'[39m },
+  body: {
+    tenant: {
+      name: [32m'Enhanced Word Test School 1'[39m,
+      slug: [32m'e2e-test-1750091680526-889279-6hlwyg-205844'[39m,
+      description: [32m'A test school district for language learning'[39m
+    },
+    admin: {
+      name: [32m'John Admin'[39m,
+      email: [32m'admin-e2e-test-1750091680526-889279-6hlwyg-205844@e2e-test.local'[39m,
+      password: [32m'TestPassword123!'[39m,
+      password_confirmation: [32m'TestPassword123!'[39m
+    }
+  }
+}
+[32m[10:34:40 AM] INFO: 🔍 Started job monitoring session: e2e-test-1750091680526-889279-6hlwyg-205844_1750091680563_3ooizz for tenant: e2e-test-1750091680526-889279-6hlwyg-205844[0m
+[31m[10:34:42 AM] ERROR: Failed to discover tenant jobs for e2e-test-1750091680526-889279-6hlwyg-205844:[0m
+[32m[10:34:42 AM] INFO: 📭 No tenant creation jobs found for: e2e-test-1750091680526-889279-6hlwyg-205844[0m
+[32m[10:34:42 AM] INFO: 🏁 Ended monitoring session: e2e-test-1750091680526-889279-6hlwyg-205844_1750091680563_3ooizz[0m
+📡 API Response 201 {"success":true,"data":{"token":"1|aSHoUME0RrK3xkwrbjj8krNNxeVp8QTT6QMVSfAFed6d460f","progress_id":"tenant_685047a0a832e","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1750091680526-889279-6hlwyg-205844@e2e-test.local","membership":null,"email_verified_at":null,"tenant_id":"b4aab89c-0ba3-4486-ba5e-dfdac2145860","tenant":{"id":"b4aab89c-0ba3-4486-ba5e-dfdac2145860","name":"Enhanced Word Test School 1","slug":"e2e-test-1750091680526-889279-6hlwyg-205844","status":"trial"}}},"message":"Organization created successfully. Please check your email to verify your account."}
+📡 API Response 201: {"success":true,"data":{"token":"1|aSHoUME0RrK3xkwrbjj8krNNxeVp8QTT6QMVSfAFed6d460f","progress_id":"tenant_685047a0a832e","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1750091680526-889279-6hlwyg-205844@e2e-test.local","membership":null,"email_verified_at":null,"tenant_id":"b4aab89c-0ba3-4486-ba5e-dfdac2145860","tenant":{"id":"b4aab89c-0ba3-4486-ba5e-dfdac2145860","name":"Enhanced Word Test School 1","slug":"e2e-test-1750091680526-889279-6hlwyg-205844","status":"trial"}}},"message":...
+[32m[10:34:48 AM] INFO: 📋 Registering tenant 2...[0m
+🌐 API POST http://localhost:8000/api/auth/register-tenant-admin {
+  headers: { [32m'Content-Type'[39m: [32m'application/json'[39m, Accept: [32m'application/json'[39m },
+  body: {
+    tenant: {
+      name: [32m'Enhanced Word Test School 2'[39m,
+      slug: [32m'e2e-test-1750091680526-889279-g8t9qe-256945'[39m,
+      description: [32m'A test school district for language learning'[39m
+    },
+    admin: {
+      name: [32m'John Admin'[39m,
+      email: [32m'admin-e2e-test-1750091680526-889279-g8t9qe-256945@e2e-test.local'[39m,
+      password: [32m'TestPassword123!'[39m,
+      password_confirmation: [32m'TestPassword123!'[39m
+    }
+  }
+}
+[32m[10:34:48 AM] INFO: 🔍 Started job monitoring session: e2e-test-1750091680526-889279-g8t9qe-256945_1750091688351_l9i5ra for tenant: e2e-test-1750091680526-889279-g8t9qe-256945[0m
+[31m[10:34:50 AM] ERROR: Failed to discover tenant jobs for e2e-test-1750091680526-889279-g8t9qe-256945:[0m
+[32m[10:34:50 AM] INFO: 📭 No tenant creation jobs found for: e2e-test-1750091680526-889279-g8t9qe-256945[0m
+[32m[10:34:50 AM] INFO: 🏁 Ended monitoring session: e2e-test-1750091680526-889279-g8t9qe-256945_1750091688351_l9i5ra[0m
+📡 API Response 201 {"success":true,"data":{"token":"1|8tVCBPTK3ur5U8ng3VKU9UTSSn1AxkBQKeCxwGVLe646fe74","progress_id":"tenant_685047a88ffb6","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1750091680526-889279-g8t9qe-256945@e2e-test.local","membership":null,"email_verified_at":null,"tenant_id":"58ade086-673c-4069-93cb-84eb3e608ddd","tenant":{"id":"58ade086-673c-4069-93cb-84eb3e608ddd","name":"Enhanced Word Test School 2","slug":"e2e-test-1750091680526-889279-g8t9qe-256945","status":"trial"}}},"message":"Organization created successfully. Please check your email to verify your account."}
+📡 API Response 201: {"success":true,"data":{"token":"1|8tVCBPTK3ur5U8ng3VKU9UTSSn1AxkBQKeCxwGVLe646fe74","progress_id":"tenant_685047a88ffb6","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1750091680526-889279-g8t9qe-256945@e2e-test.local","membership":null,"email_verified_at":null,"tenant_id":"58ade086-673c-4069-93cb-84eb3e608ddd","tenant":{"id":"58ade086-673c-4069-93cb-84eb3e608ddd","name":"Enhanced Word Test School 2","slug":"e2e-test-1750091680526-889279-g8t9qe-256945","status":"trial"}}},"message":...
+[32m[10:34:56 AM] INFO: ✅ Tenants registered successfully: e2e-test-1750091680526-889279-6hlwyg-205844, e2e-test-1750091680526-889279-g8t9qe-256945[0m
+[32m[10:34:58 AM] INFO: ✅ Role-based test users configured[0m
+[32m[10:34:58 AM] INFO: 🚀 Starting enhanced validation for tenant: home[0m
+[32m[10:34:58 AM] INFO: 🔍 Started job monitoring session: home_1750091698170_25qa22 for tenant: home[0m
+[32m[10:34:58 AM] INFO: ⏭️ Skipping validation due to environment variable[0m
+[32m[10:34:58 AM] INFO: ✅ Validation completed successfully for tenant: home[0m
+[31m[10:34:58 AM] ERROR: 💥 Test failed: should handle timeout scenarios gracefully[0m
+🗑️  Cleaning up all test tenants...
+🗑️  Cleaning up tenant: e2e-test-1750091680526-889279-6hlwyg-205844
+🗑️  Cleaning up tenant: e2e-test-1750091680526-889279-g8t9qe-256945
+[31m[10:35:01 AM] ERROR: ❌ Enhanced cleanup failed:[0m
+]]>
+</system-out>
+<system-err>
+<![CDATA[Enhanced tenant validation failed for home: TypeError: Reduce of empty array with no initial value
+    at Array.reduce (<anonymous>)
+    at PerformanceCollector.generateReport [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mvalidation/core/PerformanceCollector.ts:396:44[90m)[39m
+    at PerformanceCollector.endSession [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mvalidation/core/PerformanceCollector.ts:372:25[90m)[39m
+    at ValidationManager.validateTenant [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mvalidation/core/ValidationManager.ts:158:50[90m)[39m
+    at Object.validateTenant [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mutils/validation-helpers.ts:421:23[90m)[39m
+    at validateEnhancedTenantSetup [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mutils/validation-helpers.ts:454:5[90m)[39m
+    at [90m/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mtests/Tenant/backend/API/Word/team-word-controller-enhanced.spec.ts:183:5
+    at [90m/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/testInfo.js:277:11
+    at TimeoutManager.withRunnable [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/timeoutManager.js:67:14[90m)[39m
+    at TestInfoImpl._runWithTimeout [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/testInfo.js:275:7[90m)[39m
+    at FixtureRunner.resolveParametersAndRunFunction [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/fixtureRunner.js:223:5[90m)[39m
+    at [90m/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:460:11
+    at TestInfoImpl._runAsStep [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/testInfo.js:266:7[90m)[39m
+    at WorkerMain._runEachHooksForSuites [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:459:9[90m)[39m
+    at [90m/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:296:9
+    at TestInfoImpl._runAsStep [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/testInfo.js:266:7[90m)[39m
+    at [90m/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:292:7
+    at WorkerMain._runTest [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:277:5[90m)[39m
+    at WorkerMain.runTestGroup [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:193:11[90m)[39m
+    at process.<anonymous> [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/common/process.js:70:22[90m)[39m
+]]>
+</system-err>
+</testcase>
+<testcase name="Enhanced Team Word Controller API - Complete Integration Test Suite › Enhanced Error Handling &amp; Edge Cases › should provide actionable error messages with diagnostic information" classname="Tenant/backend/API/Word/team-word-controller-enhanced.spec.ts" time="0.091">
+<failure message="team-word-controller-enhanced.spec.ts:751:9 should provide actionable error messages with diagnostic information" type="FAILURE">
+<![CDATA[  [chromium] › Tenant/backend/API/Word/team-word-controller-enhanced.spec.ts:751:9 › Enhanced Team Word Controller API - Complete Integration Test Suite › Enhanced Error Handling & Edge Cases › should provide actionable error messages with diagnostic information 
+
+    TypeError: Reduce of empty array with no initial value
+
+       at ../validation/core/PerformanceCollector.ts:396
+
+      394 |     
+      395 |     const validatorDurations = allValidators.map(v => v.duration);
+    > 396 |     const fastestValidator = allValidators.reduce((prev, curr) => 
+          |                                            ^
+      397 |       prev.duration < curr.duration ? prev : curr
+      398 |     );
+      399 |     const slowestValidator = allValidators.reduce((prev, curr) => 
+        at PerformanceCollector.generateReport (/home/onionlake-admin/PROJECT/gol_2025/e2e/validation/core/PerformanceCollector.ts:396:44)
+        at PerformanceCollector.endSession (/home/onionlake-admin/PROJECT/gol_2025/e2e/validation/core/PerformanceCollector.ts:372:25)
+        at ValidationManager.validateTenant (/home/onionlake-admin/PROJECT/gol_2025/e2e/validation/core/ValidationManager.ts:158:50)
+        at Object.validateTenant (/home/onionlake-admin/PROJECT/gol_2025/e2e/utils/validation-helpers.ts:421:23)
+        at validateEnhancedTenantSetup (/home/onionlake-admin/PROJECT/gol_2025/e2e/utils/validation-helpers.ts:454:5)
+        at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller-enhanced.spec.ts:183:5
+]]>
+</failure>
+<system-out>
+<![CDATA[[32m[10:35:04 AM] INFO: 🚀 Starting enhanced tenant setup with validation...[0m
+[32m[10:35:04 AM] INFO: 📋 Registering tenant 1...[0m
+🌐 API POST http://localhost:8000/api/auth/register-tenant-admin {
+  headers: { [32m'Content-Type'[39m: [32m'application/json'[39m, Accept: [32m'application/json'[39m },
+  body: {
+    tenant: {
+      name: [32m'Enhanced Word Test School 1'[39m,
+      slug: [32m'e2e-test-1750091704731-890080-3o2jtw-356039'[39m,
+      description: [32m'A test school district for language learning'[39m
+    },
+    admin: {
+      name: [32m'John Admin'[39m,
+      email: [32m'admin-e2e-test-1750091704731-890080-3o2jtw-356039@e2e-test.local'[39m,
+      password: [32m'TestPassword123!'[39m,
+      password_confirmation: [32m'TestPassword123!'[39m
+    }
+  }
+}
+[32m[10:35:04 AM] INFO: 🔍 Started job monitoring session: e2e-test-1750091704731-890080-3o2jtw-356039_1750091704771_iihsfu for tenant: e2e-test-1750091704731-890080-3o2jtw-356039[0m
+[31m[10:35:06 AM] ERROR: Failed to discover tenant jobs for e2e-test-1750091704731-890080-3o2jtw-356039:[0m
+[32m[10:35:06 AM] INFO: 📭 No tenant creation jobs found for: e2e-test-1750091704731-890080-3o2jtw-356039[0m
+[32m[10:35:06 AM] INFO: 🏁 Ended monitoring session: e2e-test-1750091704731-890080-3o2jtw-356039_1750091704771_iihsfu[0m
+📡 API Response 201 {"success":true,"data":{"token":"1|8ySdQdFLdMVzJwTEzzzBZCjMhn55fW0AkSa4LnA07fe6b79c","progress_id":"tenant_685047b904567","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1750091704731-890080-3o2jtw-356039@e2e-test.local","membership":null,"email_verified_at":null,"tenant_id":"2c0c9a67-5176-4099-aa6f-83c0ed8c9ba7","tenant":{"id":"2c0c9a67-5176-4099-aa6f-83c0ed8c9ba7","name":"Enhanced Word Test School 1","slug":"e2e-test-1750091704731-890080-3o2jtw-356039","status":"trial"}}},"message":"Organization created successfully. Please check your email to verify your account."}
+📡 API Response 201: {"success":true,"data":{"token":"1|8ySdQdFLdMVzJwTEzzzBZCjMhn55fW0AkSa4LnA07fe6b79c","progress_id":"tenant_685047b904567","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1750091704731-890080-3o2jtw-356039@e2e-test.local","membership":null,"email_verified_at":null,"tenant_id":"2c0c9a67-5176-4099-aa6f-83c0ed8c9ba7","tenant":{"id":"2c0c9a67-5176-4099-aa6f-83c0ed8c9ba7","name":"Enhanced Word Test School 1","slug":"e2e-test-1750091704731-890080-3o2jtw-356039","status":"trial"}}},"message":...
+[32m[10:35:12 AM] INFO: 📋 Registering tenant 2...[0m
+🌐 API POST http://localhost:8000/api/auth/register-tenant-admin {
+  headers: { [32m'Content-Type'[39m: [32m'application/json'[39m, Accept: [32m'application/json'[39m },
+  body: {
+    tenant: {
+      name: [32m'Enhanced Word Test School 2'[39m,
+      slug: [32m'e2e-test-1750091704731-890080-kf42db-408240'[39m,
+      description: [32m'A test school district for language learning'[39m
+    },
+    admin: {
+      name: [32m'John Admin'[39m,
+      email: [32m'admin-e2e-test-1750091704731-890080-kf42db-408240@e2e-test.local'[39m,
+      password: [32m'TestPassword123!'[39m,
+      password_confirmation: [32m'TestPassword123!'[39m
+    }
+  }
+}
+[32m[10:35:12 AM] INFO: 🔍 Started job monitoring session: e2e-test-1750091704731-890080-kf42db-408240_1750091712689_6o64if for tenant: e2e-test-1750091704731-890080-kf42db-408240[0m
+[31m[10:35:14 AM] ERROR: Failed to discover tenant jobs for e2e-test-1750091704731-890080-kf42db-408240:[0m
+[32m[10:35:14 AM] INFO: 📭 No tenant creation jobs found for: e2e-test-1750091704731-890080-kf42db-408240[0m
+[32m[10:35:14 AM] INFO: 🏁 Ended monitoring session: e2e-test-1750091704731-890080-kf42db-408240_1750091712689_6o64if[0m
+📡 API Response 201 {"success":true,"data":{"token":"1|mWNG0qslXJJINjM9y3NDdThOI1KES5HNmuoWZYukfbf65560","progress_id":"tenant_685047c0ccdde","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1750091704731-890080-kf42db-408240@e2e-test.local","membership":null,"email_verified_at":null,"tenant_id":"5aa7b30d-f8ba-47b3-89b4-8bdb934b0372","tenant":{"id":"5aa7b30d-f8ba-47b3-89b4-8bdb934b0372","name":"Enhanced Word Test School 2","slug":"e2e-test-1750091704731-890080-kf42db-408240","status":"trial"}}},"message":"Organization created successfully. Please check your email to verify your account."}
+📡 API Response 201: {"success":true,"data":{"token":"1|mWNG0qslXJJINjM9y3NDdThOI1KES5HNmuoWZYukfbf65560","progress_id":"tenant_685047c0ccdde","user":{"id":1,"name":"John Admin","email":"admin-e2e-test-1750091704731-890080-kf42db-408240@e2e-test.local","membership":null,"email_verified_at":null,"tenant_id":"5aa7b30d-f8ba-47b3-89b4-8bdb934b0372","tenant":{"id":"5aa7b30d-f8ba-47b3-89b4-8bdb934b0372","name":"Enhanced Word Test School 2","slug":"e2e-test-1750091704731-890080-kf42db-408240","status":"trial"}}},"message":...
+[32m[10:35:20 AM] INFO: ✅ Tenants registered successfully: e2e-test-1750091704731-890080-3o2jtw-356039, e2e-test-1750091704731-890080-kf42db-408240[0m
+[32m[10:35:21 AM] INFO: ✅ Role-based test users configured[0m
+[32m[10:35:21 AM] INFO: 🚀 Starting enhanced validation for tenant: home[0m
+[32m[10:35:21 AM] INFO: 🔍 Started job monitoring session: home_1750091721632_ur8662 for tenant: home[0m
+[32m[10:35:21 AM] INFO: ⏭️ Skipping validation due to environment variable[0m
+[32m[10:35:21 AM] INFO: ✅ Validation completed successfully for tenant: home[0m
+[31m[10:35:21 AM] ERROR: 💥 Test failed: should provide actionable error messages with diagnostic information[0m
+🗑️  Cleaning up all test tenants...
+🗑️  Cleaning up tenant: e2e-test-1750091704731-890080-3o2jtw-356039
+🗑️  Cleaning up tenant: e2e-test-1750091704731-890080-kf42db-408240
+[31m[10:35:25 AM] ERROR: ❌ Enhanced cleanup failed:[0m
+]]>
+</system-out>
+<system-err>
+<![CDATA[Enhanced tenant validation failed for home: TypeError: Reduce of empty array with no initial value
+    at Array.reduce (<anonymous>)
+    at PerformanceCollector.generateReport [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mvalidation/core/PerformanceCollector.ts:396:44[90m)[39m
+    at PerformanceCollector.endSession [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mvalidation/core/PerformanceCollector.ts:372:25[90m)[39m
+    at ValidationManager.validateTenant [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mvalidation/core/ValidationManager.ts:158:50[90m)[39m
+    at Object.validateTenant [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mutils/validation-helpers.ts:421:23[90m)[39m
+    at validateEnhancedTenantSetup [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mutils/validation-helpers.ts:454:5[90m)[39m
+    at [90m/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mtests/Tenant/backend/API/Word/team-word-controller-enhanced.spec.ts:183:5
+    at [90m/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/testInfo.js:277:11
+    at TimeoutManager.withRunnable [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/timeoutManager.js:67:14[90m)[39m
+    at TestInfoImpl._runWithTimeout [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/testInfo.js:275:7[90m)[39m
+    at FixtureRunner.resolveParametersAndRunFunction [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/fixtureRunner.js:223:5[90m)[39m
+    at [90m/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:460:11
+    at TestInfoImpl._runAsStep [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/testInfo.js:266:7[90m)[39m
+    at WorkerMain._runEachHooksForSuites [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:459:9[90m)[39m
+    at [90m/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:296:9
+    at TestInfoImpl._runAsStep [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/testInfo.js:266:7[90m)[39m
+    at [90m/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:292:7
+    at WorkerMain._runTest [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:277:5[90m)[39m
+    at WorkerMain.runTestGroup [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/worker/workerMain.js:193:11[90m)[39m
+    at process.<anonymous> [90m(/home/onionlake-admin/PROJECT/gol_2025/e2e/[39mnode_modules/[4mplaywright[24m/lib/common/process.js:70:22[90m)[39m
+]]>
+</system-err>
+</testcase>
+</testsuite>
 </testsuites>

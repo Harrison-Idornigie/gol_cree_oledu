@@ -73,6 +73,8 @@ Route::prefix('team')->middleware(['auth:tenant', 'verified'])->group(function (
     Route::prefix('sentences')->group(function () {
         Route::get('/', [TeamSentenceController::class, 'index']);
         Route::post('/', [TeamSentenceController::class, 'store']);
+        Route::get('available-words', [TeamSentenceController::class, 'getAvailableWords']);
+        Route::post('validate-words', [TeamSentenceController::class, 'validateSentenceWords']);
         Route::get('{sentence}', [TeamSentenceController::class, 'show']);
         Route::put('{sentence}', [TeamSentenceController::class, 'update']);
         Route::delete('{sentence}', [TeamSentenceController::class, 'destroy']);
@@ -92,7 +94,7 @@ Route::prefix('team')->middleware(['auth:tenant', 'verified'])->group(function (
         Route::put('{sentence}/words/reorder', [TeamSentenceController::class, 'reorderWords']);
     });
 
-    // Content Management - Full CRUD operations for teams
+    // Learning Management - Full CRUD operations for teams
     Route::apiResource('learning-paths', TeamLearningPathController::class);
     Route::apiResource('units', TeamUnitController::class);
     Route::apiResource('topics', TeamTopicController::class);

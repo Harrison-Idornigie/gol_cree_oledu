@@ -16,14 +16,16 @@ import {
   User,
   Shield,
   BookText,
+  LucideIcon,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { useAuth, useTenant, useTenantAccess } from '@/app/providers/auth-provider';
+import { Tooltip, TooltipProvider } from '@/components/ui/tooltip';
+import { useTenant, useTenantAccess } from '@/app/providers/auth-provider';
 
 interface NavigationItem {
   label: string;
-  icon: any;
+  icon: LucideIcon;
   path: string;
   color: string;
   memberships: string[];
@@ -144,12 +146,12 @@ const navigationItems: NavigationItem[] = [
 
 interface UnifiedSidebarProps {
   membership: string;
+  isCollapsed?: boolean;
 }
 
-export default function UnifiedSidebar({ membership }: UnifiedSidebarProps) {
+export default function UnifiedSidebar({ membership, isCollapsed = false }: UnifiedSidebarProps) {
   const pathname = usePathname();
   const { currentTenant, tenantSlug } = useTenant();
-  const { user } = useAuth();
   const { canAccessMembership } = useTenantAccess();
 
   // Build tenant-aware URL
@@ -194,22 +196,28 @@ export default function UnifiedSidebar({ membership }: UnifiedSidebarProps) {
   const PortalIcon = getPortalIcon();
 
   return (
-    <div className="space-y-4 py-4 flex flex-col h-full bg-slate-50">
-      <div className="px-3 py-2">
-        {/* Portal Header */}
-        <div className="flex items-center gap-2 mb-4 px-4">
-          <PortalIcon className="h-6 w-6 text-primary" />
-          <div>
-            <h2 className="text-lg font-semibold tracking-tight">
-              {getPortalTitle()}
-            </h2>
-            {currentTenant && (
-              <p className="text-xs text-muted-foreground">
-                {currentTenant.name}
-              </p>
+    <TooltipProvider>
+      <div className="space-y-4 py-4 flex flex-col h-full bg-slate-50">
+        <div className={cn("px-3 py-2", isCollapsed && "px-2")}>
+          {/* Portal Header */}
+          <div className={cn(
+            "flex items-center gap-2 mb-4",
+            isCollapsed ? "justify-center px-2" : "px-4"
+          )}>
+            <PortalIcon className="h-6 w-6 text-primary flex-shrink-0" />
+            {!isCollapsed && (
+              <div>
+                <h2 className="text-lg font-semibold tracking-tight">
+                  {getPortalTitle()}
+                </h2>
+                {currentTenant && (
+                  <p className="text-xs text-muted-foreground">
+                    {currentTenant.name}
+                  </p>
+                )}
+              </div>
             )}
           </div>
-        </div>
 
         {/* Navigation */}
         <div className="space-y-1">
@@ -217,42 +225,86 @@ export default function UnifiedSidebar({ membership }: UnifiedSidebarProps) {
             {visibleItems.map((item) => {
               const href = buildUrl(item.path);
               const isActive = pathname === href;
-              
-              return (
+
+              const linkContent = (
                 <Link
                   key={item.path}
                   href={href}
                   className={cn(
-                    'flex items-center w-full p-3 rounded-lg text-sm font-medium hover:text-primary hover:bg-primary/10 transition',
+                    'flex items-center w-full rounded-lg text-sm font-medium hover:text-primary hover:bg-primary/10 transition',
+                    isCollapsed ? 'p-2 justify-center' : 'p-3',
                     isActive
                       ? 'text-primary bg-primary/10'
                       : 'text-muted-foreground'
                   )}
                 >
-                  <item.icon className={cn('h-5 w-5 mr-3', item.color)} />
-                  {item.label}
+                  <item.icon className={cn(
+                    'h-5 w-5 flex-shrink-0',
+                    item.color,
+                    !isCollapsed && 'mr-3'
+                  )} />
+                  {!isCollapsed && (
+                    <span className="truncate">{item.label}</span>
+                  )}
                 </Link>
               );
+
+              if (isCollapsed) {
+                return (
+                  <Tooltip
+                    key={item.path}
+                    side="right"
+                    content={
+                      <div>
+                        <div className="font-medium">{item.label}</div>
+                        {item.description && (
+                          <div className="text-xs opacity-75 mt-1">
+                            {item.description}
+                          </div>
+                        )}
+                      </div>
+                    }
+                  >
+                    {linkContent}
+                  </Tooltip>
+                );
+              }
+
+              return linkContent;
             })}
 
             {/* Cross-membership navigation for elevated users */}
             {canAccessMembership('admin') && membership !== 'admin' && (
               <div className="mt-6 pt-4 border-t">
-                <p className="px-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
-                  Quick Access
-                </p>
-                <Link
-                  href={`/${tenantSlug}/admin/dashboard`}
-                  className="flex items-center w-full p-3 rounded-lg text-sm font-medium hover:text-primary hover:bg-primary/10 transition text-muted-foreground"
-                >
-                  <Shield className="h-5 w-5 mr-3 text-blue-600" />
-                  Admin Portal
-                </Link>
+                {!isCollapsed && (
+                  <p className="px-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
+                    Quick Access
+                  </p>
+                )}
+                {isCollapsed ? (
+                  <Tooltip side="right" content="Admin Portal">
+                    <Link
+                      href={`/${tenantSlug}/admin/dashboard`}
+                      className="flex items-center w-full p-2 rounded-lg text-sm font-medium hover:text-primary hover:bg-primary/10 transition text-muted-foreground justify-center"
+                    >
+                      <Shield className="h-5 w-5 text-blue-600" />
+                    </Link>
+                  </Tooltip>
+                ) : (
+                  <Link
+                    href={`/${tenantSlug}/admin/dashboard`}
+                    className="flex items-center w-full p-3 rounded-lg text-sm font-medium hover:text-primary hover:bg-primary/10 transition text-muted-foreground"
+                  >
+                    <Shield className="h-5 w-5 mr-3 text-blue-600" />
+                    Admin Portal
+                  </Link>
+                )}
               </div>
             )}
           </ScrollArea>
         </div>
       </div>
     </div>
+    </TooltipProvider>
   );
 }

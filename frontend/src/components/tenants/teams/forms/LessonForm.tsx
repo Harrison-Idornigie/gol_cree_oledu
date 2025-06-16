@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
-import { AlertDialog } from '@/components/admin/AlertDialog';
+import { AlertDialog } from '@/components/tenants/admin/AlertDialog';
 import { toast } from 'sonner';
 import { LessonFormData } from '@/types/tenant/lesson';
 

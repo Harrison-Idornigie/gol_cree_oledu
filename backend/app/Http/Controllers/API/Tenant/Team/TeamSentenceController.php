@@ -3,18 +3,21 @@
 namespace App\Http\Controllers\API\Tenant\Team;
 
 use App\Http\Controllers\API\BaseAPIController;
+use App\Http\Requests\Tenant\Team\Language\CreateSentenceRequest;
+use App\Services\Tenants\Language\SentenceManagementService;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 use App\Models\Tenants\Sentence;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Exception;
 
 /**
  * Team Sentence Controller
- * 
+ *
  * Handles sentence and audio management operations for team members.
  * Access Level: Team (Teams/Content Creators)
  * Scope: Tenant-specific
- * 
+ *
  * This controller allows team members to create and manage sentences,
  * translations, audio content, and word timings within their tenant scope.
  */
@@ -22,12 +25,14 @@ class TeamSentenceController extends BaseAPIController
 {
     use BelongsToTenant;
 
+    protected SentenceManagementService $sentenceService;
+
     /**
      * Constructor - Apply team middleware
      */
-    public function __construct()
+    public function __construct(SentenceManagementService $sentenceService)
     {
-         
+        $this->sentenceService = $sentenceService;
     }
 
     /**
@@ -38,28 +43,69 @@ class TeamSentenceController extends BaseAPIController
      */
     public function index(Request $request): JsonResponse
     {
-        // TODO: Implement sentences listing
-        // - All sentences in current tenant
-        // - Filter by language, creator, status
-        // - Search functionality
-        // - Include translation and audio status
-        return $this->sendResponse([], 'Sentences retrieved successfully.');
+        try {
+            $filters = [
+                'search' => $request->get('search'),
+                'language_id' => $request->get('language_id'),
+                'difficulty' => $request->get('difficulty'),
+                'has_audio' => $request->boolean('has_audio')
+            ];
+
+            $sorts = [];
+            if ($request->has('sort_by')) {
+                $sorts[] = [
+                    'field' => $request->get('sort_by', 'created_at'),
+                    'direction' => $request->get('sort_order', 'desc')
+                ];
+            }
+
+            $perPage = min($request->get('per_page', 15), 50);
+            $sentences = $this->sentenceService->getSentences($filters, $sorts, $perPage);
+
+            return $this->sendResponse([
+                'sentences' => $sentences->items(),
+                'pagination' => [
+                    'current_page' => $sentences->currentPage(),
+                    'last_page' => $sentences->lastPage(),
+                    'per_page' => $sentences->perPage(),
+                    'total' => $sentences->total()
+                ]
+            ], 'Sentences retrieved successfully.');
+
+        } catch (Exception $e) {
+            return $this->sendErrorResponse('Failed to retrieve sentences: ' . $e->getMessage());
+        }
     }
 
     /**
      * Store a newly created sentence.
-     * 
-     * @param Request $request
+     *
+     * @param CreateSentenceRequest $request
      * @return JsonResponse
      */
-    public function store(Request $request): JsonResponse
+    public function store(CreateSentenceRequest $request): JsonResponse
     {
-        // TODO: Implement sentence creation
-        // - Validate sentence data
-        // - Create sentence with tenant association
-        // - Set creator information
-        // - Parse words and create relationships
-        return $this->sendCreatedResponse([], 'Sentence created successfully.');
+        try {
+            $sentenceData = $request->only(['language_id', 'text', 'pronunciation_key', 'metadata']);
+            $wordData = $request->get('words', []);
+
+            $audioFile = $request->file('audio');
+            $slowAudioFile = $request->file('audio_slow');
+
+            $sentence = $this->sentenceService->createSentence(
+                $sentenceData,
+                $wordData,
+                $audioFile,
+                $slowAudioFile
+            );
+
+            return $this->sendCreatedResponse([
+                'sentence' => $sentence->getPreviewData()
+            ], 'Sentence created successfully.');
+
+        } catch (Exception $e) {
+            return $this->sendErrorResponse('Failed to create sentence: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -249,5 +295,92 @@ class TeamSentenceController extends BaseAPIController
         // - Maintain sentence structure
         // - Update related timings
         return $this->sendResponse([], 'Words reordered successfully.');
+    }
+
+    /**
+     * Get available words for sentence creation.
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getAvailableWords(Request $request): JsonResponse
+    {
+        try {
+            $languageId = $request->get('language_id');
+            $search = $request->get('search', '');
+            $limit = min($request->get('limit', 50), 100);
+
+            if (!$languageId) {
+                return $this->sendErrorResponse('Language ID is required.');
+            }
+
+            $words = $this->sentenceService->getAvailableWordsForSentence(
+                $languageId,
+                $search,
+                $limit
+            );
+
+            return $this->sendResponse([
+                'words' => $words->map(function ($word) {
+                    if (isset($word->type) && $word->type === 'exception') {
+                        return [
+                            'id' => $word->id,
+                            'text' => $word->text,
+                            'type' => 'exception',
+                            'exception_type' => $word->exception_type,
+                            'description' => $word->description,
+                            'translations' => []
+                        ];
+                    }
+
+                    return [
+                        'id' => $word->id,
+                        'text' => $word->text,
+                        'type' => 'word',
+                        'part_of_speech' => $word->part_of_speech ?? null,
+                        'translations' => $word->translations->map(function ($translation) {
+                            return [
+                                'id' => $translation->id,
+                                'text' => $translation->text,
+                                'language_code' => $translation->language->code ?? null
+                            ];
+                        })
+                    ];
+                })
+            ], 'Available words retrieved successfully.');
+
+        } catch (Exception $e) {
+            return $this->sendErrorResponse('Failed to retrieve available words: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Validate sentence words before creation.
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function validateSentenceWords(Request $request): JsonResponse
+    {
+        try {
+            $sentenceText = $request->get('text');
+            $wordData = $request->get('words', []);
+            $languageId = $request->get('language_id');
+
+            if (!$sentenceText || !$languageId) {
+                return $this->sendErrorResponse('Sentence text and language ID are required.');
+            }
+
+            $validation = $this->sentenceService->validateSentenceWords(
+                $sentenceText,
+                $wordData,
+                $languageId
+            );
+
+            return $this->sendResponse($validation, 'Sentence validation completed.');
+
+        } catch (Exception $e) {
+            return $this->sendErrorResponse('Failed to validate sentence: ' . $e->getMessage());
+        }
     }
 }

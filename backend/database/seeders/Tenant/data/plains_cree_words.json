@@ -1,142 +1,206 @@
 [
     {
-        "text": "a",
+        "text": "mama",
         "language_id": null,
-        "part_of_speech": "letter",
-        "pronunciation_key": "AH",
+        "part_of_speech": "NA",
+        "pronunciation_key": "MAH-mah",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["alphabet", "letter"],
-            "pronunciation_notes": "Pronounced like the 'a' in 'father'.",
-            "syllabics": "ᐊ",
-            "translation": "letter a",
-            "example": "atim (dog) begins with a."
+            "tags": ["family", "common"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈmama/",
+            "pronunciation_notes": "Stress on first syllable, like English 'mama'",
+            "syllabics": "ᒪᒪ",
+            "translation": "mother, mom",
+            "cultural_context": "Term of endearment for mother, used by children",
+            "example": "Mama kîya cî? (Are you my mother?)"
         }
     },
     {
-        "text": "â",
+        "text": "papa",
         "language_id": null,
-        "part_of_speech": "letter",
-        "pronunciation_key": "AH",
+        "part_of_speech": "NA",
+        "pronunciation_key": "PAH-pah",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["alphabet", "letter"],
-            "pronunciation_notes": "Long 'a' sound, like the 'a' in 'father' but held longer.",
-            "syllabics": "ᐋ",
-            "translation": "long a",
-            "example": "âstam (come here) begins with â."
+            "tags": ["family", "common"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈpapa/",
+            "pronunciation_notes": "Stress on first syllable, like English 'papa'",
+            "syllabics": "ᐸᐸ",
+            "translation": "father, dad",
+            "cultural_context": "Term of endearment for father, used by children",
+            "example": "Papa ayâw cî? (Is dad there?)"
         }
     },
     {
-        "text": "c",
+        "text": "nôhkom",
         "language_id": null,
-        "part_of_speech": "letter",
-        "pronunciation_key": "CH",
+        "part_of_speech": "NA",
+        "pronunciation_key": "NOH-kom",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["alphabet", "letter"],
-            "pronunciation_notes": "Always pronounced like 'ch' in 'church'.",
-            "syllabics": "ᐨ",
-            "translation": "letter c",
-            "example": "cîmân (boat) begins with c."
+            "tags": ["family", "common", "cultural"],
+            "grade_levels": ["K", "1", "2", "3"],
+            "ipa": "/ˈnoːhkom/",
+            "pronunciation_notes": "Long 'o' sound, stress on first syllable",
+            "syllabics": "ᓅᐦᑯᒼ",
+            "translation": "my grandmother",
+            "cultural_context": "Important family relationship in Cree culture, grandmothers are knowledge keepers",
+            "example": "Nôhkom âcimow. (My grandmother is telling a story.)"
         }
     },
     {
-        "text": "e",
+        "text": "moshom",
         "language_id": null,
-        "part_of_speech": "letter",
-        "pronunciation_key": "EH",
+        "part_of_speech": "NA",
+        "pronunciation_key": "MOH-shom",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["alphabet", "letter"],
-            "pronunciation_notes": "Pronounced like the 'e' in 'bed'.",
-            "syllabics": "ᐁ",
-            "translation": "letter e",
-            "example": "emihkwân (spoon) begins with e."
+            "tags": ["family", "common", "cultural"],
+            "grade_levels": ["K", "1", "2", "3"],
+            "ipa": "/ˈmoʃom/",
+            "pronunciation_notes": "Stress on first syllable, 'sh' sound in middle",
+            "syllabics": "ᒧᐦᓱᒼ",
+            "translation": "my grandfather",
+            "cultural_context": "Important family relationship in Cree culture, grandfathers are wisdom keepers",
+            "example": "Moshom kîkway kiskêyihtam. (My grandfather knows things.)"
         }
     },
     {
-        "text": "ê",
+        "text": "nistês",
         "language_id": null,
-        "part_of_speech": "letter",
-        "pronunciation_key": "EH",
+        "part_of_speech": "NA",
+        "pronunciation_key": "nis-TAYS",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["alphabet", "letter"],
-            "pronunciation_notes": "Long 'e' sound, like the 'ay' in 'say' but held longer.",
-            "syllabics": "ᐯ",
-            "translation": "long e",
-            "example": "êkwa (and) begins with ê."
+            "tags": ["family", "common"],
+            "grade_levels": ["K", "1", "2", "3"],
+            "ipa": "/ˈnisteːs/",
+            "pronunciation_notes": "Long 'e' sound, stress on first syllable",
+            "syllabics": "ᓂᐢᑌᐢ",
+            "translation": "my older brother",
+            "cultural_context": "Specific kinship term showing respect for older siblings",
+            "example": "Nistês wîcihêw. (My older brother helps.)"
         }
     },
     {
-        "text": "h",
+        "text": "nimis",
         "language_id": null,
-        "part_of_speech": "letter",
-        "pronunciation_key": "H",
+        "part_of_speech": "NA",
+        "pronunciation_key": "NEE-mis",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["alphabet", "letter"],
-            "pronunciation_notes": "Pronounced like 'h' in 'hello'.",
-            "syllabics": "ᐦ",
-            "translation": "letter h",
-            "example": "hâw (okay) begins with h."
+            "tags": ["family", "common"],
+            "grade_levels": ["K", "1", "2", "3"],
+            "ipa": "/ˈnimis/",
+            "pronunciation_notes": "Stress on first syllable",
+            "syllabics": "ᓂᒥᐢ",
+            "translation": "my older sister",
+            "cultural_context": "Specific kinship term showing respect for older siblings",
+            "example": "Nimis kîkway pêhtam. (My older sister hears something.)"
         }
     },
     {
-        "text": "i",
+        "text": "wâpos",
         "language_id": null,
-        "part_of_speech": "letter",
-        "pronunciation_key": "IH",
+        "part_of_speech": "NA",
+        "pronunciation_key": "WAH-pos",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["alphabet", "letter"],
-            "pronunciation_notes": "Pronounced like the 'i' in 'sit'.",
-            "syllabics": "ᐃ",
-            "translation": "letter i",
-            "example": "iskwêw (woman) begins with i."
+            "tags": ["animals", "common"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈwaːpos/",
+            "pronunciation_notes": "Long 'a' sound, stress on first syllable",
+            "syllabics": "ᐚᐸᐢ",
+            "translation": "rabbit",
+            "cultural_context": "Important animal in Cree stories and traditional food source",
+            "example": "Wâpos wâpiskâw. (The rabbit is white.)"
         }
     },
     {
-        "text": "î",
+        "text": "pisiskiw",
         "language_id": null,
-        "part_of_speech": "letter",
-        "pronunciation_key": "EE",
+        "part_of_speech": "NA",
+        "pronunciation_key": "pee-SIS-kiw",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["alphabet", "letter"],
-            "pronunciation_notes": "Long 'i' sound, like the 'ee' in 'see'.",
-            "syllabics": "ᐄ",
-            "translation": "long i",
-            "example": "îkwa (louse) begins with î."
+            "tags": ["animals", "common"],
+            "grade_levels": ["K", "1", "2", "3"],
+            "ipa": "/ˈpisiskiw/",
+            "pronunciation_notes": "Stress on first syllable",
+            "syllabics": "ᐱᓯᐢᑭᐤ",
+            "translation": "bird",
+            "cultural_context": "Birds are important in Cree culture for their songs and as messengers",
+            "example": "Pisiskiw nikamow. (The bird is singing.)"
         }
     },
     {
-        "text": "k",
+        "text": "wâpiskâw",
         "language_id": null,
-        "part_of_speech": "letter",
-        "pronunciation_key": "K",
+        "part_of_speech": "VII",
+        "pronunciation_key": "WAH-pis-kaw",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["alphabet", "letter"],
-            "pronunciation_notes": "Pronounced like 'k' in 'kite'.",
-            "syllabics": "ᐠ",
-            "translation": "letter k",
-            "example": "kîsik (sky) begins with k."
+            "tags": ["colors", "common"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈwaːpiskaːw/",
+            "pronunciation_notes": "Long 'a' sounds, stress on first syllable",
+            "syllabics": "ᐚᐱᐢᑳᐤ",
+            "translation": "it is white",
+            "cultural_context": "White is significant in ceremonies and represents purity",
+            "example": "Kona wâpiskâw. (The snow is white.)"
         }
     },
     {
-        "text": "m",
+        "text": "kaskitêwâw",
         "language_id": null,
-        "part_of_speech": "letter",
-        "pronunciation_key": "M",
+        "part_of_speech": "VII",
+        "pronunciation_key": "kas-ki-TAY-waw",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["alphabet", "letter"],
-            "pronunciation_notes": "Pronounced like 'm' in 'mother'.",
-            "syllabics": "ᒼ",
-            "translation": "letter m",
-            "example": "maskwa (bear) begins with m."
+            "tags": ["colors", "common"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈkaskiteːwaːw/",
+            "pronunciation_notes": "Stress on first syllable, long vowels",
+            "syllabics": "ᑲᐢᑭᑌᐚᐤ",
+            "translation": "it is black",
+            "cultural_context": "Black represents the west direction in the medicine wheel",
+            "example": "Maskwa kaskitêwâw. (The bear is black.)"
+        }
+    },
+    {
+        "text": "mihkwâw",
+        "language_id": null,
+        "part_of_speech": "VII",
+        "pronunciation_key": "MEEH-kwaw",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["colors", "common"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈmihkwaːw/",
+            "pronunciation_notes": "Stress on first syllable, long 'a' at end",
+            "syllabics": "ᒥᐦᑳᐤ",
+            "translation": "it is red",
+            "cultural_context": "Red represents the south direction in the medicine wheel",
+            "example": "Opwâgan mihkwâw. (The pipe is red.)"
+        }
+    },
+    {
+        "text": "osâwâw",
+        "language_id": null,
+        "part_of_speech": "VII",
+        "pronunciation_key": "oh-SAH-waw",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["colors", "common"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈosaːwaːw/",
+            "pronunciation_notes": "Stress on first syllable, long vowels",
+            "syllabics": "ᐅᓵᐚᐤ",
+            "translation": "it is yellow",
+            "cultural_context": "Yellow represents the east direction in the medicine wheel",
+            "example": "Pîsim osâwâw. (The sun is yellow.)"
         }
     },
     {
@@ -147,6 +211,8 @@
         "metadata": {
             "difficulty": "beginner",
             "tags": ["number", "counting"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈpeːjak/",
             "pronunciation_notes": "Stress is on the first syllable. The 'ê' is a long 'e' sound like in 'they'.",
             "syllabics": "ᐯᔭᐠ",
             "translation": "one",
@@ -161,6 +227,8 @@
         "metadata": {
             "difficulty": "beginner",
             "tags": ["number", "counting"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈniːso/",
             "pronunciation_notes": "Stress is on the first syllable. The 'î' is a long 'i' sound like in 'machine'.",
             "syllabics": "ᓃᓱ",
             "translation": "two",
@@ -175,6 +243,8 @@
         "metadata": {
             "difficulty": "beginner",
             "tags": ["number", "counting"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈnisto/",
             "pronunciation_notes": "Stress is on the first syllable.",
             "syllabics": "ᓂᐢᑐ",
             "translation": "three",
@@ -189,6 +259,8 @@
         "metadata": {
             "difficulty": "beginner",
             "tags": ["number", "counting"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈneːwo/",
             "pronunciation_notes": "Stress is on the first syllable. The 'ê' is a long 'e' sound like in 'they'.",
             "syllabics": "ᓀᐓ",
             "translation": "four",
@@ -203,10 +275,131 @@
         "metadata": {
             "difficulty": "beginner",
             "tags": ["number", "counting"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/niˈjaːnan/",
             "pronunciation_notes": "Stress is on the second syllable. The 'â' is a long 'a' sound like in 'father'.",
             "syllabics": "ᓂᔮᓇᐣ",
             "translation": "five",
             "example": "Niyânan wâpamâwak (I see five of them)."
+        }
+    },
+    {
+        "text": "mistikwân",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "mis-TIK-wan",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["body", "common"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈmistikwaːn/",
+            "pronunciation_notes": "Stress on first syllable, long 'a' sound",
+            "syllabics": "ᒥᐢᑎᑳᐣ",
+            "translation": "head",
+            "cultural_context": "The head is considered sacred as it houses thoughts and spirit",
+            "example": "Nimistikwân nanâtohk. (My head hurts.)"
+        }
+    },
+    {
+        "text": "oskisikohk",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "os-ki-SI-kohk",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["body", "common"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈoskisikohk/",
+            "pronunciation_notes": "Stress on first syllable",
+            "syllabics": "ᐅᐢᑭᓯᑯᐦᐠ",
+            "translation": "eye",
+            "cultural_context": "Eyes are important for seeing the world and understanding",
+            "example": "Noskisikohk wâpamêw. (My eye sees.)"
+        }
+    },
+    {
+        "text": "otawakay",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "oh-TAH-wa-kay",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["body", "common"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈotawakaj/",
+            "pronunciation_notes": "Stress on first syllable",
+            "syllabics": "ᐅᑕᐚᑲᐩ",
+            "translation": "ear",
+            "cultural_context": "Ears are important for listening to teachings and nature",
+            "example": "Notawakay pêhtam. (My ear hears.)"
+        }
+    },
+    {
+        "text": "kîsikâw",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "KEE-si-kaw",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["nature", "time", "common"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈkiːsikaːw/",
+            "pronunciation_notes": "Long 'i' and 'a' sounds, stress on first syllable",
+            "syllabics": "ᑮᓯᑳᐤ",
+            "translation": "day, sky",
+            "cultural_context": "The sky is sacred and connects earth to the spirit world",
+            "example": "Miywâsin kîsikâw. (It is a good day.)"
+        }
+    },
+    {
+        "text": "askiy",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "AH-skiy",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["nature", "common"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈaskij/",
+            "pronunciation_notes": "Stress on first syllable",
+            "syllabics": "ᐊᐢᑭᐩ",
+            "translation": "earth, land",
+            "cultural_context": "Mother Earth is sacred and provides for all life",
+            "example": "Askiy kîhtwâm pîkiskwêw. (The earth speaks again.)"
+        }
+    },
+    {
+        "text": "pîsim",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "PEE-sim",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["nature", "common"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈpiːsim/",
+            "pronunciation_notes": "Long 'i' sound, stress on first syllable",
+            "syllabics": "ᐲᓯᒼ",
+            "translation": "sun",
+            "cultural_context": "The sun is a sacred source of life and energy",
+            "example": "Pîsim wâpiskâw. (The sun is bright.)"
+        }
+    },
+    {
+        "text": "tîpiskâw",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "TEE-pis-kaw",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["nature", "time", "common"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈtiːpiskaːw/",
+            "pronunciation_notes": "Long 'i' and 'a' sounds, stress on first syllable",
+            "syllabics": "ᑮᐱᐢᑳᐤ",
+            "translation": "night",
+            "cultural_context": "Night is a time for rest and spiritual connection",
+            "example": "Tîpiskâw kaskitêwâw. (The night is dark.)"
         }
     },
     {
@@ -217,9 +410,12 @@
         "metadata": {
             "difficulty": "beginner",
             "tags": ["common", "greeting"],
+            "grade_levels": ["K", "1", "2", "3"],
+            "ipa": "/ˈtanisi/",
             "pronunciation_notes": "Stress is on the first syllable. The \"a\" is like the \"a\" in \"father\".",
             "syllabics": "ᑕᓂᓯ",
             "translation": "hello, how are you",
+            "cultural_context": "Common greeting used throughout the day",
             "example": "Tanisi, nitôtem. (Hello, my friend.)"
         }
     },
@@ -227,10 +423,12 @@
         "text": "kîkway",
         "language_id": null,
         "part_of_speech": "PrI",
-        "pronunciation_key": "KEEK-wai",
+        "pronunciation_key": "KEEK-way",
         "metadata": {
             "difficulty": "beginner",
             "tags": ["common", "question"],
+            "grade_levels": ["K", "1", "2", "3"],
+            "ipa": "/ˈkiːkwaj/",
             "pronunciation_notes": "The \"î\" (long \"i\") sounds like \"ee\" in \"see,\" and \"kway\" rhymes with \"why.\" The stress is on the first syllable.",
             "syllabics": "ᑮᑿᐩ",
             "translation": "what",
@@ -245,9 +443,12 @@
         "metadata": {
             "difficulty": "beginner",
             "tags": ["common", "animal"],
+            "grade_levels": ["K", "1", "2", "3"],
+            "ipa": "/ˈmaskwa/",
             "pronunciation_notes": "Stress is on the first syllable. The \"a\" at the end is like the \"a\" in \"about\".",
             "syllabics": "ᒪᐢᑿ",
             "translation": "bear",
+            "cultural_context": "Bears are sacred animals in Cree culture, representing strength and medicine",
             "example": "Maskwa mîcisow. (The bear is eating.)"
         }
     },
@@ -259,9 +460,12 @@
         "metadata": {
             "difficulty": "beginner",
             "tags": ["common", "animal"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈatim/",
             "pronunciation_notes": "Stress is on the first syllable. The \"a\" is like the \"a\" in \"father\".",
             "syllabics": "ᐊᑎᒼ",
             "translation": "dog",
+            "cultural_context": "Dogs were important companions and working animals in traditional Cree life",
             "example": "Atim pimohtêw. (The dog is walking.)"
         }
     },
@@ -273,9 +477,12 @@
         "metadata": {
             "difficulty": "beginner",
             "tags": ["common", "nature"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈniːpij/",
             "pronunciation_notes": "The \"î\" is a long \"ee\" sound. Stress is on the first syllable.",
             "syllabics": "ᓃᐱᐩ",
             "translation": "water",
+            "cultural_context": "Water is sacred and essential for all life",
             "example": "Nîpiy minihkwê. (Drink water.)"
         }
     },
@@ -287,9 +494,12 @@
         "metadata": {
             "difficulty": "beginner",
             "tags": ["common", "food"],
+            "grade_levels": ["K", "1", "2", "3"],
+            "ipa": "/ˈmiːtʃisowin/",
             "pronunciation_notes": "Stress is on the first syllable. The \"î\" is a long \"ee\" sound.",
             "syllabics": "ᒦᒋᓱᐏᐣ",
             "translation": "food",
+            "cultural_context": "Food is shared in community and blessed before eating",
             "example": "Mîcisowin mitoni mîwâsin. (The food is very good.)"
         }
     },
@@ -299,8 +509,10 @@
         "part_of_speech": "VTA",
         "pronunciation_key": "WAH-pah-mew",
         "metadata": {
-            "difficulty": "beginner",
+            "difficulty": "intermediate",
             "tags": ["common", "verb"],
+            "grade_levels": ["2", "3", "4"],
+            "ipa": "/ˈwaːpamew/",
             "pronunciation_notes": "Stress is on the first syllable. The \"â\" is a long \"a\" sound like in \"father\".",
             "syllabics": "ᐚᐸᒣᐤ",
             "translation": "he/she sees him/her",
@@ -313,11 +525,14 @@
         "part_of_speech": "NI",
         "pronunciation_key": "MEE-kee-wahp",
         "metadata": {
-            "difficulty": "beginner",
-            "tags": ["common", "dwelling"],
+            "difficulty": "intermediate",
+            "tags": ["common", "dwelling", "cultural"],
+            "grade_levels": ["2", "3", "4", "5"],
+            "ipa": "/ˈmiːkiwaːhp/",
             "pronunciation_notes": "Stress is on the first syllable. The \"î\" is a long \"ee\" sound, and the \"â\" is a long \"a\" sound.",
             "syllabics": "ᒦᑭᐚᐦᑊ",
             "translation": "teepee, lodge",
+            "cultural_context": "Traditional dwelling representing the sacred circle and connection to earth",
             "example": "Mîkiwâhpihk niwîkin. (I live in a teepee.)"
         }
     },
@@ -329,6 +544,8 @@
         "metadata": {
             "difficulty": "beginner",
             "tags": ["common", "command"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈaːstam/",
             "pronunciation_notes": "Stress is on the first syllable. The \"â\" is a long \"a\" sound like in \"father\".",
             "syllabics": "ᐋᐢᑕᒼ",
             "translation": "come here",
@@ -343,10 +560,63 @@
         "metadata": {
             "difficulty": "beginner",
             "tags": ["common", "description"],
+            "grade_levels": ["K", "1", "2", "3"],
+            "ipa": "/miˈwaːsin/",
             "pronunciation_notes": "Stress is on the second syllable. The \"â\" is a long \"a\" sound like in \"father\".",
             "syllabics": "ᒥᔼᓯᐣ",
             "translation": "it is good, it is beautiful",
             "example": "Miywâsin kîsikâw. (It is a good day.)"
+        }
+    },
+    {
+        "text": "iskwêw",
+        "language_id": null,
+        "part_of_speech": "NA",
+        "pronunciation_key": "is-KWAY",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["people", "common"],
+            "grade_levels": ["K", "1", "2", "3"],
+            "ipa": "/ˈiskweːw/",
+            "pronunciation_notes": "Stress on second syllable, long 'e' sound",
+            "syllabics": "ᐃᐢᑫᐤ",
+            "translation": "woman",
+            "cultural_context": "Women are honored as life-givers and knowledge keepers",
+            "example": "Iskwêw nikamow. (The woman is singing.)"
+        }
+    },
+    {
+        "text": "nâpêw",
+        "language_id": null,
+        "part_of_speech": "NA",
+        "pronunciation_key": "NAH-pay",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["people", "common"],
+            "grade_levels": ["K", "1", "2", "3"],
+            "ipa": "/ˈnaːpeːw/",
+            "pronunciation_notes": "Stress on first syllable, long vowels",
+            "syllabics": "ᓈᐯᐤ",
+            "translation": "man",
+            "cultural_context": "Men are protectors and providers in traditional roles",
+            "example": "Nâpêw pimohtêw. (The man is walking.)"
+        }
+    },
+    {
+        "text": "awâsis",
+        "language_id": null,
+        "part_of_speech": "NA",
+        "pronunciation_key": "ah-WAH-sis",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["people", "common"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/aˈwaːsis/",
+            "pronunciation_notes": "Stress on second syllable, long 'a' sound",
+            "syllabics": "ᐊᐚᓯᐢ",
+            "translation": "child",
+            "cultural_context": "Children are considered sacred gifts and the future of the people",
+            "example": "Awâsis metawêw. (The child is playing.)"
         }
     }
 ]

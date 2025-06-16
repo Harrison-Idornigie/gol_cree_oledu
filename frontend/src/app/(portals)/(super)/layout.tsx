@@ -13,15 +13,17 @@ export default function SuperAdminLayout({ children }: SuperAdminLayoutProps) {
 
   return (
     <div className="min-h-screen">
-      <div className="fixed inset-y-0 z-50 hidden h-full w-72 flex-col md:flex">
-        <SuperAdminSidebar />
+      <div className={`fixed inset-y-0 z-50 hidden h-full flex-col md:flex ${
+        isSidebarCollapsed ? 'w-20' : 'w-72'
+      }`}>
+        <SuperAdminSidebar isCollapsed={isSidebarCollapsed} />
       </div>
       <div
-        className={`fixed top-0 z-50 w-full flex-col md:pl-72 ${
+        className={`fixed top-0 z-50 w-full flex-col ${
           isSidebarCollapsed ? 'md:pl-20' : 'md:pl-72'
         }`}
       >
-        <SuperAdminTopbar 
+        <SuperAdminTopbar
           onSidebarToggle={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
           portalType="super-admin"
         />

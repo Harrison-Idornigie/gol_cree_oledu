@@ -40,6 +40,22 @@ return new class extends Migration
 
             $table->index(['word_id', 'language_id', 'translation_order']);
         });
+
+        // Exception words for untranslatable content
+        Schema::create('exception_words', function (Blueprint $table) {
+            $table->id();
+            $table->string('tenant_id')->nullable()->comment('Reference to tenant in landlord database');
+            $table->foreignId('language_id')->constrained();
+            $table->string('text');
+            $table->enum('type', ['proper_noun', 'technical_term', 'borrowed_word', 'number', 'date', 'custom']);
+            $table->text('description')->nullable();
+            $table->json('metadata')->nullable(); // Additional properties like origin language, category
+            $table->boolean('is_active')->default(true);
+            $table->timestamps();
+
+            $table->unique(['language_id', 'text', 'type']);
+            $table->index(['tenant_id', 'language_id', 'type']);
+        });
     }
 
     /**
@@ -49,5 +65,6 @@ return new class extends Migration
     {
         Schema::dropIfExists('word_translations');
         Schema::dropIfExists('words');
+        Schema::dropIfExists('exception_words');
     }
 };

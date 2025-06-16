@@ -388,23 +388,26 @@ export class PerformanceCollector {
     const totalDuration = session.endTime!.getTime() - session.startTime.getTime();
     
     // Calculate summary statistics
-    const allValidators = session.phases.flatMap(phase => 
+    const allValidators = session.phases.flatMap(phase =>
       Array.from(phase.validatorMetrics.values())
     );
     
+    // Handle empty validators array to prevent reduce errors
     const validatorDurations = allValidators.map(v => v.duration);
-    const fastestValidator = allValidators.reduce((prev, curr) => 
-      prev.duration < curr.duration ? prev : curr
-    );
-    const slowestValidator = allValidators.reduce((prev, curr) => 
-      prev.duration > curr.duration ? prev : curr
-    );
+    const fastestValidator = allValidators.length > 0
+      ? allValidators.reduce((prev, curr) => prev.duration < curr.duration ? prev : curr)
+      : { validator: 'none', duration: 0 };
+    const slowestValidator = allValidators.length > 0
+      ? allValidators.reduce((prev, curr) => prev.duration > curr.duration ? prev : curr)
+      : { validator: 'none', duration: 0 };
     
     const summary: PerformanceSummary = {
       totalValidators: allValidators.length,
       fastestValidator: { name: fastestValidator.validator, duration: fastestValidator.duration },
       slowestValidator: { name: slowestValidator.validator, duration: slowestValidator.duration },
-      averageValidatorDuration: validatorDurations.reduce((a, b) => a + b, 0) / validatorDurations.length,
+      averageValidatorDuration: validatorDurations.length > 0
+        ? validatorDurations.reduce((a, b) => a + b, 0) / validatorDurations.length
+        : 0,
       totalMemoryUsed: Math.max(...session.phases.map(p => p.memoryDelta)),
       peakMemoryUsage: Math.max(...session.phases.map(p => p.memoryEnd)),
       totalDatabaseQueries: allValidators.reduce((total, v) => total + (v.queries?.length || 0), 0),

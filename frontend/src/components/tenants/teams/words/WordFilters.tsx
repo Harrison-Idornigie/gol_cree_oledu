@@ -110,16 +110,16 @@ export function WordFilters({ filters, languages, onFiltersChange }: WordFilters
         <div className="space-y-2">
           <Label>Language</Label>
           <Select
-            value={filters.language_id?.toString() || ''}
-            onValueChange={(value) => 
-              onFiltersChange({ language_id: value ? parseInt(value) : undefined })
+            value={filters.language_id?.toString() || 'all'}
+            onValueChange={(value) =>
+              onFiltersChange({ language_id: value === 'all' ? undefined : parseInt(value) })
             }
           >
             <SelectTrigger>
               <SelectValue placeholder="All languages" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All languages</SelectItem>
+              <SelectItem value="all">All languages</SelectItem>
               {languages.map((language) => (
                 <SelectItem key={language.id} value={language.id.toString()}>
                   {language.name} ({language.code})
@@ -133,16 +133,16 @@ export function WordFilters({ filters, languages, onFiltersChange }: WordFilters
         <div className="space-y-2">
           <Label>Difficulty</Label>
           <Select
-            value={filters.difficulty || ''}
-            onValueChange={(value) => 
-              onFiltersChange({ difficulty: value || undefined })
+            value={filters.difficulty || 'all'}
+            onValueChange={(value) =>
+              onFiltersChange({ difficulty: value === 'all' ? undefined : value })
             }
           >
             <SelectTrigger>
               <SelectValue placeholder="All levels" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All levels</SelectItem>
+              <SelectItem value="all">All levels</SelectItem>
               {difficultyOptions.map((option) => (
                 <SelectItem key={option.value} value={option.value}>
                   {option.label}
@@ -156,16 +156,16 @@ export function WordFilters({ filters, languages, onFiltersChange }: WordFilters
         <div className="space-y-2">
           <Label>Part of Speech</Label>
           <Select
-            value={filters.part_of_speech || ''}
-            onValueChange={(value) => 
-              onFiltersChange({ part_of_speech: value || undefined })
+            value={filters.part_of_speech || 'all'}
+            onValueChange={(value) =>
+              onFiltersChange({ part_of_speech: value === 'all' ? undefined : value })
             }
           >
             <SelectTrigger>
               <SelectValue placeholder="All types" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All types</SelectItem>
+              <SelectItem value="all">All types</SelectItem>
               {partOfSpeechOptions.map((option) => (
                 <SelectItem key={option.value} value={option.value}>
                   {option.label}

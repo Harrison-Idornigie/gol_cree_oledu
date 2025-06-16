@@ -5,7 +5,6 @@ import { usePathname } from 'next/navigation';
 import {
   BarChart3,
   Building2,
-  
   Home,
   Settings,
   Shield,
@@ -14,6 +13,7 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Tooltip, TooltipProvider } from '@/components/ui/tooltip';
 
 const routes = [
   {
@@ -54,38 +54,68 @@ const routes = [
   },
 ];
 
-export default function SuperAdminSidebar() {
+interface SuperAdminSidebarProps {
+  isCollapsed?: boolean;
+}
+
+export default function SuperAdminSidebar({ isCollapsed = false }: SuperAdminSidebarProps) {
   const pathname = usePathname();
 
   return (
-    <div className="space-y-4 py-4 flex flex-col h-full bg-slate-900">
-      <div className="px-3 py-2">
-        <div className="flex items-center gap-2 mb-4 px-4">
-          <Shield className="h-6 w-6 text-blue-400" />
-          <h2 className="text-lg font-semibold tracking-tight text-white">
-            Super Admin
-          </h2>
-        </div>
-        <div className="space-y-1">
-          <ScrollArea className="h-[calc(100vh-10rem)]">
-            {routes.map((route) => (
-              <Link
-                key={route.href}
-                href={route.href}
-                className={cn(
-                  'flex items-center w-full p-3 rounded-lg text-sm font-medium hover:text-white hover:bg-slate-800 transition',
-                  pathname === route.href
-                    ? 'text-white bg-slate-800'
-                    : 'text-slate-300'
-                )}
-              >
-                <route.icon className={cn('h-5 w-5 mr-3', route.color)} />
-                {route.label}
-              </Link>
-            ))}
-          </ScrollArea>
+    <TooltipProvider>
+      <div className="space-y-4 py-4 flex flex-col h-full bg-slate-900">
+        <div className={cn("px-3 py-2", isCollapsed && "px-2")}>
+          <div className={cn(
+            "flex items-center gap-2 mb-4",
+            isCollapsed ? "justify-center px-2" : "px-4"
+          )}>
+            <Shield className="h-6 w-6 text-blue-400 flex-shrink-0" />
+            {!isCollapsed && (
+              <h2 className="text-lg font-semibold tracking-tight text-white">
+                Super Admin
+              </h2>
+            )}
+          </div>
+          <div className="space-y-1">
+            <ScrollArea className="h-[calc(100vh-10rem)]">
+              {routes.map((route) => {
+                const linkContent = (
+                  <Link
+                    key={route.href}
+                    href={route.href}
+                    className={cn(
+                      'flex items-center w-full rounded-lg text-sm font-medium hover:text-white hover:bg-slate-800 transition',
+                      isCollapsed ? 'p-2 justify-center' : 'p-3',
+                      pathname === route.href
+                        ? 'text-white bg-slate-800'
+                        : 'text-slate-300'
+                    )}
+                  >
+                    <route.icon className={cn(
+                      'h-5 w-5 flex-shrink-0',
+                      route.color,
+                      !isCollapsed && 'mr-3'
+                    )} />
+                    {!isCollapsed && (
+                      <span className="truncate">{route.label}</span>
+                    )}
+                  </Link>
+                );
+
+                if (isCollapsed) {
+                  return (
+                    <Tooltip key={route.href} side="right" content={route.label}>
+                      {linkContent}
+                    </Tooltip>
+                  );
+                }
+
+                return linkContent;
+              })}
+            </ScrollArea>
+          </div>
         </div>
       </div>
-    </div>
+    </TooltipProvider>
   );
 }

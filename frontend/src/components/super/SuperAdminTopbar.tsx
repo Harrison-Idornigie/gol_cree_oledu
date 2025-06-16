@@ -40,6 +40,7 @@ export default function SuperAdminTopbar({ onSidebarToggle }: SuperAdminTopbarPr
     <div className="h-[64px] border-b bg-white">
       <div className="flex h-full items-center justify-between px-4">
         <div className="flex items-center gap-x-4">
+          {/* Mobile Sidebar Toggle */}
           <Button
             variant="ghost"
             size="icon"
@@ -49,6 +50,17 @@ export default function SuperAdminTopbar({ onSidebarToggle }: SuperAdminTopbarPr
             <Menu className="h-5 w-5" />
             <span className="sr-only">Toggle sidebar</span>
           </Button>
+
+          {/* Desktop Sidebar Toggle */}
+          <Button
+            variant="outline"
+            size="icon"
+            className="hidden md:flex"
+            onClick={onSidebarToggle}
+          >
+            <Menu className="h-4 w-4" />
+          </Button>
+
           <div className="hidden md:block">
             <span className="text-xl font-bold">Super Admin Dashboard</span>
           </div>

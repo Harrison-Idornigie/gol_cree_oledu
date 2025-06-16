@@ -43,7 +43,7 @@ function transformAPIResponse(data: APIResponse): Lesson {
 export async function createLesson(formData: FormData) {
   try {
     const response = await axiosInstance.post<APIResponse>(
-      "/api/admin/lessons",
+      "/api/team/lessons",
       formData
     );
     revalidatePath("/admin/units/[id]", "page");
@@ -57,7 +57,7 @@ export async function createLesson(formData: FormData) {
 export async function updateLesson(id: number, formData: FormData) {
   try {
     const response = await axiosInstance.put<APIResponse>(
-      `/api/admin/lessons/${id}`,
+      `/api/team/lessons/${id}`,
       formData
     );
     revalidatePath("/admin/units/[id]", "page");
@@ -70,7 +70,7 @@ export async function updateLesson(id: number, formData: FormData) {
 
 export async function deleteLesson(id: number) {
   try {
-    await axiosInstance.delete(`/api/admin/lessons/${id}`);
+    await axiosInstance.delete(`/api/team/lessons/${id}`);
     revalidatePath("/admin/units/[id]", "page");
     revalidatePath("/admin/lessons", "page");
     return { success: true };
@@ -82,7 +82,7 @@ export async function deleteLesson(id: number) {
 export async function getLesson(id: number) {
   try {
     const response = await axiosInstance.get<APIResponse>(
-      `/api/admin/lessons/${id}`
+      `/api/team/lessons/${id}`
     );
     return { data: transformAPIResponse(response.data) };
   } catch (error) {
@@ -93,8 +93,8 @@ export async function getLesson(id: number) {
 export async function getLessons(topicId?: number) {
   try {
     const url = topicId
-      ? `/api/admin/topics/${topicId}/lessons`
-      : "/api/admin/lessons";
+      ? `/api/team/topics/${topicId}/lessons`
+      : "/api/team/lessons";
     const response = await axiosInstance.get<APIResponse[]>(url);
     return { data: response.data.map(transformAPIResponse) };
   } catch (error) {
@@ -105,7 +105,7 @@ export async function getLessons(topicId?: number) {
 export async function updateLessonOrder(id: number, order: number) {
   try {
     const response = await axiosInstance.patch<APIResponse>(
-      `/api/admin/lessons/${id}/order`,
+      `/api/team/lessons/${id}/order`,
       { order }
     );
     revalidatePath("/admin/units/[id]", "page");
@@ -118,7 +118,7 @@ export async function updateLessonOrder(id: number, order: number) {
 export async function toggleLessonPublished(id: number) {
   try {
     const response = await axiosInstance.patch<APIResponse>(
-      `/api/admin/lessons/${id}/toggle-published`
+      `/api/team/lessons/${id}/toggle-published`
     );
     revalidatePath("/admin/units/[id]", "page");
     revalidatePath("/admin/lessons/[id]", "page");
