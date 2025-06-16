@@ -11,23 +11,15 @@ use Illuminate\Support\Facades\Cache;
 trait HasPermissions
 {
     /**
-     * Get all permissions for this model.
-     */
-    public function permissions(): BelongsToMany
-    {
-        return $this->belongsToMany(Permission::class, 'model_permissions')
-            ->withPivot(['conditions', 'is_denied'])
-            ->withTimestamps();
-    }
-    /**
      * Get all roles for this model.
      */
     public function roles(): BelongsToMany
     {
-        return $this->belongsToMany(Role::class, 'model_roles')
+        return $this->belongsToMany(Role::class, 'user_roles')
             ->withPivot(['conditions', 'is_active', 'assigned_at', 'expires_at'])
             ->withTimestamps();
     }
+    
     /**
      * Get only active roles for this model.
      */
@@ -36,16 +28,13 @@ trait HasPermissions
         return $this->roles()
             ->wherePivot('is_active', true)
             ->where(function ($query) {
-                $query->whereNull('model_roles.expires_at')
-                    ->orWhere('model_roles.expires_at', '>', now());
+                $query->whereNull('user_roles.expires_at')
+                    ->orWhere('user_roles.expires_at', '>', now());
             });
     }
+    
     /**
      * Check if the model has all of the specified permissions.
-     *
-     * @param array $permissions
-     * @param array $context
-     * @return bool
      */
     public function hasAllPermissions(array $permissions, array $context = []): bool
     {
@@ -76,12 +65,7 @@ trait HasPermissions
             }
             
             // 2. Check role-based permissions
-            if ($this->hasRolePermission($permission, $context)) {
-                return true;
-            }
-            
-            // 3. Check direct permissions
-            return $this->hasDirectPermission($permission);
+            return $this->hasRolePermission($permission, $context);
         });
     }
 
@@ -216,10 +200,6 @@ trait HasPermissions
             $rolePermissions = $this->getCachedRolePermissions();
             $permissions = array_merge($permissions, $rolePermissions);
             
-            // Add direct permissions
-            $directPermissions = $this->permissions()->pluck('slug')->toArray();
-            $permissions = array_merge($permissions, $directPermissions);
-            
             return array_unique($permissions);
         });
     }
@@ -235,8 +215,10 @@ trait HasPermissions
             $permissions = [];
             
             foreach ($this->activeRoles as $role) {
-                $rolePermissions = $role->getEffectivePermissions();
-                $permissions = array_merge($permissions, $rolePermissions);
+                if (method_exists($role, 'getEffectivePermissions')) {
+                    $rolePermissions = $role->getEffectivePermissions();
+                    $permissions = array_merge($permissions, $rolePermissions);
+                }
             }
             
             return array_unique($permissions);
@@ -276,35 +258,17 @@ trait HasPermissions
     {
         foreach ($this->activeRoles as $role) {
             // First check if the role explicitly denies this permission
-            if ($role->deniesPermission($permission)) {
+            if (method_exists($role, 'deniesPermission') && $role->deniesPermission($permission)) {
                 continue; // Skip this role if it denies the permission
             }
             
             // Then check if the role grants this permission
-            if ($role->hasPermission($permission)) {
+            if (method_exists($role, 'hasPermission') && $role->hasPermission($permission)) {
                 return true;
             }
         }
         
         return false;
-    }
-
-    /**
-     * Check direct permissions (original trait functionality)
-     */
-    private function hasDirectPermission($permission): bool
-    {
-        if (is_string($permission)) {
-            $permission = Permission::where('slug', $permission)->first();
-        }
-
-        if (!$permission) {
-            return false;
-        }
-
-        return $this->permissions()
-            ->where('permission_id', $permission->id)
-            ->exists();
     }
 
     /**

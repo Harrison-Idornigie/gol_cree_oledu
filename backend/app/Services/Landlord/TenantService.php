@@ -4,7 +4,7 @@ namespace App\Services\Landlord;
 
 use App\Models\Landlord\Tenant;
 use App\Models\Tenants\User;
-use App\Models\Tenants\Membership;
+use App\Models\Tenants\Role;
 use App\Events\Landlord\TenantSetupCompleted;
 use App\Events\Landlord\TenantSeedingRequested;
 use App\Events\Landlord\TenantDeleting;
@@ -23,7 +23,7 @@ use Exception;
  * 
  * Handles comprehensive tenant management operations including:
  * - Tenant creation with database initialization
- * - Admin user setup and membership assignment
+ * - Admin user setup and role assignment
  * - Event-driven seeding and configuration
  * - Validation and error handling with rollback
  * - Tenant updates and deletion
@@ -419,7 +419,7 @@ class TenantService
                     $connection->getPdo();
 
                     // Verify essential tables exist (migrations completed)
-                    $tables = ['users', 'memberships', 'languages'];
+                    $tables = ['users', 'roles', 'languages'];
                     foreach ($tables as $table) {
                         DB::select("SELECT 1 FROM {$table} LIMIT 1");
                     }
@@ -500,7 +500,7 @@ class TenantService
 
             // Dispatch seeding event synchronously (not queued)
             event(new TenantSeedingRequested($tenant, $adminUser, [
-                'seed_memberships' => true,
+                'seed_roles' => true,
                 'seed_languages' => true,
                 'seed_settings' => true,
                 'database_ready' => true,
@@ -538,7 +538,7 @@ class TenantService
             'name' => $adminData['name'],
             'email' => $adminData['email'],
             'password' => Hash::make($adminData['password']),
-            'membership' => 'tenant-admin',
+            'role' => 'tenant-admin',
             'interface_language' => $adminData['interface_language'] ?? 'en',
             'is_active' => true,
         ]);
@@ -581,7 +581,7 @@ class TenantService
                     'password' => $centralUser->password, // Already hashed
                     'interface_language' => $centralUser->interface_language,
                     'email_verified_at' => now(),
-                    'membership' => 'admin', // Set to 'admin' (allowed enum value)
+                    'role' => 'admin', // Set to 'admin' (allowed enum value)
                     'tenant_id' => $tenant->id,
                     // 'central_user_id' => $centralUser->id, // TODO: Enable after migration
                 ]);
@@ -601,7 +601,7 @@ class TenantService
                 throw $e;
             }
 
-            // Note: Membership creation and assignment is handled by the seeding events
+            // Note: Role creation and assignment is handled by the seeding events
             // This ensures proper separation of concerns and consistent seeding process
         });
 
@@ -665,14 +665,14 @@ class TenantService
                 throw $e;
             }
 
-            // Create tenant admin membership if it doesn't exist
-            Log::info('About to create membership in tenant context', [
+            // Create tenant admin role if it doesn't exist
+            Log::info('About to create role in tenant context', [
                 'tenant_id' => $tenant->id,
                 'current_database' => DB::connection()->getDatabaseName(),
                 'connection_name' => DB::connection()->getName()
             ]);
 
-            $tenantAdminMembership = Membership::firstOrCreate([
+            $tenantAdminRole = Role::firstOrCreate([
                 'slug' => 'tenant-admin',
                 'tenant_id' => $tenant->id,
             ], [
@@ -681,8 +681,8 @@ class TenantService
                 'is_system' => true,
             ]);
 
-            // Assign tenant admin membership
-            $adminUser->memberships()->attach($tenantAdminMembership);
+            // Assign tenant admin role
+            $adminUser->roles()->attach($tenantAdminRole);
         });
 
         if (!$adminUser) {

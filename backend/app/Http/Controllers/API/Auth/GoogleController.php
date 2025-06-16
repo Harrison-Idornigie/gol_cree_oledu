@@ -145,12 +145,12 @@ class GoogleController extends BaseAPIController
                             'membership'              => $isAdminEmail ? 'admin' : 'user',
                         ]);
 
-                        // Assign membership if using membership-based permissions
-                        if (class_exists('\App\Models\Tenants\Membership')) {
-                            $membershipName = $isAdminEmail ? 'admin' : 'user';
-                            $membership     = Membership::where('slug', $membershipName)->first();
-                            if ($membership) {
-                                $user->memberships()->attach($membership->id);
+                        // Assign role if using role-based permissions
+                        if (class_exists('\App\Models\Tenants\Role')) {
+                            $roleName = $isAdminEmail ? 'admin' : 'user';
+                            $role     = Role::where('slug', $roleName)->first();
+                            if ($role) {
+                                $user->roles()->attach($role->id);
                             }
                         }
                     } catch (Exception $e) {

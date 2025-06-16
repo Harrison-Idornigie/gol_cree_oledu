@@ -10,9 +10,7 @@
     "grep": {},
     "grepInvert": null,
     "maxFailures": 0,
-    "metadata": {
-      "actualWorkers": 1
-    },
+    "metadata": {},
     "preserveOutput": "always",
     "reporter": [
       [
@@ -42,9 +40,7 @@
         "outputDir": "/home/onionlake-admin/PROJECT/gol_2025/e2e/test-results",
         "repeatEach": 1,
         "retries": 0,
-        "metadata": {
-          "actualWorkers": 1
-        },
+        "metadata": {},
         "id": "chromium",
         "name": "chromium",
         "testDir": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests",
@@ -52,7 +48,7 @@
         "testMatch": [
           "**/*.@(spec|test).?(c|m)[jt]s?(x)"
         ],
-        "timeout": 10000
+        "timeout": 60000
       }
     ],
     "shard": null,
@@ -62,117 +58,19 @@
     "workers": 1,
     "webServer": null
   },
-  "suites": [
+  "suites": [],
+  "errors": [
     {
-      "title": "Tenant/backend/API/Word/team-word-controller.spec.ts",
-      "file": "Tenant/backend/API/Word/team-word-controller.spec.ts",
-      "column": 0,
-      "line": 0,
-      "specs": [],
-      "suites": [
-        {
-          "title": "Team Word Controller API - Comprehensive E2E Tests",
-          "file": "Tenant/backend/API/Word/team-word-controller.spec.ts",
-          "line": 19,
-          "column": 6,
-          "specs": [],
-          "suites": [
-            {
-              "title": "Authentication & Authorization Tests",
-              "file": "Tenant/backend/API/Word/team-word-controller.spec.ts",
-              "line": 75,
-              "column": 8,
-              "specs": [
-                {
-                  "title": "should allow valid team authentication",
-                  "ok": false,
-                  "tags": [],
-                  "tests": [
-                    {
-                      "timeout": 10000,
-                      "annotations": [],
-                      "expectedStatus": "passed",
-                      "projectId": "chromium",
-                      "projectName": "chromium",
-                      "results": [
-                        {
-                          "workerIndex": 0,
-                          "parallelIndex": 0,
-                          "status": "timedOut",
-                          "duration": 5,
-                          "error": {
-                            "message": "\u001b[31m\"beforeAll\" hook timeout of 10000ms exceeded.\u001b[39m",
-                            "stack": "\u001b[31m\"beforeAll\" hook timeout of 10000ms exceeded.\u001b[39m\n    at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:35:8",
-                            "location": {
-                              "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts",
-                              "column": 8,
-                              "line": 35
-                            },
-                            "snippet": "\u001b[0m \u001b[90m 33 |\u001b[39m   \u001b[36mlet\u001b[39m testLanguages\u001b[33m:\u001b[39m any[] \u001b[33m=\u001b[39m []\u001b[33m;\u001b[39m\n \u001b[90m 34 |\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 35 |\u001b[39m   test\u001b[33m.\u001b[39mbeforeAll(\u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n \u001b[90m    |\u001b[39m        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 36 |\u001b[39m     fixtures \u001b[33m=\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mTenantFixtures\u001b[39m()\u001b[33m;\u001b[39m\n \u001b[90m 37 |\u001b[39m     wordFixtures \u001b[33m=\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mWordFixtures\u001b[39m()\u001b[33m;\u001b[39m\n \u001b[90m 38 |\u001b[39m     apiHelper \u001b[33m=\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mApiHelper\u001b[39m()\u001b[33m;\u001b[39m\u001b[0m"
-                          },
-                          "errors": [
-                            {
-                              "location": {
-                                "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts",
-                                "column": 8,
-                                "line": 35
-                              },
-                              "message": "\u001b[31m\"beforeAll\" hook timeout of 10000ms exceeded.\u001b[39m\n\n\u001b[0m \u001b[90m 33 |\u001b[39m   \u001b[36mlet\u001b[39m testLanguages\u001b[33m:\u001b[39m any[] \u001b[33m=\u001b[39m []\u001b[33m;\u001b[39m\n \u001b[90m 34 |\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 35 |\u001b[39m   test\u001b[33m.\u001b[39mbeforeAll(\u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n \u001b[90m    |\u001b[39m        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 36 |\u001b[39m     fixtures \u001b[33m=\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mTenantFixtures\u001b[39m()\u001b[33m;\u001b[39m\n \u001b[90m 37 |\u001b[39m     wordFixtures \u001b[33m=\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mWordFixtures\u001b[39m()\u001b[33m;\u001b[39m\n \u001b[90m 38 |\u001b[39m     apiHelper \u001b[33m=\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mApiHelper\u001b[39m()\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:35:8\u001b[22m"
-                            },
-                            {
-                              "location": {
-                                "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/utils/api-helpers.ts",
-                                "column": 22,
-                                "line": 63
-                              },
-                              "message": "TimeoutError: The operation was aborted due to timeout\n\n\u001b[90m   at \u001b[39m../utils/api-helpers.ts:63\n\n\u001b[0m \u001b[90m 61 |\u001b[39m     }\n \u001b[90m 62 |\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 63 |\u001b[39m     \u001b[36mconst\u001b[39m response \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m fetch(url\u001b[33m,\u001b[39m requestOptions)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                      \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 64 |\u001b[39m\n \u001b[90m 65 |\u001b[39m     \u001b[36mif\u001b[39m (process\u001b[33m.\u001b[39menv\u001b[33m.\u001b[39m\u001b[33mDEBUG_API_CALLS\u001b[39m \u001b[33m===\u001b[39m \u001b[32m'true'\u001b[39m) {\n \u001b[90m 66 |\u001b[39m       console\u001b[33m.\u001b[39mlog(\u001b[32m`📡 API Response ${response.status}`\u001b[39m\u001b[33m,\u001b[39m \u001b[36mawait\u001b[39m response\u001b[33m.\u001b[39mclone()\u001b[33m.\u001b[39mtext())\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at ApiHelper.request (/home/onionlake-admin/PROJECT/gol_2025/e2e/utils/api-helpers.ts:63:22)\u001b[22m\n\u001b[2m    at ApiHelper.registerTenantAdmin (/home/onionlake-admin/PROJECT/gol_2025/e2e/utils/api-helpers.ts:89:22)\u001b[22m\n\u001b[2m    at /home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts:54:33\u001b[22m"
-                            }
-                          ],
-                          "stdout": [
-                            {
-                              "text": "🗑️  Cleaning up all test tenants...\n"
-                            },
-                            {
-                              "text": "🗑️  Cleaning up tenant: e2e-test-1749941464575-302450-h91nf2-985338\n"
-                            },
-                            {
-                              "text": "🗑️  Cleaning up tenant: e2e-test-1749941464576-302450-e8qnzh-711635\n"
-                            }
-                          ],
-                          "stderr": [],
-                          "retry": 0,
-                          "startTime": "2025-06-14T22:51:04.525Z",
-                          "annotations": [],
-                          "attachments": [],
-                          "errorLocation": {
-                            "file": "/home/onionlake-admin/PROJECT/gol_2025/e2e/tests/Tenant/backend/API/Word/team-word-controller.spec.ts",
-                            "column": 8,
-                            "line": 35
-                          }
-                        }
-                      ],
-                      "status": "unexpected"
-                    }
-                  ],
-                  "id": "58318020fce36547f6b8-be75e4bf3cf48c0549eb",
-                  "file": "Tenant/backend/API/Word/team-word-controller.spec.ts",
-                  "line": 105,
-                  "column": 9
-                }
-              ]
-            }
-          ]
-        }
-      ]
+      "message": "Error: No tests found.\nMake sure that arguments are regular expressions matching test files.\nYou may need to escape symbols like \"$\" or \"*\" and quote the arguments.",
+      "stack": "Error: No tests found.\nMake sure that arguments are regular expressions matching test files.\nYou may need to escape symbols like \"$\" or \"*\" and quote the arguments."
     }
   ],
-  "errors": [],
   "stats": {
-    "startTime": "2025-06-14T22:51:00.902Z",
-    "duration": 16126.345000000001,
+    "startTime": "2025-06-16T16:25:26.155Z",
+    "duration": 2223.386,
     "expected": 0,
     "skipped": 0,
-    "unexpected": 1,
+    "unexpected": 0,
     "flaky": 0
   }
 }

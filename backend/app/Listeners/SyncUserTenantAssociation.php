@@ -57,7 +57,7 @@ class SyncUserTenantAssociation
         if ($user && $tenant && $user->email) {
             $this->syncService->syncUserToTenant($user->email, $tenant, [
                 'membership' => $user->membership ?? 'admin',
-                'permissions' => $user->permissions ?? [],
+                'permissions' => $user->getFixedPermissions(),
                 'is_active' => true
             ]);
         } else {
@@ -84,7 +84,7 @@ class SyncUserTenantAssociation
         if ($user && $tenant) {
             $this->syncService->syncUserToTenant($user->email, $tenant, [
                 'membership' => $user->membership,
-                'permissions' => $user->permissions ?? [],
+                'permissions' => $user->getFixedPermissions(),
                 'is_active' => $user->is_active ?? true
             ]);
         }

@@ -46,7 +46,7 @@ export class DatabaseHelper {
   /**
    * Execute Laravel artisan command
    */
-  private executeArtisan(command: string): string {
+  executeArtisan(command: string): string {
     try {
       return execSync(`cd ../backend && php artisan ${command} --env=testing`, {
         encoding: 'utf8',
