@@ -3,20 +3,16 @@
 namespace App\Services\Tenants\Media;
 
 use App\Models\Tenants\{Sentence, Word, SentenceWord};
-use getID3;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Exception;
-// use JamesHeinrich\GetID3\GetID3;
 
 /**
  * Handles audio file processing and word timing management.
- * 
+ *
  * Requirements:
- * - FFmpeg must be installed on the server
- * - GetID3 package must be installed via composer:
- *   composer require james-heinrich/getid3
- * 
+ * - FFmpeg/FFprobe must be installed on the server
+ *
  * Usage:
  * ```php
  * $service = app(AudioProcessingService::class);
@@ -25,11 +21,9 @@ use Exception;
  */
 class AudioProcessingService
 {
-    protected $getID3;
-
     public function __construct()
     {
-        $this->getID3 = new getID3();
+        // No dependencies needed - using FFmpeg directly
     }
 
     /**
@@ -185,18 +179,27 @@ class AudioProcessingService
     }
 
     /**
-     * Get audio file duration using getID3.
+     * Get audio file duration using FFprobe.
      */
     protected function getAudioDuration(UploadedFile $file): float
     {
         try {
-            $fileInfo = $this->getID3->analyze($file->getPathname());
+            $filePath = escapeshellarg($file->getPathname());
+            $command = "ffprobe -v quiet -show_entries format=duration -of csv=p=0 {$filePath}";
 
-            if (!isset($fileInfo['playtime_seconds'])) {
+            $output = shell_exec($command);
+
+            if ($output === null || trim($output) === '') {
                 throw new Exception('Could not determine audio file duration');
             }
 
-            return (float) $fileInfo['playtime_seconds'];
+            $duration = (float) trim($output);
+
+            if ($duration <= 0) {
+                throw new Exception('Invalid audio file duration');
+            }
+
+            return $duration;
         } catch (Exception $e) {
             throw new Exception('Failed to analyze audio file: ' . $e->getMessage());
         }
@@ -233,21 +236,18 @@ class AudioProcessingService
     public function generateWaveformData(UploadedFile $file, int $samples = 100): array
     {
         try {
-            // Get audio info first
-            $fileInfo = $this->getID3->analyze($file->getPathname());
-            if (!isset($fileInfo['audio'])) {
-                throw new Exception('Invalid audio file format');
-            }
+            // Validate audio file first using FFprobe
+            $this->validateAudioFile($file);
 
-            $tempPath = $file->getPathname();
+            $tempPath = escapeshellarg($file->getPathname());
             $waveform = [];
 
             // Use FFmpeg to convert audio to raw samples
             $command = sprintf(
-                'ffmpeg -i %s -f s16le -acodec pcm_s16le -ac 1 -ar 8000 -',
-                escapeshellarg($tempPath)
+                'ffmpeg -i %s -f s16le -acodec pcm_s16le -ac 1 -ar 8000 - 2>/dev/null',
+                $tempPath
             );
-            
+
             $descriptors = [
                 0 => ['pipe', 'r'],
                 1 => ['pipe', 'w'],
@@ -285,24 +285,74 @@ class AudioProcessingService
     }
 
     /**
-     * Extract audio metadata.
+     * Extract audio metadata using FFprobe.
      */
     public function extractMetadata(UploadedFile $file): array
     {
         try {
-            $fileInfo = $this->getID3->analyze($file->getPathname());
+            $filePath = escapeshellarg($file->getPathname());
+            $command = "ffprobe -v quiet -print_format json -show_format -show_streams {$filePath}";
+
+            $output = shell_exec($command);
+
+            if ($output === null) {
+                throw new Exception('Failed to execute FFprobe command');
+            }
+
+            $data = json_decode($output, true);
+
+            if (!$data || !isset($data['format'])) {
+                throw new Exception('Invalid audio file or unsupported format');
+            }
+
+            $format = $data['format'];
+            $audioStream = null;
+
+            // Find the first audio stream
+            if (isset($data['streams'])) {
+                foreach ($data['streams'] as $stream) {
+                    if ($stream['codec_type'] === 'audio') {
+                        $audioStream = $stream;
+                        break;
+                    }
+                }
+            }
 
             return [
-                'duration' => $fileInfo['playtime_seconds'] ?? null,
-                'format' => $fileInfo['audio']['dataformat'] ?? null,
-                'sample_rate' => $fileInfo['audio']['sample_rate'] ?? null,
-                'channels' => $fileInfo['audio']['channels'] ?? null,
-                'bitrate' => $fileInfo['audio']['bitrate'] ?? null,
-                'encoder' => $fileInfo['audio']['encoder'] ?? null,
-                'lossless' => $fileInfo['audio']['lossless'] ?? false
+                'duration' => isset($format['duration']) ? (float) $format['duration'] : null,
+                'format' => $format['format_name'] ?? null,
+                'sample_rate' => $audioStream['sample_rate'] ?? null,
+                'channels' => $audioStream['channels'] ?? null,
+                'bitrate' => isset($format['bit_rate']) ? (int) $format['bit_rate'] : null,
+                'encoder' => $audioStream['codec_name'] ?? null,
+                'lossless' => $this->isLosslessFormat($audioStream['codec_name'] ?? '')
             ];
         } catch (Exception $e) {
             throw new Exception('Failed to extract audio metadata: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Check if audio format is lossless.
+     */
+    protected function isLosslessFormat(string $codec): bool
+    {
+        $losslessCodecs = ['flac', 'alac', 'ape', 'wav', 'aiff'];
+        return in_array(strtolower($codec), $losslessCodecs);
+    }
+
+    /**
+     * Validate that the uploaded file is a valid audio file.
+     */
+    protected function validateAudioFile(UploadedFile $file): void
+    {
+        $filePath = escapeshellarg($file->getPathname());
+        $command = "ffprobe -v quiet -show_entries stream=codec_type -of csv=p=0 {$filePath}";
+
+        $output = shell_exec($command);
+
+        if ($output === null || strpos($output, 'audio') === false) {
+            throw new Exception('Invalid audio file format');
         }
     }
 }

@@ -75,6 +75,11 @@ Route::prefix('team')->middleware(['auth:tenant', 'verified-grace'])->group(func
         Route::post('/', [TeamSentenceController::class, 'store']);
         Route::get('available-words', [TeamSentenceController::class, 'getAvailableWords']);
         Route::post('validate-words', [TeamSentenceController::class, 'validateSentenceWords']);
+        
+        // New AI-assisted endpoints
+        Route::post('analyze-text', [TeamSentenceController::class, 'analyzeSentenceText']);
+        Route::post('create-with-mapping', [TeamSentenceController::class, 'createWithAutoMapping']);
+        
         Route::get('{sentence}', [TeamSentenceController::class, 'show']);
         Route::put('{sentence}', [TeamSentenceController::class, 'update']);
         Route::delete('{sentence}', [TeamSentenceController::class, 'destroy']);

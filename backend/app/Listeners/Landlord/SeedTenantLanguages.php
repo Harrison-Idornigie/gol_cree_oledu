@@ -45,7 +45,7 @@ class SeedTenantLanguages
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString()
             ]);
-            
+
             // Don't throw - let other seeders continue
         }
     }

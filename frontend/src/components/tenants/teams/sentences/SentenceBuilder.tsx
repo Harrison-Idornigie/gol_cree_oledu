@@ -8,7 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import { AlertCircle, CheckCircle, X, Search } from 'lucide-react';
+import { AlertCircle, CheckCircle, X, Search, Wand2, Lightbulb } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface Word {
@@ -81,6 +81,8 @@ export default function SentenceBuilder({
   } | null>(null);
   const [isValidating, setIsValidating] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [aiSuggestions, setAiSuggestions] = useState<string[]>([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
 
   // Debounced word search
   const debouncedWordSearch = useCallback(async (search: string, languageId: string) => {
@@ -212,6 +214,27 @@ export default function SentenceBuilder({
     } finally {
       setIsSaving(false);
     }
+  };
+
+  // Add this new function to generate sentence suggestions
+  const generateSentenceSuggestions = async () => {
+    if (!formData.language_id || selectedWords.length === 0) return;
+    
+    setShowSuggestions(true);
+    // Mock AI suggestions - in production, call your AI service
+    const wordTexts = selectedWords.map(sw => sw.word.text);
+    const suggestions = [
+      wordTexts.join(' ') + '.',
+      wordTexts.reverse().join(' ') + '?',
+      `${wordTexts[0]} ${wordTexts.slice(1).join(' ')}.`
+    ];
+    setAiSuggestions(suggestions);
+  };
+
+  // Add this function to apply a suggestion
+  const applySuggestion = (suggestion: string) => {
+    setFormData(prev => ({ ...prev, text: suggestion }));
+    setShowSuggestions(false);
   };
 
   return (
@@ -367,6 +390,46 @@ export default function SentenceBuilder({
                 className="min-h-20"
               />
             </div>
+
+            {/* AI Suggestions */}
+            {selectedWords.length > 0 && (
+              <div className="space-y-2">
+                <div className="flex items-center gap-2">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={generateSentenceSuggestions}
+                    className="flex items-center gap-2"
+                  >
+                    <Wand2 className="h-4 w-4" />
+                    Generate Suggestions
+                  </Button>
+                  {showSuggestions && (
+                    <span className="text-sm text-muted-foreground">
+                      Click a suggestion to use it:
+                    </span>
+                  )}
+                </div>
+                {showSuggestions && aiSuggestions.length > 0 && (
+                  <div className="space-y-1">
+                    {aiSuggestions.map((suggestion, index) => (
+                      <Button
+                        key={index}
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => applySuggestion(suggestion)}
+                        className="justify-start text-left h-auto p-2 hover:bg-muted"
+                      >
+                        <Lightbulb className="h-3 w-3 mr-2 text-yellow-500" />
+                        {suggestion}
+                      </Button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
 
             {/* Validation Results */}
             {validation && (

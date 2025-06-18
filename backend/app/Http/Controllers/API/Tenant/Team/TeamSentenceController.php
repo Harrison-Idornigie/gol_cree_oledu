@@ -5,10 +5,12 @@ namespace App\Http\Controllers\API\Tenant\Team;
 use App\Http\Controllers\API\BaseAPIController;
 use App\Http\Requests\Tenant\Team\Language\CreateSentenceRequest;
 use App\Services\Tenants\Language\SentenceManagementService;
+use App\Services\Tenants\Language\SentenceWordMappingService;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 use App\Models\Tenants\Sentence;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Log;
 use Exception;
 
 /**
@@ -26,13 +28,17 @@ class TeamSentenceController extends BaseAPIController
     use BelongsToTenant;
 
     protected SentenceManagementService $sentenceService;
+    protected SentenceWordMappingService $mappingService;
 
     /**
      * Constructor - Apply team middleware
      */
-    public function __construct(SentenceManagementService $sentenceService)
-    {
+    public function __construct(
+        SentenceManagementService $sentenceService,
+        SentenceWordMappingService $mappingService
+    ) {
         $this->sentenceService = $sentenceService;
+        $this->mappingService = $mappingService;
     }
 
     /**
@@ -73,7 +79,7 @@ class TeamSentenceController extends BaseAPIController
             ], 'Sentences retrieved successfully.');
 
         } catch (Exception $e) {
-            return $this->sendErrorResponse('Failed to retrieve sentences: ' . $e->getMessage());
+            return $this->sendError('Failed to retrieve sentences: ' . $e->getMessage());
         }
     }
 
@@ -104,7 +110,7 @@ class TeamSentenceController extends BaseAPIController
             ], 'Sentence created successfully.');
 
         } catch (Exception $e) {
-            return $this->sendErrorResponse('Failed to create sentence: ' . $e->getMessage());
+            return $this->sendError('Failed to create sentence: ' . $e->getMessage());
         }
     }
 
@@ -311,7 +317,7 @@ class TeamSentenceController extends BaseAPIController
             $limit = min($request->get('limit', 50), 100);
 
             if (!$languageId) {
-                return $this->sendErrorResponse('Language ID is required.');
+                return $this->sendError('Language ID is required.');
             }
 
             $words = $this->sentenceService->getAvailableWordsForSentence(
@@ -350,7 +356,7 @@ class TeamSentenceController extends BaseAPIController
             ], 'Available words retrieved successfully.');
 
         } catch (Exception $e) {
-            return $this->sendErrorResponse('Failed to retrieve available words: ' . $e->getMessage());
+            return $this->sendError('Failed to retrieve available words: ' . $e->getMessage());
         }
     }
 
@@ -368,7 +374,7 @@ class TeamSentenceController extends BaseAPIController
             $languageId = $request->get('language_id');
 
             if (!$sentenceText || !$languageId) {
-                return $this->sendErrorResponse('Sentence text and language ID are required.');
+                return $this->sendError('Sentence text and language ID are required.');
             }
 
             $validation = $this->sentenceService->validateSentenceWords(
@@ -380,7 +386,118 @@ class TeamSentenceController extends BaseAPIController
             return $this->sendResponse($validation, 'Sentence validation completed.');
 
         } catch (Exception $e) {
-            return $this->sendErrorResponse('Failed to validate sentence: ' . $e->getMessage());
+            return $this->sendError('Failed to validate sentence: ' . $e->getMessage());
         }
+    }
+
+    /**
+     * Analyze sentence text and suggest word mappings.
+     */
+    public function analyzeSentenceText(Request $request): JsonResponse
+    {
+        try {
+            $validated = $request->validate([
+                'text' => 'required|string|max:1000',
+                'language_id' => 'required|exists:languages,id'
+            ]);
+
+            $analysis = $this->mappingService->analyzeSentence(
+                $validated['text'],
+                $validated['language_id']
+            );
+
+            return $this->sendResponse([
+                'analysis' => $analysis,
+                'suggestions' => [
+                    'auto_create_missing' => count($analysis['missing_words']) <= 3,
+                    'mapping_quality' => $this->getMappingQuality($analysis['mapping_percentage']),
+                    'recommended_action' => $this->getRecommendedAction($analysis)
+                ]
+            ], 'Sentence analysis completed successfully.');
+
+        } catch (Exception $e) {
+            Log::error('Sentence analysis failed: ' . $e->getMessage());
+            return $this->sendError('Failed to analyze sentence.', [], 500);
+        }
+    }
+
+    /**
+     * Create sentence with automatic word mapping and creation.
+     */
+    public function createWithAutoMapping(Request $request): JsonResponse
+    {
+        try {
+            $validated = $request->validate([
+                'text' => 'required|string|max:1000',
+                'language_id' => 'required|exists:languages,id',
+                'auto_create_words' => 'boolean',
+                'missing_word_data' => 'array',
+                'difficulty' => 'nullable|string|in:beginner,intermediate,advanced',
+                'metadata' => 'nullable|array'
+            ]);
+
+            if ($validated['auto_create_words'] ?? false) {
+                $mappingResult = $this->mappingService->createMissingWordsAndMap(
+                    $validated['text'],
+                    $validated['language_id'],
+                    $validated['missing_word_data'] ?? []
+                );
+            } else {
+                $mappingResult = $this->mappingService->analyzeSentence(
+                    $validated['text'],
+                    $validated['language_id']
+                );
+            }
+
+            // Create the sentence with mapped words
+            $sentence = $this->sentenceService->createSentence([
+                'language_id' => $validated['language_id'],
+                'text' => $validated['text'],
+                'metadata' => array_merge($validated['metadata'] ?? [], [
+                    'difficulty' => $validated['difficulty'] ?? 'beginner',
+                    'auto_mapped' => true,
+                    'mapping_percentage' => $mappingResult['mapped_words'] ? 
+                        (count($mappingResult['mapped_words']) / $mappingResult['total_words'] * 100) : 0
+                ])
+            ], $mappingResult['mapped_words'] ?? []);
+
+            return $this->sendResponse([
+                'sentence' => $sentence->load(['words', 'translations']),
+                'mapping_result' => $mappingResult,
+                'created_words' => $mappingResult['created_words'] ?? []
+            ], 'Sentence created successfully with automatic word mapping.');
+
+        } catch (Exception $e) {
+            Log::error('Auto-mapping sentence creation failed: ' . $e->getMessage());
+            return $this->sendError('Failed to create sentence with auto-mapping.', [], 500);
+        }
+    }
+
+    private function getMappingQuality(float $percentage): string
+    {
+        if ($percentage >= 90) return 'excellent';
+        if ($percentage >= 70) return 'good';
+        if ($percentage >= 50) return 'fair';
+        return 'poor';
+    }
+
+    private function getRecommendedAction(array $analysis): string
+    {
+        $missingCount = count($analysis['missing_words']);
+        $mappingPercentage = $analysis['mapping_percentage'];
+
+        if ($missingCount === 0) {
+            return 'ready_to_create';
+        }
+
+        if ($missingCount <= 2 && $mappingPercentage >= 70) {
+            return 'auto_create_recommended';
+        }
+
+        if ($missingCount <= 5) {
+            return 'manual_review_recommended';
+        }
+
+        return 'create_words_first';
     }
 }

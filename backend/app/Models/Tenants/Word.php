@@ -2,7 +2,7 @@
 
 namespace App\Models\Tenants;
 
-use App\Traits\Tenant\{HasVersions, HasAuditLog, };
+use App\Traits\Tenant\HasAuditLog;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\{BelongsTo, HasMany, BelongsToMany};
@@ -12,7 +12,7 @@ use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 
 class Word extends Model implements HasMedia
 {
-    use HasFactory, InteractsWithMedia, HasAuditLog, HasVersions, BelongsToTenant;
+    use HasFactory, InteractsWithMedia, HasAuditLog, BelongsToTenant;
 
     protected $fillable = [
         'language_id',

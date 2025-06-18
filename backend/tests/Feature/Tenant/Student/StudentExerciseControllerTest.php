@@ -1,0 +1,321 @@
+<?php
+
+namespace Tests\Feature\Tenant\Student;
+
+use Tests\TestCase;
+use Tests\Traits\InteractsWithTenancy;
+use App\Models\Landlord\Tenant;
+use App\Models\Tenants\User;
+use App\Models\Tenants\Language;
+use App\Models\Tenants\Exercise;
+use App\Models\Tenants\Lesson;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Laravel\Sanctum\Sanctum;
+use Illuminate\Support\Str;
+
+class StudentExerciseControllerTest extends TestCase
+{
+    use RefreshDatabase, InteractsWithTenancy;
+
+    protected Tenant $tenant;
+    protected User $studentUser;
+    protected User $teamUser;
+    protected Language $language;
+    protected Lesson $lesson;
+    protected Exercise $exercise;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->setUpTenancy();
+        
+        // Create test tenant
+        $this->tenant = $this->createTestTenant();
+        $this->initializeTenantContext($this->tenant);
+        
+        // Create users with different roles in tenant context
+        $this->studentUser = $this->createTenantStudent();
+        $this->teamUser = $this->createTenantTeam();
+        
+        // Create test environment
+        $this->language = $this->createLanguage();
+        $this->lesson = $this->createLesson();
+        $this->exercise = $this->createExercise();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->tearDownTenancy();
+        parent::tearDown();
+    }
+
+    /**
+     * Helper to create a test language
+     */
+    protected function createLanguage()
+    {
+        return $this->runInTenantContext($this->tenant, function () {
+            return Language::create([
+                'name' => 'Test Language',
+                'code' => 'tl',
+                'native_name' => 'Test Language Native',
+                'is_active' => true
+            ]);
+        });
+    }
+
+    /**
+     * Helper to create a test lesson
+     */
+    protected function createLesson()
+    {
+        return $this->runInTenantContext($this->tenant, function () {
+            return Lesson::create([
+                'title' => 'Test Lesson',
+                'slug' => 'test-lesson-' . Str::random(8),
+                'description' => 'This is a test lesson',
+                'language_id' => $this->language->id,
+                'status' => 'published',
+                'created_by' => $this->teamUser->id,
+            ]);
+        });
+    }
+
+    /**
+     * Helper to create a test exercise
+     */
+    protected function createExercise()
+    {
+        return $this->runInTenantContext($this->tenant, function () {
+            return Exercise::create([
+                'title' => 'Test Exercise',
+                'type' => 'multiple_choice',
+                'lesson_id' => $this->lesson->id,
+                'difficulty' => 'beginner',
+                'status' => 'published',
+                'data' => json_encode([
+                    'question' => 'Test Question',
+                    'options' => ['Option 1', 'Option 2', 'Option 3', 'Option 4'],
+                    'correct_answer' => 'Option 2',
+                ]),
+                'created_by' => $this->teamUser->id,
+            ]);
+        });
+    }
+
+    /**
+     * Test listing exercises
+     */
+    public function test_index_success()
+    {
+        // Authenticate as student
+        Sanctum::actingAs($this->studentUser, ['*']);
+
+        $response = $this->getJson("/api/{$this->tenant->slug}/student/exercises");
+
+        $response->assertStatus(200)
+            ->assertJsonStructure([
+                'success',
+                'message',
+                'data'
+            ])
+            ->assertJson([
+                'success' => true,
+                'message' => 'Exercises retrieved successfully.'
+            ]);
+    }
+
+    /**
+     * Test retrieving a specific exercise
+     */
+    public function test_show_success()
+    {
+        // Authenticate as student
+        Sanctum::actingAs($this->studentUser, ['*']);
+
+        $response = $this->getJson("/api/{$this->tenant->slug}/student/exercises/{$this->exercise->id}");
+
+        $response->assertStatus(200)
+            ->assertJsonStructure([
+                'success',
+                'message',
+                'data' => [
+                    'id',
+                    'title',
+                    'type',
+                    'lesson_id',
+                    'difficulty',
+                    'status',
+                    'data',
+                    'created_by',
+                ]
+            ])
+            ->assertJson([
+                'success' => true,
+                'message' => 'Exercise retrieved successfully.'
+            ]);
+    }
+
+    /**
+     * Test checking an answer for an exercise
+     */
+    public function test_check_answer_success()
+    {
+        // Authenticate as student
+        Sanctum::actingAs($this->studentUser, ['*']);
+
+        $answerData = [
+            'answer' => 'Option 2' // This matches the correct answer in our test exercise
+        ];
+
+        $response = $this->postJson("/api/{$this->tenant->slug}/student/exercises/{$this->exercise->id}/check", $answerData);
+
+        $response->assertStatus(200)
+            ->assertJsonStructure([
+                'success',
+                'message',
+                'data' => [
+                    'correct',
+                    'feedback',
+                    'points_earned',
+                ]
+            ])
+            ->assertJson([
+                'success' => true,
+                'message' => 'Answer checked successfully.',
+                'data' => [
+                    'correct' => true,
+                ]
+            ]);
+    }
+
+    /**
+     * Test checking a wrong answer
+     */
+    public function test_check_wrong_answer()
+    {
+        // Authenticate as student
+        Sanctum::actingAs($this->studentUser, ['*']);
+
+        $answerData = [
+            'answer' => 'Option 1' // This is an incorrect answer
+        ];
+
+        $response = $this->postJson("/api/{$this->tenant->slug}/student/exercises/{$this->exercise->id}/check", $answerData);
+
+        $response->assertStatus(200)
+            ->assertJsonStructure([
+                'success',
+                'message',
+                'data' => [
+                    'correct',
+                    'feedback',
+                ]
+            ])
+            ->assertJson([
+                'success' => true,
+                'message' => 'Answer checked successfully.',
+                'data' => [
+                    'correct' => false,
+                ]
+            ]);
+    }
+
+    /**
+     * Test getting exercise statistics
+     */
+    public function test_statistics_success()
+    {
+        // Authenticate as student
+        Sanctum::actingAs($this->studentUser, ['*']);
+
+        $response = $this->getJson("/api/{$this->tenant->slug}/student/exercises/{$this->exercise->id}/statistics");
+
+        $response->assertStatus(200)
+            ->assertJsonStructure([
+                'success',
+                'message',
+                'data'
+            ])
+            ->assertJson([
+                'success' => true,
+                'message' => 'Exercise statistics retrieved successfully.'
+            ]);
+    }
+
+    /**
+     * Test unauthorized access
+     */
+    public function test_unauthorized_access()
+    {
+        // Not authenticated
+        $response = $this->getJson("/api/{$this->tenant->slug}/student/exercises/{$this->exercise->id}");
+        $response->assertStatus(401);
+    }
+
+    /**
+     * Test access to unpublished exercise
+     */
+    public function test_unpublished_exercise_access()
+    {
+        // Create an unpublished exercise
+        $unpublishedExercise = $this->runInTenantContext($this->tenant, function () {
+            return Exercise::create([
+                'title' => 'Unpublished Exercise',
+                'type' => 'multiple_choice',
+                'lesson_id' => $this->lesson->id,
+                'difficulty' => 'beginner',
+                'status' => 'draft', // Unpublished status
+                'data' => json_encode([
+                    'question' => 'Hidden Question',
+                    'options' => ['Option A', 'Option B', 'Option C', 'Option D'],
+                    'correct_answer' => 'Option A',
+                ]),
+                'created_by' => $this->teamUser->id,
+            ]);
+        });
+
+        // Authenticate as student
+        Sanctum::actingAs($this->studentUser, ['*']);
+
+        $response = $this->getJson("/api/{$this->tenant->slug}/student/exercises/{$unpublishedExercise->id}");
+        $response->assertStatus(404);
+    }
+
+    /**
+     * Helper method to initialize tenant context
+     */
+    private function initializeTenantContext(Tenant $tenant): void
+    {
+        // The tenant is already initialized and seeded in createTestTenant
+        // This method is kept for compatibility but not needed with enhanced trait
+    }
+
+    /**
+     * Helper method to create tenant team member
+     */
+    private function createTenantTeam(): User
+    {
+        return $this->runInTenantContext($this->tenant, function () {
+            return User::factory()->create([
+                'email' => 'team@test.com',
+                'membership_type' => 'team',
+                'email_verified_at' => now(),
+            ]);
+        });
+    }
+
+    /**
+     * Helper method to create tenant student
+     */
+    private function createTenantStudent(): User
+    {
+        return $this->runInTenantContext($this->tenant, function () {
+            return User::factory()->create([
+                'email' => 'student@test.com',
+                'membership_type' => 'student',
+                'email_verified_at' => now(),
+            ]);
+        });
+    }
+}

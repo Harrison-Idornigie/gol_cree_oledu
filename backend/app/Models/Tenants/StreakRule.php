@@ -3,14 +3,13 @@
 namespace App\Models\Tenants;
 
 use App\Traits\Tenant\HasAuditLog;
-use App\Traits\Tenant\HasVersions;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 
 class StreakRule extends Model
 {
-    use HasFactory, HasAuditLog, HasVersions, BelongsToTenant;
+    use HasFactory, HasAuditLog, BelongsToTenant;
 
     const AUDIT_AREA = 'streak_rules';
 
@@ -28,12 +27,7 @@ class StreakRule extends Model
         'xp_multipliers' => 'array'
     ];
 
-    protected array $versionedAttributes = [
-        'freeze_cost',
-        'repair_window_hours',
-        'bonus_schedule',
-        'xp_multipliers'
-    ];
+
 
     /**
      * Get the default streak rules.

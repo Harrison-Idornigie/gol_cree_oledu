@@ -38,6 +38,8 @@ class TenantAdminUserController extends BaseAPIController
      */
     public function getUsers(Request $request): JsonResponse
     {
+        $this->authorize('viewAny', User::class);
+        
         // TODO: Implement tenant user listing
         // - All users in current tenant
         // - Filter by membership, status

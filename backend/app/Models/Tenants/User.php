@@ -225,6 +225,14 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * System User Membership Check
+     */
+    public function isSystemUser(): bool
+    {
+        return $this->membership === 'system';
+    }
+
+    /**
      * Send the email verification notification.
      *
      * @return void
@@ -264,6 +272,9 @@ class User extends Authenticatable implements MustVerifyEmail
             ],
             'student' => [
                 'content.view', 'progress.track', 'exercises.attempt'
+            ],
+            'system' => [
+                'system.seed', 'system.migrate', 'content.create', 'content.manage'
             ]
         ];
         

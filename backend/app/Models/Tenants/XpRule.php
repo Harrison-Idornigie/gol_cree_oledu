@@ -3,14 +3,13 @@
 namespace App\Models\Tenants;
 
 use App\Traits\Tenant\HasAuditLog;
-use App\Traits\Tenant\HasVersions;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 
 class XpRule extends Model
 {
-    use HasFactory, HasAuditLog, HasVersions, BelongsToTenant;
+    use HasFactory, HasAuditLog, BelongsToTenant;
 
     const AUDIT_AREA = 'xp_rules';
 
@@ -27,12 +26,7 @@ class XpRule extends Model
         'is_active' => 'boolean'
     ];
 
-    protected array $versionedAttributes = [
-        'action',
-        'base_xp',
-        'multipliers',
-        'is_active'
-    ];
+
 
     /**
      * Calculate XP for an action with all applicable multipliers.

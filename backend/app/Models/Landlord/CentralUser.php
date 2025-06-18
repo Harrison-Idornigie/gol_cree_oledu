@@ -57,6 +57,7 @@ class CentralUser extends Authenticatable
         'interface_language',
         'avatar',
         'is_active',
+        'is_system_user',
         'last_login_at',
         'metadata',
     ];
@@ -76,6 +77,7 @@ class CentralUser extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
         'is_active' => 'boolean',
+        'is_system_user' => 'boolean',
         'last_login_at' => 'datetime',
         'metadata' => 'array',
     ];
@@ -117,6 +119,14 @@ class CentralUser extends Authenticatable
     }
 
     /**
+     * Check if this is a system user
+     */
+    public function isSystemUser(): bool
+    {
+        return $this->is_system_user === true;
+    }
+
+    /**
      * Scope for active users
      */
     public function scopeActive($query)
@@ -133,5 +143,13 @@ class CentralUser extends Authenticatable
                     ->orWhereHas('memberships', function ($q) {
                         $q->where('slug', 'super-admin');
                     });
+    }
+
+    /**
+     * Scope for system users
+     */
+    public function scopeSystemUsers($query)
+    {
+        return $query->where('is_system_user', true);
     }
 }

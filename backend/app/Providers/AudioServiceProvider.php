@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use App\Services\AudioProcessingService;
+use App\Services\Tenants\Media\AudioProcessingService;
 
 class AudioServiceProvider extends ServiceProvider
 {
@@ -13,7 +13,7 @@ class AudioServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->singleton(AudioProcessingService::class, function ($app) {
-            // The GetID3 class will be instantiated directly in the service
+            // AudioProcessingService uses FFmpeg/FFprobe directly
             return new AudioProcessingService();
         });
     }

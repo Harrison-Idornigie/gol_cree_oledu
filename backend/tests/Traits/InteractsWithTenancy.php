@@ -133,7 +133,7 @@ trait InteractsWithTenancy
     }
 
     /**
-     * Run tenant migrations for testing
+     * Run tenant migrations and seeding for testing
      */
     protected function migrateTenantDatabase(Tenant $tenant): void
     {
@@ -141,22 +141,131 @@ trait InteractsWithTenancy
         $originalConnection = DB::getDefaultConnection();
         
         try {
+            // Initialize tenancy for this tenant
+            tenancy()->initialize($tenant);
+            
             // Set tenant database as default
             Config::set('database.default', "tenant_{$tenant->id}");
             DB::purge("tenant_{$tenant->id}");
             DB::reconnect("tenant_{$tenant->id}");
 
             // Run tenant migrations
-            Artisan::call('migrate', [
+            Artisan::call('migrate:fresh', [
                 '--database' => "tenant_{$tenant->id}",
-                '--path' => 'database/migrations/tenants',
+                '--path' => 'database/migrations/tenant',
                 '--force' => true,
             ]);
 
+            // Run tenant seeders
+            $this->seedTenantDatabase($tenant);
+
         } finally {
+            // End tenancy
+            tenancy()->end();
+            
             // Restore original connection
             Config::set('database.default', $originalConnection);
             DB::reconnect($originalConnection);
+        }
+    }
+
+    /**
+     * Seed tenant database with test data
+     */
+    protected function seedTenantDatabase(Tenant $tenant): void
+    {
+        try {
+            // Try to run tenant-specific seeders
+            Artisan::call('db:seed', [
+                '--database' => "tenant_{$tenant->id}",
+                '--class' => 'TenantDatabaseSeeder',
+                '--force' => true,
+            ]);
+        } catch (\Exception $e) {
+            // If no seeder exists, create basic test data
+            $this->createBasicTenantTestData($tenant);
+        }
+    }
+
+    /**
+     * Create basic test data for tenant
+     */
+    protected function createBasicTenantTestData(Tenant $tenant): void
+    {
+        // Create basic language if Language model exists
+        try {
+            if (class_exists('App\\Models\\Tenants\\Language')) {
+                DB::table('languages')->insertOrIgnore([
+                    'id' => \Illuminate\Support\Str::uuid(),
+                    'name' => 'English',
+                    'code' => 'en',
+                    'native_name' => 'English',
+                    'is_active' => true,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+
+                DB::table('languages')->insertOrIgnore([
+                    'id' => \Illuminate\Support\Str::uuid(),
+                    'name' => 'Plains Cree',
+                    'code' => 'cr',
+                    'native_name' => 'nêhiyawêwin',
+                    'is_active' => true,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            }
+        } catch (\Exception $e) {
+            // Table might not exist, continue
+        }
+
+        // Create basic user roles/memberships if they exist
+        try {
+            if (DB::getSchemaBuilder()->hasTable('memberships')) {
+                $memberships = [
+                    ['slug' => 'tenant-admin', 'name' => 'Tenant Admin', 'description' => 'Full admin access within tenant'],
+                    ['slug' => 'team', 'name' => 'Team Member', 'description' => 'Content creation and management'],
+                    ['slug' => 'student', 'name' => 'Student', 'description' => 'Learning access'],
+                ];
+
+                foreach ($memberships as $membership) {
+                    DB::table('memberships')->insertOrIgnore([
+                        'id' => \Illuminate\Support\Str::uuid(),
+                        'slug' => $membership['slug'],
+                        'name' => $membership['name'],
+                        'description' => $membership['description'],
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ]);
+                }
+            }
+        } catch (\Exception $e) {
+            // Table might not exist, continue
+        }
+
+        // Create basic permissions if they exist
+        try {
+            if (DB::getSchemaBuilder()->hasTable('permissions')) {
+                $permissions = [
+                    'admin' => 'Full administrative access',
+                    'tenant-admin' => 'Tenant administration access',
+                    'team' => 'Content creation and management',
+                    'student' => 'Learning and progress tracking',
+                ];
+
+                foreach ($permissions as $name => $description) {
+                    DB::table('permissions')->insertOrIgnore([
+                        'id' => \Illuminate\Support\Str::uuid(),
+                        'name' => $name,
+                        'guard_name' => 'tenant',
+                        'description' => $description,
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ]);
+                }
+            }
+        } catch (\Exception $e) {
+            // Table might not exist, continue
         }
     }
 

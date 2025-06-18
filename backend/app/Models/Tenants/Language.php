@@ -2,7 +2,6 @@
 namespace App\Models\Tenants;
 
 use App\Traits\Tenant\HasAuditLog;
-use App\Traits\Tenant\HasVersions;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -11,7 +10,7 @@ use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 
 class Language extends Model
 {
-    use HasFactory, HasAuditLog, HasVersions, BelongsToTenant;
+    use HasFactory, HasAuditLog, BelongsToTenant;
 
     protected $fillable = [
         'code',

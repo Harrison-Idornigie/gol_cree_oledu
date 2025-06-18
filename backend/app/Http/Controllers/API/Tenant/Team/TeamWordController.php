@@ -55,6 +55,8 @@ class TeamWordController extends BaseAPIController
      */
     public function index(Request $request): JsonResponse
     {
+        $this->authorize('viewAny', Word::class);
+        
         try {
             $filters = [
                 'search' => $request->get('search'),
@@ -97,6 +99,8 @@ class TeamWordController extends BaseAPIController
      */
     public function store(CreateWordRequest $request): JsonResponse
     {
+        $this->authorize('create', Word::class);
+        
         try {
             $wordData = $request->only([
                 'language_id',
@@ -142,6 +146,8 @@ class TeamWordController extends BaseAPIController
      */
     public function show(Request $request, Word $word): JsonResponse
     {
+        $this->authorize('view', $word);
+        
         try {
             $wordData = $this->wordService->getWordDetails($word);
             return $this->sendResponse($wordData, 'Word retrieved successfully.');
@@ -160,6 +166,8 @@ class TeamWordController extends BaseAPIController
      */
     public function update(UpdateWordRequest $request, Word $word): JsonResponse
     {
+        $this->authorize('update', $word);
+        
         try {
             $updateData = $request->only([
                 'language_id',
@@ -205,6 +213,8 @@ class TeamWordController extends BaseAPIController
      */
     public function destroy(Request $request, Word $word): JsonResponse
     {
+        $this->authorize('delete', $word);
+        
         try {
             $this->wordService->deleteWord($word);
             return $this->sendNoContentResponse();
@@ -222,6 +232,8 @@ class TeamWordController extends BaseAPIController
      */
     public function bulkStore(BulkWordRequest $request): JsonResponse
     {
+        $this->authorize('create', Word::class);
+        
         try {
             $operation = $request->get('operation', 'create');
             $data = ['words' => $request->get('words', [])];
@@ -245,6 +257,8 @@ class TeamWordController extends BaseAPIController
      */
     public function bulkUpdate(BulkWordRequest $request): JsonResponse
     {
+        $this->authorize('update', Word::class);
+        
         try {
             $data = ['words' => $request->get('words', [])];
             $results = $this->wordService->bulkOperation('update', $data);
@@ -266,6 +280,8 @@ class TeamWordController extends BaseAPIController
      */
     public function bulkDelete(BulkWordRequest $request): JsonResponse
     {
+        $this->authorize('delete', Word::class);
+        
         try {
             $wordIds = $request->get('words', []);
             $data = ['words' => $wordIds];

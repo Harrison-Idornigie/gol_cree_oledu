@@ -43,6 +43,8 @@ class StudentWordController extends BaseAPIController
      */
     public function index(Request $request): JsonResponse
     {
+        $this->authorize('viewAny', Word::class);
+        
         try {
             $request->validate([
                 'language_id' => 'sometimes|integer|exists:languages,id',
@@ -86,6 +88,8 @@ class StudentWordController extends BaseAPIController
      */
     public function show(Request $request, Word $word): JsonResponse
     {
+        $this->authorize('view', $word);
+        
         try {
             // Validate that the word belongs to the current tenant
             if ($word->tenant_id !== tenant('id')) {
@@ -111,6 +115,8 @@ class StudentWordController extends BaseAPIController
      */
     public function translations(Request $request, Word $word): JsonResponse
     {
+        $this->authorize('view', $word);
+        
         try {
             // Validate that the word belongs to the current tenant
             if ($word->tenant_id !== tenant('id')) {
