@@ -3,18 +3,21 @@
 namespace App\Http\Controllers\API\Tenant\Team;
 
 use App\Http\Controllers\API\BaseAPIController;
+use App\Services\Tenants\Course\LearningPathService;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 use App\Models\Tenants\LearningPath;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
+use Exception;
 
 /**
  * Team Learning Path Controller
- * 
+ *
  * Handles learning path management operations for team members.
  * Access Level: Team (Teams/Content Creators)
  * Scope: Tenant-specific
- * 
+ *
  * This controller allows team members to create and manage learning paths
  * within their tenant scope, including content organization and review workflows.
  */
@@ -22,27 +25,30 @@ class TeamLearningPathController extends BaseAPIController
 {
     use BelongsToTenant;
 
+    protected LearningPathService $learningPathService;
+
     /**
      * Constructor - Apply team middleware
      */
-    public function __construct()
+    public function __construct(LearningPathService $learningPathService)
     {
-
+        $this->learningPathService = $learningPathService;
     }
 
     /**
      * Display a listing of learning paths.
-     * 
+     *
      * @param Request $request
      * @return JsonResponse
      */
     public function index(Request $request): JsonResponse
     {
-        // TODO: Implement learning paths listing
-        // - All learning paths in current tenant
-        // - Filter by creator, status, language
-        // - Include progress statistics
-        return $this->sendResponse([], 'Learning paths retrieved successfully.');
+        try {
+            $learningPaths = $this->learningPathService->getFilteredLearningPaths($request, 'team');
+            return $this->sendResponse($learningPaths, 'Learning paths retrieved successfully.');
+        } catch (Exception $e) {
+            return $this->sendError('Failed to retrieve learning paths.', ['error' => $e->getMessage()]);
+        }
     }
 
     /**

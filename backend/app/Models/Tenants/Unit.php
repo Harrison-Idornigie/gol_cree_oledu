@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models\Tenants;
 
 use App\Models\Tenants\Review;
@@ -20,6 +21,7 @@ class Unit extends Model
 
     protected $fillable = [
         'learning_path_id',
+        'template_id',
         'title',
         'description',
         'order',
@@ -51,6 +53,14 @@ class Unit extends Model
     public function learningPath(): BelongsTo
     {
         return $this->belongsTo(LearningPath::class);
+    }
+
+    /**
+     * Get the template used to create this unit.
+     */
+    public function template(): BelongsTo
+    {
+        return $this->belongsTo(ContentTemplate::class, 'template_id');
     }
 
     /**

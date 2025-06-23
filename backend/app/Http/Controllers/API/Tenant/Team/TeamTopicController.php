@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\API\Tenant\Team;
 
 use App\Http\Controllers\API\BaseAPIController;
+use App\Services\Tenants\Course\TopicService;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 use App\Models\Tenants\Topic;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Team Topic Controller
@@ -22,93 +24,149 @@ class TeamTopicController extends BaseAPIController
 {
     use BelongsToTenant;
 
+    protected TopicService $topicService;
+
     /**
      * Constructor - Apply team middleware
      */
-    public function __construct()
+    public function __construct(TopicService $topicService)
     {
-        
+        $this->topicService = $topicService;
     }
 
     /**
      * Display a listing of topics.
-     * 
+     *
      * @param Request $request
      * @return JsonResponse
      */
     public function index(Request $request): JsonResponse
     {
-        // TODO: Implement topics listing
-        // - All topics in current tenant
-        // - Filter by unit, creator, status
-        // - Include lesson counts and progress
-        return $this->sendResponse([], 'Topics retrieved successfully.');
+        try {
+            $filters = [
+                'search' => $request->get('search'),
+                'unit_id' => $request->get('unit_id'),
+                'status' => $request->get('status'),
+                'is_bonus' => $request->get('is_bonus'),
+                'created_by' => $request->get('created_by'),
+            ];
+
+            $sorts = [];
+            if ($request->has('sort_by')) {
+                $sorts[$request->get('sort_by')] = $request->get('sort_direction', 'asc');
+            }
+
+            $perPage = $request->get('per_page', 15);
+            $topics = $this->topicService->getTopics($filters, $sorts, $perPage);
+
+            return $this->sendResponse($topics, 'Topics retrieved successfully.');
+        } catch (\Exception $e) {
+            return $this->sendError('Failed to retrieve topics.', ['error' => $e->getMessage()]);
+        }
     }
 
     /**
      * Store a newly created topic.
-     * 
+     *
      * @param Request $request
      * @return JsonResponse
      */
     public function store(Request $request): JsonResponse
     {
-        // TODO: Implement topic creation
-        // - Validate topic data
-        // - Create topic with tenant association
-        // - Set creator and unit relationship
-        // - Initialize topic structure
-        return $this->sendCreatedResponse([], 'Topic created successfully.');
+        try {
+            $validated = $request->validate([
+                'unit_id' => 'required|exists:units,id',
+                'title' => 'required|string|max:255',
+                'description' => 'nullable|string',
+                'icon' => 'nullable|string|max:100',
+                'color' => 'nullable|string|max:7',
+                'order' => 'nullable|integer|min:0',
+                'xp_reward' => 'nullable|integer|min:0',
+                'max_level' => 'nullable|integer|min:1|max:10',
+                'is_bonus' => 'nullable|boolean',
+            ]);
+
+            $topic = $this->topicService->createTopic($validated, Auth::user());
+
+            return $this->sendCreatedResponse($topic, 'Topic created successfully.');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return $this->sendError('Validation failed.', $e->errors(), 422);
+        } catch (\Exception $e) {
+            return $this->sendError('Failed to create topic.', ['error' => $e->getMessage()]);
+        }
     }
 
     /**
      * Display the specified topic.
-     * 
+     *
      * @param Request $request
      * @param Topic $topic
      * @return JsonResponse
      */
     public function show(Request $request, Topic $topic): JsonResponse
     {
-        // TODO: Implement topic details
-        // - Validate topic belongs to tenant
-        // - Include lessons and exercises structure
-        // - Show progress and statistics
-        return $this->sendResponse($topic, 'Topic retrieved successfully.');
+        try {
+            // Load relationships and statistics
+            $topic->load(['unit.learningPath', 'lessons.exercises', 'template']);
+
+            // Get topic statistics
+            $stats = $this->topicService->getTopicStats($topic);
+            $topic->stats = $stats;
+
+            return $this->sendResponse($topic, 'Topic retrieved successfully.');
+        } catch (\Exception $e) {
+            return $this->sendError('Failed to retrieve topic.', ['error' => $e->getMessage()]);
+        }
     }
 
     /**
      * Update the specified topic.
-     * 
+     *
      * @param Request $request
      * @param Topic $topic
      * @return JsonResponse
      */
     public function update(Request $request, Topic $topic): JsonResponse
     {
-        // TODO: Implement topic update
-        // - Validate topic belongs to tenant
-        // - Update topic properties
-        // - Handle order changes
-        // - Update metadata
-        return $this->sendResponse($topic, 'Topic updated successfully.');
+        try {
+            $validated = $request->validate([
+                'title' => 'sometimes|string|max:255',
+                'description' => 'nullable|string',
+                'icon' => 'nullable|string|max:100',
+                'color' => 'nullable|string|max:7',
+                'order' => 'nullable|integer|min:0',
+                'status' => 'nullable|string|in:draft,published,archived',
+                'xp_reward' => 'nullable|integer|min:0',
+                'max_level' => 'nullable|integer|min:1|max:10',
+                'is_bonus' => 'nullable|boolean',
+            ]);
+
+            $updatedTopic = $this->topicService->updateTopic($topic, $validated, Auth::user());
+
+            return $this->sendResponse($updatedTopic, 'Topic updated successfully.');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return $this->sendError('Validation failed.', $e->errors(), 422);
+        } catch (\Exception $e) {
+            return $this->sendError('Failed to update topic.', ['error' => $e->getMessage()]);
+        }
     }
 
     /**
      * Remove the specified topic.
-     * 
+     *
      * @param Request $request
      * @param Topic $topic
      * @return JsonResponse
      */
     public function destroy(Request $request, Topic $topic): JsonResponse
     {
-        // TODO: Implement topic deletion
-        // - Validate topic belongs to tenant
-        // - Check for dependent lessons and exercises
-        // - Handle cascading deletions
-        // - Update unit structure
-        return $this->sendNoContentResponse();
+        try {
+            $this->topicService->deleteTopic($topic, Auth::user());
+
+            return $this->sendNoContentResponse();
+        } catch (\Exception $e) {
+            return $this->sendError('Failed to delete topic.', ['error' => $e->getMessage()]);
+        }
     }
 
     /**

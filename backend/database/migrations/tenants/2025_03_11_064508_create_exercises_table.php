@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('tenant_id')->nullable()->comment('Reference to tenant in landlord database');
             $table->foreignId('lesson_id')->constrained()->onDelete('cascade');
+            $table->foreignId('template_id')->nullable()->comment('Reference to content template used to create this exercise');
 
             // Exercise details
             $table->string('title');
@@ -26,7 +27,7 @@ return new class extends Migration
             $table->json('answers')->nullable();            // Correct answers
             $table->json('metadata')->nullable();           // Additional exercise settings
 
-                                                         // Configuration
+            // Configuration
             $table->integer('time_limit')->nullable();   // In seconds, null for no limit
             $table->integer('max_attempts')->nullable(); // null for unlimited
             $table->boolean('show_feedback')->default(true);
@@ -49,6 +50,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->index(['tenant_id', 'status']);
+            $table->index(['template_id']);
         });
     }
 

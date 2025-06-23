@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\API\Tenant\Team;
 
 use App\Http\Controllers\API\BaseAPIController;
+use App\Services\Tenants\Course\LessonService;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 use App\Models\Tenants\Lesson;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Team Lesson Controller
@@ -22,92 +24,140 @@ class TeamLessonController extends BaseAPIController
 {
     use BelongsToTenant;
 
+    protected LessonService $lessonService;
+
     /**
      * Constructor - Apply team middleware
      */
-    public function __construct()
+    public function __construct(LessonService $lessonService)
     {
-     }
+        $this->lessonService = $lessonService;
+    }
 
     /**
      * Display a listing of lessons.
-     * 
+     *
      * @param Request $request
      * @return JsonResponse
      */
     public function index(Request $request): JsonResponse
     {
-        // TODO: Implement lessons listing
-        // - All lessons in current tenant
-        // - Filter by topic, creator, status
-        // - Include exercise counts and progress
-        return $this->sendResponse([], 'Lessons retrieved successfully.');
+        try {
+            $filters = [
+                'search' => $request->get('search'),
+                'topic_id' => $request->get('topic_id'),
+                'unit_id' => $request->get('unit_id'),
+                'status' => $request->get('status'),
+                'created_by' => $request->get('created_by'),
+            ];
+
+            $sorts = [];
+            if ($request->has('sort_by')) {
+                $sorts[$request->get('sort_by')] = $request->get('sort_direction', 'asc');
+            }
+
+            $perPage = $request->get('per_page', 15);
+            $lessons = $this->lessonService->getLessons($filters, $sorts, $perPage);
+
+            return $this->sendResponse($lessons, 'Lessons retrieved successfully.');
+        } catch (\Exception $e) {
+            return $this->sendError('Failed to retrieve lessons.', ['error' => $e->getMessage()]);
+        }
     }
 
     /**
      * Store a newly created lesson.
-     * 
+     *
      * @param Request $request
      * @return JsonResponse
      */
     public function store(Request $request): JsonResponse
     {
-        // TODO: Implement lesson creation
-        // - Validate lesson data
-        // - Create lesson with tenant association
-        // - Set creator and topic relationship
-        // - Initialize lesson structure
-        return $this->sendCreatedResponse([], 'Lesson created successfully.');
+        try {
+            $validated = $request->validate([
+                'topic_id' => 'required|exists:topics,id',
+                'title' => 'required|string|max:255',
+                'description' => 'required|string',
+                'order' => 'nullable|integer|min:0',
+                'status' => 'nullable|string|in:draft,published,archived',
+            ]);
+
+            $lesson = $this->lessonService->createLesson($validated, Auth::user());
+
+            return $this->sendCreatedResponse($lesson, 'Lesson created successfully.');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return $this->sendError('Validation failed.', $e->errors(), 422);
+        } catch (\Exception $e) {
+            return $this->sendError('Failed to create lesson.', ['error' => $e->getMessage()]);
+        }
     }
 
     /**
      * Display the specified lesson.
-     * 
+     *
      * @param Request $request
      * @param Lesson $lesson
      * @return JsonResponse
      */
     public function show(Request $request, Lesson $lesson): JsonResponse
     {
-        // TODO: Implement lesson details
-        // - Validate lesson belongs to tenant
-        // - Include exercises and content structure
-        // - Show progress and statistics
-        return $this->sendResponse($lesson, 'Lesson retrieved successfully.');
+        try {
+            // Load relationships and statistics
+            $lesson->load(['topic.unit.learningPath', 'exercises', 'template']);
+
+            // Get lesson statistics
+            $stats = $this->lessonService->getLessonStats($lesson);
+            $lesson->stats = $stats;
+
+            return $this->sendResponse($lesson, 'Lesson retrieved successfully.');
+        } catch (\Exception $e) {
+            return $this->sendError('Failed to retrieve lesson.', ['error' => $e->getMessage()]);
+        }
     }
 
     /**
      * Update the specified lesson.
-     * 
+     *
      * @param Request $request
      * @param Lesson $lesson
      * @return JsonResponse
      */
     public function update(Request $request, Lesson $lesson): JsonResponse
     {
-        // TODO: Implement lesson update
-        // - Validate lesson belongs to tenant
-        // - Update lesson properties
-        // - Handle content changes
-        // - Update metadata
-        return $this->sendResponse($lesson, 'Lesson updated successfully.');
+        try {
+            $validated = $request->validate([
+                'title' => 'sometimes|string|max:255',
+                'description' => 'sometimes|string',
+                'order' => 'nullable|integer|min:0',
+                'status' => 'nullable|string|in:draft,published,archived',
+            ]);
+
+            $updatedLesson = $this->lessonService->updateLesson($lesson, $validated, Auth::user());
+
+            return $this->sendResponse($updatedLesson, 'Lesson updated successfully.');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return $this->sendError('Validation failed.', $e->errors(), 422);
+        } catch (\Exception $e) {
+            return $this->sendError('Failed to update lesson.', ['error' => $e->getMessage()]);
+        }
     }
 
     /**
      * Remove the specified lesson.
-     * 
+     *
      * @param Request $request
      * @param Lesson $lesson
      * @return JsonResponse
      */
     public function destroy(Request $request, Lesson $lesson): JsonResponse
     {
-        // TODO: Implement lesson deletion
-        // - Validate lesson belongs to tenant
-        // - Check for dependent exercises
-        // - Handle cascading deletions
-        // - Update topic structure
-        return $this->sendNoContentResponse();
+        try {
+            $this->lessonService->deleteLesson($lesson, Auth::user());
+
+            return $this->sendNoContentResponse();
+        } catch (\Exception $e) {
+            return $this->sendError('Failed to delete lesson.', ['error' => $e->getMessage()]);
+        }
     }
 
     /**

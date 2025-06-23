@@ -16,6 +16,8 @@ use App\Models\Tenants\Review;
 use App\Models\Tenants\Progress;
 use App\Models\Tenants\Achievement;
 use App\Models\Tenants\UserAnalytics;
+use App\Models\Tenants\CurriculumTemplate;
+use App\Models\Tenants\ContentTemplate;
 use App\Policies\TenantPolicy;
 use App\Policies\UserPolicy;
 use App\Policies\WordPolicy;
@@ -32,6 +34,9 @@ use App\Policies\AchievementPolicy;
 use App\Policies\AnalyticsPolicy;
 use App\Policies\AIIntegrationPolicy;
 use App\Policies\SystemHealthPolicy;
+use App\Policies\CurriculumTemplatePolicy;
+use App\Policies\ContentTemplatePolicy;
+use App\Policies\ContentScaffoldingPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -45,7 +50,7 @@ class AuthServiceProvider extends ServiceProvider
         // Tenant and User Management
         Tenant::class => TenantPolicy::class,
         User::class => UserPolicy::class,
-        
+
         // Content Management
         Word::class => WordPolicy::class,
         Sentence::class => SentencePolicy::class,
@@ -53,20 +58,24 @@ class AuthServiceProvider extends ServiceProvider
         Exercise::class => ExercisePolicy::class,
         Language::class => LanguagePolicy::class,
         LearningPath::class => LearningPathPolicy::class,
-        
+
         // Media and Bulk Operations
         MediaFile::class => MediaFilePolicy::class,
         BulkOperation::class => BulkOperationPolicy::class,
-        
+
         // Content Review System
         Review::class => ReviewPolicy::class,
-        
+
         // Progress and Achievements
         Progress::class => ProgressPolicy::class,
         Achievement::class => AchievementPolicy::class,
-        
+
         // Analytics
         UserAnalytics::class => AnalyticsPolicy::class,
+
+        // Template System
+        CurriculumTemplate::class => CurriculumTemplatePolicy::class,
+        ContentTemplate::class => ContentTemplatePolicy::class,
     ];
 
     /**

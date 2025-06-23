@@ -44,9 +44,9 @@ class SentenceManagementService
             $search = $filters['search'];
             $query->where(function ($q) use ($search) {
                 $q->where('text', 'LIKE', "%{$search}%")
-                  ->orWhereHas('translations', function ($tq) use ($search) {
-                      $tq->where('text', 'LIKE', "%{$search}%");
-                  });
+                    ->orWhereHas('translations', function ($tq) use ($search) {
+                        $tq->where('text', 'LIKE', "%{$search}%");
+                    });
             });
         }
 
@@ -125,7 +125,7 @@ class SentenceManagementService
 
         // Extract word IDs from word data
         $wordIds = collect($wordData)->pluck('word_id')->filter()->toArray();
-        
+
         // Get managed words
         $managedWords = Word::whereIn('id', $wordIds)
             ->where('language_id', $languageId)
@@ -142,7 +142,7 @@ class SentenceManagementService
         // Parse sentence text and check for unregistered words
         $sentenceWords = $this->parseSentenceWords($sentenceText);
         $managedWordTexts = $managedWords->pluck('text')->map('strtolower')->toArray();
-        
+
         // Get exception words for this language
         $exceptionWords = ExceptionWord::where('language_id', $languageId)
             ->active()
@@ -152,11 +152,11 @@ class SentenceManagementService
 
         foreach ($sentenceWords as $word) {
             $wordLower = strtolower($word);
-            
+
             if (!in_array($wordLower, $managedWordTexts) && !in_array($wordLower, $exceptionWords)) {
                 $validation['valid'] = false;
                 $validation['errors'][] = "Word '{$word}' is not registered as a managed word or exception.";
-                
+
                 // Suggest similar words
                 $suggestions = $this->findSimilarWords($word, $languageId);
                 if (!empty($suggestions)) {
@@ -178,7 +178,8 @@ class SentenceManagementService
                 $query->where('text', 'LIKE', "%{$search}%");
             })
             ->with(['translations' => function ($query) {
-                $query->where('language_id', 1); // Assuming English as base language
+                // Don't hard-code language - this will be handled by language pair context
+                $query->orderBy('translation_order');
             }])
             ->orderBy('text')
             ->limit($limit)
@@ -236,7 +237,7 @@ class SentenceManagementService
     protected function attachWordsToSentence(Sentence $sentence, array $wordData): void
     {
         $attachData = [];
-        
+
         foreach ($wordData as $data) {
             $attachData[$data['word_id']] = [
                 'position' => $data['position'],
@@ -248,4 +249,6 @@ class SentenceManagementService
 
         $sentence->words()->attach($attachData);
     }
+
+
 }

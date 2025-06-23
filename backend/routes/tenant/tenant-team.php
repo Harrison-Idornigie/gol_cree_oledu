@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\API\Tenant\Team\TeamContentController;
+use App\Http\Controllers\API\Tenant\Team\TeamContentScaffoldingController;
+use App\Http\Controllers\API\Tenant\Team\TeamCurriculumTemplateController;
 use App\Http\Controllers\API\Tenant\Team\TeamExerciseController;
 use App\Http\Controllers\API\Tenant\Team\TeamGamificationController;
 use App\Http\Controllers\API\Tenant\Team\TeamGuideBookEntryController;
@@ -75,11 +77,11 @@ Route::prefix('team')->middleware(['auth:tenant', 'verified-grace'])->group(func
         Route::post('/', [TeamSentenceController::class, 'store']);
         Route::get('available-words', [TeamSentenceController::class, 'getAvailableWords']);
         Route::post('validate-words', [TeamSentenceController::class, 'validateSentenceWords']);
-        
+
         // New AI-assisted endpoints
         Route::post('analyze-text', [TeamSentenceController::class, 'analyzeSentenceText']);
         Route::post('create-with-mapping', [TeamSentenceController::class, 'createWithAutoMapping']);
-        
+
         Route::get('{sentence}', [TeamSentenceController::class, 'show']);
         Route::put('{sentence}', [TeamSentenceController::class, 'update']);
         Route::delete('{sentence}', [TeamSentenceController::class, 'destroy']);
@@ -151,10 +153,36 @@ Route::prefix('team')->middleware(['auth:tenant', 'verified-grace'])->group(func
         Route::get('my-media', [TeamMediaController::class, 'myMedia']);
     });
 
+    // Curriculum Template Management
+    Route::prefix('curriculum-templates')->group(function () {
+        Route::get('/', [TeamCurriculumTemplateController::class, 'index']);
+        Route::get('recommendations', [TeamCurriculumTemplateController::class, 'recommendations']);
+        Route::get('{template}', [TeamCurriculumTemplateController::class, 'show']);
+        Route::get('{template}/preview', [TeamCurriculumTemplateController::class, 'preview']);
+        Route::get('{template}/effectiveness', [TeamCurriculumTemplateController::class, 'effectiveness']);
+        Route::get('{template}/usage', [TeamCurriculumTemplateController::class, 'usage']);
+        Route::post('{template}/instantiate', [TeamCurriculumTemplateController::class, 'instantiate']);
+        Route::post('{template}/customize', [TeamCurriculumTemplateController::class, 'customize']);
+        Route::post('{template}/validate', [TeamCurriculumTemplateController::class, 'validate']);
+    });
+
+    // Content Scaffolding (Automated Content Generation)
+    Route::prefix('scaffolding')->group(function () {
+        // Exercise Generation
+        Route::post('generate-exercises', [TeamContentScaffoldingController::class, 'generateExercises']);
+        Route::post('generate-from-sentences', [TeamContentScaffoldingController::class, 'generateFromSentences']);
+        Route::post('preview-exercises', [TeamContentScaffoldingController::class, 'previewExercises']);
+
+        // Lesson Generation
+        Route::post('generate-lesson', [TeamContentScaffoldingController::class, 'generateLesson']);
+
+        // Bulk Operations
+        Route::post('bulk-generate', [TeamContentScaffoldingController::class, 'bulkGenerate']);
+    });
+
     // Gamification Management (limited for teams)
     Route::prefix('gamification')->group(function () {
         Route::get('achievements', [TeamGamificationController::class, 'getAchievements']);
         Route::get('statistics', [TeamGamificationController::class, 'getStatistics']);
     });
-
 });

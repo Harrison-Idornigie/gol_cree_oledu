@@ -44,10 +44,10 @@ class WordManagementService
             $search = $filters['search'];
             $query->where(function ($q) use ($search) {
                 $q->where('text', 'LIKE', "%{$search}%")
-                  ->orWhere('pronunciation_key', 'LIKE', "%{$search}%")
-                  ->orWhereHas('translations', function ($tq) use ($search) {
-                      $tq->where('text', 'LIKE', "%{$search}%");
-                  });
+                    ->orWhere('pronunciation_key', 'LIKE', "%{$search}%")
+                    ->orWhereHas('translations', function ($tq) use ($search) {
+                        $tq->where('text', 'LIKE', "%{$search}%");
+                    });
             });
         }
 
@@ -89,7 +89,7 @@ class WordManagementService
         // Apply sorting
         $sortBy = $sorts['sort_by'] ?? 'text';
         $sortOrder = $sorts['sort_order'] ?? 'asc';
-        
+
         switch ($sortBy) {
             case 'created_at':
                 $query->orderBy('created_at', $sortOrder);
@@ -99,8 +99,8 @@ class WordManagementService
                 break;
             case 'language':
                 $query->join('languages', 'words.language_id', '=', 'languages.id')
-                      ->orderBy('languages.name', $sortOrder)
-                      ->select('words.*');
+                    ->orderBy('languages.name', $sortOrder)
+                    ->select('words.*');
                 break;
             default:
                 $query->orderBy('text', $sortOrder);
@@ -322,7 +322,7 @@ class WordManagementService
         return DB::transaction(function () use ($translation) {
             // Clear media
             $translation->clearMediaCollection('pronunciation');
-            
+
             // Delete the translation
             return $translation->delete();
         });
@@ -335,7 +335,7 @@ class WordManagementService
     {
         // Clear existing audio
         $word->clearMediaCollection('pronunciation');
-        
+
         // Process and store new audio
         return $this->audioService->processWordAudio($word, $audioFile);
     }
@@ -347,7 +347,7 @@ class WordManagementService
     {
         // Clear existing audio
         $translation->clearMediaCollection('pronunciation');
-        
+
         // Process and store new audio
         return $this->audioService->processTranslationAudio($translation, $audioFile);
     }
@@ -371,13 +371,13 @@ class WordManagementService
             switch ($operation) {
                 case 'create':
                     return $this->bulkCreateWords($data['words'] ?? []);
-                    
+
                 case 'update':
                     return $this->bulkUpdateWords($data['words'] ?? []);
-                    
+
                 case 'delete':
                     return $this->bulkDeleteWords($data['words'] ?? []);
-                    
+
                 default:
                     throw new Exception('Invalid bulk operation: ' . $operation);
             }
@@ -402,13 +402,12 @@ class WordManagementService
                     null, // Audio handled separately in bulk operations
                     $wordData['translations'] ?? []
                 );
-                
+
                 $results['success'][] = [
                     'index' => $index,
                     'word' => $word->getPreviewData()
                 ];
                 $results['summary']['successful']++;
-                
             } catch (Exception $e) {
                 $results['errors'][] = [
                     'index' => $index,
@@ -446,13 +445,12 @@ class WordManagementService
                     null, // Audio handled separately
                     $wordData['translations'] ?? []
                 );
-                
+
                 $results['success'][] = [
                     'index' => $index,
                     'word' => $updatedWord->getPreviewData()
                 ];
                 $results['summary']['successful']++;
-                
             } catch (Exception $e) {
                 $results['errors'][] = [
                     'index' => $index,
@@ -481,13 +479,12 @@ class WordManagementService
             try {
                 $word = Word::findOrFail($wordId);
                 $this->deleteWord($word);
-                
+
                 $results['success'][] = [
                     'index' => $index,
                     'word_id' => $wordId
                 ];
                 $results['summary']['successful']++;
-                
             } catch (Exception $e) {
                 $results['errors'][] = [
                     'index' => $index,
@@ -517,7 +514,7 @@ class WordManagementService
 
         // Check for usage in exercises (through sentences or direct word usage)
         // This would need to be expanded based on your exercise structure
-        
+
         return [
             'can_delete' => $canDelete,
             'usage_locations' => $usageLocations,
@@ -542,7 +539,7 @@ class WordManagementService
         ]);
 
         $wordData = $word->getPreviewData();
-        
+
         // Add usage statistics
         $wordData['usage_stats'] = [
             'total_translations' => $word->translations->count(),
@@ -587,10 +584,10 @@ class WordManagementService
             $search = $filters['search'];
             $query->where(function ($q) use ($search) {
                 $q->where('text', 'LIKE', "%{$search}%")
-                  ->orWhere('pronunciation_key', 'LIKE', "%{$search}%")
-                  ->orWhereHas('translations', function ($tq) use ($search) {
-                      $tq->where('text', 'LIKE', "%{$search}%");
-                  });
+                    ->orWhere('pronunciation_key', 'LIKE', "%{$search}%")
+                    ->orWhereHas('translations', function ($tq) use ($search) {
+                        $tq->where('text', 'LIKE', "%{$search}%");
+                    });
             });
         }
 
@@ -810,5 +807,108 @@ class WordManagementService
         }
 
         return $data;
+    }
+
+    /**
+     * Get interactive word data for frontend clicking.
+     * Returns target language audio + source language explanation.
+     * This is the core method for Duolingo-style clickable words.
+     */
+    public function getInteractiveWordData(Word $word, int $sourceLanguageId, ?string $proficiencyLevel = 'beginner'): array
+    {
+        // Get explanation in appropriate language based on proficiency
+        $explanationLanguageId = $this->getExplanationLanguageId($sourceLanguageId, $word->language_id, $proficiencyLevel);
+
+        $explanation = $word->translations()
+            ->where('language_id', $explanationLanguageId)
+            ->with('language')
+            ->first();
+
+        return [
+            'word_id' => $word->id,
+            'target_word' => [
+                'text' => $word->text,
+                'language_id' => $word->language_id,
+                'language_code' => $word->language->code,
+                'pronunciation_key' => $word->pronunciation_key,
+                'audio_url' => $word->hasMedia('pronunciation')
+                    ? $word->getFirstMediaUrl('pronunciation')
+                    : null,
+                'part_of_speech' => $word->part_of_speech,
+            ],
+            'explanation' => $explanation ? [
+                'text' => $explanation->text,
+                'language_id' => $explanation->language_id,
+                'language_code' => $explanation->language->code,
+                'context_notes' => $explanation->context_notes,
+                'usage_examples' => $explanation->usage_examples,
+            ] : null,
+            'proficiency_context' => $proficiencyLevel,
+            'explanation_language' => $explanationLanguageId === $sourceLanguageId ? 'source' : 'target'
+        ];
+    }
+
+    /**
+     * Get interactive data for multiple words (for sentence highlighting).
+     */
+    public function getBatchInteractiveWordData(array $wordIds, int $sourceLanguageId, ?string $proficiencyLevel = 'beginner'): array
+    {
+        $words = Word::with(['language', 'translations.language', 'media'])
+            ->whereIn('id', $wordIds)
+            ->get();
+
+        $result = [];
+        foreach ($words as $word) {
+            $result[$word->id] = $this->getInteractiveWordData($word, $sourceLanguageId, $proficiencyLevel);
+        }
+
+        return $result;
+    }
+
+    /**
+     * Determine explanation language based on proficiency level.
+     */
+    private function getExplanationLanguageId(int $sourceLanguageId, int $targetLanguageId, string $proficiencyLevel): int
+    {
+        // Beginners get explanations in source language
+        // Intermediate/Advanced can get explanations in target language
+        return match ($proficiencyLevel) {
+            'beginner' => $sourceLanguageId,
+            'intermediate', 'advanced' => $targetLanguageId,
+            default => $sourceLanguageId
+        };
+    }
+
+    /**
+     * Get words for building interactive sentences.
+     * Only returns words that have proper translations and audio.
+     */
+    public function getWordsForInteractiveSentences(
+        int $targetLanguageId,
+        int $sourceLanguageId,
+        array $filters = []
+    ): Collection {
+        $query = Word::where('language_id', $targetLanguageId)
+            ->whereHas('translations', function ($q) use ($sourceLanguageId) {
+                $q->where('language_id', $sourceLanguageId);
+            })
+            ->whereHas('media', function ($q) {
+                $q->where('collection_name', 'pronunciation');
+            })
+            ->with(['language', 'translations' => function ($q) use ($sourceLanguageId) {
+                $q->where('language_id', $sourceLanguageId)->with('language');
+            }, 'media']);
+
+        // Apply filters
+        if (!empty($filters['part_of_speech'])) {
+            $query->where('part_of_speech', $filters['part_of_speech']);
+        }
+
+        if (!empty($filters['difficulty_level'])) {
+            // Assuming difficulty is stored in metadata
+            $query->whereJsonContains('metadata->difficulty_level', $filters['difficulty_level']);
+        }
+
+        return $query->orderBy('text')->get();
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models\Tenants;
 
 use App\Services\ExerciseTypeService;
@@ -36,6 +37,7 @@ class Exercise extends Model
 
     protected $fillable = [
         'lesson_id',
+        'template_id',
         'title',
         'slug',
         'type',
@@ -99,6 +101,14 @@ class Exercise extends Model
     public function lesson(): BelongsTo
     {
         return $this->belongsTo(Lesson::class);
+    }
+
+    /**
+     * Get the template used to create this exercise.
+     */
+    public function template(): BelongsTo
+    {
+        return $this->belongsTo(ContentTemplate::class, 'template_id');
     }
 
     /**

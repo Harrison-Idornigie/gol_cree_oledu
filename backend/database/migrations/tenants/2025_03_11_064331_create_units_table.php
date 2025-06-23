@@ -14,6 +14,7 @@ return new class extends Migration
             $table->foreignId('learning_path_id')
                 ->constrained()
                 ->onDelete('cascade');
+            $table->foreignId('template_id')->nullable()->comment('Reference to content template used to create this unit');
             $table->string('title');
             $table->enum('status', ['draft', 'published', 'archived'])->default('draft');
             $table->text('description');
@@ -23,6 +24,7 @@ return new class extends Migration
             // Add index for ordering
             $table->index(['learning_path_id', 'order']);
             $table->index(['tenant_id', 'status']);
+            $table->index(['template_id']);
         });
     }
 

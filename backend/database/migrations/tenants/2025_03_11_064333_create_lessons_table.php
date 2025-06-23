@@ -14,6 +14,7 @@ return new class extends Migration
             $table->foreignId('topic_id')
                 ->constrained()
                 ->onDelete('cascade');
+            $table->foreignId('template_id')->nullable()->comment('Reference to content template used to create this lesson');
             $table->string('title');
             $table->text('description');
             $table->integer('order');
@@ -23,6 +24,7 @@ return new class extends Migration
             // Add index for ordering
             $table->index(['topic_id', 'order']);
             $table->index(['tenant_id', 'status']);
+            $table->index(['template_id']);
         });
     }
 

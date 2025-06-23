@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('tenant_id')->nullable()->comment('Reference to tenant in landlord database');
             $table->foreignId('unit_id')->constrained()->onDelete('cascade');
+            $table->foreignId('template_id')->nullable()->comment('Reference to content template used to create this topic');
 
             // Topic details
             $table->string('title');
@@ -28,7 +29,7 @@ return new class extends Migration
             $table->enum('status', ['draft', 'published', 'archived'])->default('draft');
             $table->integer('xp_reward')->default(10);
 
-                                                         // Gamification
+            // Gamification
             $table->integer('max_level')->default(5);    // Duolingo-style crown levels
             $table->boolean('is_bonus')->default(false); // Special/bonus topics
 
@@ -37,6 +38,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->index(['tenant_id', 'status']);
+            $table->index(['template_id']);
         });
     }
 

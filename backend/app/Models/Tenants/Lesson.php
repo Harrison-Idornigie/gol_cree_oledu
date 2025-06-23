@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models\Tenants;
 
 use App\Traits\Tenant\HasAuditLog;
@@ -19,6 +20,7 @@ class Lesson extends Model
 
     protected $fillable = [
         'topic_id',
+        'template_id',
         'title',
         'description',
         'order',
@@ -50,6 +52,14 @@ class Lesson extends Model
     public function topic(): BelongsTo
     {
         return $this->belongsTo(Topic::class);
+    }
+
+    /**
+     * Get the template used to create this lesson.
+     */
+    public function template(): BelongsTo
+    {
+        return $this->belongsTo(ContentTemplate::class, 'template_id');
     }
 
     /**

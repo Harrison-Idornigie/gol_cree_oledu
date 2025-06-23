@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models\Tenants;
 
 use App\Models\Tenants\Review;
@@ -19,6 +20,7 @@ class Topic extends Model
 
     protected $fillable = [
         'unit_id',
+        'template_id',
         'title',
         'slug',
         'description',
@@ -63,6 +65,14 @@ class Topic extends Model
     public function unit(): BelongsTo
     {
         return $this->belongsTo(Unit::class);
+    }
+
+    /**
+     * Get the template used to create this topic.
+     */
+    public function template(): BelongsTo
+    {
+        return $this->belongsTo(ContentTemplate::class, 'template_id');
     }
 
     /**
