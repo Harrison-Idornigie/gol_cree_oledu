@@ -4,11 +4,15 @@ namespace App\Http\Controllers\API\Tenant\Team;
 
 use App\Http\Controllers\API\BaseAPIController;
 use App\Services\Tenants\Course\TopicService;
+use App\Services\Tenants\Course\LessonService;
+use App\Services\Tenants\Course\ReviewService;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 use App\Models\Tenants\Topic;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
+use Exception;
 
 /**
  * Team Topic Controller
@@ -25,13 +29,20 @@ class TeamTopicController extends BaseAPIController
     use BelongsToTenant;
 
     protected TopicService $topicService;
+    protected LessonService $lessonService;
+    protected ReviewService $reviewService;
 
     /**
      * Constructor - Apply team middleware
      */
-    public function __construct(TopicService $topicService)
-    {
+    public function __construct(
+        TopicService $topicService,
+        LessonService $lessonService,
+        ReviewService $reviewService
+    ) {
         $this->topicService = $topicService;
+        $this->lessonService = $lessonService;
+        $this->reviewService = $reviewService;
 
         // Apply policies
         $this->authorizeResource(Topic::class, 'topic');
@@ -183,12 +194,37 @@ class TeamTopicController extends BaseAPIController
      */
     public function submitForReview(Request $request, Topic $topic): JsonResponse
     {
-        // TODO: Implement review submission
-        // - Validate topic completeness
-        // - Check all lessons have content
-        // - Change status to under review
-        // - Notify reviewers
-        return $this->sendResponse($topic, 'Topic submitted for review successfully.');
+        $this->authorize('update', $topic);
+
+        try {
+            $validatedData = $request->validate([
+                'review_notes' => 'nullable|string|max:1000',
+            ]);
+
+            // Check if topic has minimum required content
+            if (!$topic->lessons()->exists()) {
+                return $this->sendError('Cannot submit for review. Topic must have at least one lesson.');
+            }
+
+            $updatedTopic = $this->topicService->updateTopicStatus($topic, 'under_review', Auth::user());
+
+            // Create review entry if review notes provided
+            if (!empty($validatedData['review_notes'])) {
+                $this->reviewService->createReview([
+                    'content_type' => 'topic',
+                    'content_id' => $topic->id,
+                    'reviewer_id' => Auth::id(),
+                    'status' => 'pending',
+                    'comment' => $validatedData['review_notes'],
+                ], Auth::user());
+            }
+
+            return $this->sendResponse($updatedTopic, 'Topic submitted for review successfully.');
+        } catch (ValidationException $e) {
+            return $this->sendError('Validation failed.', $e->errors(), 422);
+        } catch (Exception $e) {
+            return $this->sendError('Failed to submit for review.', ['error' => $e->getMessage()]);
+        }
     }
 
     /**
@@ -200,12 +236,37 @@ class TeamTopicController extends BaseAPIController
      */
     public function updateStatus(Request $request, Topic $topic): JsonResponse
     {
-        // TODO: Implement status update
-        // - Validate permissions for status change
-        // - Update topic status
-        // - Handle publication implications
-        // - Update unit status if needed
-        return $this->sendResponse($topic, 'Topic status updated successfully.');
+        $this->authorize('update', $topic);
+
+        try {
+            $validatedData = $request->validate([
+                'status' => 'required|string|in:draft,under_review,published,archived',
+                'status_notes' => 'nullable|string|max:1000',
+            ]);
+
+            $updatedTopic = $this->topicService->updateTopicStatus(
+                $topic,
+                $validatedData['status'],
+                Auth::user()
+            );
+
+            // Log status change with notes if provided
+            if (!empty($validatedData['status_notes'])) {
+                $this->reviewService->createReview([
+                    'content_type' => 'topic',
+                    'content_id' => $topic->id,
+                    'reviewer_id' => Auth::id(),
+                    'status' => 'completed',
+                    'comment' => $validatedData['status_notes'],
+                ], Auth::user());
+            }
+
+            return $this->sendResponse($updatedTopic, 'Topic status updated successfully.');
+        } catch (ValidationException $e) {
+            return $this->sendError('Validation failed.', $e->errors(), 422);
+        } catch (Exception $e) {
+            return $this->sendError('Failed to update status.', ['error' => $e->getMessage()]);
+        }
     }
 
     /**
@@ -217,11 +278,30 @@ class TeamTopicController extends BaseAPIController
      */
     public function reorderLessons(Request $request, Topic $topic): JsonResponse
     {
-        // TODO: Implement lesson reordering
-        // - Validate lesson ownership
-        // - Update lesson order within topic
-        // - Maintain learning progression logic
-        // - Update sequential access rules
-        return $this->sendResponse([], 'Lessons reordered successfully.');
+        $this->authorize('update', $topic);
+
+        try {
+            $validatedData = $request->validate([
+                'lesson_orders' => 'required|array|min:1',
+                'lesson_orders.*.id' => 'required|integer|exists:lessons,id',
+                'lesson_orders.*.order' => 'required|integer|min:1',
+            ]);
+
+            $success = $this->lessonService->reorderLessons(
+                $topic->id,
+                $validatedData['lesson_orders'],
+                Auth::user()
+            );
+
+            if (!$success) {
+                return $this->sendError('Failed to reorder lessons. Please verify all lessons belong to this topic.');
+            }
+
+            return $this->sendResponse([], 'Lessons reordered successfully.');
+        } catch (ValidationException $e) {
+            return $this->sendError('Validation failed.', $e->errors(), 422);
+        } catch (Exception $e) {
+            return $this->sendError('Failed to reorder lessons.', ['error' => $e->getMessage()]);
+        }
     }
 }

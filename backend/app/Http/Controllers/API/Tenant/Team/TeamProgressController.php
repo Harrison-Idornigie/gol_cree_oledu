@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\API\Tenant\Team;
 
 use App\Http\Controllers\API\BaseAPIController;
+use App\Services\Tenants\Analytics\ProgressService;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Auth;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 
 /**
@@ -21,11 +24,15 @@ class TeamProgressController extends BaseAPIController
 {
     use BelongsToTenant;
 
+    protected ProgressService $progressService;
+
     /**
-     * Constructor - Apply team middleware
+     * Constructor - Apply team middleware and inject services
      */
-    public function __construct()
+    public function __construct(ProgressService $progressService)
     {
+        $this->progressService = $progressService;
+
         // Team members can view progress analytics for their content
         $this->middleware(function ($request, $next) {
             $this->authorize('viewAny', 'App\Models\Tenants\Progress');
@@ -41,13 +48,16 @@ class TeamProgressController extends BaseAPIController
      */
     public function overview(Request $request): JsonResponse
     {
-        // Authorization already handled in constructor
+        try {
+            // Get the authenticated user ID
+            $userId = Auth::id();
 
-        // TODO: Implement progress overview
-        // - Overall content creation statistics
-        // - Student engagement with team's content
-        // - Content performance metrics
-        return $this->sendResponse([], 'Progress overview retrieved successfully.');
+            $overview = $this->progressService->getTeamProgressOverview($userId, $request);
+
+            return $this->sendResponse($overview, 'Progress overview retrieved successfully.');
+        } catch (\Exception $e) {
+            return $this->sendError('Failed to retrieve progress overview.', ['error' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -58,11 +68,24 @@ class TeamProgressController extends BaseAPIController
      */
     public function myContentProgress(Request $request): JsonResponse
     {
-        // TODO: Implement content progress tracking
-        // - Progress on learning paths created by team member
-        // - Completion rates for content
-        // - Student feedback and ratings
-        return $this->sendResponse([], 'Content progress retrieved successfully.');
+        try {
+            // Validate request parameters
+            $validated = $request->validate([
+                'per_page' => 'sometimes|integer|min:1|max:100',
+                'content_type' => 'sometimes|string|in:App\Models\Tenants\LearningPath,App\Models\Tenants\Unit,App\Models\Tenants\Topic,App\Models\Tenants\Lesson',
+                'status' => 'sometimes|string|in:not_started,in_progress,completed'
+            ]);
+
+            $userId = Auth::id();
+
+            $contentProgress = $this->progressService->getMyContentProgress($userId, $request);
+
+            return $this->sendResponse($contentProgress, 'Content progress retrieved successfully.');
+        } catch (ValidationException $e) {
+            return $this->sendError('Validation failed.', $e->errors(), 422);
+        } catch (\Exception $e) {
+            return $this->sendError('Failed to retrieve content progress.', ['error' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -73,11 +96,24 @@ class TeamProgressController extends BaseAPIController
      */
     public function studentsProgress(Request $request): JsonResponse
     {
-        // TODO: Implement students progress tracking
-        // - Students using team member's content
-        // - Individual student progress
-        // - Completion and performance metrics
-        return $this->sendResponse([], 'Students progress retrieved successfully.');
+        try {
+            // Validate request parameters
+            $validated = $request->validate([
+                'per_page' => 'sometimes|integer|min:1|max:100',
+                'student_id' => 'sometimes|integer|exists:users,id',
+                'content_type' => 'sometimes|string|in:App\Models\Tenants\LearningPath,App\Models\Tenants\Unit,App\Models\Tenants\Topic,App\Models\Tenants\Lesson'
+            ]);
+
+            $userId = Auth::id();
+
+            $studentsProgress = $this->progressService->getStudentsProgressOnMyContent($userId, $request);
+
+            return $this->sendResponse($studentsProgress, 'Students progress retrieved successfully.');
+        } catch (ValidationException $e) {
+            return $this->sendError('Validation failed.', $e->errors(), 422);
+        } catch (\Exception $e) {
+            return $this->sendError('Failed to retrieve students progress.', ['error' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -90,10 +126,29 @@ class TeamProgressController extends BaseAPIController
      */
     public function contentProgress(Request $request, string $type, int $id): JsonResponse
     {
-        // TODO: Implement specific content progress
-        // - Validate content belongs to team member
-        // - Detailed progress for specific content
-        // - Student interaction analytics
-        return $this->sendResponse([], 'Content progress retrieved successfully.');
+        try {
+            // Validate content type
+            $allowedTypes = [
+                'learning-paths' => 'App\Models\Tenants\LearningPath',
+                'units' => 'App\Models\Tenants\Unit',
+                'topics' => 'App\Models\Tenants\Topic',
+                'lessons' => 'App\Models\Tenants\Lesson'
+            ];
+
+            if (!isset($allowedTypes[$type])) {
+                return $this->sendError('Invalid content type.', ['type' => $type], 400);
+            }
+
+            $contentType = $allowedTypes[$type];
+            $userId = Auth::id();
+
+            $progressDetails = $this->progressService->getContentProgressDetails($userId, $contentType, $id, $request);
+
+            return $this->sendResponse($progressDetails, 'Content progress retrieved successfully.');
+        } catch (\Illuminate\Auth\Access\AuthorizationException $e) {
+            return $this->sendError('Unauthorized access.', ['error' => $e->getMessage()], 403);
+        } catch (\Exception $e) {
+            return $this->sendError('Failed to retrieve content progress.', ['error' => $e->getMessage()], 500);
+        }
     }
 }

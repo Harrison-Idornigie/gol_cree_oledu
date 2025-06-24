@@ -11,11 +11,12 @@ use App\Services\Tenant\StarterPackService;
 use Database\Seeders\Tenant\PlainsCreeStarterPackSeeder;
 use Database\Seeders\Tenant\PlainsCreeVocabularySeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TenantTestCase;
+use Tests\TestCase;
+use Tests\Traits\InteractsWithTenancy;
 
-class PlainsCreeStarterPackTest extends TenantTestCase
+class PlainsCreeStarterPackTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshDatabase, InteractsWithTenancy;
 
     protected StarterPackService $starterPackService;
 
@@ -34,7 +35,7 @@ class PlainsCreeStarterPackTest extends TenantTestCase
         // Assert
         $this->assertTrue($result['success']);
         $this->assertArrayHasKey('stats', $result);
-        
+
         // Verify Plains Cree language exists
         $plainsCree = Language::where('code', 'crk')->first();
         $this->assertNotNull($plainsCree);
@@ -54,10 +55,10 @@ class PlainsCreeStarterPackTest extends TenantTestCase
 
         // Assert
         $this->assertGreaterThanOrEqual(6, $learningPaths->count()); // At least A1-C2
-        
+
         $levels = $learningPaths->pluck('target_level')->unique()->toArray();
         $expectedLevels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
-        
+
         foreach ($expectedLevels as $level) {
             $this->assertContains($level, $levels, "Missing {$level} learning path");
         }
@@ -75,20 +76,23 @@ class PlainsCreeStarterPackTest extends TenantTestCase
             $vocabulary = Word::whereHas('language', function ($query) {
                 $query->where('code', 'crk');
             })
-            ->where(function ($query) use ($allowedLevels) {
-                foreach ($allowedLevels as $allowedLevel) {
-                    $query->orWhereJsonContains('metadata->proficiency_level', $allowedLevel);
-                }
-            })
-            ->get();
+                ->where(function ($query) use ($allowedLevels) {
+                    foreach ($allowedLevels as $allowedLevel) {
+                        $query->orWhereJsonContains('metadata->proficiency_level', $allowedLevel);
+                    }
+                })
+                ->get();
 
             $this->assertGreaterThan(0, $vocabulary->count(), "No vocabulary found for {$level} level");
-            
+
             // Verify vocabulary only contains allowed levels
             foreach ($vocabulary as $word) {
                 $wordLevel = $word->metadata['proficiency_level'] ?? 'A1';
-                $this->assertContains($wordLevel, $allowedLevels, 
-                    "Word '{$word->text}' has level {$wordLevel} which is not allowed for {$level} course");
+                $this->assertContains(
+                    $wordLevel,
+                    $allowedLevels,
+                    "Word '{$word->text}' has level {$wordLevel} which is not allowed for {$level} course"
+                );
             }
         }
     }
@@ -111,7 +115,7 @@ class PlainsCreeStarterPackTest extends TenantTestCase
 
         foreach ($exercises as $exercise) {
             $vocabularyUsed = $exercise->metadata['vocabulary_used'] ?? [];
-            
+
             if (!empty($vocabularyUsed)) {
                 foreach ($vocabularyUsed as $wordId) {
                     $word = Word::find($wordId);
@@ -141,16 +145,25 @@ class PlainsCreeStarterPackTest extends TenantTestCase
             $content = $exercise->content ?? [];
 
             // Check for Duolingo-style features
-            $this->assertArrayHasKey('duolingo_style', $metadata, 
-                "Exercise {$exercise->id} missing Duolingo-style metadata");
+            $this->assertArrayHasKey(
+                'duolingo_style',
+                $metadata,
+                "Exercise {$exercise->id} missing Duolingo-style metadata"
+            );
 
             $duolingoFeatures = $metadata['duolingo_style'];
-            $this->assertTrue($duolingoFeatures['clickable_vocabulary'] ?? false, 
-                "Exercise {$exercise->id} missing clickable vocabulary");
-            $this->assertTrue($duolingoFeatures['audio_pronunciation'] ?? false, 
-                "Exercise {$exercise->id} missing audio pronunciation");
-            $this->assertTrue($duolingoFeatures['syllabics_display'] ?? false, 
-                "Exercise {$exercise->id} missing syllabics display");
+            $this->assertTrue(
+                $duolingoFeatures['clickable_vocabulary'] ?? false,
+                "Exercise {$exercise->id} missing clickable vocabulary"
+            );
+            $this->assertTrue(
+                $duolingoFeatures['audio_pronunciation'] ?? false,
+                "Exercise {$exercise->id} missing audio pronunciation"
+            );
+            $this->assertTrue(
+                $duolingoFeatures['syllabics_display'] ?? false,
+                "Exercise {$exercise->id} missing syllabics display"
+            );
 
             // Check for clickable vocabulary in content
             if (isset($content['clickable_vocabulary'])) {
@@ -184,21 +197,30 @@ class PlainsCreeStarterPackTest extends TenantTestCase
 
             foreach ($lessons as $lesson) {
                 $metadata = $lesson->metadata ?? [];
-                
+
                 if (isset($metadata['age_group'])) {
                     $ageGroup = $metadata['age_group'];
-                    $this->assertContains($ageGroup, ['kids', 'teen_adult'], 
-                        "Invalid age group '{$ageGroup}' in lesson {$lesson->id}");
+                    $this->assertContains(
+                        $ageGroup,
+                        ['kids', 'teen_adult'],
+                        "Invalid age group '{$ageGroup}' in lesson {$lesson->id}"
+                    );
 
                     if (isset($metadata['duration_settings'])) {
                         $duration = $metadata['duration_settings'];
-                        
+
                         if ($ageGroup === 'kids') {
-                            $this->assertLessThanOrEqual(10, $duration['target_duration_minutes'] ?? 0, 
-                                "Kids lesson {$lesson->id} duration too long");
+                            $this->assertLessThanOrEqual(
+                                10,
+                                $duration['target_duration_minutes'] ?? 0,
+                                "Kids lesson {$lesson->id} duration too long"
+                            );
                         } else {
-                            $this->assertLessThanOrEqual(15, $duration['target_duration_minutes'] ?? 0, 
-                                "Teen/adult lesson {$lesson->id} duration too long");
+                            $this->assertLessThanOrEqual(
+                                15,
+                                $duration['target_duration_minutes'] ?? 0,
+                                "Teen/adult lesson {$lesson->id} duration too long"
+                            );
                         }
                     }
                 }
@@ -211,7 +233,7 @@ class PlainsCreeStarterPackTest extends TenantTestCase
     {
         // Arrange
         $this->starterPackService->initializeStarterPack();
-        
+
         // Create a target language
         $spanish = Language::create([
             'code' => 'es',
@@ -256,9 +278,11 @@ class PlainsCreeStarterPackTest extends TenantTestCase
         $validation = $seeder->validateStarterPack();
 
         // Assert
-        $this->assertTrue($validation['is_valid'], 
-            'Starter pack validation failed: ' . implode(', ', $validation['issues'] ?? []));
-        
+        $this->assertTrue(
+            $validation['is_valid'],
+            'Starter pack validation failed: ' . implode(', ', $validation['issues'] ?? [])
+        );
+
         $stats = $validation['stats'];
         $this->assertGreaterThanOrEqual(6, $stats['total_learning_paths']);
         $this->assertGreaterThanOrEqual(500, $stats['total_vocabulary']);
@@ -267,10 +291,16 @@ class PlainsCreeStarterPackTest extends TenantTestCase
         // Validate vocabulary distribution
         $expectedLevels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
         foreach ($expectedLevels as $level) {
-            $this->assertArrayHasKey($level, $stats['vocabulary_by_level'], 
-                "Missing vocabulary for level {$level}");
-            $this->assertGreaterThan(0, $stats['vocabulary_by_level'][$level], 
-                "No vocabulary found for level {$level}");
+            $this->assertArrayHasKey(
+                $level,
+                $stats['vocabulary_by_level'],
+                "Missing vocabulary for level {$level}"
+            );
+            $this->assertGreaterThan(
+                0,
+                $stats['vocabulary_by_level'][$level],
+                "No vocabulary found for level {$level}"
+            );
         }
     }
 
@@ -292,24 +322,37 @@ class PlainsCreeStarterPackTest extends TenantTestCase
         foreach ($vocabulary as $word) {
             // Check for English translation
             $englishTranslation = $word->translations->where('language.code', 'en')->first();
-            $this->assertNotNull($englishTranslation, 
-                "Word '{$word->text}' missing English translation");
+            $this->assertNotNull(
+                $englishTranslation,
+                "Word '{$word->text}' missing English translation"
+            );
 
             // Check for syllabics
-            $this->assertArrayHasKey('syllabics', $word->metadata ?? [], 
-                "Word '{$word->text}' missing syllabics");
+            $this->assertArrayHasKey(
+                'syllabics',
+                $word->metadata ?? [],
+                "Word '{$word->text}' missing syllabics"
+            );
 
             // Check for audio reference
-            $this->assertNotEmpty($word->metadata['syllabics'] ?? '', 
-                "Word '{$word->text}' has empty syllabics");
+            $this->assertNotEmpty(
+                $word->metadata['syllabics'] ?? '',
+                "Word '{$word->text}' has empty syllabics"
+            );
 
             // Check for cultural context
-            $this->assertArrayHasKey('cultural_context', $word->metadata ?? [], 
-                "Word '{$word->text}' missing cultural context");
+            $this->assertArrayHasKey(
+                'cultural_context',
+                $word->metadata ?? [],
+                "Word '{$word->text}' missing cultural context"
+            );
 
             // Check for proficiency level
-            $this->assertArrayHasKey('proficiency_level', $word->metadata ?? [], 
-                "Word '{$word->text}' missing proficiency level");
+            $this->assertArrayHasKey(
+                'proficiency_level',
+                $word->metadata ?? [],
+                "Word '{$word->text}' missing proficiency level"
+            );
         }
     }
 }

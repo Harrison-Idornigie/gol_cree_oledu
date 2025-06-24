@@ -3,10 +3,16 @@
 namespace App\Http\Controllers\API\Tenant\Team;
 
 use App\Http\Controllers\API\BaseAPIController;
+use App\Services\Tenants\Course\UnitService;
+use App\Services\Tenants\Course\TopicService;
+use App\Services\Tenants\Course\ReviewService;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 use App\Models\Tenants\Unit;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
+use Exception;
 
 /**
  * Team Unit Controller
@@ -22,11 +28,22 @@ class TeamUnitController extends BaseAPIController
 {
     use BelongsToTenant;
 
+    protected UnitService $unitService;
+    protected TopicService $topicService;
+    protected ReviewService $reviewService;
+
     /**
      * Constructor - Apply team middleware
      */
-    public function __construct()
-    {
+    public function __construct(
+        UnitService $unitService,
+        TopicService $topicService,
+        ReviewService $reviewService
+    ) {
+        $this->unitService = $unitService;
+        $this->topicService = $topicService;
+        $this->reviewService = $reviewService;
+
         // Apply policies
         $this->authorizeResource(Unit::class, 'unit');
     }
@@ -41,11 +58,12 @@ class TeamUnitController extends BaseAPIController
     {
         $this->authorize('viewAny', Unit::class);
 
-        // TODO: Implement units listing
-        // - All units in current tenant
-        // - Filter by learning path, creator, status
-        // - Include topic counts and progress
-        return $this->sendResponse([], 'Units retrieved successfully.');
+        try {
+            $units = $this->unitService->getFilteredUnits($request, 'team');
+            return $this->sendResponse($units, 'Units retrieved successfully.');
+        } catch (Exception $e) {
+            return $this->sendError('Failed to retrieve units.', ['error' => $e->getMessage()]);
+        }
     }
 
     /**
@@ -56,12 +74,27 @@ class TeamUnitController extends BaseAPIController
      */
     public function store(Request $request): JsonResponse
     {
-        // TODO: Implement unit creation
-        // - Validate unit data
-        // - Create unit with tenant association
-        // - Set creator and learning path relationship
-        // - Initialize unit structure
-        return $this->sendCreatedResponse([], 'Unit created successfully.');
+        $this->authorize('create', Unit::class);
+
+        try {
+            $validatedData = $request->validate([
+                'title' => 'required|string|max:255',
+                'description' => 'nullable|string',
+                'learning_path_id' => 'required|exists:learning_paths,id',
+                'order' => 'nullable|integer|min:1',
+                'estimated_duration_minutes' => 'nullable|integer|min:1',
+                'objectives' => 'nullable|array',
+                'prerequisites' => 'nullable|array',
+            ]);
+
+            $unit = $this->unitService->createUnit($validatedData, Auth::user());
+
+            return $this->sendCreatedResponse($unit, 'Unit created successfully.');
+        } catch (ValidationException $e) {
+            return $this->sendError('Validation failed.', $e->errors(), 422);
+        } catch (Exception $e) {
+            return $this->sendError('Failed to create unit.', ['error' => $e->getMessage()]);
+        }
     }
 
     /**
@@ -73,11 +106,31 @@ class TeamUnitController extends BaseAPIController
      */
     public function show(Request $request, Unit $unit): JsonResponse
     {
-        // TODO: Implement unit details
-        // - Validate unit belongs to tenant
-        // - Include topics and lessons structure
-        // - Show progress and statistics
-        return $this->sendResponse($unit, 'Unit retrieved successfully.');
+        $this->authorize('view', $unit);
+
+        try {
+            $withRelations = [];
+
+            if ($request->has('with_topics')) {
+                $withRelations[] = 'topics';
+            }
+            if ($request->has('with_learning_path')) {
+                $withRelations[] = 'learningPath';
+            }
+            if ($request->has('with_statistics')) {
+                $withRelations[] = 'progress';
+            }
+
+            $unit = $this->unitService->getUnit($unit->id, 'team', $withRelations);
+
+            if (!$unit) {
+                return $this->sendError('Unit not found.', [], 404);
+            }
+
+            return $this->sendResponse($unit, 'Unit retrieved successfully.');
+        } catch (Exception $e) {
+            return $this->sendError('Failed to retrieve unit.', ['error' => $e->getMessage()]);
+        }
     }
 
     /**
@@ -89,12 +142,26 @@ class TeamUnitController extends BaseAPIController
      */
     public function update(Request $request, Unit $unit): JsonResponse
     {
-        // TODO: Implement unit update
-        // - Validate unit belongs to tenant
-        // - Update unit properties
-        // - Handle order changes
-        // - Update metadata
-        return $this->sendResponse($unit, 'Unit updated successfully.');
+        $this->authorize('update', $unit);
+
+        try {
+            $validatedData = $request->validate([
+                'title' => 'sometimes|required|string|max:255',
+                'description' => 'nullable|string',
+                'order' => 'nullable|integer|min:1',
+                'estimated_duration_minutes' => 'nullable|integer|min:1',
+                'objectives' => 'nullable|array',
+                'prerequisites' => 'nullable|array',
+            ]);
+
+            $updatedUnit = $this->unitService->updateUnit($unit, $validatedData, Auth::user());
+
+            return $this->sendResponse($updatedUnit, 'Unit updated successfully.');
+        } catch (ValidationException $e) {
+            return $this->sendError('Validation failed.', $e->errors(), 422);
+        } catch (Exception $e) {
+            return $this->sendError('Failed to update unit.', ['error' => $e->getMessage()]);
+        }
     }
 
     /**
@@ -106,12 +173,19 @@ class TeamUnitController extends BaseAPIController
      */
     public function destroy(Request $request, Unit $unit): JsonResponse
     {
-        // TODO: Implement unit deletion
-        // - Validate unit belongs to tenant
-        // - Check for dependent topics and lessons
-        // - Handle cascading deletions
-        // - Update learning path structure
-        return $this->sendNoContentResponse();
+        $this->authorize('delete', $unit);
+
+        try {
+            $deleted = $this->unitService->deleteUnit($unit, Auth::user());
+
+            if (!$deleted) {
+                return $this->sendError('Failed to delete unit. It may have dependent content.');
+            }
+
+            return $this->sendNoContentResponse();
+        } catch (Exception $e) {
+            return $this->sendError('Failed to delete unit.', ['error' => $e->getMessage()]);
+        }
     }
 
     /**
@@ -123,12 +197,37 @@ class TeamUnitController extends BaseAPIController
      */
     public function submitForReview(Request $request, Unit $unit): JsonResponse
     {
-        // TODO: Implement review submission
-        // - Validate unit completeness
-        // - Check all topics have content
-        // - Change status to under review
-        // - Notify reviewers
-        return $this->sendResponse($unit, 'Unit submitted for review successfully.');
+        $this->authorize('update', $unit);
+
+        try {
+            $validatedData = $request->validate([
+                'review_notes' => 'nullable|string|max:1000',
+            ]);
+
+            // Check if unit has minimum required content
+            if (!$unit->topics()->exists()) {
+                return $this->sendError('Cannot submit for review. Unit must have at least one topic.');
+            }
+
+            $updatedUnit = $this->unitService->updateStatus($unit, 'under_review', Auth::user());
+
+            // Create review entry if review notes provided
+            if (!empty($validatedData['review_notes'])) {
+                $this->reviewService->createReview([
+                    'content_type' => 'unit',
+                    'content_id' => $unit->id,
+                    'reviewer_id' => Auth::id(),
+                    'status' => 'pending',
+                    'comment' => $validatedData['review_notes'],
+                ], Auth::user());
+            }
+
+            return $this->sendResponse($updatedUnit, 'Unit submitted for review successfully.');
+        } catch (ValidationException $e) {
+            return $this->sendError('Validation failed.', $e->errors(), 422);
+        } catch (Exception $e) {
+            return $this->sendError('Failed to submit for review.', ['error' => $e->getMessage()]);
+        }
     }
 
     /**
@@ -140,12 +239,33 @@ class TeamUnitController extends BaseAPIController
      */
     public function updateStatus(Request $request, Unit $unit): JsonResponse
     {
-        // TODO: Implement status update
-        // - Validate permissions for status change
-        // - Update unit status
-        // - Handle publication implications
-        // - Update learning path status if needed
-        return $this->sendResponse($unit, 'Unit status updated successfully.');
+        $this->authorize('update', $unit);
+
+        try {
+            $validatedData = $request->validate([
+                'status' => 'required|string|in:draft,under_review,published,archived',
+                'status_notes' => 'nullable|string|max:1000',
+            ]);
+
+            $updatedUnit = $this->unitService->updateStatus($unit, $validatedData['status'], Auth::user());
+
+            // Log status change with notes if provided
+            if (!empty($validatedData['status_notes'])) {
+                $this->reviewService->createReview([
+                    'content_type' => 'unit',
+                    'content_id' => $unit->id,
+                    'reviewer_id' => Auth::id(),
+                    'status' => 'completed',
+                    'comment' => $validatedData['status_notes'],
+                ], Auth::user());
+            }
+
+            return $this->sendResponse($updatedUnit, 'Unit status updated successfully.');
+        } catch (ValidationException $e) {
+            return $this->sendError('Validation failed.', $e->errors(), 422);
+        } catch (Exception $e) {
+            return $this->sendError('Failed to update status.', ['error' => $e->getMessage()]);
+        }
     }
 
     /**
@@ -157,11 +277,30 @@ class TeamUnitController extends BaseAPIController
      */
     public function reorderTopics(Request $request, Unit $unit): JsonResponse
     {
-        // TODO: Implement topic reordering
-        // - Validate topic ownership
-        // - Update topic order within unit
-        // - Maintain learning progression logic
-        // - Update sequential access rules
-        return $this->sendResponse([], 'Topics reordered successfully.');
+        $this->authorize('update', $unit);
+
+        try {
+            $validatedData = $request->validate([
+                'topic_orders' => 'required|array|min:1',
+                'topic_orders.*.id' => 'required|integer|exists:topics,id',
+                'topic_orders.*.order' => 'required|integer|min:1',
+            ]);
+
+            $success = $this->topicService->reorderTopics(
+                $unit->id,
+                $validatedData['topic_orders'],
+                Auth::user()
+            );
+
+            if (!$success) {
+                return $this->sendError('Failed to reorder topics. Please verify all topics belong to this unit.');
+            }
+
+            return $this->sendResponse([], 'Topics reordered successfully.');
+        } catch (ValidationException $e) {
+            return $this->sendError('Validation failed.', $e->errors(), 422);
+        } catch (Exception $e) {
+            return $this->sendError('Failed to reorder topics.', ['error' => $e->getMessage()]);
+        }
     }
 }

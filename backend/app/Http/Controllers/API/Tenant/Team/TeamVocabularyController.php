@@ -3,11 +3,15 @@
 namespace App\Http\Controllers\API\Tenant\Team;
 
 use App\Http\Controllers\API\BaseAPIController;
+use App\Services\Tenants\Language\VocabularyService;
 use App\Models\Tenants\VocabularyItem;
 use App\Models\Tenants\Word;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
+use Exception;
 
 /**
  * Team VocabularyItem Controller
@@ -23,10 +27,15 @@ class TeamVocabularyController extends BaseAPIController
 {
     use BelongsToTenant;
 
+    protected VocabularyService $vocabularyService;
+
     /**
      * Constructor - Apply team middleware
      */
-    public function __construct() {}
+    public function __construct(VocabularyService $vocabularyService)
+    {
+        $this->vocabularyService = $vocabularyService;
+    }
 
     /**
      * Display a listing of vocabulary items.
@@ -36,13 +45,14 @@ class TeamVocabularyController extends BaseAPIController
      */
     public function index(Request $request): JsonResponse
     {
-        $this->authorize('viewAny', Word::class);
+        $this->authorize('viewAny', VocabularyItem::class);
 
-        // TODO: Implement vocabulary listing
-        // - All vocabulary items in current tenant
-        // - Filter by language, creator, status
-        // - Include usage statistics
-        return $this->sendResponse([], 'Vocabulary items retrieved successfully.');
+        try {
+            $vocabularyItems = $this->vocabularyService->getFilteredVocabularyItems($request, 'team');
+            return $this->sendResponse($vocabularyItems, 'Vocabulary items retrieved successfully.');
+        } catch (Exception $e) {
+            return $this->sendError('Failed to retrieve vocabulary items.', ['error' => $e->getMessage()]);
+        }
     }
 
     /**
@@ -53,14 +63,27 @@ class TeamVocabularyController extends BaseAPIController
      */
     public function store(Request $request): JsonResponse
     {
-        $this->authorize('create', Word::class);
+        $this->authorize('create', VocabularyItem::class);
 
-        // TODO: Implement vocabulary creation
-        // - Validate vocabulary data
-        // - Create vocabulary with tenant association
-        // - Set creator and language relationship
-        // - Initialize vocabulary content
-        return $this->sendCreatedResponse([], 'Vocabulary item created successfully.');
+        try {
+            $validatedData = $request->validate([
+                'lesson_id' => 'required|exists:lessons,id',
+                'word' => 'required|string|max:255',
+                'translation' => 'required|string|max:255',
+                'example' => 'nullable|string',
+                'phonetic' => 'nullable|string|max:255',
+                'part_of_speech' => 'nullable|string|in:noun,verb,adjective,adverb,pronoun,preposition,conjunction,interjection,article',
+                'difficulty_level' => 'nullable|integer|between:1,10',
+            ]);
+
+            $vocabularyItem = $this->vocabularyService->createVocabularyItem($validatedData, Auth::user());
+
+            return $this->sendCreatedResponse($vocabularyItem, 'Vocabulary item created successfully.');
+        } catch (ValidationException $e) {
+            return $this->sendError('Validation failed.', $e->errors(), 422);
+        } catch (Exception $e) {
+            return $this->sendError('Failed to create vocabulary item.', ['error' => $e->getMessage()]);
+        }
     }
 
     /**
@@ -74,11 +97,30 @@ class TeamVocabularyController extends BaseAPIController
     {
         $this->authorize('view', $vocabulary);
 
-        // TODO: Implement vocabulary details
-        // - Validate vocabulary belongs to tenant
-        // - Include translations and examples
-        // - Show usage statistics
-        return $this->sendResponse($vocabulary, 'Vocabulary item retrieved successfully.');
+        try {
+            $withRelations = [];
+
+            if ($request->has('with_lesson')) {
+                $withRelations[] = 'lesson';
+            }
+            if ($request->has('with_media')) {
+                $withRelations[] = 'media';
+            }
+
+            $vocabularyItem = $this->vocabularyService->getVocabularyItem(
+                $vocabulary->id,
+                'team',
+                $withRelations
+            );
+
+            if (!$vocabularyItem) {
+                return $this->sendError('Vocabulary item not found.', [], 404);
+            }
+
+            return $this->sendResponse($vocabularyItem, 'Vocabulary item retrieved successfully.');
+        } catch (Exception $e) {
+            return $this->sendError('Failed to retrieve vocabulary item.', ['error' => $e->getMessage()]);
+        }
     }
 
     /**
@@ -92,12 +134,28 @@ class TeamVocabularyController extends BaseAPIController
     {
         $this->authorize('update', $vocabulary);
 
-        // TODO: Implement vocabulary update
-        // - Validate vocabulary belongs to tenant
-        // - Update vocabulary content
-        // - Handle translation updates
-        // - Update metadata
-        return $this->sendResponse($vocabulary, 'VocabularyItem item updated successfully.');
+        try {
+            $validatedData = $request->validate([
+                'word' => 'sometimes|required|string|max:255',
+                'translation' => 'sometimes|required|string|max:255',
+                'example' => 'nullable|string',
+                'phonetic' => 'nullable|string|max:255',
+                'part_of_speech' => 'nullable|string|in:noun,verb,adjective,adverb,pronoun,preposition,conjunction,interjection,article',
+                'difficulty_level' => 'nullable|integer|between:1,10',
+            ]);
+
+            $updatedVocabularyItem = $this->vocabularyService->updateVocabularyItem(
+                $vocabulary,
+                $validatedData,
+                Auth::user()
+            );
+
+            return $this->sendResponse($updatedVocabularyItem, 'Vocabulary item updated successfully.');
+        } catch (ValidationException $e) {
+            return $this->sendError('Validation failed.', $e->errors(), 422);
+        } catch (Exception $e) {
+            return $this->sendError('Failed to update vocabulary item.', ['error' => $e->getMessage()]);
+        }
     }
 
     /**
@@ -111,11 +169,16 @@ class TeamVocabularyController extends BaseAPIController
     {
         $this->authorize('delete', $vocabulary);
 
-        // TODO: Implement vocabulary deletion
-        // - Validate vocabulary belongs to tenant
-        // - Check for usage in exercises/content
-        // - Handle cascading deletions
-        // - Clean up associated files
-        return $this->sendNoContentResponse();
+        try {
+            $deleted = $this->vocabularyService->deleteVocabularyItem($vocabulary, Auth::user());
+
+            if (!$deleted) {
+                return $this->sendError('Failed to delete vocabulary item.');
+            }
+
+            return $this->sendNoContentResponse();
+        } catch (Exception $e) {
+            return $this->sendError('Failed to delete vocabulary item.', ['error' => $e->getMessage()]);
+        }
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Services\Tenants\Language;
 
 use App\Models\Tenants\Sentence;
+use App\Models\Tenants\SentenceTranslation;
 use App\Models\Tenants\Word;
 use App\Models\Tenants\ExceptionWord;
 use App\Models\Tenants\Language;
@@ -173,37 +174,35 @@ class SentenceManagementService
      */
     public function getAvailableWordsForSentence(int $languageId, string $search = '', int $limit = 50): Collection
     {
-        $words = Word::where('language_id', $languageId)
-            ->when($search, function ($query, $search) {
-                $query->where('text', 'LIKE', "%{$search}%");
-            })
-            ->with(['translations' => function ($query) {
-                // Don't hard-code language - this will be handled by language pair context
-                $query->orderBy('translation_order');
-            }])
-            ->orderBy('text')
-            ->limit($limit)
-            ->get();
+        $query = Word::where('language_id', $languageId)
+            ->with(['translations.language'])
+            ->limit($limit);
 
+        if (!empty($search)) {
+            $query->where('text', 'LIKE', "%{$search}%");
+        }
+
+        $words = $query->get();
+
+        // Include exception words as well
         $exceptionWords = ExceptionWord::where('language_id', $languageId)
-            ->active()
-            ->when($search, function ($query, $search) {
-                $query->where('text', 'LIKE', "%{$search}%");
+            ->when(!empty($search), function ($q) use ($search) {
+                $q->where('text', 'LIKE', "%{$search}%");
             })
-            ->orderBy('text')
             ->limit($limit)
-            ->get();
+            ->get()
+            ->map(function ($exception) {
+                return (object) [
+                    'id' => $exception->id,
+                    'text' => $exception->text,
+                    'type' => 'exception',
+                    'exception_type' => $exception->exception_type,
+                    'description' => $exception->description,
+                    'translations' => collect()
+                ];
+            });
 
-        return $words->concat($exceptionWords->map(function ($exception) {
-            return (object) [
-                'id' => 'exception_' . $exception->id,
-                'text' => $exception->text,
-                'type' => 'exception',
-                'exception_type' => $exception->type,
-                'description' => $exception->description,
-                'translations' => []
-            ];
-        }));
+        return $words->concat($exceptionWords);
     }
 
     /**
@@ -250,5 +249,177 @@ class SentenceManagementService
         $sentence->words()->attach($attachData);
     }
 
+    /**
+     * Get detailed sentence with all relationships.
+     */
+    public function getDetailedSentence(int $sentenceId, string $context = 'team'): ?Sentence
+    {
+        $relations = [
+            'language',
+            'words.translations.language',
+            'translations.language',
+            'media'
+        ];
 
+        $sentence = Sentence::with($relations)
+            ->withCount(['words', 'translations'])
+            ->find($sentenceId);
+
+        if (!$sentence) {
+            return null;
+        }
+
+        // Add audio URLs
+        $sentence->audio_url = $sentence->getFirstMediaUrl('audio');
+        $sentence->slow_audio_url = $sentence->getFirstMediaUrl('audio_slow');
+
+        return $sentence;
+    }
+
+    /**
+     * Update an existing sentence.
+     */
+    public function updateSentence(Sentence $sentence, array $updateData, ?array $wordData = null): Sentence
+    {
+        return DB::transaction(function () use ($sentence, $updateData, $wordData) {
+            // Update sentence basic data
+            $sentence->update(array_filter([
+                'text' => $updateData['text'] ?? null,
+                'pronunciation_key' => $updateData['pronunciation_key'] ?? null,
+                'metadata' => $updateData['metadata'] ?? null,
+            ], function ($value) {
+                return $value !== null;
+            }));
+
+            // Update word relationships if provided
+            if ($wordData !== null) {
+                // Detach existing words
+                $sentence->words()->detach();
+
+                // Attach new words
+                $this->attachWordsToSentence($sentence, $wordData);
+            }
+
+            return $sentence->load(['language', 'words', 'translations', 'media']);
+        });
+    }
+
+    /**
+     * Delete a sentence.
+     */
+    public function deleteSentence(Sentence $sentence): bool
+    {
+        return DB::transaction(function () use ($sentence) {
+            // Clear all media collections
+            $sentence->clearMediaCollection('audio');
+            $sentence->clearMediaCollection('audio_slow');
+
+            // Delete translations (cascade will handle sentence_words)
+            $sentence->translations()->delete();
+
+            // Delete the sentence
+            return $sentence->delete();
+        });
+    }
+
+    /**
+     * Add translation to sentence.
+     */
+    public function addTranslation(Sentence $sentence, array $translationData, ?UploadedFile $audioFile = null): \App\Models\Tenants\SentenceTranslation
+    {
+        return DB::transaction(function () use ($sentence, $translationData, $audioFile) {
+            $translation = $sentence->translations()->create([
+                'language_id' => $translationData['language_id'],
+                'text' => $translationData['text'],
+                'pronunciation_key' => $translationData['pronunciation_key'] ?? null,
+                'context_notes' => $translationData['context_notes'] ?? null,
+            ]);
+
+            // Process audio if provided
+            if ($audioFile) {
+                $this->audioService->processTranslationAudio($translation, $audioFile);
+            }
+
+            return $translation->load(['language', 'media']);
+        });
+    }
+
+    /**
+     * Update sentence translation.
+     */
+    public function updateTranslation(\App\Models\Tenants\SentenceTranslation $translation, array $updateData, ?UploadedFile $audioFile = null): \App\Models\Tenants\SentenceTranslation
+    {
+        return DB::transaction(function () use ($translation, $updateData, $audioFile) {
+            $translation->update(array_filter([
+                'language_id' => $updateData['language_id'] ?? null,
+                'text' => $updateData['text'] ?? null,
+                'pronunciation_key' => $updateData['pronunciation_key'] ?? null,
+                'context_notes' => $updateData['context_notes'] ?? null,
+            ], function ($value) {
+                return $value !== null;
+            }));
+
+            // Process audio if provided
+            if ($audioFile) {
+                $translation->clearMediaCollection('audio');
+                $this->audioService->processTranslationAudio($translation, $audioFile);
+            }
+
+            return $translation->load(['language', 'media']);
+        });
+    }
+
+    /**
+     * Delete sentence translation.
+     */
+    public function deleteTranslation(\App\Models\Tenants\SentenceTranslation $translation): bool
+    {
+        return DB::transaction(function () use ($translation) {
+            // Clear media
+            $translation->clearMediaCollection('audio');
+
+            // Delete the translation
+            return $translation->delete();
+        });
+    }
+
+    /**
+     * Upload audio for sentence.
+     */
+    public function uploadSentenceAudio(Sentence $sentence, UploadedFile $audioFile, bool $isSlowVersion = false): array
+    {
+        // Clear existing audio for this type
+        $collection = $isSlowVersion ? 'audio_slow' : 'audio';
+        $sentence->clearMediaCollection($collection);
+
+        // Process and store new audio
+        return $this->audioService->processSentenceAudio($sentence, $audioFile, $isSlowVersion);
+    }
+
+    /**
+     * Update word timings for sentence.
+     */
+    public function updateWordTimings(Sentence $sentence, array $timings, float $audioDuration): array
+    {
+        return $this->audioService->updateWordTimings($sentence, $timings, $audioDuration);
+    }
+
+    /**
+     * Reorder words in sentence.
+     */
+    public function reorderWords(Sentence $sentence, array $wordOrder): Sentence
+    {
+        return DB::transaction(function () use ($sentence, $wordOrder) {
+            foreach ($wordOrder as $position => $wordData) {
+                $sentence->words()->updateExistingPivot($wordData['word_id'], [
+                    'position' => $position + 1, // 1-based position
+                    'start_time' => $wordData['start_time'] ?? null,
+                    'end_time' => $wordData['end_time'] ?? null,
+                    'metadata' => $wordData['metadata'] ?? null,
+                ]);
+            }
+
+            return $sentence->load(['words']);
+        });
+    }
 }

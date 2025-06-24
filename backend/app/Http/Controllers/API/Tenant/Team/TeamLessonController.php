@@ -4,11 +4,15 @@ namespace App\Http\Controllers\API\Tenant\Team;
 
 use App\Http\Controllers\API\BaseAPIController;
 use App\Services\Tenants\Course\LessonService;
+use App\Services\Tenants\Course\ReviewService;
+use App\Services\Tenants\Exercise\ExerciseService;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 use App\Models\Tenants\Lesson;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
+use Exception;
 
 /**
  * Team Lesson Controller
@@ -25,13 +29,20 @@ class TeamLessonController extends BaseAPIController
     use BelongsToTenant;
 
     protected LessonService $lessonService;
+    protected ReviewService $reviewService;
+    protected ExerciseService $exerciseService;
 
     /**
      * Constructor - Apply team middleware
      */
-    public function __construct(LessonService $lessonService)
-    {
+    public function __construct(
+        LessonService $lessonService,
+        ReviewService $reviewService,
+        ExerciseService $exerciseService
+    ) {
         $this->lessonService = $lessonService;
+        $this->reviewService = $reviewService;
+        $this->exerciseService = $exerciseService;
     }
 
     /**
@@ -181,12 +192,35 @@ class TeamLessonController extends BaseAPIController
     {
         $this->authorize('submitForReview', $lesson);
 
-        // TODO: Implement review submission
-        // - Validate lesson completeness
-        // - Check all exercises are complete
-        // - Change status to under review
-        // - Notify reviewers
-        return $this->sendResponse($lesson, 'Lesson submitted for review successfully.');
+        try {
+            $validatedData = $request->validate([
+                'review_notes' => 'nullable|string|max:1000',
+            ]);
+
+            // Check if lesson has minimum required content
+            if (!$lesson->exercises()->exists()) {
+                return $this->sendError('Cannot submit for review. Lesson must have at least one exercise.');
+            }
+
+            $updatedLesson = $this->lessonService->updateLessonStatus($lesson, 'under_review', Auth::user());
+
+            // Create review entry if review notes provided
+            if (!empty($validatedData['review_notes'])) {
+                $this->reviewService->createReview([
+                    'content_type' => 'lesson',
+                    'content_id' => $lesson->id,
+                    'reviewer_id' => Auth::id(),
+                    'status' => 'pending',
+                    'comment' => $validatedData['review_notes'],
+                ], Auth::user());
+            }
+
+            return $this->sendResponse($updatedLesson, 'Lesson submitted for review successfully.');
+        } catch (ValidationException $e) {
+            return $this->sendError('Validation failed.', $e->errors(), 422);
+        } catch (Exception $e) {
+            return $this->sendError('Failed to submit for review.', ['error' => $e->getMessage()]);
+        }
     }
 
     /**
@@ -200,12 +234,35 @@ class TeamLessonController extends BaseAPIController
     {
         $this->authorize('update', $lesson);
 
-        // TODO: Implement status update
-        // - Validate permissions for status change
-        // - Update lesson status
-        // - Handle publication implications
-        // - Update topic status if needed
-        return $this->sendResponse($lesson, 'Lesson status updated successfully.');
+        try {
+            $validatedData = $request->validate([
+                'status' => 'required|string|in:draft,under_review,published,archived',
+                'status_notes' => 'nullable|string|max:1000',
+            ]);
+
+            $updatedLesson = $this->lessonService->updateLessonStatus(
+                $lesson,
+                $validatedData['status'],
+                Auth::user()
+            );
+
+            // Log status change with notes if provided
+            if (!empty($validatedData['status_notes'])) {
+                $this->reviewService->createReview([
+                    'content_type' => 'lesson',
+                    'content_id' => $lesson->id,
+                    'reviewer_id' => Auth::id(),
+                    'status' => 'completed',
+                    'comment' => $validatedData['status_notes'],
+                ], Auth::user());
+            }
+
+            return $this->sendResponse($updatedLesson, 'Lesson status updated successfully.');
+        } catch (ValidationException $e) {
+            return $this->sendError('Validation failed.', $e->errors(), 422);
+        } catch (Exception $e) {
+            return $this->sendError('Failed to update status.', ['error' => $e->getMessage()]);
+        }
     }
 
     /**
@@ -219,11 +276,28 @@ class TeamLessonController extends BaseAPIController
     {
         $this->authorize('manageExercises', $lesson);
 
-        // TODO: Implement exercise reordering
-        // - Validate exercise ownership
-        // - Update exercise order within lesson
-        // - Maintain learning progression logic
-        // - Update sequential access rules
-        return $this->sendResponse([], 'Exercises reordered successfully.');
+        try {
+            $validatedData = $request->validate([
+                'exercise_orders' => 'required|array|min:1',
+                'exercise_orders.*.id' => 'required|integer|exists:exercises,id',
+                'exercise_orders.*.order' => 'required|integer|min:1',
+            ]);
+
+            $success = $this->exerciseService->reorderExercises(
+                $lesson->id,
+                $validatedData['exercise_orders'],
+                Auth::user()
+            );
+
+            if (!$success) {
+                return $this->sendError('Failed to reorder exercises. Please verify all exercises belong to this lesson.');
+            }
+
+            return $this->sendResponse([], 'Exercises reordered successfully.');
+        } catch (ValidationException $e) {
+            return $this->sendError('Validation failed.', $e->errors(), 422);
+        } catch (Exception $e) {
+            return $this->sendError('Failed to reorder exercises.', ['error' => $e->getMessage()]);
+        }
     }
 }

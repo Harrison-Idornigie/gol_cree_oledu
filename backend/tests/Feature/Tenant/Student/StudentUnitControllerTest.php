@@ -18,19 +18,19 @@ class StudentUnitControllerTest extends TestCase
     protected Tenant $tenant;
     protected User $studentUser;
     protected User $teamUser;
-    
+
     protected function setUp(): void
     {
         parent::setUp();
         $this->setUpTenancy();
-        
+
         // Create test tenant
         $this->tenant = $this->createTestTenant();
-        
+
         // Create users with different roles in tenant context
         $this->studentUser = $this->createTenantStudent();
         $this->teamUser = $this->createTenantTeamMember();
-        
+
         // Setup test data
         $this->setupTestData();
     }
@@ -40,7 +40,7 @@ class StudentUnitControllerTest extends TestCase
         $this->tearDownTenancy();
         parent::tearDown();
     }
-    
+
     /**
      * Helper to initialize tenant context
      */
@@ -50,7 +50,7 @@ class StudentUnitControllerTest extends TestCase
             // Additional tenant initialization if needed
         });
     }
-    
+
     /**
      * Helper to create a tenant team member
      */
@@ -63,7 +63,7 @@ class StudentUnitControllerTest extends TestCase
                 'password' => bcrypt('password'),
                 'email_verified_at' => now(),
             ]);
-            
+
             // Assign team role if roles table exists
             try {
                 // Try to assign role using different methods depending on implementation
@@ -77,26 +77,26 @@ class StudentUnitControllerTest extends TestCase
                     }
                 } catch (\Exception $e) {
                     // Role assignment might fail if tables don't exist yet
-                } else {
-                    // Fallback: direct DB insert to user_permissions
-                    if (\Illuminate\Support\Facades\Schema::hasTable('user_permissions')) {
-                        \Illuminate\Support\Facades\DB::table('user_permissions')->insert([
-                            'id' => (string) Str::uuid(),
-                            'user_id' => $user->id,
-                            'permission' => 'team',
-                            'created_at' => now(),
-                            'updated_at' => now(),
-                        ]);
-                    }
+                }
+
+                // Fallback: direct DB insert to user_permissions
+                if (\Illuminate\Support\Facades\Schema::hasTable('user_permissions')) {
+                    \Illuminate\Support\Facades\DB::table('user_permissions')->insert([
+                        'id' => (string) Str::uuid(),
+                        'user_id' => $user->id,
+                        'permission' => 'team',
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ]);
                 }
             } catch (\Exception $e) {
                 // Role assignment might fail if tables don't exist yet
             }
-            
+
             return $user;
         });
     }
-    
+
     /**
      * Helper to create a tenant student
      */
@@ -109,7 +109,7 @@ class StudentUnitControllerTest extends TestCase
                 'password' => bcrypt('password'),
                 'email_verified_at' => now(),
             ]);
-            
+
             // Assign student role if roles table exists
             try {
                 // Try to assign role using different methods depending on implementation
@@ -124,7 +124,7 @@ class StudentUnitControllerTest extends TestCase
                 } catch (\Exception $e) {
                     // Role assignment might fail if tables don't exist
                 }
-                
+
                 // Fallback: direct DB insert to user_permissions
                 if (\Illuminate\Support\Facades\Schema::hasTable('user_permissions')) {
                     \Illuminate\Support\Facades\DB::table('user_permissions')->insert([
@@ -138,7 +138,7 @@ class StudentUnitControllerTest extends TestCase
             } catch (\Exception $e) {
                 // Role assignment might fail if tables don't exist yet
             }
-            
+
             return $user;
         });
     }
@@ -156,21 +156,21 @@ class StudentUnitControllerTest extends TestCase
                 'native_name' => 'Test Native',
                 'is_active' => true
             ]);
-            
+
             // Create learning path
             $learningPathId = Str::uuid();
             $learningPath = $this->createLearningPath($learningPathId, $language->id);
-            
+
             // Create units for this learning path
             $unit1Id = Str::uuid();
             $unit2Id = Str::uuid();
-            
+
             $this->createUnit($unit1Id, $learningPathId, 'Unit 1', 1);
             $this->createUnit($unit2Id, $learningPathId, 'Unit 2', 2);
-            
+
             // Create user progress for first unit
             $this->createUserProgress('unit', $unit1Id, $this->studentUser->id, 50);
-            
+
             return [
                 'language_id' => $language->id,
                 'learning_path_id' => $learningPathId,
@@ -179,7 +179,7 @@ class StudentUnitControllerTest extends TestCase
             ];
         });
     }
-    
+
     /**
      * Helper to create a learning path
      */
@@ -195,10 +195,10 @@ class StudentUnitControllerTest extends TestCase
             'created_at' => now(),
             'updated_at' => now()
         ]);
-        
+
         return $id;
     }
-    
+
     /**
      * Helper to create a unit
      */
@@ -215,10 +215,10 @@ class StudentUnitControllerTest extends TestCase
             'created_at' => now(),
             'updated_at' => now()
         ]);
-        
+
         return $id;
     }
-    
+
     /**
      * Helper to create user progress
      */
@@ -234,7 +234,7 @@ class StudentUnitControllerTest extends TestCase
             'updated_at' => now()
         ]);
     }
-    
+
     /**
      * Helper to create a topic within a unit
      */
@@ -251,7 +251,7 @@ class StudentUnitControllerTest extends TestCase
             'created_at' => now(),
             'updated_at' => now()
         ]);
-        
+
         return $id;
     }
 
@@ -260,13 +260,13 @@ class StudentUnitControllerTest extends TestCase
     {
         // Get test data
         $testData = $this->setupTestData();
-        
+
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
-        
+
         // API call to get units in learning path
         $response = $this->getJson("/api/{$this->tenant->slug}/student/learning-paths/{$testData['learning_path_id']}/units");
-        
+
         $response->assertStatus(200)
             ->assertJsonStructure([
                 'data' => [
@@ -289,19 +289,19 @@ class StudentUnitControllerTest extends TestCase
                 'title' => 'Unit 2'
             ]);
     }
-    
+
     /** @test */
     public function student_can_view_individual_unit()
     {
         // Get test data
         $testData = $this->setupTestData();
-        
+
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
-        
+
         // API call to get specific unit
         $response = $this->getJson("/api/{$this->tenant->slug}/student/units/{$testData['unit1_id']}");
-        
+
         $response->assertStatus(200)
             ->assertJsonStructure([
                 'data' => [
@@ -321,19 +321,19 @@ class StudentUnitControllerTest extends TestCase
                 'progress' => 50
             ]);
     }
-    
+
     /** @test */
     public function student_can_view_unit_progress()
     {
         // Get test data
         $testData = $this->setupTestData();
-        
+
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
-        
+
         // API call to get unit progress
         $response = $this->getJson("/api/{$this->tenant->slug}/student/units/{$testData['unit1_id']}/progress");
-        
+
         $response->assertStatus(200)
             ->assertJsonStructure([
                 'data' => [
@@ -356,31 +356,31 @@ class StudentUnitControllerTest extends TestCase
                 'completed' => false
             ]);
     }
-    
+
     /** @test */
     public function unauthenticated_user_cannot_access_units()
     {
         // Get test data
         $testData = $this->setupTestData();
-        
+
         // API call without authentication
         $response = $this->getJson("/api/{$this->tenant->slug}/student/units/{$testData['unit1_id']}");
-        
+
         $response->assertStatus(401);
     }
-    
+
     /** @test */
     public function team_member_cannot_access_student_unit_endpoints()
     {
         // Get test data
         $testData = $this->setupTestData();
-        
+
         // Authenticate as team member
         Sanctum::actingAs($this->teamUser, [], 'tenant');
-        
+
         // API call should be forbidden
         $response = $this->getJson("/api/{$this->tenant->slug}/student/units/{$testData['unit1_id']}");
-        
+
         // Team members might have student access in some implementations,
         // so this could be either 403 or 200
         if ($response->status() === 403) {
@@ -389,49 +389,49 @@ class StudentUnitControllerTest extends TestCase
             $response->assertStatus(200);
         }
     }
-    
+
     /** @test */
     public function student_cannot_access_unpublished_unit()
     {
         // Get test data
         $testData = $this->setupTestData();
-        
+
         // Create an unpublished unit
         $unpublishedUnitId = Str::uuid();
         $this->runInTenantContext($this->tenant, function () use ($unpublishedUnitId, $testData) {
             return $this->createUnit(
-                $unpublishedUnitId, 
+                $unpublishedUnitId,
                 $testData['learning_path_id'],
                 'Unpublished Unit',
                 3,
                 'draft'
             );
         });
-        
+
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
-        
+
         // API call to access unpublished unit
         $response = $this->getJson("/api/{$this->tenant->slug}/student/units/{$unpublishedUnitId}");
-        
+
         // Should return 404 as students shouldn't see unpublished content
         $response->assertStatus(404);
     }
-    
+
     /** @test */
     public function student_can_mark_unit_as_started()
     {
         // Get test data
         $testData = $this->setupTestData();
-        
+
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
-        
+
         // API call to mark unit as started
         $response = $this->postJson("/api/{$this->tenant->slug}/student/units/{$testData['unit2_id']}/start", [
             'device_type' => 'web'
         ]);
-        
+
         $response->assertStatus(200)
             ->assertJsonStructure([
                 'data' => [
@@ -445,7 +445,7 @@ class StudentUnitControllerTest extends TestCase
                 'unit_id' => $testData['unit2_id'],
                 'progress' => 0 // Initial progress should be 0
             ]);
-            
+
         // Verify the user progress was created in the database
         $this->runInTenantContext($this->tenant, function () use ($testData) {
             $progress = \Illuminate\Support\Facades\DB::table('user_progress')
@@ -453,7 +453,7 @@ class StudentUnitControllerTest extends TestCase
                 ->where('item_id', $testData['unit2_id'])
                 ->where('progress_type', 'unit')
                 ->first();
-                
+
             $this->assertNotNull($progress);
             $this->assertEquals(0, $progress->progress);
         });
@@ -464,16 +464,16 @@ class StudentUnitControllerTest extends TestCase
     {
         // Get test data
         $testData = $this->setupTestData();
-        
+
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
-        
+
         // API call to update unit progress
         $response = $this->putJson("/api/{$this->tenant->slug}/student/units/{$testData['unit1_id']}/progress", [
             'progress' => 75,
             'completed' => false
         ]);
-        
+
         $response->assertStatus(200)
             ->assertJsonStructure([
                 'data' => [
@@ -488,7 +488,7 @@ class StudentUnitControllerTest extends TestCase
                 'progress' => 75,
                 'completed' => false
             ]);
-            
+
         // Verify the progress was updated in DB
         $this->runInTenantContext($this->tenant, function () use ($testData) {
             $progress = \Illuminate\Support\Facades\DB::table('user_progress')
@@ -496,7 +496,7 @@ class StudentUnitControllerTest extends TestCase
                 ->where('item_id', $testData['unit1_id'])
                 ->where('progress_type', 'unit')
                 ->first();
-                
+
             $this->assertNotNull($progress);
             $this->assertEquals(75, $progress->progress);
         });
@@ -507,15 +507,15 @@ class StudentUnitControllerTest extends TestCase
     {
         // Get test data
         $testData = $this->setupTestData();
-        
+
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
-        
+
         // API call to mark unit as completed
         $response = $this->putJson("/api/{$this->tenant->slug}/student/units/{$testData['unit1_id']}/complete", [
             'device_type' => 'web'
         ]);
-        
+
         $response->assertStatus(200)
             ->assertJsonStructure([
                 'data' => [
@@ -531,7 +531,7 @@ class StudentUnitControllerTest extends TestCase
                 'progress' => 100, // Should be set to 100%
                 'completed' => true
             ]);
-            
+
         // Verify unit was marked complete in DB
         $this->runInTenantContext($this->tenant, function () use ($testData) {
             $progress = \Illuminate\Support\Facades\DB::table('user_progress')
@@ -539,7 +539,7 @@ class StudentUnitControllerTest extends TestCase
                 ->where('item_id', $testData['unit1_id'])
                 ->where('progress_type', 'unit')
                 ->first();
-                
+
             $this->assertNotNull($progress);
             $this->assertEquals(100, $progress->progress);
             $this->assertNotNull($progress->completed_at);
@@ -551,25 +551,25 @@ class StudentUnitControllerTest extends TestCase
     {
         // Get test data
         $testData = $this->setupTestData();
-        
+
         // Add topics to first unit
         $topic1Id = Str::uuid();
         $topic2Id = Str::uuid();
-        
+
         $this->runInTenantContext($this->tenant, function () use ($testData, $topic1Id, $topic2Id) {
             $this->createTopic($topic1Id, $testData['unit1_id'], 'Topic 1', 1);
             $this->createTopic($topic2Id, $testData['unit1_id'], 'Topic 2', 2);
-            
+
             // Create progress for first topic
             $this->createUserProgress('topic', $topic1Id, $this->studentUser->id, 60);
         });
-        
+
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
-        
+
         // API call to get topics in unit
         $response = $this->getJson("/api/{$this->tenant->slug}/student/units/{$testData['unit1_id']}/topics");
-        
+
         $response->assertStatus(200)
             ->assertJsonStructure([
                 'data' => [
@@ -598,14 +598,14 @@ class StudentUnitControllerTest extends TestCase
     {
         // Get test data
         $testData = $this->setupTestData();
-        
+
         // Add topics and lessons to first unit
         $topic1Id = Str::uuid();
         $lesson1Id = Str::uuid();
-        
+
         $this->runInTenantContext($this->tenant, function () use ($testData, $topic1Id, $lesson1Id) {
             $this->createTopic($topic1Id, $testData['unit1_id'], 'Topic 1', 1);
-            
+
             // Create a lesson in topic
             \Illuminate\Support\Facades\DB::table('lessons')->insert([
                 'id' => $lesson1Id,
@@ -619,13 +619,13 @@ class StudentUnitControllerTest extends TestCase
                 'updated_at' => now()
             ]);
         });
-        
+
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
-        
+
         // API call to get detailed unit with contents
         $response = $this->getJson("/api/{$this->tenant->slug}/student/units/{$testData['unit1_id']}/contents");
-        
+
         $response->assertStatus(200)
             ->assertJsonStructure([
                 'data' => [
@@ -660,7 +660,7 @@ class StudentUnitControllerTest extends TestCase
     {
         // Get test data
         $testData = $this->setupTestData();
-        
+
         // Update the first unit to completed status
         $this->runInTenantContext($this->tenant, function () use ($testData) {
             \Illuminate\Support\Facades\DB::table('user_progress')
@@ -671,13 +671,13 @@ class StudentUnitControllerTest extends TestCase
                     'completed_at' => now()
                 ]);
         });
-        
+
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
-        
+
         // API call to get next recommended unit
         $response = $this->getJson("/api/{$this->tenant->slug}/student/learning-paths/{$testData['learning_path_id']}/next-unit");
-        
+
         $response->assertStatus(200)
             ->assertJsonStructure([
                 'data' => [
@@ -695,26 +695,26 @@ class StudentUnitControllerTest extends TestCase
                 'order' => 2
             ]);
     }
-    
+
     /** @test */
     public function student_cannot_update_progress_beyond_100_percent()
     {
         // Get test data
         $testData = $this->setupTestData();
-        
+
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
-        
+
         // API call to update unit progress with invalid value
         $response = $this->putJson("/api/{$this->tenant->slug}/student/units/{$testData['unit1_id']}/progress", [
             'progress' => 120, // Over 100%
             'completed' => false
         ]);
-        
+
         // Should return validation error
         $response->assertStatus(422)
             ->assertJsonValidationErrors(['progress']);
-            
+
         // Verify progress wasn't changed in DB
         $this->runInTenantContext($this->tenant, function () use ($testData) {
             $progress = \Illuminate\Support\Facades\DB::table('user_progress')
@@ -722,28 +722,28 @@ class StudentUnitControllerTest extends TestCase
                 ->where('item_id', $testData['unit1_id'])
                 ->where('progress_type', 'unit')
                 ->first();
-                
+
             $this->assertNotNull($progress);
             $this->assertEquals(50, $progress->progress); // Still the original value
         });
     }
-    
+
     /** @test */
     public function student_cannot_access_nonexistent_unit()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
-        
+
         // Fake UUID for non-existent unit
         $fakeUnitId = Str::uuid();
-        
+
         // API call to access non-existent unit
         $response = $this->getJson("/api/{$this->tenant->slug}/student/units/{$fakeUnitId}");
-        
+
         // Should return 404 not found
         $response->assertStatus(404);
     }
-    
+
     /** @test */
     public function student_cannot_access_unit_from_different_learning_path_directly()
     {
@@ -756,29 +756,29 @@ class StudentUnitControllerTest extends TestCase
                 'native_name' => 'Another Native',
                 'is_active' => true
             ]);
-            
+
             // Create another learning path
             $learningPathId = Str::uuid();
             $this->createLearningPath($learningPathId, $language->id);
-            
+
             // Create unit for this learning path
             $unitId = Str::uuid();
             $this->createUnit($unitId, $learningPathId, 'Restricted Unit', 1);
-            
+
             return [
                 'learning_path_id' => $learningPathId,
                 'unit_id' => $unitId
             ];
         });
-        
+
         // Now, let's say this student has not enrolled in this learning path
-        
+
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
-        
+
         // API call to access unit from different learning path
         $response = $this->getJson("/api/{$this->tenant->slug}/student/units/{$additionalTestData['unit_id']}");
-        
+
         // Depending on the application logic, this might return 404 (not found) or 403 (forbidden)
         // We'll accept either as correct behavior
         $this->assertTrue(
@@ -786,19 +786,19 @@ class StudentUnitControllerTest extends TestCase
             'Expected status code 404 or 403, got ' . $response->status()
         );
     }
-    
+
     /** @test */
     public function student_can_get_recommended_next_units()
     {
         // Get test data
         $testData = $this->setupTestData();
-        
+
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
-        
+
         // API call to get recommended units
         $response = $this->getJson("/api/{$this->tenant->slug}/student/units/recommendations");
-        
+
         $response->assertStatus(200)
             ->assertJsonStructure([
                 'data' => [
@@ -817,7 +817,7 @@ class StudentUnitControllerTest extends TestCase
                     ]
                 ]
             ]);
-        
+
         // Check that the in-progress unit appears in the right section
         $response->assertJsonPath('data.in_progress.0.id', $testData['unit1_id'])
             ->assertJsonPath('data.in_progress.0.progress', 50);

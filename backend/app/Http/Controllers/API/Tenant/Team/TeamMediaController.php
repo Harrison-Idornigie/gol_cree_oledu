@@ -3,10 +3,14 @@
 namespace App\Http\Controllers\API\Tenant\Team;
 
 use App\Http\Controllers\API\BaseAPIController;
+use App\Services\Tenants\Media\MediaManagementService;
 use App\Models\Tenants\MediaFile;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
+use Exception;
 
 /**
  * Team Media Controller
@@ -22,11 +26,15 @@ class TeamMediaController extends BaseAPIController
 {
     use BelongsToTenant;
 
+    protected MediaManagementService $mediaService;
+
     /**
      * Constructor - Apply team middleware
      */
-    public function __construct()
+    public function __construct(MediaManagementService $mediaService)
     {
+        $this->mediaService = $mediaService;
+
         // Apply policies
         $this->authorizeResource(MediaFile::class, 'media');
     }
@@ -41,12 +49,24 @@ class TeamMediaController extends BaseAPIController
     {
         $this->authorize('create', MediaFile::class);
 
-        // TODO: Implement media upload
-        // - Validate file type and size
-        // - Process and store media file
-        // - Create media record with tenant association
-        // - Generate thumbnails if needed
-        return $this->sendCreatedResponse([], 'Media uploaded successfully.');
+        try {
+            $validatedData = $request->validate([
+                'file' => 'required|file|max:51200', // 50MB max
+                'description' => 'nullable|string|max:255',
+                'alt_text' => 'nullable|string|max:255',
+                'collection' => 'nullable|string|max:50',
+                'status' => 'nullable|string|in:draft,published,archived',
+            ]);
+
+            $file = $request->file('file');
+            $mediaFile = $this->mediaService->uploadMediaFile($file, $validatedData, Auth::user());
+
+            return $this->sendCreatedResponse($mediaFile, 'Media uploaded successfully.');
+        } catch (ValidationException $e) {
+            return $this->sendError('Validation failed.', $e->errors(), 422);
+        } catch (Exception $e) {
+            return $this->sendError('Failed to upload media.', ['error' => $e->getMessage()]);
+        }
     }
 
     /**
@@ -58,12 +78,19 @@ class TeamMediaController extends BaseAPIController
      */
     public function destroy(Request $request, MediaFile $media): JsonResponse
     {
-        // TODO: Implement media deletion
-        // - Validate media belongs to team member and tenant
-        // - Check for usage in content
-        // - Delete file from storage
-        // - Remove media record
-        return $this->sendNoContentResponse();
+        $this->authorize('delete', $media);
+
+        try {
+            $deleted = $this->mediaService->deleteMediaFile($media, Auth::user());
+
+            if (!$deleted) {
+                return $this->sendError('Failed to delete media file.');
+            }
+
+            return $this->sendNoContentResponse();
+        } catch (Exception $e) {
+            return $this->sendError('Failed to delete media file.', ['error' => $e->getMessage()]);
+        }
     }
 
     /**
@@ -74,10 +101,18 @@ class TeamMediaController extends BaseAPIController
      */
     public function myMedia(Request $request): JsonResponse
     {
-        // TODO: Implement media listing
-        // - All media files uploaded by team member
-        // - Filter by type, usage status
-        // - Include file metadata
-        return $this->sendResponse([], 'Media files retrieved successfully.');
+        $this->authorize('viewAny', MediaFile::class);
+
+        try {
+            // Filter to only current user's media
+            $filteredRequest = $request->duplicate();
+            $filteredRequest->merge(['uploader_id' => Auth::id()]);
+
+            $mediaFiles = $this->mediaService->getFilteredMediaFiles($filteredRequest, 'team');
+
+            return $this->sendResponse($mediaFiles, 'Media files retrieved successfully.');
+        } catch (Exception $e) {
+            return $this->sendError('Failed to retrieve media files.', ['error' => $e->getMessage()]);
+        }
     }
 }

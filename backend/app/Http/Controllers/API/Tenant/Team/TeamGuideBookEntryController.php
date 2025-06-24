@@ -3,10 +3,14 @@
 namespace App\Http\Controllers\API\Tenant\Team;
 
 use App\Http\Controllers\API\BaseAPIController;
+use App\Services\Tenants\Course\GuideBookEntryService;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 use App\Models\Tenants\GuideBookEntry;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
+use Exception;
 
 /**
  * Team Guide Book Entry Controller
@@ -22,10 +26,15 @@ class TeamGuideBookEntryController extends BaseAPIController
 {
     use BelongsToTenant;
 
+    protected GuideBookEntryService $guideBookService;
+
     /**
      * Constructor - Apply team middleware
      */
-    public function __construct() {}
+    public function __construct(GuideBookEntryService $guideBookService)
+    {
+        $this->guideBookService = $guideBookService;
+    }
 
     /**
      * Display a listing of guide book entries.
@@ -37,11 +46,12 @@ class TeamGuideBookEntryController extends BaseAPIController
     {
         $this->authorize('viewAny', GuideBookEntry::class);
 
-        // TODO: Implement guide entries listing
-        // - All guide entries in current tenant
-        // - Filter by category, creator, status
-        // - Include usage statistics
-        return $this->sendResponse([], 'Guide book entries retrieved successfully.');
+        try {
+            $guideBookEntries = $this->guideBookService->getFilteredGuideBookEntries($request, 'team');
+            return $this->sendResponse($guideBookEntries, 'Guide book entries retrieved successfully.');
+        } catch (Exception $e) {
+            return $this->sendError('Failed to retrieve guide book entries.', ['error' => $e->getMessage()]);
+        }
     }
 
     /**
@@ -54,12 +64,25 @@ class TeamGuideBookEntryController extends BaseAPIController
     {
         $this->authorize('create', GuideBookEntry::class);
 
-        // TODO: Implement guide entry creation
-        // - Validate guide entry data
-        // - Create entry with tenant association
-        // - Set creator and category relationship
-        // - Initialize entry content
-        return $this->sendCreatedResponse([], 'Guide book entry created successfully.');
+        try {
+            $validatedData = $request->validate([
+                'unit_id' => 'required|exists:units,id',
+                'topic' => 'required|string|max:255',
+                'content' => 'required|string',
+                'difficulty_level' => 'nullable|integer|between:1,10',
+                'tags' => 'nullable|array',
+                'references' => 'nullable|array',
+                'order' => 'nullable|integer|min:1',
+            ]);
+
+            $guideEntry = $this->guideBookService->createGuideBookEntry($validatedData, Auth::user());
+
+            return $this->sendCreatedResponse($guideEntry, 'Guide book entry created successfully.');
+        } catch (ValidationException $e) {
+            return $this->sendError('Validation failed.', $e->errors(), 422);
+        } catch (Exception $e) {
+            return $this->sendError('Failed to create guide book entry.', ['error' => $e->getMessage()]);
+        }
     }
 
     /**
@@ -73,11 +96,30 @@ class TeamGuideBookEntryController extends BaseAPIController
     {
         $this->authorize('view', $guideEntry);
 
-        // TODO: Implement guide entry details
-        // - Validate entry belongs to tenant
-        // - Include full content and examples
-        // - Show usage statistics
-        return $this->sendResponse($guideEntry, 'Guide book entry retrieved successfully.');
+        try {
+            $withRelations = [];
+
+            if ($request->has('with_unit')) {
+                $withRelations[] = 'unit';
+            }
+            if ($request->has('with_media')) {
+                $withRelations[] = 'media';
+            }
+
+            $guideBookEntry = $this->guideBookService->getGuideBookEntry(
+                $guideEntry->id,
+                'team',
+                $withRelations
+            );
+
+            if (!$guideBookEntry) {
+                return $this->sendError('Guide book entry not found.', [], 404);
+            }
+
+            return $this->sendResponse($guideBookEntry, 'Guide book entry retrieved successfully.');
+        } catch (Exception $e) {
+            return $this->sendError('Failed to retrieve guide book entry.', ['error' => $e->getMessage()]);
+        }
     }
 
     /**
@@ -91,12 +133,28 @@ class TeamGuideBookEntryController extends BaseAPIController
     {
         $this->authorize('update', $guideEntry);
 
-        // TODO: Implement guide entry update
-        // - Validate entry belongs to tenant
-        // - Update entry content
-        // - Handle media updates
-        // - Update metadata
-        return $this->sendResponse($guideEntry, 'Guide book entry updated successfully.');
+        try {
+            $validatedData = $request->validate([
+                'topic' => 'sometimes|required|string|max:255',
+                'content' => 'sometimes|required|string',
+                'difficulty_level' => 'nullable|integer|between:1,10',
+                'tags' => 'nullable|array',
+                'references' => 'nullable|array',
+                'order' => 'nullable|integer|min:1',
+            ]);
+
+            $updatedGuideEntry = $this->guideBookService->updateGuideBookEntry(
+                $guideEntry,
+                $validatedData,
+                Auth::user()
+            );
+
+            return $this->sendResponse($updatedGuideEntry, 'Guide book entry updated successfully.');
+        } catch (ValidationException $e) {
+            return $this->sendError('Validation failed.', $e->errors(), 422);
+        } catch (Exception $e) {
+            return $this->sendError('Failed to update guide book entry.', ['error' => $e->getMessage()]);
+        }
     }
 
     /**
@@ -110,11 +168,16 @@ class TeamGuideBookEntryController extends BaseAPIController
     {
         $this->authorize('delete', $guideEntry);
 
-        // TODO: Implement guide entry deletion
-        // - Validate entry belongs to tenant
-        // - Check for references in content
-        // - Handle cascading deletions
-        // - Clean up associated files
-        return $this->sendNoContentResponse();
+        try {
+            $deleted = $this->guideBookService->deleteGuideBookEntry($guideEntry, Auth::user());
+
+            if ($deleted) {
+                return $this->sendNoContentResponse();
+            }
+
+            return $this->sendError('Failed to delete guide book entry.');
+        } catch (Exception $e) {
+            return $this->sendError('Failed to delete guide book entry.', ['error' => $e->getMessage()]);
+        }
     }
 }

@@ -11,16 +11,17 @@ use Database\Seeders\Tenant\PlainsCreeA1CourseSeeder;
 use Database\Seeders\Tenant\PlainsCreeA2CourseSeeder;
 use Database\Seeders\Tenant\PlainsCreeB1CourseSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TenantTestCase;
+use Tests\TestCase;
+use Tests\Traits\InteractsWithTenancy;
 
-class PlainsCreeVocabularyProgressionTest extends TenantTestCase
+class PlainsCreeVocabularyProgressionTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshDatabase, InteractsWithTenancy;
 
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         // Create required languages
         Language::create(['code' => 'crk', 'name' => 'Plains Cree', 'native_name' => 'nēhiyawēwin']);
         Language::create(['code' => 'en', 'name' => 'English', 'native_name' => 'English']);
@@ -38,16 +39,19 @@ class PlainsCreeVocabularyProgressionTest extends TenantTestCase
             $vocabulary = Word::whereHas('language', function ($query) {
                 $query->where('code', 'crk');
             })
-            ->where(function ($query) use ($allowedLevels) {
-                foreach ($allowedLevels as $allowedLevel) {
-                    $query->orWhereJsonContains('metadata->proficiency_level', $allowedLevel);
-                }
-            })
-            ->get();
+                ->where(function ($query) use ($allowedLevels) {
+                    foreach ($allowedLevels as $allowedLevel) {
+                        $query->orWhereJsonContains('metadata->proficiency_level', $allowedLevel);
+                    }
+                })
+                ->get();
 
             // Verify vocabulary exists for this level
-            $this->assertGreaterThan(0, $vocabulary->count(), 
-                "No vocabulary found for {$level} level with constraints: " . implode(', ', $allowedLevels));
+            $this->assertGreaterThan(
+                0,
+                $vocabulary->count(),
+                "No vocabulary found for {$level} level with constraints: " . implode(', ', $allowedLevels)
+            );
 
             // Verify no vocabulary from higher levels is included
             $allLevels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
@@ -55,8 +59,11 @@ class PlainsCreeVocabularyProgressionTest extends TenantTestCase
 
             foreach ($vocabulary as $word) {
                 $wordLevel = $word->metadata['proficiency_level'] ?? 'A1';
-                $this->assertNotContains($wordLevel, $disallowedLevels, 
-                    "Word '{$word->text}' has level {$wordLevel} which should not be available for {$level} course");
+                $this->assertNotContains(
+                    $wordLevel,
+                    $disallowedLevels,
+                    "Word '{$word->text}' has level {$wordLevel} which should not be available for {$level} course"
+                );
             }
         }
     }
@@ -73,20 +80,29 @@ class PlainsCreeVocabularyProgressionTest extends TenantTestCase
             $vocabulary = Word::whereHas('language', function ($query) {
                 $query->where('code', 'crk');
             })
-            ->whereJsonContains('metadata->proficiency_level', $level)
-            ->get();
+                ->whereJsonContains('metadata->proficiency_level', $level)
+                ->get();
 
             $actualCount = $vocabulary->count();
             $targetCount = $targets['total'];
 
-            $this->assertGreaterThanOrEqual($targetCount * 0.8, $actualCount, 
-                "Level {$level} has {$actualCount} words, but target is {$targetCount} (allowing 20% tolerance)");
+            $this->assertGreaterThanOrEqual(
+                $targetCount * 0.8,
+                $actualCount,
+                "Level {$level} has {$actualCount} words, but target is {$targetCount} (allowing 20% tolerance)"
+            );
 
             // Verify per-lesson targets are reasonable
-            $this->assertGreaterThan(0, $targets['per_lesson'], 
-                "Level {$level} per-lesson target must be greater than 0");
-            $this->assertLessThanOrEqual(10, $targets['per_lesson'], 
-                "Level {$level} per-lesson target should not exceed 10 words");
+            $this->assertGreaterThan(
+                0,
+                $targets['per_lesson'],
+                "Level {$level} per-lesson target must be greater than 0"
+            );
+            $this->assertLessThanOrEqual(
+                10,
+                $targets['per_lesson'],
+                "Level {$level} per-lesson target should not exceed 10 words"
+            );
         }
     }
 
@@ -100,12 +116,15 @@ class PlainsCreeVocabularyProgressionTest extends TenantTestCase
         $a1Vocabulary = Word::whereHas('language', function ($query) {
             $query->where('code', 'crk');
         })
-        ->whereJsonContains('metadata->proficiency_level', 'A1')
-        ->get();
+            ->whereJsonContains('metadata->proficiency_level', 'A1')
+            ->get();
 
         // Assert
-        $this->assertGreaterThanOrEqual(100, $a1Vocabulary->count(), 
-            'A1 level should have at least 100 foundational words');
+        $this->assertGreaterThanOrEqual(
+            100,
+            $a1Vocabulary->count(),
+            'A1 level should have at least 100 foundational words'
+        );
 
         // Check for essential word categories
         $essentialCategories = ['family', 'common', 'greeting', 'number', 'colors'];
@@ -121,8 +140,11 @@ class PlainsCreeVocabularyProgressionTest extends TenantTestCase
         }
 
         $uniqueFoundCategories = array_unique($foundCategories);
-        $this->assertGreaterThanOrEqual(3, count($uniqueFoundCategories), 
-            'A1 vocabulary should cover at least 3 essential categories');
+        $this->assertGreaterThanOrEqual(
+            3,
+            count($uniqueFoundCategories),
+            'A1 vocabulary should cover at least 3 essential categories'
+        );
     }
 
     /** @test */
@@ -130,7 +152,7 @@ class PlainsCreeVocabularyProgressionTest extends TenantTestCase
     {
         // Arrange
         $this->seed(PlainsCreeVocabularySeeder::class);
-        
+
         // Create curriculum templates first
         $this->artisan('db:seed', ['--class' => 'Database\\Seeders\\Tenant\\CurriculumTemplateSeeder']);
 
@@ -156,12 +178,15 @@ class PlainsCreeVocabularyProgressionTest extends TenantTestCase
 
         foreach ($a1Exercises as $exercise) {
             $vocabularyUsed = $exercise->metadata['vocabulary_used'] ?? [];
-            
+
             foreach ($vocabularyUsed as $wordId) {
                 $word = Word::find($wordId);
                 $wordLevel = $word->metadata['proficiency_level'] ?? 'A1';
-                $this->assertEquals('A1', $wordLevel, 
-                    "A1 exercise {$exercise->id} uses word '{$word->text}' from level {$wordLevel}");
+                $this->assertEquals(
+                    'A1',
+                    $wordLevel,
+                    "A1 exercise {$exercise->id} uses word '{$word->text}' from level {$wordLevel}"
+                );
             }
         }
 
@@ -180,12 +205,15 @@ class PlainsCreeVocabularyProgressionTest extends TenantTestCase
 
         foreach ($a2Exercises as $exercise) {
             $vocabularyUsed = $exercise->metadata['vocabulary_used'] ?? [];
-            
+
             foreach ($vocabularyUsed as $wordId) {
                 $word = Word::find($wordId);
                 $wordLevel = $word->metadata['proficiency_level'] ?? 'A1';
-                $this->assertContains($wordLevel, ['A1', 'A2'], 
-                    "A2 exercise {$exercise->id} uses word '{$word->text}' from level {$wordLevel}");
+                $this->assertContains(
+                    $wordLevel,
+                    ['A1', 'A2'],
+                    "A2 exercise {$exercise->id} uses word '{$word->text}' from level {$wordLevel}"
+                );
             }
         }
     }
@@ -208,27 +236,46 @@ class PlainsCreeVocabularyProgressionTest extends TenantTestCase
             $metadata = $word->metadata ?? [];
 
             // Required fields for Plains Cree vocabulary
-            $this->assertArrayHasKey('proficiency_level', $metadata, 
-                "Word '{$word->text}' missing proficiency_level");
-            $this->assertArrayHasKey('syllabics', $metadata, 
-                "Word '{$word->text}' missing syllabics");
-            $this->assertArrayHasKey('translation', $metadata, 
-                "Word '{$word->text}' missing translation");
-            $this->assertArrayHasKey('cultural_context', $metadata, 
-                "Word '{$word->text}' missing cultural_context");
+            $this->assertArrayHasKey(
+                'proficiency_level',
+                $metadata,
+                "Word '{$word->text}' missing proficiency_level"
+            );
+            $this->assertArrayHasKey(
+                'syllabics',
+                $metadata,
+                "Word '{$word->text}' missing syllabics"
+            );
+            $this->assertArrayHasKey(
+                'translation',
+                $metadata,
+                "Word '{$word->text}' missing translation"
+            );
+            $this->assertArrayHasKey(
+                'cultural_context',
+                $metadata,
+                "Word '{$word->text}' missing cultural_context"
+            );
 
             // Validate proficiency level
             $level = $metadata['proficiency_level'];
-            $this->assertContains($level, ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'], 
-                "Word '{$word->text}' has invalid proficiency level: {$level}");
+            $this->assertContains(
+                $level,
+                ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'],
+                "Word '{$word->text}' has invalid proficiency level: {$level}"
+            );
 
             // Validate syllabics is not empty
-            $this->assertNotEmpty($metadata['syllabics'], 
-                "Word '{$word->text}' has empty syllabics");
+            $this->assertNotEmpty(
+                $metadata['syllabics'],
+                "Word '{$word->text}' has empty syllabics"
+            );
 
             // Validate translation is not empty
-            $this->assertNotEmpty($metadata['translation'], 
-                "Word '{$word->text}' has empty translation");
+            $this->assertNotEmpty(
+                $metadata['translation'],
+                "Word '{$word->text}' has empty translation"
+            );
         }
     }
 
@@ -242,30 +289,45 @@ class PlainsCreeVocabularyProgressionTest extends TenantTestCase
         $distribution = Word::whereHas('language', function ($query) {
             $query->where('code', 'crk');
         })
-        ->selectRaw("JSON_UNQUOTE(JSON_EXTRACT(metadata, '$.proficiency_level')) as level, COUNT(*) as count")
-        ->groupBy('level')
-        ->pluck('count', 'level')
-        ->toArray();
+            ->selectRaw("JSON_UNQUOTE(JSON_EXTRACT(metadata, '$.proficiency_level')) as level, COUNT(*) as count")
+            ->groupBy('level')
+            ->pluck('count', 'level')
+            ->toArray();
 
         // Assert
         $expectedLevels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
-        
+
         foreach ($expectedLevels as $level) {
-            $this->assertArrayHasKey($level, $distribution, 
-                "No vocabulary found for level {$level}");
-            $this->assertGreaterThan(0, $distribution[$level], 
-                "Level {$level} has no vocabulary words");
+            $this->assertArrayHasKey(
+                $level,
+                $distribution,
+                "No vocabulary found for level {$level}"
+            );
+            $this->assertGreaterThan(
+                0,
+                $distribution[$level],
+                "Level {$level} has no vocabulary words"
+            );
         }
 
         // A1 should have the most vocabulary (foundational)
-        $this->assertGreaterThanOrEqual($distribution['A2'], $distribution['A1'], 
-            'A1 should have at least as much vocabulary as A2');
+        $this->assertGreaterThanOrEqual(
+            $distribution['A2'],
+            $distribution['A1'],
+            'A1 should have at least as much vocabulary as A2'
+        );
 
         // Higher levels should generally have less vocabulary
-        $this->assertLessThanOrEqual($distribution['B1'], $distribution['B2'], 
-            'B2 should have less or equal vocabulary than B1');
-        $this->assertLessThanOrEqual($distribution['C1'], $distribution['C2'], 
-            'C2 should have less or equal vocabulary than C1');
+        $this->assertLessThanOrEqual(
+            $distribution['B1'],
+            $distribution['B2'],
+            'B2 should have less or equal vocabulary than B1'
+        );
+        $this->assertLessThanOrEqual(
+            $distribution['C1'],
+            $distribution['C2'],
+            'C2 should have less or equal vocabulary than C1'
+        );
     }
 
     /** @test */
@@ -289,8 +351,11 @@ class PlainsCreeVocabularyProgressionTest extends TenantTestCase
 
         foreach ($expectedProgression as $level => $expectedLevels) {
             $actualLevels = $progressionConstraints[$level] ?? [];
-            $this->assertEquals($expectedLevels, $actualLevels, 
-                "Level {$level} progression constraints don't match expected pattern for spaced repetition");
+            $this->assertEquals(
+                $expectedLevels,
+                $actualLevels,
+                "Level {$level} progression constraints don't match expected pattern for spaced repetition"
+            );
         }
     }
 }

@@ -10,6 +10,7 @@ use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 use App\Models\Tenants\Sentence;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Log;
 use Exception;
 
@@ -96,6 +97,8 @@ class TeamSentenceController extends BaseAPIController
     public function store(CreateSentenceRequest $request): JsonResponse
     {
         try {
+            $this->authorize('create', Sentence::class);
+            
             $sentenceData = $request->only(['language_id', 'text', 'pronunciation_key', 'metadata']);
             $wordData = $request->get('words', []);
 
@@ -126,12 +129,25 @@ class TeamSentenceController extends BaseAPIController
      */
     public function show(Request $request, Sentence $sentence): JsonResponse
     {
-        // TODO: Implement sentence details
-        // - Validate sentence belongs to tenant
-        // - Include all translations
-        // - Show audio files (normal and slow)
-        // - Display word timings
-        return $this->sendResponse($sentence, 'Sentence retrieved successfully.');
+        try {
+            $this->authorize('view', $sentence);
+            
+            $withRelations = $request->boolean('with_relations', true);
+            $context = $request->get('context', 'team');
+
+            $detailedSentence = $this->sentenceService->getDetailedSentence(
+                $sentence->id,
+                $context
+            );
+
+            if (!$detailedSentence) {
+                return $this->sendError('Sentence not found.', [], 404);
+            }
+
+            return $this->sendResponse($detailedSentence, 'Sentence retrieved successfully.');
+        } catch (Exception $e) {
+            return $this->sendError('Failed to retrieve sentence.', ['error' => $e->getMessage()]);
+        }
     }
 
     /**
@@ -143,12 +159,36 @@ class TeamSentenceController extends BaseAPIController
      */
     public function update(Request $request, Sentence $sentence): JsonResponse
     {
-        // TODO: Implement sentence update
-        // - Validate sentence belongs to tenant
-        // - Update sentence text
-        // - Reparse words if text changed
-        // - Update metadata
-        return $this->sendResponse($sentence, 'Sentence updated successfully.');
+        try {
+            $this->authorize('update', $sentence);
+            
+            $validatedData = $request->validate([
+                'text' => 'sometimes|required|string|max:1000',
+                'pronunciation_key' => 'nullable|string|max:255',
+                'metadata' => 'nullable|array',
+                'words' => 'nullable|array',
+                'words.*.word_id' => 'required_with:words|exists:words,id',
+                'words.*.position' => 'required_with:words|integer|min:1',
+                'words.*.start_time' => 'nullable|numeric|min:0',
+                'words.*.end_time' => 'nullable|numeric|min:0',
+                'words.*.metadata' => 'nullable|array',
+            ]);
+
+            $updateData = $request->only(['text', 'pronunciation_key', 'metadata']);
+            $wordData = $validatedData['words'] ?? null;
+
+            $updatedSentence = $this->sentenceService->updateSentence(
+                $sentence,
+                $updateData,
+                $wordData
+            );
+
+            return $this->sendResponse($updatedSentence, 'Sentence updated successfully.');
+        } catch (ValidationException $e) {
+            return $this->sendError('Validation failed.', $e->errors(), 422);
+        } catch (Exception $e) {
+            return $this->sendError('Failed to update sentence.', ['error' => $e->getMessage()]);
+        }
     }
 
     /**
@@ -160,12 +200,19 @@ class TeamSentenceController extends BaseAPIController
      */
     public function destroy(Request $request, Sentence $sentence): JsonResponse
     {
-        // TODO: Implement sentence deletion
-        // - Validate sentence belongs to tenant
-        // - Check for usage in exercises/content
-        // - Handle cascading deletions
-        // - Clean up associated audio files
-        return $this->sendNoContentResponse();
+        try {
+            $this->authorize('delete', $sentence);
+            
+            $deleted = $this->sentenceService->deleteSentence($sentence);
+
+            if ($deleted) {
+                return $this->sendNoContentResponse();
+            }
+
+            return $this->sendError('Failed to delete sentence.');
+        } catch (Exception $e) {
+            return $this->sendError('Failed to delete sentence.', ['error' => $e->getMessage()]);
+        }
     }
 
     /**
@@ -177,12 +224,32 @@ class TeamSentenceController extends BaseAPIController
      */
     public function addTranslation(Request $request, Sentence $sentence): JsonResponse
     {
-        // TODO: Implement translation addition
-        // - Validate sentence belongs to tenant
-        // - Create new translation
-        // - Handle language pair validation
-        // - Parse translation words
-        return $this->sendCreatedResponse([], 'Translation added successfully.');
+        try {
+            $this->authorize('update', $sentence);
+            
+            $validatedData = $request->validate([
+                'language_id' => 'required|exists:languages,id',
+                'text' => 'required|string|max:1000',
+                'pronunciation_key' => 'nullable|string|max:255',
+                'context_notes' => 'nullable|string|max:1000',
+                'audio' => 'nullable|file|mimes:mp3,wav,m4a|max:10240'
+            ]);
+
+            $audioFile = $request->file('audio');
+            $translationData = $request->only(['language_id', 'text', 'pronunciation_key', 'context_notes']);
+
+            $translation = $this->sentenceService->addTranslation(
+                $sentence,
+                $translationData,
+                $audioFile
+            );
+
+            return $this->sendCreatedResponse($translation, 'Translation added successfully.');
+        } catch (ValidationException $e) {
+            return $this->sendError('Validation failed.', $e->errors(), 422);
+        } catch (Exception $e) {
+            return $this->sendError('Failed to add translation.', ['error' => $e->getMessage()]);
+        }
     }
 
     /**
@@ -195,12 +262,34 @@ class TeamSentenceController extends BaseAPIController
      */
     public function updateTranslation(Request $request, Sentence $sentence, int $translationId): JsonResponse
     {
-        // TODO: Implement translation update
-        // - Validate translation belongs to sentence and tenant
-        // - Update translation text
-        // - Reparse words if needed
-        // - Update metadata
-        return $this->sendResponse([], 'Translation updated successfully.');
+        try {
+            $this->authorize('update', $sentence);
+            
+            $translation = $sentence->translations()->findOrFail($translationId);
+
+            $validatedData = $request->validate([
+                'language_id' => 'sometimes|required|exists:languages,id',
+                'text' => 'sometimes|required|string|max:1000',
+                'pronunciation_key' => 'nullable|string|max:255',
+                'context_notes' => 'nullable|string|max:1000',
+                'audio' => 'nullable|file|mimes:mp3,wav,m4a|max:10240'
+            ]);
+
+            $audioFile = $request->file('audio');
+            $updateData = $request->only(['language_id', 'text', 'pronunciation_key', 'context_notes']);
+
+            $updatedTranslation = $this->sentenceService->updateTranslation(
+                $translation,
+                $updateData,
+                $audioFile
+            );
+
+            return $this->sendResponse($updatedTranslation, 'Translation updated successfully.');
+        } catch (ValidationException $e) {
+            return $this->sendError('Validation failed.', $e->errors(), 422);
+        } catch (Exception $e) {
+            return $this->sendError('Failed to update translation.', ['error' => $e->getMessage()]);
+        }
     }
 
     /**
@@ -213,11 +302,21 @@ class TeamSentenceController extends BaseAPIController
      */
     public function deleteTranslation(Request $request, Sentence $sentence, int $translationId): JsonResponse
     {
-        // TODO: Implement translation deletion
-        // - Validate translation belongs to sentence and tenant
-        // - Check for usage in content
-        // - Delete translation and associated files
-        return $this->sendNoContentResponse();
+        try {
+            $this->authorize('update', $sentence);
+            
+            $translation = $sentence->translations()->findOrFail($translationId);
+
+            $deleted = $this->sentenceService->deleteTranslation($translation);
+
+            if ($deleted) {
+                return $this->sendNoContentResponse();
+            }
+
+            return $this->sendError('Failed to delete translation.');
+        } catch (Exception $e) {
+            return $this->sendError('Failed to delete translation.', ['error' => $e->getMessage()]);
+        }
     }
 
     /**
@@ -229,12 +328,22 @@ class TeamSentenceController extends BaseAPIController
      */
     public function uploadAudio(Request $request, Sentence $sentence): JsonResponse
     {
-        // TODO: Implement audio upload
-        // - Validate audio file
-        // - Process and store audio
-        // - Update sentence with audio reference
-        // - Generate word timings if possible
-        return $this->sendResponse([], 'Audio uploaded successfully.');
+        try {
+            $this->authorize('update', $sentence);
+            
+            $request->validate([
+                'audio' => 'required|file|mimes:mp3,wav,m4a|max:20480' // 20MB limit
+            ]);
+
+            $audioFile = $request->file('audio');
+            $result = $this->sentenceService->uploadSentenceAudio($sentence, $audioFile, false);
+
+            return $this->sendResponse($result, 'Audio uploaded successfully.');
+        } catch (ValidationException $e) {
+            return $this->sendError('Validation failed.', $e->errors(), 422);
+        } catch (Exception $e) {
+            return $this->sendError('Failed to upload audio.', ['error' => $e->getMessage()]);
+        }
     }
 
     /**
@@ -246,12 +355,22 @@ class TeamSentenceController extends BaseAPIController
      */
     public function uploadSlowAudio(Request $request, Sentence $sentence): JsonResponse
     {
-        // TODO: Implement slow audio upload
-        // - Validate audio file
-        // - Process and store slow audio
-        // - Update sentence with slow audio reference
-        // - Generate slow word timings
-        return $this->sendResponse([], 'Slow audio uploaded successfully.');
+        try {
+            $this->authorize('update', $sentence);
+            
+            $request->validate([
+                'audio' => 'required|file|mimes:mp3,wav,m4a|max:20480' // 20MB limit
+            ]);
+
+            $audioFile = $request->file('audio');
+            $result = $this->sentenceService->uploadSentenceAudio($sentence, $audioFile, true);
+
+            return $this->sendResponse($result, 'Slow audio uploaded successfully.');
+        } catch (ValidationException $e) {
+            return $this->sendError('Validation failed.', $e->errors(), 422);
+        } catch (Exception $e) {
+            return $this->sendError('Failed to upload slow audio.', ['error' => $e->getMessage()]);
+        }
     }
 
     /**
@@ -264,12 +383,24 @@ class TeamSentenceController extends BaseAPIController
      */
     public function uploadTranslationAudio(Request $request, Sentence $sentence, int $translationId): JsonResponse
     {
-        // TODO: Implement translation audio upload
-        // - Validate translation belongs to sentence and tenant
-        // - Process and store audio file
-        // - Update translation with audio reference
-        // - Generate word timings for translation
-        return $this->sendResponse([], 'Translation audio uploaded successfully.');
+        try {
+            $this->authorize('update', $sentence);
+            
+            $translation = $sentence->translations()->findOrFail($translationId);
+
+            $request->validate([
+                'audio' => 'required|file|mimes:mp3,wav,m4a|max:10240' // 10MB limit
+            ]);
+
+            $audioFile = $request->file('audio');
+            $result = $this->sentenceService->updateTranslation($translation, [], $audioFile);
+
+            return $this->sendResponse($result, 'Translation audio uploaded successfully.');
+        } catch (ValidationException $e) {
+            return $this->sendError('Validation failed.', $e->errors(), 422);
+        } catch (Exception $e) {
+            return $this->sendError('Failed to upload translation audio.', ['error' => $e->getMessage()]);
+        }
     }
 
     /**
@@ -281,12 +412,29 @@ class TeamSentenceController extends BaseAPIController
      */
     public function updateWordTimings(Request $request, Sentence $sentence): JsonResponse
     {
-        // TODO: Implement word timings update
-        // - Validate sentence belongs to tenant
-        // - Update word timing data
-        // - Validate timing consistency
-        // - Store timing information
-        return $this->sendResponse([], 'Word timings updated successfully.');
+        try {
+            $this->authorize('update', $sentence);
+            
+            $validatedData = $request->validate([
+                'timings' => 'required|array',
+                'timings.*.word_id' => 'required|exists:words,id',
+                'timings.*.start_time' => 'required|numeric|min:0',
+                'timings.*.end_time' => 'required|numeric|min:0',
+                'timings.*.metadata' => 'nullable|array',
+                'audio_duration' => 'required|numeric|min:0'
+            ]);
+
+            $timings = $validatedData['timings'];
+            $audioDuration = $validatedData['audio_duration'];
+
+            $result = $this->sentenceService->updateWordTimings($sentence, $timings, $audioDuration);
+
+            return $this->sendResponse($result, 'Word timings updated successfully.');
+        } catch (ValidationException $e) {
+            return $this->sendError('Validation failed.', $e->errors(), 422);
+        } catch (Exception $e) {
+            return $this->sendError('Failed to update word timings.', ['error' => $e->getMessage()]);
+        }
     }
 
     /**
@@ -298,12 +446,26 @@ class TeamSentenceController extends BaseAPIController
      */
     public function reorderWords(Request $request, Sentence $sentence): JsonResponse
     {
-        // TODO: Implement word reordering
-        // - Validate sentence belongs to tenant
-        // - Update word order
-        // - Maintain sentence structure
-        // - Update related timings
-        return $this->sendResponse([], 'Words reordered successfully.');
+        try {
+            $this->authorize('update', $sentence);
+            
+            $validatedData = $request->validate([
+                'word_order' => 'required|array',
+                'word_order.*.word_id' => 'required|exists:words,id',
+                'word_order.*.start_time' => 'nullable|numeric|min:0',
+                'word_order.*.end_time' => 'nullable|numeric|min:0',
+                'word_order.*.metadata' => 'nullable|array',
+            ]);
+
+            $wordOrder = $validatedData['word_order'];
+            $reorderedSentence = $this->sentenceService->reorderWords($sentence, $wordOrder);
+
+            return $this->sendResponse($reorderedSentence, 'Words reordered successfully.');
+        } catch (ValidationException $e) {
+            return $this->sendError('Validation failed.', $e->errors(), 422);
+        } catch (Exception $e) {
+            return $this->sendError('Failed to reorder words.', ['error' => $e->getMessage()]);
+        }
     }
 
     /**
@@ -315,6 +477,8 @@ class TeamSentenceController extends BaseAPIController
     public function getAvailableWords(Request $request): JsonResponse
     {
         try {
+            $this->authorize('viewAny', Sentence::class);
+            
             $languageId = $request->get('language_id');
             $search = $request->get('search', '');
             $limit = min($request->get('limit', 50), 100);
@@ -371,6 +535,8 @@ class TeamSentenceController extends BaseAPIController
     public function validateSentenceWords(Request $request): JsonResponse
     {
         try {
+            $this->authorize('create', Sentence::class);
+            
             $sentenceText = $request->get('text');
             $wordData = $request->get('words', []);
             $languageId = $request->get('language_id');
@@ -397,6 +563,8 @@ class TeamSentenceController extends BaseAPIController
     public function analyzeSentenceText(Request $request): JsonResponse
     {
         try {
+            $this->authorize('create', Sentence::class);
+            
             $validated = $request->validate([
                 'text' => 'required|string|max:1000',
                 'language_id' => 'required|exists:languages,id'
@@ -410,8 +578,8 @@ class TeamSentenceController extends BaseAPIController
             return $this->sendResponse([
                 'analysis' => $analysis,
                 'suggestions' => [
-                    'auto_create_missing' => count($analysis['missing_words']) <= 3,
-                    'mapping_quality' => $this->getMappingQuality($analysis['mapping_percentage']),
+                    'auto_create_missing' => count($analysis['missing_words'] ?? []) <= 3,
+                    'mapping_quality' => $this->getMappingQuality((float) ($analysis['mapping_percentage'] ?? 0)),
                     'recommended_action' => $this->getRecommendedAction($analysis)
                 ]
             ], 'Sentence analysis completed successfully.');
@@ -427,6 +595,8 @@ class TeamSentenceController extends BaseAPIController
     public function createWithAutoMapping(Request $request): JsonResponse
     {
         try {
+            $this->authorize('create', Sentence::class);
+            
             $validated = $request->validate([
                 'text' => 'required|string|max:1000',
                 'language_id' => 'required|exists:languages,id',
