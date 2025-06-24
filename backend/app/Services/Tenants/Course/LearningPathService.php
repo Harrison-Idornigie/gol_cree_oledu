@@ -304,4 +304,25 @@ class LearningPathService
 
         return true;
     }
+
+    /**
+     * Get learning paths for a specific language.
+     */
+    public function getLearningPathsForLanguage(int $languageId, string $membership = 'student'): \Illuminate\Database\Eloquent\Collection
+    {
+        $query = LearningPath::where('language_id', $languageId);
+
+        // Apply membership-based filtering
+        if (!in_array($membership, ['super-admin', 'tenant-admin', 'team'])) {
+            // Students can only see published content
+            $query->where('status', 'published');
+        }
+
+        return $query->with(['language', 'units' => function ($query) {
+            $query->orderBy('order');
+        }])
+        ->orderBy('difficulty_level')
+        ->orderBy('order')
+        ->get();
+    }
 }

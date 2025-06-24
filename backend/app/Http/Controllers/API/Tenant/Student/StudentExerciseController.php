@@ -8,6 +8,8 @@ use App\Models\Tenants\Exercise;
 use App\Services\Tenants\Exercise\ExerciseService;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Student Exercise Controller
@@ -98,14 +100,23 @@ class StudentExerciseController extends BaseAPIController
      */
     public function checkAnswer(Request $request, Exercise $exercise): JsonResponse
     {
-        $this->authorize('view', $exercise);
+        try {
+            $this->authorize('view', $exercise);
 
-        // TODO: Implement answer checking
-        // - Validate student's answer
-        // - Calculate score and feedback
-        // - Update progress tracking
-        // - Return results and explanations
-        return $this->sendResponse([], 'Answer checked successfully.');
+            $validated = $request->validate([
+                'answer' => 'required',
+                'time_taken' => 'nullable|integer|min:0'
+            ]);
+
+            $user = Auth::user();
+            $result = $this->exerciseService->checkStudentAnswer($exercise, $user, $validated);
+
+            return $this->sendResponse($result, 'Answer checked successfully.');
+        } catch (ValidationException $e) {
+            return $this->sendError('Validation failed.', $e->errors(), 422);
+        } catch (\Exception $e) {
+            return $this->sendError('Failed to check answer.', ['error' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -117,13 +128,24 @@ class StudentExerciseController extends BaseAPIController
      */
     public function statistics(Request $request, Exercise $exercise): JsonResponse
     {
-        $this->authorize('view', $exercise);
+        try {
+            $this->authorize('view', $exercise);
 
-        // TODO: Implement exercise statistics
-        // - Student's performance on this exercise
-        // - Attempt history and scores
-        // - Time spent and accuracy
-        return $this->sendResponse([], 'Exercise statistics retrieved successfully.');
+            $user = Auth::user();
+            $statistics = $this->exerciseService->getStudentStatistics($exercise, $user);
+
+            return $this->sendResponse([
+                'exercise' => [
+                    'id' => $exercise->id,
+                    'title' => $exercise->title,
+                    'type' => $exercise->type,
+                    'difficulty_level' => $exercise->difficulty_level
+                ],
+                'statistics' => $statistics
+            ], 'Exercise statistics retrieved successfully.');
+        } catch (\Exception $e) {
+            return $this->sendError('Failed to retrieve statistics.', ['error' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -135,14 +157,36 @@ class StudentExerciseController extends BaseAPIController
      */
     public function submitAnswer(Request $request, Exercise $exercise): JsonResponse
     {
-        $this->authorize('view', $exercise);
+        try {
+            $this->authorize('view', $exercise);
 
-        // TODO: Implement type-aware answer submission
-        // - Route to appropriate handler based on exercise type
-        // - Handle file uploads for speaking exercises
-        // - Process conversation progress tracking
-        // - Validate and score answers
-        return $this->sendResponse([], 'Answer submitted successfully.');
+            $validated = $request->validate([
+                'answer' => 'required',
+                'time_taken' => 'nullable|integer|min:0',
+                'files' => 'nullable|array', // For audio/speaking exercises
+                'files.*' => 'file|mimes:mp3,wav,m4a|max:10240' // 10MB limit
+            ]);
+
+            $user = Auth::user();
+            
+            // Handle file uploads if present
+            if ($request->hasFile('files')) {
+                $validated['files'] = [];
+                foreach ($request->file('files') as $file) {
+                    // Store file and add path to answer data
+                    $path = $file->store('exercise-submissions/' . $exercise->id, 'public');
+                    $validated['files'][] = $path;
+                }
+            }
+
+            $result = $this->exerciseService->checkStudentAnswer($exercise, $user, $validated);
+
+            return $this->sendResponse($result, 'Answer submitted successfully.');
+        } catch (ValidationException $e) {
+            return $this->sendError('Validation failed.', $e->errors(), 422);
+        } catch (\Exception $e) {
+            return $this->sendError('Failed to submit answer.', ['error' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -154,13 +198,30 @@ class StudentExerciseController extends BaseAPIController
      */
     public function getByType(Request $request, string $type): JsonResponse
     {
-        $this->authorize('viewAny', Exercise::class);
+        try {
+            $this->authorize('viewAny', Exercise::class);
 
-        // TODO: Implement type-specific exercise listing
-        // - Filter exercises by type (listening, speaking, picture, etc.)
-        // - Include type-specific metadata
-        // - Apply student access controls
-        return $this->sendResponse([], "Exercises of type '{$type}' retrieved successfully.");
+            // Validate exercise type
+            $allowedTypes = ['listening', 'speaking', 'picture', 'multiple_choice', 'fill_blank', 'matching'];
+            if (!in_array($type, $allowedTypes)) {
+                return $this->sendError('Invalid exercise type.', ['type' => $type], 400);
+            }
+
+            $user = Auth::user();
+            $filters = $request->only(['lesson_id', 'difficulty_level']);
+            $exercises = $this->exerciseService->getExercisesByType($type, $user, $filters);
+
+            return $this->sendResponse([
+                'type' => $type,
+                'exercises' => $exercises,
+                'meta' => [
+                    'total_count' => $exercises->count(),
+                    'completed_count' => $exercises->where('student_progress.completed', true)->count()
+                ]
+            ], "Exercises of type '{$type}' retrieved successfully.");
+        } catch (\Exception $e) {
+            return $this->sendError('Failed to retrieve exercises by type.', ['error' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -172,12 +233,24 @@ class StudentExerciseController extends BaseAPIController
      */
     public function getByLanguage(Request $request, string $languageCode): JsonResponse
     {
-        $this->authorize('viewAny', Exercise::class);
+        try {
+            $this->authorize('viewAny', Exercise::class);
 
-        // TODO: Implement language-specific exercise listing
-        // - Filter exercises by language
-        // - Include language-specific content
-        // - Apply student access controls
-        return $this->sendResponse([], "Exercises for language '{$languageCode}' retrieved successfully.");
+            $user = Auth::user();
+            $filters = $request->only(['type', 'difficulty_level']);
+            $exercises = $this->exerciseService->getExercisesByLanguage($languageCode, $user, $filters);
+
+            return $this->sendResponse([
+                'language_code' => $languageCode,
+                'exercises' => $exercises,
+                'meta' => [
+                    'total_count' => $exercises->count(),
+                    'completed_count' => $exercises->where('student_progress.completed', true)->count(),
+                    'types_available' => $exercises->pluck('type')->unique()->values()
+                ]
+            ], "Exercises for language '{$languageCode}' retrieved successfully.");
+        } catch (\Exception $e) {
+            return $this->sendError('Failed to retrieve exercises by language.', ['error' => $e->getMessage()], 500);
+        }
     }
 }

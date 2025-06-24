@@ -5,6 +5,8 @@ namespace App\Services\Tenants\Course;
 use App\Models\Tenants\Lesson;
 use App\Models\Tenants\Topic;
 use App\Models\Tenants\User;
+use App\Models\Tenants\UserProgress;
+use App\Models\Tenants\Exercise;
 use App\Models\Tenants\AuditLog;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -319,14 +321,197 @@ class LessonService
      */
     public function getLessonProgress(Lesson $lesson, User $user): array
     {
-        // TODO: Implement user progress tracking
+        $progress = UserProgress::where('user_id', $user->id)
+            ->where('trackable_type', Lesson::class)
+            ->where('trackable_id', $lesson->id)
+            ->first();
+
+        $exercisesCompleted = $this->getCompletedExercisesCount($lesson, $user);
+        $totalExercises = $lesson->exercises()->count();
+        $progressPercentage = $totalExercises > 0 ? ($exercisesCompleted / $totalExercises) * 100 : 0;
+
         return [
-            'completed' => false,
-            'progress_percentage' => 0,
-            'exercises_completed' => 0,
-            'exercises_total' => $lesson->exercises->count(),
-            'last_accessed' => null,
-            'time_spent' => 0,
+            'completed' => $progress && $progress->status === UserProgress::STATUS_COMPLETED,
+            'progress_percentage' => round($progressPercentage, 2),
+            'exercises_completed' => $exercisesCompleted,
+            'exercises_total' => $totalExercises,
+            'last_accessed' => $progress?->updated_at,
+            'time_spent' => $progress?->meta_data['time_spent'] ?? 0,
+            'status' => $progress?->status ?? UserProgress::STATUS_NOT_STARTED,
+            'next_exercise_id' => $this->getNextExerciseId($lesson, $user)
         ];
+    }
+
+    /**
+     * Get lessons for a topic with student accessibility and progress.
+     */
+    public function getLessonsForStudent(int $topicId, User $user): Collection
+    {
+        $lessons = $this->getLessonsByTopic($topicId);
+        
+        return $lessons->map(function ($lesson) use ($user) {
+            $lessonData = $lesson->toArray();
+            $lessonData['progress'] = $this->getLessonProgress($lesson, $user);
+            $lessonData['accessible'] = $this->isLessonAccessible($lesson, $user);
+            $lessonData['prerequisite_completed'] = $this->arePrerequisitesCompleted($lesson, $user);
+            
+            return (object) $lessonData;
+        });
+    }
+
+    /**
+     * Get detailed lesson information for student viewing.
+     */
+    public function getLessonForStudent(Lesson $lesson, User $user): array
+    {
+        // Check if lesson is accessible to student
+        if (!$this->isLessonAccessible($lesson, $user)) {
+            throw new \Illuminate\Auth\Access\AuthorizationException('This lesson is not yet accessible.');
+        }
+
+        $lessonData = $lesson->load([
+            'topic.unit.learningPath',
+            'exercises' => function ($query) {
+                $query->orderBy('order');
+            },
+            'exercises.attempts' => function ($query) use ($user) {
+                $query->where('user_id', $user->id);
+            }
+        ])->toArray();
+
+        $lessonData['progress'] = $this->getLessonProgress($lesson, $user);
+        $lessonData['exercises'] = $lesson->exercises->map(function ($exercise) use ($user) {
+            $exerciseData = $exercise->toArray();
+            $exerciseData['completed'] = $this->isExerciseCompleted($exercise, $user);
+            $exerciseData['attempts_count'] = $exercise->attempts->count();
+            $exerciseData['best_score'] = $this->getBestScore($exercise, $user);
+            return $exerciseData;
+        });
+
+        // Mark lesson as accessed
+        $this->markLessonAccessed($lesson, $user);
+
+        return $lessonData;
+    }
+
+    /**
+     * Check if lesson is accessible based on sequential learning rules.
+     */
+    public function isLessonAccessible(Lesson $lesson, User $user): bool
+    {
+        // Get previous lesson in the topic
+        $previousLesson = Lesson::where('topic_id', $lesson->topic_id)
+            ->where('order', '<', $lesson->order)
+            ->orderBy('order', 'desc')
+            ->first();
+
+        // If no previous lesson, this lesson is accessible
+        if (!$previousLesson) {
+            return true;
+        }
+
+        // Check if previous lesson is completed
+        return $this->isLessonCompleted($previousLesson, $user);
+    }
+
+    /**
+     * Check if lesson prerequisites are completed.
+     */
+    public function arePrerequisitesCompleted(Lesson $lesson, User $user): bool
+    {
+        // Check if previous lessons in topic are completed
+        $previousLessons = Lesson::where('topic_id', $lesson->topic_id)
+            ->where('order', '<', $lesson->order)
+            ->get();
+
+        foreach ($previousLessons as $prevLesson) {
+            if (!$this->isLessonCompleted($prevLesson, $user)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Check if lesson is completed by user.
+     */
+    public function isLessonCompleted(Lesson $lesson, User $user): bool
+    {
+        $progress = UserProgress::where('user_id', $user->id)
+            ->where('trackable_type', Lesson::class)
+            ->where('trackable_id', $lesson->id)
+            ->first();
+
+        return $progress && $progress->status === UserProgress::STATUS_COMPLETED;
+    }
+
+    /**
+     * Get count of completed exercises in lesson.
+     */
+    private function getCompletedExercisesCount(Lesson $lesson, User $user): int
+    {
+        return $lesson->exercises()->whereHas('attempts', function ($query) use ($user) {
+            $query->where('user_id', $user->id)
+                ->where('status', 'correct');
+        })->count();
+    }
+
+    /**
+     * Get next exercise ID for user in lesson.
+     */
+    private function getNextExerciseId(Lesson $lesson, User $user): ?int
+    {
+        $nextExercise = $lesson->exercises()
+            ->whereDoesntHave('attempts', function ($query) use ($user) {
+                $query->where('user_id', $user->id)
+                    ->where('status', 'correct');
+            })
+            ->orderBy('order')
+            ->first();
+
+        return $nextExercise?->id;
+    }
+
+    /**
+     * Check if specific exercise is completed.
+     */
+    private function isExerciseCompleted(Exercise $exercise, User $user): bool
+    {
+        return $exercise->attempts()
+            ->where('user_id', $user->id)
+            ->where('status', 'correct')
+            ->exists();
+    }
+
+    /**
+     * Get best score for exercise.
+     */
+    private function getBestScore(Exercise $exercise, User $user): ?float
+    {
+        return $exercise->attempts()
+            ->where('user_id', $user->id)
+            ->max('score');
+    }
+
+    /**
+     * Mark lesson as accessed by user.
+     */
+    private function markLessonAccessed(Lesson $lesson, User $user): void
+    {
+        UserProgress::updateOrCreate(
+            [
+                'user_id' => $user->id,
+                'trackable_type' => Lesson::class,
+                'trackable_id' => $lesson->id,
+            ],
+            [
+                'status' => UserProgress::STATUS_IN_PROGRESS,
+                'meta_data' => [
+                    'last_accessed' => now(),
+                    'access_count' => DB::raw('COALESCE(JSON_EXTRACT(meta_data, "$.access_count"), 0) + 1')
+                ]
+            ]
+        );
     }
 }

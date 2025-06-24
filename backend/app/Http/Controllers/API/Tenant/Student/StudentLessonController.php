@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\API\Tenant\Student;
 
 use App\Http\Controllers\API\BaseAPIController;
+use App\Services\Tenants\Course\LessonService;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 use App\Models\Tenants\Lesson;
 use App\Models\Tenants\Topic;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Student Lesson Controller
@@ -23,11 +25,15 @@ class StudentLessonController extends BaseAPIController
 {
     use BelongsToTenant;
 
+    protected LessonService $lessonService;
+
     /**
-     * Constructor - Apply student middleware
+     * Constructor - Apply student middleware and inject services
      */
-    public function __construct()
+    public function __construct(LessonService $lessonService)
     {
+        $this->lessonService = $lessonService;
+        
         // Apply policies - students can only view lessons
         $this->authorizeResource(Lesson::class, 'lesson');
     }
@@ -41,13 +47,32 @@ class StudentLessonController extends BaseAPIController
      */
     public function index(Request $request, Topic $topic): JsonResponse
     {
-        $this->authorize('viewAny', Lesson::class);
+        try {
+            $this->authorize('viewAny', Lesson::class);
 
-        // TODO: Implement lessons listing
-        // - All lessons in the topic
-        // - Show accessibility based on sequential learning
-        // - Include progress and completion status
-        return $this->sendResponse([], 'Lessons retrieved successfully.');
+            $user = Auth::user();
+            $lessons = $this->lessonService->getLessonsForStudent($topic->id, $user);
+
+            return $this->sendResponse([
+                'lessons' => $lessons,
+                'topic' => [
+                    'id' => $topic->id,
+                    'title' => $topic->title,
+                    'description' => $topic->description,
+                    'unit' => $topic->unit ? [
+                        'id' => $topic->unit->id,
+                        'title' => $topic->unit->title
+                    ] : null
+                ],
+                'meta' => [
+                    'total_lessons' => $lessons->count(),
+                    'completed_lessons' => $lessons->where('progress.completed', true)->count(),
+                    'accessible_lessons' => $lessons->where('accessible', true)->count()
+                ]
+            ], 'Lessons retrieved successfully.');
+        } catch (\Exception $e) {
+            return $this->sendError('Failed to retrieve lessons.', ['error' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -59,13 +84,18 @@ class StudentLessonController extends BaseAPIController
      */
     public function show(Request $request, Lesson $lesson): JsonResponse
     {
-        $this->authorize('view', $lesson);
+        try {
+            $this->authorize('view', $lesson);
 
-        // TODO: Implement lesson details
-        // - Validate lesson is accessible (sequential learning)
-        // - Include exercises and content
-        // - Show progress and next steps
-        return $this->sendResponse($lesson, 'Lesson retrieved successfully.');
+            $user = Auth::user();
+            $lessonData = $this->lessonService->getLessonForStudent($lesson, $user);
+
+            return $this->sendResponse($lessonData, 'Lesson retrieved successfully.');
+        } catch (\Illuminate\Auth\Access\AuthorizationException $e) {
+            return $this->sendError('Lesson not accessible.', ['error' => $e->getMessage()], 403);
+        } catch (\Exception $e) {
+            return $this->sendError('Failed to retrieve lesson.', ['error' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -77,12 +107,83 @@ class StudentLessonController extends BaseAPIController
      */
     public function progress(Request $request, Lesson $lesson): JsonResponse
     {
-        $this->authorize('view', $lesson);
+        try {
+            $this->authorize('view', $lesson);
 
-        // TODO: Implement lesson progress
-        // - Student's progress in the lesson
-        // - Completed exercises
-        // - Next recommended exercise
-        return $this->sendResponse([], 'Lesson progress retrieved successfully.');
+            $user = Auth::user();
+            $progress = $this->lessonService->getLessonProgress($lesson, $user);
+
+            // Add additional progress details
+            $progressData = [
+                'lesson' => [
+                    'id' => $lesson->id,
+                    'title' => $lesson->title,
+                    'description' => $lesson->description
+                ],
+                'progress' => $progress,
+                'recommendations' => [
+                    'next_action' => $this->getNextAction($progress),
+                    'suggested_study_time' => $this->getSuggestedStudyTime($progress),
+                    'difficulty_rating' => $this->getDifficultyRating($lesson, $user)
+                ]
+            ];
+
+            return $this->sendResponse($progressData, 'Lesson progress retrieved successfully.');
+        } catch (\Exception $e) {
+            return $this->sendError('Failed to retrieve lesson progress.', ['error' => $e->getMessage()], 500);
+        }
+    }
+
+    /**
+     * Get next recommended action for student.
+     */
+    private function getNextAction(array $progress): string
+    {
+        if ($progress['completed']) {
+            return 'lesson_completed';
+        }
+        
+        if ($progress['next_exercise_id']) {
+            return 'continue_exercises';
+        }
+        
+        if ($progress['exercises_completed'] === 0) {
+            return 'start_exercises';
+        }
+        
+        return 'review_lesson';
+    }
+
+    /**
+     * Get suggested study time based on progress.
+     */
+    private function getSuggestedStudyTime(array $progress): int
+    {
+        if ($progress['completed']) {
+            return 0; // No more time needed
+        }
+        
+        $remainingExercises = $progress['exercises_total'] - $progress['exercises_completed'];
+        return max(10, $remainingExercises * 5); // 5 minutes per exercise, minimum 10 minutes
+    }
+
+    /**
+     * Get difficulty rating for the lesson based on user performance.
+     */
+    private function getDifficultyRating(Lesson $lesson, $user): string
+    {
+        // This would analyze user's attempt patterns and success rates
+        // For now, return a default based on completion rate
+        $completionRate = $lesson->exercises()->count() > 0 
+            ? ($this->lessonService->getLessonProgress($lesson, $user)['exercises_completed'] / $lesson->exercises()->count())
+            : 0;
+            
+        if ($completionRate >= 0.8) {
+            return 'easy';
+        } elseif ($completionRate >= 0.5) {
+            return 'medium';
+        } else {
+            return 'hard';
+        }
     }
 }

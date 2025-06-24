@@ -41,42 +41,24 @@ trait InteractsWithTenancy
         // Store original database configuration
         $this->originalDatabaseConfig = config('database.connections');
 
-        // Use MySQL for testing to avoid SQLite VACUUM issues
-        Config::set('database.default', 'mysql_testing');
+        // Use SQLite for testing with proper configuration to avoid VACUUM issues
+        Config::set('database.default', 'sqlite');
 
-        // Configure tenant database template for testing - use MySQL
+        // Configure tenant database template for testing - use in-memory SQLite
         Config::set('tenancy.database.template_tenant_connection', 'tenant_template');
         Config::set('database.connections.tenant_template', [
-            'driver' => 'mysql',
-            'host' => env('DB_HOST', '127.0.0.1'),
-            'port' => env('DB_PORT', '3306'),
-            'database' => null, // Will be set dynamically
-            'username' => env('DB_USERNAME', 'root'),
-            'password' => env('DB_PASSWORD', ''),
-            'unix_socket' => env('DB_SOCKET', ''),
-            'charset' => env('DB_CHARSET', 'utf8mb4'),
-            'collation' => env('DB_COLLATION', 'utf8mb4_unicode_ci'),
+            'driver' => 'sqlite',
+            'database' => ':memory:',
             'prefix' => '',
-            'prefix_indexes' => true,
-            'strict' => true,
-            'engine' => null,
+            'foreign_key_constraints' => true,
         ]);
 
-        // Configure tenancy to use MySQL databases for testing
-        Config::set('tenancy.database.managers.mysql', [
-            'driver' => 'mysql',
-            'host' => env('DB_HOST', '127.0.0.1'),
-            'port' => env('DB_PORT', '3306'),
-            'database' => null, // Will be set dynamically
-            'username' => env('DB_USERNAME', 'root'),
-            'password' => env('DB_PASSWORD', ''),
-            'unix_socket' => env('DB_SOCKET', ''),
-            'charset' => env('DB_CHARSET', 'utf8mb4'),
-            'collation' => env('DB_COLLATION', 'utf8mb4_unicode_ci'),
+        // Configure tenancy to use in-memory SQLite databases for testing
+        Config::set('tenancy.database.managers.sqlite', [
+            'driver' => 'sqlite',
+            'database' => ':memory:',
             'prefix' => '',
-            'prefix_indexes' => true,
-            'strict' => true,
-            'engine' => null,
+            'foreign_key_constraints' => true,
         ]);
 
         // Disable automatic tenant database creation events
@@ -133,40 +115,13 @@ trait InteractsWithTenancy
      */
     protected function createTenantDatabase(Tenant $tenant): void
     {
-        try {
-            // Create a unique database name for this tenant
-            $databaseName = "gol_2025_testing_tenant_{$tenant->id}";
-
-            // Connect to MySQL to create the tenant database
-            $connection = new \PDO(
-                'mysql:host=' . env('DB_HOST', '127.0.0.1') . ';port=' . env('DB_PORT', '3306'),
-                env('DB_USERNAME', 'root'),
-                env('DB_PASSWORD', ''),
-                [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]
-            );
-
-            // Create the tenant database
-            $connection->exec("CREATE DATABASE IF NOT EXISTS `{$databaseName}` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
-
-            // Configure tenant database connection
-            Config::set("database.connections.tenant_{$tenant->id}", [
-                'driver' => 'mysql',
-                'host' => env('DB_HOST', '127.0.0.1'),
-                'port' => env('DB_PORT', '3306'),
-                'database' => $databaseName,
-                'username' => env('DB_USERNAME', 'root'),
-                'password' => env('DB_PASSWORD', ''),
-                'unix_socket' => env('DB_SOCKET', ''),
-                'charset' => env('DB_CHARSET', 'utf8mb4'),
-                'collation' => env('DB_COLLATION', 'utf8mb4_unicode_ci'),
-                'prefix' => '',
-                'prefix_indexes' => true,
-                'strict' => true,
-                'engine' => null,
-            ]);
-        } catch (\Exception $e) {
-            // Continue if database creation fails
-        }
+        // Configure tenant database connection to use in-memory SQLite
+        Config::set("database.connections.tenant_{$tenant->id}", [
+            'driver' => 'sqlite',
+            'database' => ':memory:',
+            'prefix' => '',
+            'foreign_key_constraints' => true,
+        ]);
     }
 
     /**
@@ -313,24 +268,10 @@ trait InteractsWithTenancy
     protected function deleteTenantDatabase(Tenant $tenant): void
     {
         try {
-            // Get the database name
-            $databaseName = "gol_2025_testing_tenant_{$tenant->id}";
-
-            // Purge the database connection
+            // Purge the in-memory database connection
             DB::purge("tenant_{$tenant->id}");
-
-            // Connect to MySQL to drop the tenant database
-            $connection = new \PDO(
-                'mysql:host=' . env('DB_HOST', '127.0.0.1') . ';port=' . env('DB_PORT', '3306'),
-                env('DB_USERNAME', 'root'),
-                env('DB_PASSWORD', ''),
-                [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]
-            );
-
-            // Drop the tenant database
-            $connection->exec("DROP DATABASE IF EXISTS `{$databaseName}`");
         } catch (\Exception $e) {
-            // Continue if cleanup fails
+            // Continue if connection doesn't exist
         }
 
         // Remove database connection configuration

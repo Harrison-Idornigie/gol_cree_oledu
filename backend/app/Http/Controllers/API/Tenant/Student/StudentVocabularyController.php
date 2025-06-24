@@ -5,8 +5,10 @@ namespace App\Http\Controllers\API\Tenant\Student;
 use App\Http\Controllers\API\BaseAPIController;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 use App\Models\Tenants\VocabularyItem;
+use App\Services\Tenants\Language\VocabularyService;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Exception;
 
 /**
  * Student Vocabulary Controller
@@ -22,11 +24,14 @@ class StudentVocabularyController extends BaseAPIController
 {
     use BelongsToTenant;
 
+    protected VocabularyService $vocabularyService;
+
     /**
      * Constructor - Apply student middleware
      */
-    public function __construct()
+    public function __construct(VocabularyService $vocabularyService)
     {
+        $this->vocabularyService = $vocabularyService;
         // Apply policies - students can view and practice vocabulary
         $this->middleware(function ($request, $next) {
             $this->authorize('viewAny', 'App\Models\Tenants\VocabularyItem');
@@ -44,11 +49,13 @@ class StudentVocabularyController extends BaseAPIController
     {
         $this->authorize('viewAny', VocabularyItem::class);
 
-        // TODO: Implement vocabulary listing
-        // - Available vocabulary for student
-        // - Filter by language, difficulty, unit
-        // - Include learning status and progress
-        return $this->sendResponse([], 'Vocabulary items retrieved successfully.');
+        try {
+            $vocabularyItems = $this->vocabularyService->getFilteredVocabularyItems($request, 'student');
+
+            return $this->sendResponse($vocabularyItems, 'Vocabulary items retrieved successfully.');
+        } catch (Exception $e) {
+            return $this->sendErrorResponse('Failed to retrieve vocabulary items', ['error' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -61,11 +68,15 @@ class StudentVocabularyController extends BaseAPIController
     {
         $this->authorize('viewAny', VocabularyItem::class);
 
-        // TODO: Implement vocabulary review
-        // - Vocabulary items due for review
-        // - Spaced repetition algorithm
-        // - Prioritize by difficulty and retention
-        return $this->sendResponse([], 'Review vocabulary items retrieved successfully.');
+        try {
+            $user = $request->user();
+            $filters = $request->only(['language_id', 'limit']);
+            $reviewItems = $this->vocabularyService->getVocabularyForReview($user, $filters);
+
+            return $this->sendResponse($reviewItems, 'Review vocabulary items retrieved successfully.');
+        } catch (Exception $e) {
+            return $this->sendErrorResponse('Failed to retrieve review items', ['error' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -78,11 +89,15 @@ class StudentVocabularyController extends BaseAPIController
     {
         $this->authorize('viewAny', VocabularyItem::class);
 
-        // TODO: Implement mistake vocabulary
-        // - Vocabulary items with incorrect answers
-        // - Focus on problem areas
-        // - Include mistake patterns and feedback
-        return $this->sendResponse([], 'Mistake vocabulary items retrieved successfully.');
+        try {
+            $user = $request->user();
+            $filters = $request->only(['language_id', 'limit']);
+            $mistakeItems = $this->vocabularyService->getMistakeVocabulary($user, $filters);
+
+            return $this->sendResponse($mistakeItems, 'Mistake vocabulary items retrieved successfully.');
+        } catch (Exception $e) {
+            return $this->sendErrorResponse('Failed to retrieve mistake items', ['error' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -96,11 +111,14 @@ class StudentVocabularyController extends BaseAPIController
     {
         $this->authorize('viewAny', VocabularyItem::class);
 
-        // TODO: Implement unit-specific vocabulary
-        // - All vocabulary items for specific unit
-        // - Include learning progress and mastery
-        // - Show unit completion status
-        return $this->sendResponse([], 'Unit vocabulary retrieved successfully.');
+        try {
+            $user = $request->user();
+            $unitVocabulary = $this->vocabularyService->getVocabularyByUnit($unitId, $user);
+
+            return $this->sendResponse($unitVocabulary, 'Unit vocabulary retrieved successfully.');
+        } catch (Exception $e) {
+            return $this->sendErrorResponse('Failed to retrieve unit vocabulary', ['error' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -114,12 +132,18 @@ class StudentVocabularyController extends BaseAPIController
     {
         $this->authorize('practice', $vocabulary);
 
-        // TODO: Implement translation checking
-        // - Validate student's translation
-        // - Check against accepted answers
-        // - Update learning progress and retention
-        // - Provide feedback and corrections
-        return $this->sendResponse([], 'Translation checked successfully.');
+        $request->validate([
+            'translation' => 'required|string|max:255'
+        ]);
+
+        try {
+            $user = $request->user();
+            $result = $this->vocabularyService->checkTranslation($vocabulary, $request->translation, $user);
+
+            return $this->sendResponse($result, 'Translation checked successfully.');
+        } catch (Exception $e) {
+            return $this->sendErrorResponse('Failed to check translation', ['error' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -132,11 +156,15 @@ class StudentVocabularyController extends BaseAPIController
     {
         $this->authorize('viewAny', VocabularyItem::class);
 
-        // TODO: Implement vocabulary statistics
-        // - Overall vocabulary progress
-        // - Mastery levels and retention rates
-        // - Learning streaks and achievements
-        return $this->sendResponse([], 'Vocabulary statistics retrieved successfully.');
+        try {
+            $user = $request->user();
+            $filters = $request->only(['language_id', 'date_range']);
+            $statistics = $this->vocabularyService->getUserVocabularyStatistics($user, $filters);
+
+            return $this->sendResponse($statistics, 'Vocabulary statistics retrieved successfully.');
+        } catch (Exception $e) {
+            return $this->sendErrorResponse('Failed to retrieve vocabulary statistics', ['error' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -150,10 +178,16 @@ class StudentVocabularyController extends BaseAPIController
     {
         $this->authorize('view', $vocabulary);
 
-        // TODO: Implement vocabulary details
-        // - Validate vocabulary is accessible
-        // - Include translations and examples
-        // - Show learning progress for this item
-        return $this->sendResponse($vocabulary, 'Vocabulary item retrieved successfully.');
+        try {
+            $vocabularyDetails = $this->vocabularyService->getVocabularyItem($vocabulary->id, 'student', ['language', 'lesson', 'unit']);
+            
+            if (!$vocabularyDetails) {
+                return $this->sendErrorResponse('Vocabulary item not found or not available', [], 404);
+            }
+
+            return $this->sendResponse($vocabularyDetails, 'Vocabulary item retrieved successfully.');
+        } catch (Exception $e) {
+            return $this->sendErrorResponse('Failed to retrieve vocabulary item', ['error' => $e->getMessage()], 500);
+        }
     }
 }

@@ -3,10 +3,12 @@
 use App\Http\Controllers\API\Landlord\Auth\CentralLoginController;
 use App\Http\Controllers\API\Landlord\Auth\CentralLogoutController;
 use App\Http\Controllers\API\Landlord\Auth\CentralUserRegisterController;
+use App\Http\Controllers\API\Tenant\Auth\TenantAdminInviteController;
 use App\Http\Controllers\API\Tenant\Auth\TenantForgotPasswordController;
 use App\Http\Controllers\API\Tenant\Auth\TenantLoginController;
 use App\Http\Controllers\API\Tenant\Auth\TenantLogoutController;
 use App\Http\Controllers\API\Tenant\Auth\TenantResetPasswordController;
+use App\Http\Controllers\API\Tenant\Auth\TenantUserRegisterController;
 use App\Http\Controllers\API\Tenant\Auth\TenantVerificationController;
 use App\Http\Controllers\API\Tenant\TenantUserController;
 use Illuminate\Support\Facades\Route;
@@ -30,7 +32,7 @@ Route::group([
     'prefix'     => 'auth',
     'as'         => 'auth.',
 ], function () {
-    
+
     // Tenant authentication routes (require tenant context)
     Route::middleware([\App\Http\Middleware\Tenant\InitializeTenancyByPathOrDomain::class])->group(function () {
         Route::post('tenant-login', [TenantLoginController::class, 'login'])->name('tenant.login');
@@ -40,10 +42,14 @@ Route::group([
         });
     });
 
-   
+
     Route::get('email/verify/{id}/{hash}', [TenantVerificationController::class, 'verify'])
         ->middleware(['signed', 'throttle:6,1'])
         ->name('verification.verify');
+
+    // User registration routes
+    Route::post('register', [TenantUserRegisterController::class, 'register'])
+        ->name('tenant.user.register');
 
     // Password reset routes
     Route::post('password/email', [TenantForgotPasswordController::class, 'sendResetLinkEmail'])
@@ -57,9 +63,9 @@ Route::group([
             ->middleware(['throttle:6,1'])
             ->name('verification.send');
         Route::get('me', [TenantUserController::class, 'me']);
+
+        // Admin invite routes (require admin membership)
+        Route::post('admin-invite', [TenantAdminInviteController::class, 'invite'])
+            ->name('tenant.admin.invite');
     });
-
-  
-
-  
 });

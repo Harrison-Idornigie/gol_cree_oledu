@@ -5,8 +5,10 @@ namespace App\Http\Controllers\API\Tenant\Student;
 use App\Http\Controllers\API\BaseAPIController;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 use App\Models\Tenants\GuideBookEntry;
+use App\Services\Tenants\Course\GuideBookEntryService;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Exception;
 
 /**
  * Student Guide Controller
@@ -22,11 +24,14 @@ class StudentGuideController extends BaseAPIController
 {
     use BelongsToTenant;
 
+    protected GuideBookEntryService $guideBookEntryService;
+
     /**
      * Constructor - Apply student middleware
      */
-    public function __construct()
+    public function __construct(GuideBookEntryService $guideBookEntryService)
     {
+        $this->guideBookEntryService = $guideBookEntryService;
         // Apply policies - students can view guide entries
         $this->authorizeResource(\App\Models\Tenants\GuideBookEntry::class, 'guide');
     }
@@ -41,11 +46,13 @@ class StudentGuideController extends BaseAPIController
     {
         $this->authorize('viewAny', \App\Models\Tenants\GuideBookEntry::class);
 
-        // TODO: Implement guide entries listing
-        // - Available guide entries for student
-        // - Filter by category, language, topic
-        // - Include relevance to current learning
-        return $this->sendResponse([], 'Guide entries retrieved successfully.');
+        try {
+            $guideEntries = $this->guideBookEntryService->getFilteredGuideBookEntries($request, 'student');
+
+            return $this->sendResponse($guideEntries, 'Guide entries retrieved successfully.');
+        } catch (Exception $e) {
+            return $this->sendErrorResponse('Failed to retrieve guide entries', ['error' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -59,10 +66,16 @@ class StudentGuideController extends BaseAPIController
     {
         $this->authorize('view', $guideEntry);
 
-        // TODO: Implement guide entry details
-        // - Validate guide entry is accessible
-        // - Include full content and examples
-        // - Show related learning materials
-        return $this->sendResponse($guideEntry, 'Guide entry retrieved successfully.');
+        try {
+            $guideEntryDetails = $this->guideBookEntryService->getGuideBookEntry($guideEntry->id, 'student', ['language', 'topic', 'lessons']);
+            
+            if (!$guideEntryDetails) {
+                return $this->sendErrorResponse('Guide entry not found or not available', [], 404);
+            }
+
+            return $this->sendResponse($guideEntryDetails, 'Guide entry retrieved successfully.');
+        } catch (Exception $e) {
+            return $this->sendErrorResponse('Failed to retrieve guide entry', ['error' => $e->getMessage()], 500);
+        }
     }
 }

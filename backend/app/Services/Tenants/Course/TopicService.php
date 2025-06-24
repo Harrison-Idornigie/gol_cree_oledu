@@ -309,15 +309,119 @@ class TopicService
     {
         $topic->load(['lessons.exercises']);
 
+        $exercisesCount = 0;
+        foreach ($topic->lessons as $lesson) {
+            $exercisesCount += $lesson->exercises->count();
+        }
+
         return [
             'lessons_count' => $topic->lessons->count(),
-            'exercises_count' => $topic->lessons->sum(function ($lesson) {
-                return $lesson->exercises->count();
-            }),
+            'exercises_count' => $exercisesCount,
             'total_xp' => $topic->xp_reward,
             'status' => $topic->status,
             'completion_rate' => 0, // TODO: Calculate based on user progress
             'average_difficulty' => 0, // TODO: Calculate based on exercises
         ];
+    }
+
+    /**
+     * Get topics for a unit with student-specific information.
+     */
+    public function getTopicsForStudents(int $unitId, User $user): Collection
+    {
+        $topics = Topic::where('unit_id', $unitId)
+            ->where('status', 'published')
+            ->with(['lessons' => function ($query) {
+                $query->where('status', 'published')->orderBy('order');
+            }])
+            ->orderBy('order')
+            ->get();
+
+        return $topics->map(function ($topic) use ($user) {
+            $topicArray = $topic->toArray();
+            $topicArray['user_progress'] = $this->getUserTopicProgress($topic, $user);
+            $topicArray['is_accessible'] = $this->isTopicAccessible($topic, $user);
+            $topicArray['completion_status'] = $this->getTopicCompletionStatus($topic, $user);
+            return (object) $topicArray;
+        });
+    }
+
+    /**
+     * Get user's progress in a topic.
+     */
+    public function getUserTopicProgress(Topic $topic, User $user): array
+    {
+        // This would integrate with actual progress tracking
+        return [
+            'overall_progress' => 0,
+            'lessons_completed' => 0,
+            'lessons_total' => $topic->lessons()->where('status', 'published')->count(),
+            'exercises_completed' => 0,
+            'exercises_total' => $this->getTotalExercisesInTopic($topic),
+            'xp_earned' => 0,
+            'xp_total' => $topic->xp_reward ?? 0,
+            'time_spent_minutes' => 0,
+            'last_activity' => null,
+            'current_lesson' => null,
+            'next_lesson' => null
+        ];
+    }
+
+    /**
+     * Check if topic is accessible to user (sequential learning).
+     */
+    public function isTopicAccessible(Topic $topic, User $user): bool
+    {
+        // If it's the first topic in the unit, it's accessible
+        $previousTopic = Topic::where('unit_id', $topic->unit_id)
+            ->where('order', '<', $topic->order)
+            ->orderBy('order', 'desc')
+            ->first();
+
+        if (!$previousTopic) {
+            return true; // First topic is always accessible
+        }
+
+        // Check if previous topic is completed
+        return $this->isTopicCompleted($previousTopic, $user);
+    }
+
+    /**
+     * Get topic completion status.
+     */
+    public function getTopicCompletionStatus(Topic $topic, User $user): array
+    {
+        $progress = $this->getUserTopicProgress($topic, $user);
+        $isCompleted = $this->isTopicCompleted($topic, $user);
+
+        return [
+            'is_completed' => $isCompleted,
+            'completion_percentage' => $progress['overall_progress'],
+            'completed_at' => $isCompleted ? now() : null, // This would be from actual tracking
+            'certificate_earned' => false,
+            'mastery_level' => 'learning'
+        ];
+    }
+
+    /**
+     * Check if topic is completed by user.
+     */
+    private function isTopicCompleted(Topic $topic, User $user): bool
+    {
+        // This would check actual progress tracking
+        // For now, return false as placeholder
+        return false;
+    }
+
+    /**
+     * Get total number of exercises in a topic.
+     */
+    private function getTotalExercisesInTopic(Topic $topic): int
+    {
+        return $topic->lessons()
+            ->where('status', 'published')
+            ->withCount('exercises')
+            ->get()
+            ->sum('exercises_count');
     }
 }

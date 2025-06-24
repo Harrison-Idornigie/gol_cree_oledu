@@ -2,11 +2,9 @@
 
 use App\Http\Controllers\API\Tenant\Admin\TenantAdminAnalyticsController;
 use App\Http\Controllers\API\Tenant\Admin\TenantAdminAuditController;
-use App\Http\Controllers\API\Tenant\Admin\TenantAdminDashboardController;
 use App\Http\Controllers\API\Tenant\Admin\TenantAdminUserController;
 use App\Http\Controllers\API\Tenant\Admin\TenantAdminRoleController;
 use App\Http\Controllers\API\Tenant\Admin\TenantAdminSettingsController;
-use App\Http\Controllers\API\Tenant\Admin\TenantAdminContentController;
 use Illuminate\Support\Facades\Route;
 
 /**
@@ -20,8 +18,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('tenant-admin')->middleware(['auth:tenant', 'verified-grace', 'permission:admin,tenant-admin'])->group(function () {
 
-    // Dashboard & Analytics
-    Route::get('dashboard', [TenantAdminDashboardController::class, 'index']);
+    // Dashboard & Analytics (consolidated into TenantAdminAnalyticsController)
+    Route::get('dashboard', [TenantAdminAnalyticsController::class, 'getDashboardOverview']);
     Route::get('analytics', [TenantAdminAnalyticsController::class, 'index']);
     Route::get('analytics/users', [TenantAdminAnalyticsController::class, 'userAnalytics']);
     Route::get('analytics/content', [TenantAdminAnalyticsController::class, 'contentAnalytics']);
@@ -70,13 +68,13 @@ Route::prefix('tenant-admin')->middleware(['auth:tenant', 'verified-grace', 'per
         Route::get('summary', [TenantAdminAuditController::class, 'getSummary']);
     });
 
-    // Content Overview (Read-only for tenant admins)
+    // Content Overview (consolidated into TenantAdminAnalyticsController)
     Route::prefix('content')->group(function () {
-        Route::get('overview', [TenantAdminContentController::class, 'contentOverview']);
-        Route::get('learning-paths', [TenantAdminContentController::class, 'getLearningPaths']);
-        Route::get('languages', [TenantAdminContentController::class, 'getLanguages']);
-        Route::get('statistics', [TenantAdminContentController::class, 'getContentStatistics']);
-        Route::get('health-check', [TenantAdminContentController::class, 'contentHealthCheck']);
+        Route::get('overview', [TenantAdminAnalyticsController::class, 'getContentOverview']);
+        Route::get('learning-paths', [TenantAdminAnalyticsController::class, 'getLearningPaths']);
+        Route::get('languages', [TenantAdminAnalyticsController::class, 'getLanguages']);
+        Route::get('statistics', [TenantAdminAnalyticsController::class, 'getContentStatistics']);
+        Route::get('health-check', [TenantAdminAnalyticsController::class, 'performContentHealthCheck']);
     });
 
     // Reports
@@ -87,5 +85,4 @@ Route::prefix('tenant-admin')->middleware(['auth:tenant', 'verified-grace', 'per
         Route::post('export', [TenantAdminAnalyticsController::class, 'exportReport']);
         Route::get('performance', [TenantAdminAnalyticsController::class, 'performanceReport']);
     });
-
 });

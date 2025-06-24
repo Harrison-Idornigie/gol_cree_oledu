@@ -393,4 +393,196 @@ class LanguageManagementService
             ]
         ];
     }
+
+    /**
+     * Get proficiency levels available for a language.
+     */
+    public function getLanguageProficiencyLevels(Language $language): array
+    {
+        // Common proficiency levels with content availability
+        $levels = [
+            'beginner' => [
+                'level' => 'beginner',
+                'name' => 'Beginner (A1)',
+                'description' => 'Basic understanding and simple phrases',
+                'content_count' => 0
+            ],
+            'elementary' => [
+                'level' => 'elementary',
+                'name' => 'Elementary (A2)', 
+                'description' => 'Simple conversations and everyday topics',
+                'content_count' => 0
+            ],
+            'intermediate' => [
+                'level' => 'intermediate',
+                'name' => 'Intermediate (B1/B2)',
+                'description' => 'Complex conversations and detailed texts',
+                'content_count' => 0
+            ],
+            'advanced' => [
+                'level' => 'advanced',
+                'name' => 'Advanced (C1/C2)',
+                'description' => 'Fluent communication and sophisticated content',
+                'content_count' => 0
+            ]
+        ];
+
+        // Count content available per level (this would be expanded based on actual content)
+        foreach ($levels as $level => &$data) {
+            $data['content_count'] = $this->getContentCountForLevel($language, $level);
+        }
+
+        return array_values($levels);
+    }
+
+    /**
+     * Get language content overview for students.
+     */
+    public function getLanguageContentOverview(Language $language): array
+    {
+        return [
+            'learning_paths' => $language->learningPaths()
+                ->where('status', 'published')
+                ->count(),
+            'total_lessons' => $language->lessons()
+                ->where('status', 'published')
+                ->count(),
+            'vocabulary_words' => $language->vocabularyWords()
+                ->where('status', 'published')
+                ->count(),
+            'exercises' => $language->exercises()
+                ->where('status', 'published')
+                ->count(),
+            'topics_covered' => $language->topics()
+                ->where('status', 'published')
+                ->count(),
+            'estimated_hours' => $this->calculateEstimatedLearningHours($language),
+            'difficulty_range' => $this->getLanguageDifficultyRange($language)
+        ];
+    }
+
+    /**
+     * Get user's progress summary for a language.
+     */
+    public function getUserLanguageProgress(Language $language, User $user): array
+    {
+        // This would integrate with actual progress tracking models
+        return [
+            'overall_progress' => 0,
+            'proficiency_level' => 'beginner',
+            'lessons_completed' => 0,
+            'exercises_completed' => 0,
+            'vocabulary_learned' => 0,
+            'current_streak' => 0,
+            'total_time_minutes' => 0,
+            'achievements_earned' => 0,
+            'last_activity' => null,
+            'next_recommended_content' => null,
+            'weakest_skills' => [],
+            'strongest_skills' => []
+        ];
+    }
+
+    /**
+     * Get language dashboard data for a student.
+     */
+    public function getLanguageDashboard(Language $language, User $user): array
+    {
+        $progress = $this->getUserLanguageProgress($language, $user);
+        $overview = $this->getLanguageContentOverview($language);
+
+        return [
+            'language' => $language,
+            'progress' => $progress,
+            'content_overview' => $overview,
+            'recent_activity' => $this->getRecentLanguageActivity($language, $user),
+            'upcoming_content' => $this->getUpcomingContent($language, $user),
+            'recommended_actions' => $this->getRecommendedActions($language, $user),
+            'study_streak' => $this->getStudyStreak($language, $user)
+        ];
+    }
+
+    /**
+     * Helper: Get content count for a proficiency level.
+     */
+    private function getContentCountForLevel(Language $language, string $level): int
+    {
+        // This would be expanded based on actual content categorization
+        return 0;
+    }
+
+    /**
+     * Helper: Calculate estimated learning hours for a language.
+     */
+    private function calculateEstimatedLearningHours(Language $language): int
+    {
+        // Basic calculation based on content volume
+        $lessonCount = $language->lessons()->where('status', 'published')->count();
+        $exerciseCount = $language->exercises()->where('status', 'published')->count();
+        
+        // Rough estimate: 30 minutes per lesson, 15 minutes per exercise
+        return ($lessonCount * 0.5) + ($exerciseCount * 0.25);
+    }
+
+    /**
+     * Helper: Get difficulty range for a language.
+     */
+    private function getLanguageDifficultyRange(Language $language): array
+    {
+        return [
+            'min_level' => 'beginner',
+            'max_level' => 'advanced',
+            'primary_level' => 'intermediate'
+        ];
+    }
+
+    /**
+     * Helper: Get recent activity for language.
+     */
+    private function getRecentLanguageActivity(Language $language, User $user): array
+    {
+        return [
+            'last_lesson' => null,
+            'last_exercise' => null,
+            'recent_achievements' => [],
+            'activity_count_7_days' => 0
+        ];
+    }
+
+    /**
+     * Helper: Get upcoming content recommendations.
+     */
+    private function getUpcomingContent(Language $language, User $user): array
+    {
+        return [
+            'next_lesson' => null,
+            'recommended_exercises' => [],
+            'suggested_vocabulary' => []
+        ];
+    }
+
+    /**
+     * Helper: Get recommended actions for user.
+     */
+    private function getRecommendedActions(Language $language, User $user): array
+    {
+        return [
+            'priority_action' => 'start_learning_path',
+            'suggested_goals' => ['practice_daily', 'complete_beginner_path'],
+            'skill_gaps' => []
+        ];
+    }
+
+    /**
+     * Helper: Get study streak information.
+     */
+    private function getStudyStreak(Language $language, User $user): array
+    {
+        return [
+            'current_streak' => 0,
+            'longest_streak' => 0,
+            'streak_goal' => 7,
+            'last_study_date' => null
+        ];
+    }
 }

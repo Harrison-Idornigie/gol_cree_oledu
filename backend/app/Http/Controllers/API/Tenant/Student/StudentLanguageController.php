@@ -48,6 +48,8 @@ class StudentLanguageController extends BaseAPIController
      */
     public function index(Request $request): JsonResponse
     {
+        $this->authorize('viewAny', Language::class);
+
         $languages = $this->languageService->getFilteredLanguages($request, 'student');
 
         return $this->sendResponse($languages, 'Languages retrieved successfully.');
@@ -61,6 +63,8 @@ class StudentLanguageController extends BaseAPIController
      */
     public function withLearningPaths(Request $request): JsonResponse
     {
+        $this->authorize('viewAny', Language::class);
+
         // Create a request for learning paths grouped by language
         $filteredRequest = $request->duplicate();
         $filteredRequest->merge(['with_language' => true]);
@@ -79,11 +83,23 @@ class StudentLanguageController extends BaseAPIController
      */
     public function show(Request $request, Language $language): JsonResponse
     {
-        // TODO: Implement language details
-        // - Validate language is published and in tenant
-        // - Include language information
-        // - Show available content overview
-        return $this->sendResponse($language, 'Language retrieved successfully.');
+        $this->authorize('view', $language);
+
+        try {
+            $languageDetails = $this->languageService->getLanguage($language->id, 'student', ['learningPaths']);
+            
+            if (!$languageDetails) {
+                return $this->sendErrorResponse('Language not found or not available', [], 404);
+            }
+
+            $contentOverview = $this->languageService->getLanguageContentOverview($languageDetails);
+            
+            $result = array_merge($languageDetails->toArray(), ['content_overview' => $contentOverview]);
+
+            return $this->sendResponse($result, 'Language retrieved successfully.');
+        } catch (\Exception $e) {
+            return $this->sendErrorResponse('Failed to retrieve language details', ['error' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -95,11 +111,24 @@ class StudentLanguageController extends BaseAPIController
      */
     public function learningPaths(Request $request, Language $language): JsonResponse
     {
-        // TODO: Implement language learning paths
-        // - All published learning paths for language
-        // - Include difficulty levels
-        // - Show enrollment and progress status
-        return $this->sendResponse([], 'Learning paths retrieved successfully.');
+        $this->authorize('view', $language);
+
+        try {
+            $learningPaths = $this->learningPathService->getLearningPathsForLanguage($language->id, 'student');
+            
+            // Add enrollment status for current user
+            $user = $request->user();
+            $enrichedPaths = $learningPaths->map(function ($path) use ($user) {
+                $pathArray = $path->toArray();
+                $pathArray['user_progress'] = $this->learningPathService->getUserProgress($path, $user);
+                $pathArray['can_access'] = $this->learningPathService->canUserAccess($path, $user);
+                return $pathArray;
+            });
+
+            return $this->sendResponse($enrichedPaths, 'Learning paths retrieved successfully.');
+        } catch (\Exception $e) {
+            return $this->sendErrorResponse('Failed to retrieve learning paths', ['error' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -111,11 +140,15 @@ class StudentLanguageController extends BaseAPIController
      */
     public function proficiencyLevels(Request $request, Language $language): JsonResponse
     {
-        // TODO: Implement proficiency levels
-        // - Available proficiency levels
-        // - Content available per level
-        // - Student's current level
-        return $this->sendResponse([], 'Proficiency levels retrieved successfully.');
+        $this->authorize('view', $language);
+
+        try {
+            $proficiencyLevels = $this->languageService->getLanguageProficiencyLevels($language);
+
+            return $this->sendResponse($proficiencyLevels, 'Proficiency levels retrieved successfully.');
+        } catch (\Exception $e) {
+            return $this->sendErrorResponse('Failed to retrieve proficiency levels', ['error' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -127,11 +160,16 @@ class StudentLanguageController extends BaseAPIController
      */
     public function userProgress(Request $request, Language $language): JsonResponse
     {
-        // TODO: Implement user progress
-        // - Student's progress in the language
-        // - Completed content statistics
-        // - Current learning path position
-        return $this->sendResponse([], 'User progress retrieved successfully.');
+        $this->authorize('view', $language);
+
+        try {
+            $user = $request->user();
+            $progress = $this->languageService->getUserLanguageProgress($language, $user);
+
+            return $this->sendResponse($progress, 'User progress retrieved successfully.');
+        } catch (\Exception $e) {
+            return $this->sendErrorResponse('Failed to retrieve user progress', ['error' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -143,10 +181,15 @@ class StudentLanguageController extends BaseAPIController
      */
     public function dashboard(Request $request, Language $language): JsonResponse
     {
-        // TODO: Implement language dashboard
-        // - Overview of student's progress
-        // - Next recommended content
-        // - Recent activity and achievements
-        return $this->sendResponse([], 'Language dashboard retrieved successfully.');
+        $this->authorize('view', $language);
+
+        try {
+            $user = $request->user();
+            $dashboard = $this->languageService->getLanguageDashboard($language, $user);
+
+            return $this->sendResponse($dashboard, 'Language dashboard retrieved successfully.');
+        } catch (\Exception $e) {
+            return $this->sendErrorResponse('Failed to retrieve language dashboard', ['error' => $e->getMessage()], 500);
+        }
     }
 }

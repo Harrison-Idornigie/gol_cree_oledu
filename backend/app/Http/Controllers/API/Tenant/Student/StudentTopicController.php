@@ -6,8 +6,10 @@ use App\Http\Controllers\API\BaseAPIController;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 use App\Models\Tenants\Topic;
 use App\Models\Tenants\Unit;
+use App\Services\Tenants\Course\TopicService;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Exception;
 
 /**
  * Student Topic Controller
@@ -23,11 +25,14 @@ class StudentTopicController extends BaseAPIController
 {
     use BelongsToTenant;
 
+    protected TopicService $topicService;
+
     /**
      * Constructor - Apply student middleware
      */
-    public function __construct()
+    public function __construct(TopicService $topicService)
     {
+        $this->topicService = $topicService;
         // Apply policies - students can view topics
         $this->authorizeResource(Topic::class, 'topic');
     }
@@ -43,11 +48,14 @@ class StudentTopicController extends BaseAPIController
     {
         $this->authorize('viewAny', Topic::class);
 
-        // TODO: Implement topics listing
-        // - All topics in the unit
-        // - Show accessibility based on sequential learning
-        // - Include progress and completion status
-        return $this->sendResponse([], 'Topics retrieved successfully.');
+        try {
+            $user = $request->user();
+            $topics = $this->topicService->getTopicsForStudents($unit->id, $user);
+
+            return $this->sendResponse($topics, 'Topics retrieved successfully.');
+        } catch (Exception $e) {
+            return $this->sendErrorResponse('Failed to retrieve topics', ['error' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -61,11 +69,26 @@ class StudentTopicController extends BaseAPIController
     {
         $this->authorize('view', $topic);
 
-        // TODO: Implement topic details
-        // - Validate topic is accessible (sequential learning)
-        // - Include lessons and exercises structure
-        // - Show progress and next steps
-        return $this->sendResponse($topic, 'Topic retrieved successfully.');
+        try {
+            $user = $request->user();
+            
+            // Check if topic is accessible to the student
+            if (!$this->topicService->isTopicAccessible($topic, $user)) {
+                return $this->sendErrorResponse('Topic not accessible. Complete previous topics first.', [], 403);
+            }
+
+            $topicDetails = $topic->load(['lessons' => function ($query) {
+                $query->where('status', 'published')->orderBy('order');
+            }, 'unit', 'language']);
+
+            $topicArray = $topicDetails->toArray();
+            $topicArray['user_progress'] = $this->topicService->getUserTopicProgress($topic, $user);
+            $topicArray['completion_status'] = $this->topicService->getTopicCompletionStatus($topic, $user);
+
+            return $this->sendResponse($topicArray, 'Topic retrieved successfully.');
+        } catch (Exception $e) {
+            return $this->sendErrorResponse('Failed to retrieve topic', ['error' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -79,10 +102,13 @@ class StudentTopicController extends BaseAPIController
     {
         $this->authorize('view', $topic);
 
-        // TODO: Implement topic progress
-        // - Student's progress in the topic
-        // - Completed lessons and exercises
-        // - Next recommended content
-        return $this->sendResponse([], 'Topic progress retrieved successfully.');
+        try {
+            $user = $request->user();
+            $progress = $this->topicService->getUserTopicProgress($topic, $user);
+
+            return $this->sendResponse($progress, 'Topic progress retrieved successfully.');
+        } catch (Exception $e) {
+            return $this->sendErrorResponse('Failed to retrieve topic progress', ['error' => $e->getMessage()], 500);
+        }
     }
 }

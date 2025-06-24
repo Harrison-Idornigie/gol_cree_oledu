@@ -3,8 +3,10 @@
 namespace App\Services\Tenants\Exercise;
 
 use App\Models\Tenants\Exercise;
+use App\Models\Tenants\ExerciseAttempt;
 use App\Models\Tenants\Lesson;
 use App\Models\Tenants\User;
+use App\Models\Tenants\UserProgress;
 use App\Models\Tenants\AuditLog;
 use App\Services\Tenants\Exercise\ExerciseTypeService;
 use Illuminate\Database\Eloquent\Collection;
@@ -388,5 +390,286 @@ class ExerciseService
         Exercise::where('lesson_id', $lessonId)
             ->where('order', '>', $deletedOrder)
             ->decrement('order');
+    }
+
+    // === STUDENT-SPECIFIC METHODS ===
+
+    /**
+     * Submit and check student answer for an exercise.
+     */
+    public function checkStudentAnswer(Exercise $exercise, User $user, array $answerData): array
+    {
+        // Start a database transaction for atomic operation
+        return DB::transaction(function () use ($exercise, $user, $answerData) {
+            // Get attempt number
+            $attemptNumber = $this->getNextAttemptNumber($exercise, $user);
+            
+            // Validate answer based on exercise type
+            $result = $this->validateAnswer($exercise, $answerData);
+            
+            // Record the attempt
+            $attempt = ExerciseAttempt::create([
+                'exercise_id' => $exercise->id,
+                'user_id' => $user->id,
+                'user_answer' => $answerData,
+                'is_correct' => $result['is_correct'],
+                'score' => $result['score'],
+                'passed' => $result['passed'],
+                'feedback' => $result['feedback'],
+                'time_taken_seconds' => $answerData['time_taken'] ?? 0,
+                'attempt_number' => $attemptNumber,
+            ]);
+
+            // Update user progress if exercise is completed
+            if ($result['passed']) {
+                $this->updateLessonProgress($exercise, $user);
+            }
+
+            return [
+                'attempt_id' => $attempt->id,
+                'is_correct' => $result['is_correct'],
+                'score' => $result['score'],
+                'passed' => $result['passed'],
+                'feedback' => $result['feedback'],
+                'attempt_number' => $attemptNumber,
+                'exercise_completed' => $result['passed'],
+                'next_action' => $this->getNextAction($exercise, $user, $result['passed'])
+            ];
+        });
+    }
+
+    /**
+     * Get exercise statistics for a student.
+     */
+    public function getStudentStatistics(Exercise $exercise, User $user): array
+    {
+        $attempts = ExerciseAttempt::where('exercise_id', $exercise->id)
+            ->where('user_id', $user->id)
+            ->orderBy('created_at')
+            ->get();
+
+        if ($attempts->isEmpty()) {
+            return [
+                'total_attempts' => 0,
+                'best_score' => 0,
+                'average_score' => 0,
+                'completed' => false,
+                'total_time_spent' => 0,
+                'improvement_trend' => 'no_data',
+                'last_attempt_at' => null
+            ];
+        }
+
+        $bestScore = $attempts->max('score');
+        $averageScore = $attempts->avg('score');
+        $totalTime = $attempts->sum('time_taken_seconds');
+        $completed = $attempts->where('passed', true)->isNotEmpty();
+        
+        return [
+            'total_attempts' => $attempts->count(),
+            'best_score' => round($bestScore, 2),
+            'average_score' => round($averageScore, 2),
+            'completed' => $completed,
+            'total_time_spent' => $totalTime,
+            'improvement_trend' => $this->calculateImprovementTrend($attempts),
+            'last_attempt_at' => $attempts->last()->created_at,
+            'attempts_history' => $attempts->map(function ($attempt) {
+                return [
+                    'id' => $attempt->id,
+                    'score' => $attempt->score,
+                    'passed' => $attempt->passed,
+                    'time_taken' => $attempt->time_taken_seconds,
+                    'created_at' => $attempt->created_at
+                ];
+            })
+        ];
+    }
+
+    /**
+     * Get exercises filtered by type for students.
+     */
+    public function getExercisesByType(string $type, User $user, array $filters = []): Collection
+    {
+        $query = Exercise::where('type', $type)
+            ->where('status', 'active')
+            ->with(['lesson.topic.unit', 'attempts' => function ($q) use ($user) {
+                $q->where('user_id', $user->id);
+            }]);
+
+        // Apply additional filters
+        if (!empty($filters['lesson_id'])) {
+            $query->where('lesson_id', $filters['lesson_id']);
+        }
+
+        if (!empty($filters['difficulty_level'])) {
+            $query->where('difficulty_level', $filters['difficulty_level']);
+        }
+
+        return $query->orderBy('order')->get()->map(function ($exercise) use ($user) {
+            $exerciseData = $exercise->toArray();
+            $exerciseData['student_progress'] = $this->getStudentStatistics($exercise, $user);
+            return (object) $exerciseData;
+        });
+    }
+
+    /**
+     * Get exercises filtered by language for students.
+     */
+    public function getExercisesByLanguage(string $languageCode, User $user, array $filters = []): Collection
+    {
+        $query = Exercise::whereHas('lesson.topic.unit.learningPath.language', function ($q) use ($languageCode) {
+                $q->where('code', $languageCode);
+            })
+            ->where('status', 'active')
+            ->with(['lesson.topic.unit.learningPath.language', 'attempts' => function ($q) use ($user) {
+                $q->where('user_id', $user->id);
+            }]);
+
+        // Apply additional filters
+        if (!empty($filters['type'])) {
+            $query->where('type', $filters['type']);
+        }
+
+        if (!empty($filters['difficulty_level'])) {
+            $query->where('difficulty_level', $filters['difficulty_level']);
+        }
+
+        return $query->orderBy('order')->get()->map(function ($exercise) use ($user) {
+            $exerciseData = $exercise->toArray();
+            $exerciseData['student_progress'] = $this->getStudentStatistics($exercise, $user);
+            return (object) $exerciseData;
+        });
+    }
+
+    /**
+     * Get next attempt number for user and exercise.
+     */
+    private function getNextAttemptNumber(Exercise $exercise, User $user): int
+    {
+        return ExerciseAttempt::where('exercise_id', $exercise->id)
+            ->where('user_id', $user->id)
+            ->max('attempt_number') + 1;
+    }
+
+    /**
+     * Validate answer based on exercise type.
+     */
+    private function validateAnswer(Exercise $exercise, array $answerData): array
+    {
+        // Basic validation - this should be enhanced with type-specific logic
+        $userAnswer = $answerData['answer'] ?? '';
+        $correctAnswer = $exercise->correct_answer ?? '';
+        
+        // Simple comparison for now - should be enhanced per exercise type
+        $isCorrect = strtolower(trim($userAnswer)) === strtolower(trim($correctAnswer));
+        $score = $isCorrect ? 100 : 0;
+        
+        return [
+            'is_correct' => $isCorrect,
+            'score' => $score,
+            'passed' => $score >= 70, // 70% passing grade
+            'feedback' => $this->generateFeedback($isCorrect, $exercise)
+        ];
+    }
+
+    /**
+     * Generate feedback for student answer.
+     */
+    private function generateFeedback(bool $isCorrect, Exercise $exercise): array
+    {
+        if ($isCorrect) {
+            return [
+                'type' => 'success',
+                'message' => 'Correct! Well done.',
+                'explanation' => null
+            ];
+        } else {
+            return [
+                'type' => 'error',
+                'message' => 'Not quite right. Try again!',
+                'explanation' => $exercise->explanation ?? 'Review the lesson material and try again.'
+            ];
+        }
+    }
+
+    /**
+     * Update lesson progress when exercise is completed.
+     */
+    private function updateLessonProgress(Exercise $exercise, User $user): void
+    {
+        // Check if all exercises in lesson are completed
+        $lesson = $exercise->lesson;
+        $totalExercises = $lesson->exercises()->count();
+        $completedExercises = $lesson->exercises()
+            ->whereHas('attempts', function ($q) use ($user) {
+                $q->where('user_id', $user->id)->where('passed', true);
+            })->count();
+
+        // Update lesson progress
+        UserProgress::updateOrCreate(
+            [
+                'user_id' => $user->id,
+                'trackable_type' => Lesson::class,
+                'trackable_id' => $lesson->id,
+            ],
+            [
+                'status' => $completedExercises === $totalExercises 
+                    ? UserProgress::STATUS_COMPLETED 
+                    : UserProgress::STATUS_IN_PROGRESS,
+                'completed_at' => $completedExercises === $totalExercises ? now() : null,
+                'meta_data' => [
+                    'exercises_completed' => $completedExercises,
+                    'exercises_total' => $totalExercises,
+                    'completion_percentage' => ($completedExercises / $totalExercises) * 100
+                ]
+            ]
+        );
+    }
+
+    /**
+     * Get next recommended action for student.
+     */
+    private function getNextAction(Exercise $exercise, User $user, bool $exerciseCompleted): string
+    {
+        if ($exerciseCompleted) {
+            // Check if there's a next exercise in the lesson
+            $nextExercise = Exercise::where('lesson_id', $exercise->lesson_id)
+                ->where('order', '>', $exercise->order)
+                ->orderBy('order')
+                ->first();
+                
+            return $nextExercise ? 'next_exercise' : 'lesson_complete';
+        }
+        
+        return 'retry_exercise';
+    }
+
+    /**
+     * Calculate improvement trend from attempts.
+     */
+    private function calculateImprovementTrend(Collection $attempts): string
+    {
+        if ($attempts->count() < 2) {
+            return 'insufficient_data';
+        }
+
+        $recentAttempts = $attempts->take(-3); // Last 3 attempts
+        $scores = $recentAttempts->pluck('score')->toArray();
+        
+        if (count($scores) < 2) {
+            return 'insufficient_data';
+        }
+
+        $firstScore = $scores[0];
+        $lastScore = end($scores);
+        $improvement = $lastScore - $firstScore;
+
+        if ($improvement > 10) {
+            return 'improving';
+        } elseif ($improvement < -10) {
+            return 'declining';
+        } else {
+            return 'stable';
+        }
     }
 }
