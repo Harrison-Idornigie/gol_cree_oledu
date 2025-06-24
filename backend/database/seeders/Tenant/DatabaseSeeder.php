@@ -1,4 +1,5 @@
 <?php
+
 namespace Database\Seeders\Tenant;
 
 use App\Models\Tenants\User;
@@ -23,10 +24,16 @@ class DatabaseSeeder extends Seeder
 
         // Run other seeders
         $this->call([
+            // Core language setup
             LanguageSeeder::class,
+            LanguagePairSeeder::class, // Create language pairs for templates
             WordSeeder::class, // Add vocabulary words
             LearningPathSeeder::class,
             UserLanguageSeeder::class,
+
+            // Template seeders (must come after language setup)
+            CurriculumTemplateSeeder::class,
+            ContentTemplateSeeder::class,
 
             // Exercise seeders
             FillInBlankExerciseSeeder::class,

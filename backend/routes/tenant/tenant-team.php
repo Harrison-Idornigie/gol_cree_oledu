@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\Tenant\Team\TeamContentController;
 use App\Http\Controllers\API\Tenant\Team\TeamContentScaffoldingController;
+use App\Http\Controllers\API\Tenant\Team\TeamContentTemplateController;
 use App\Http\Controllers\API\Tenant\Team\TeamCurriculumTemplateController;
 use App\Http\Controllers\API\Tenant\Team\TeamExerciseController;
 use App\Http\Controllers\API\Tenant\Team\TeamGamificationController;
@@ -36,11 +37,14 @@ Route::prefix('team')->middleware(['auth:tenant', 'verified-grace'])->group(func
         Route::get('{language}', [TeamLanguageController::class, 'show']);
         Route::put('{language}', [TeamLanguageController::class, 'update']);
         Route::patch('{language}/status', [TeamLanguageController::class, 'updateStatus']);
+    });
 
-        // Language Pairs
-        Route::post('pairs', [TeamLanguageController::class, 'createPair']);
-        Route::delete('pairs/{source}/{target}', [TeamLanguageController::class, 'deletePair']);
-        Route::patch('pairs/{source}/{target}/status', [TeamLanguageController::class, 'updatePairStatus']);
+    // Language Pair Management
+    Route::prefix('language-pairs')->group(function () {
+        Route::get('/', [TeamLanguageController::class, 'getPairs']);
+        Route::post('/', [TeamLanguageController::class, 'createPair']);
+        Route::delete('{source}/{target}', [TeamLanguageController::class, 'deletePair']);
+        Route::patch('{source}/{target}/status', [TeamLanguageController::class, 'updatePairStatus']);
     });
 
     // Word Management
@@ -164,6 +168,21 @@ Route::prefix('team')->middleware(['auth:tenant', 'verified-grace'])->group(func
         Route::post('{template}/instantiate', [TeamCurriculumTemplateController::class, 'instantiate']);
         Route::post('{template}/customize', [TeamCurriculumTemplateController::class, 'customize']);
         Route::post('{template}/validate', [TeamCurriculumTemplateController::class, 'validate']);
+    });
+
+    // Content Template Management
+    Route::prefix('content-templates')->group(function () {
+        Route::get('/', [TeamContentTemplateController::class, 'index']);
+        Route::post('/', [TeamContentTemplateController::class, 'store']);
+        Route::get('recommendations', [TeamContentTemplateController::class, 'recommendations']);
+        Route::get('by-type/{type}', [TeamContentTemplateController::class, 'byType']);
+        Route::get('{template}', [TeamContentTemplateController::class, 'show']);
+        Route::put('{template}', [TeamContentTemplateController::class, 'update']);
+        Route::delete('{template}', [TeamContentTemplateController::class, 'destroy']);
+        Route::get('{template}/preview', [TeamContentTemplateController::class, 'preview']);
+        Route::post('{template}/clone', [TeamContentTemplateController::class, 'clone']);
+        Route::get('{template}/usage-stats', [TeamContentTemplateController::class, 'usageStats']);
+        Route::post('{template}/instantiate', [TeamContentTemplateController::class, 'instantiate']);
     });
 
     // Content Scaffolding (Automated Content Generation)
