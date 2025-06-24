@@ -30,7 +30,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'membership',
         'interface_language',
         'google_id',
-        'avatar',
+        'avatar_url',
         'total_points',
         'tenant_id',
         'central_user_id',

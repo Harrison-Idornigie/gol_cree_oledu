@@ -29,6 +29,11 @@ trait InteractsWithTenancy
     protected array $createdTenants = [];
 
     /**
+     * Array to track temporary database files for cleanup
+     */
+    protected array $tempDbFiles = [];
+
+    /**
      * Original database configuration
      */
     protected array $originalDatabaseConfig = [];
@@ -44,25 +49,50 @@ trait InteractsWithTenancy
         // Use SQLite for testing with proper configuration to avoid VACUUM issues
         Config::set('database.default', 'sqlite');
 
-        // Configure tenant database template for testing - use in-memory SQLite
+        // Set up central database for testing (needed for tenant lookup)
+        $this->setupCentralDatabase();
+
+        // Configure tenant database template for testing - use file-based SQLite
         Config::set('tenancy.database.template_tenant_connection', 'tenant_template');
         Config::set('database.connections.tenant_template', [
             'driver' => 'sqlite',
-            'database' => ':memory:',
+            'database' => database_path('testing/tenant_template.sqlite'),
             'prefix' => '',
             'foreign_key_constraints' => true,
         ]);
 
-        // Configure tenancy to use in-memory SQLite databases for testing
+        // Configure tenancy database manager for file-based SQLite
         Config::set('tenancy.database.managers.sqlite', [
             'driver' => 'sqlite',
-            'database' => ':memory:',
+            'database' => database_path('testing/tenant_{tenant_id}.sqlite'),
             'prefix' => '',
             'foreign_key_constraints' => true,
         ]);
 
         // Disable automatic tenant database creation events to avoid conflicts
         Config::set('tenancy.features', []);
+
+        // Ensure testing directory exists
+        $this->ensureTestingDirectoryExists();
+
+        // Run landlord migrations to ensure central database tables exist
+        $this->runLandlordMigrations();
+    }
+
+    /**
+     * Run landlord migrations for testing
+     */
+    protected function runLandlordMigrations(): void
+    {
+        try {
+            // Run landlord migrations to create central database tables
+            Artisan::call('migrate', [
+                '--path' => 'database/migrations/landlord',
+                '--force' => true,
+            ]);
+        } catch (\Exception $e) {
+            // If migrations fail, continue - they might already be run
+        }
     }
 
     /**
@@ -75,8 +105,16 @@ trait InteractsWithTenancy
             $this->deleteTenantDatabase($tenant);
         }
 
-        // Clear created tenants array
+        // Clean up temporary database files
+        foreach ($this->tempDbFiles as $tempFile) {
+            if (file_exists($tempFile)) {
+                unlink($tempFile);
+            }
+        }
+
+        // Clear arrays
         $this->createdTenants = [];
+        $this->tempDbFiles = [];
 
         // Restore original database configuration
         Config::set('database.connections', $this->originalDatabaseConfig);
@@ -97,18 +135,14 @@ trait InteractsWithTenancy
             'status' => 'active',
         ];
 
-        // Create tenant record in central database using direct DB insert to avoid factory issues
-        try {
-            $tenant = new Tenant($defaultAttributes);
-            $tenant->save();
-        } catch (\Exception $e) {
-            // If model creation fails, try direct database insert
-            DB::table('tenants')->insert(array_merge($defaultAttributes, [
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]));
-            $tenant = Tenant::find($defaultAttributes['id']);
-        }
+        // Create tenant record in central database using direct DB insert to avoid model issues
+        DB::table('tenants')->insert(array_merge($defaultAttributes, [
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]));
+
+        // Retrieve the created tenant
+        $tenant = Tenant::find($defaultAttributes['id']);
 
         // Track created tenant for cleanup
         $this->createdTenants[] = $tenant;
@@ -121,17 +155,69 @@ trait InteractsWithTenancy
     }
 
     /**
-     * Create tenant database for testing (MySQL)
+     * Setup central database for testing
      */
-    protected function createTenantDatabase(Tenant $tenant): void
+    protected function setupCentralDatabase(): void
     {
-        // Configure tenant database connection to use in-memory SQLite
-        Config::set("database.connections.tenant_{$tenant->id}", [
+        // Use a file-based database for central database
+        $centralDbPath = database_path('testing_central.sqlite');
+
+        // Create the database file if it doesn't exist
+        if (!file_exists($centralDbPath)) {
+            touch($centralDbPath);
+        }
+
+        // Configure the default SQLite connection to use the file
+        Config::set('database.connections.sqlite', [
             'driver' => 'sqlite',
-            'database' => ':memory:',
+            'database' => $centralDbPath,
             'prefix' => '',
             'foreign_key_constraints' => true,
         ]);
+
+        // Store the file path for cleanup
+        $this->tempDbFiles[] = $centralDbPath;
+
+        // Run central database migrations (landlord migrations)
+        $exitCode = Artisan::call('migrate', [
+            '--database' => 'sqlite',
+            '--path' => 'database/migrations/landlord',
+            '--force' => true,
+        ]);
+
+        if ($exitCode !== 0) {
+            throw new \Exception("Central database migrations failed with exit code: {$exitCode}");
+        }
+
+        // Verify that the tenants table was created
+        if (!DB::connection('sqlite')->getSchemaBuilder()->hasTable('tenants')) {
+            throw new \Exception("Tenants table was not created in central database");
+        }
+    }
+
+    /**
+     * Create tenant database for testing (SQLite)
+     */
+    protected function createTenantDatabase(Tenant $tenant): void
+    {
+        // Use a file-based database in the testing directory
+        $tenantDbPath = database_path("testing/tenant_{$tenant->id}.sqlite");
+
+        // Create the database file if it doesn't exist
+        if (!file_exists($tenantDbPath)) {
+            touch($tenantDbPath);
+        }
+
+        // Configure tenant database connection to use file-based SQLite
+        Config::set("database.connections.tenant_{$tenant->id}", [
+            'driver' => 'sqlite',
+            'database' => $tenantDbPath,
+            'prefix' => '',
+            'foreign_key_constraints' => true,
+        ]);
+
+        // Store the file path for cleanup
+        $this->tempDbFiles[] = $tenantDbPath;
     }
 
     /**
@@ -156,26 +242,36 @@ trait InteractsWithTenancy
                 // Continue if we can't check
             }
 
-            // Try to run tenant-specific migrations first
-            try {
-                if (!$hasTable) {
-                    Artisan::call('migrate:fresh', [
+            // Run tenant migrations (avoid VACUUM issues with migrate instead of migrate:fresh)
+            if (!$hasTable) {
+                // First try tenant-specific migrations
+                $migrationPath = 'database/migrations/tenants';
+                if (is_dir(base_path($migrationPath))) {
+                    $exitCode = Artisan::call('migrate', [
                         '--database' => "tenant_{$tenant->id}",
-                        '--path' => 'database/migrations/tenant',
+                        '--path' => $migrationPath,
                         '--force' => true,
                     ]);
-                }
-            } catch (\Exception $e) {
-                // If tenant migrations don't exist, run regular migrations
-                try {
-                    if (!$hasTable) {
-                        Artisan::call('migrate:fresh', [
-                            '--database' => "tenant_{$tenant->id}",
-                            '--force' => true,
-                        ]);
+
+                    // Check if migrations actually ran
+                    if ($exitCode !== 0) {
+                        throw new \Exception("Tenant migrations failed with exit code: {$exitCode}");
                     }
-                } catch (\Exception $e2) {
-                    // Continue if migrations fail
+                } else {
+                    // Fallback to regular migrations if tenant-specific don't exist
+                    $exitCode = Artisan::call('migrate', [
+                        '--database' => "tenant_{$tenant->id}",
+                        '--force' => true,
+                    ]);
+
+                    if ($exitCode !== 0) {
+                        throw new \Exception("Tenant migrations failed with exit code: {$exitCode}");
+                    }
+                }
+
+                // Verify that the users table was created
+                if (!DB::getSchemaBuilder()->hasTable('users')) {
+                    throw new \Exception("Users table was not created in tenant database");
                 }
             }
 

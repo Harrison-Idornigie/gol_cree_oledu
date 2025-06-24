@@ -60,7 +60,7 @@ class TeamAudioUploadControllerTest extends TestCase
         return $this->runInTenantContext($this->tenant, function () {
             return User::factory()->create([
                 'email' => 'team@test.com',
-                'membership_type' => 'team',
+                'membership' => 'team',
                 'email_verified_at' => now(),
             ]);
         });
@@ -71,7 +71,7 @@ class TeamAudioUploadControllerTest extends TestCase
         return $this->runInTenantContext($this->tenant, function () {
             return User::factory()->create([
                 'email' => 'student@test.com',
-                'membership_type' => 'student',
+                'membership' => 'student',
                 'email_verified_at' => now(),
             ]);
         });
