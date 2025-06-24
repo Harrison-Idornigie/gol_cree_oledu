@@ -13,6 +13,29 @@ use Illuminate\Support\Facades\DB;
 class UnitService
 {
     /**
+     * Get a single unit with relationships for students.
+     */
+    public function getUnit(int $unitId, string $membership = 'student', array $with = []): ?Unit
+    {
+        $query = Unit::query();
+
+        // Apply membership-based filtering
+        if (!in_array($membership, ['super-admin', 'tenant-admin', 'team'])) {
+            // Students can only see published content
+            $query->where('status', 'published');
+        }
+
+        // Default relationships for students
+        $defaultWith = ['learningPath', 'topics' => function ($query) {
+            $query->orderBy('order');
+        }];
+
+        $with = array_merge($defaultWith, $with);
+
+        return $query->with($with)->find($unitId);
+    }
+
+    /**
      * Get filtered units with membership-based access.
      */
     public function getFilteredUnits(Request $request, string $membership = 'student'): LengthAwarePaginator
@@ -39,7 +62,7 @@ class UnitService
             $search = $request->search;
             $query->where(function ($q) use ($search) {
                 $q->where('title', 'like', "%{$search}%")
-                  ->orWhere('description', 'like', "%{$search}%");
+                    ->orWhere('description', 'like', "%{$search}%");
             });
         }
 
@@ -146,7 +169,7 @@ class UnitService
 
         return DB::transaction(function () use ($unit, $user) {
             $data = $unit->toArray();
-            
+
             // Delete related topics and lessons
             $unit->topics()->delete();
             $unit->delete();
@@ -203,11 +226,11 @@ class UnitService
             // Verify all units belong to this learning path
             $existingUnitIds = $learningPath->units()->pluck('id')->toArray();
             $invalidUnits = array_diff($unitIds, $existingUnitIds);
-            
+
             if (!empty($invalidUnits)) {
                 throw new \InvalidArgumentException('Some units do not belong to this learning path.');
             }
-            
+
             // Update the order of each unit
             foreach ($unitIds as $index => $unitId) {
                 Unit::where('id', $unitId)->update(['order' => $index + 1]);

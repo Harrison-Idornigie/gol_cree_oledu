@@ -24,10 +24,7 @@ class StudentUserSettingsController extends BaseAPIController
     /**
      * Constructor - Apply student middleware
      */
-    public function __construct()
-    {
-
-    }
+    public function __construct() {}
 
     /**
      * Get student's settings.
@@ -37,6 +34,9 @@ class StudentUserSettingsController extends BaseAPIController
      */
     public function getSettings(Request $request): JsonResponse
     {
+        // Students can only access their own settings
+        $this->authorize('viewOwnProfile', $request->user());
+
         // TODO: Implement settings retrieval
         // - All user settings and preferences
         // - Learning preferences and goals
@@ -53,6 +53,9 @@ class StudentUserSettingsController extends BaseAPIController
      */
     public function getAvailableLanguages(Request $request): JsonResponse
     {
+        // All authenticated users can view available languages
+        // No specific authorization needed for this public data
+
         // TODO: Implement available languages
         // - All languages available for interface
         // - Include language codes and names
@@ -68,6 +71,9 @@ class StudentUserSettingsController extends BaseAPIController
      */
     public function updateInterfaceLanguage(Request $request): JsonResponse
     {
+        // Students can only update their own settings
+        $this->authorize('updateOwnProfile', $request->user());
+
         // TODO: Implement interface language update
         // - Update user's interface language preference
         // - Validate language availability

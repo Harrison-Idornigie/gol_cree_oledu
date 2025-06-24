@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\Tenant\Team;
 
 use App\Http\Controllers\API\BaseAPIController;
 use App\Models\Tenants\VocabularyItem;
+use App\Models\Tenants\Word;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -25,10 +26,7 @@ class TeamVocabularyController extends BaseAPIController
     /**
      * Constructor - Apply team middleware
      */
-    public function __construct()
-    {
-
-    }
+    public function __construct() {}
 
     /**
      * Display a listing of vocabulary items.
@@ -38,6 +36,8 @@ class TeamVocabularyController extends BaseAPIController
      */
     public function index(Request $request): JsonResponse
     {
+        $this->authorize('viewAny', Word::class);
+
         // TODO: Implement vocabulary listing
         // - All vocabulary items in current tenant
         // - Filter by language, creator, status
@@ -53,6 +53,8 @@ class TeamVocabularyController extends BaseAPIController
      */
     public function store(Request $request): JsonResponse
     {
+        $this->authorize('create', Word::class);
+
         // TODO: Implement vocabulary creation
         // - Validate vocabulary data
         // - Create vocabulary with tenant association
@@ -70,6 +72,8 @@ class TeamVocabularyController extends BaseAPIController
      */
     public function show(Request $request, VocabularyItem $vocabulary): JsonResponse
     {
+        $this->authorize('view', $vocabulary);
+
         // TODO: Implement vocabulary details
         // - Validate vocabulary belongs to tenant
         // - Include translations and examples
@@ -86,6 +90,8 @@ class TeamVocabularyController extends BaseAPIController
      */
     public function update(Request $request, VocabularyItem $vocabulary): JsonResponse
     {
+        $this->authorize('update', $vocabulary);
+
         // TODO: Implement vocabulary update
         // - Validate vocabulary belongs to tenant
         // - Update vocabulary content
@@ -103,6 +109,8 @@ class TeamVocabularyController extends BaseAPIController
      */
     public function destroy(Request $request, VocabularyItem $vocabulary): JsonResponse
     {
+        $this->authorize('delete', $vocabulary);
+
         // TODO: Implement vocabulary deletion
         // - Validate vocabulary belongs to tenant
         // - Check for usage in exercises/content

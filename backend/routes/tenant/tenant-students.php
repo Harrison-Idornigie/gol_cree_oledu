@@ -1,14 +1,10 @@
 <?php
 
-use App\Http\Controllers\API\Tenant\Student\StudentConversationExerciseController;
 use App\Http\Controllers\API\Tenant\Student\StudentExerciseController;
 use App\Http\Controllers\API\Tenant\Student\StudentGuideController;
 use App\Http\Controllers\API\Tenant\Student\StudentLanguageController;
 use App\Http\Controllers\API\Tenant\Student\StudentLearningPathController;
 use App\Http\Controllers\API\Tenant\Student\StudentLessonController;
-use App\Http\Controllers\API\Tenant\Student\StudentListeningExerciseController;
-use App\Http\Controllers\API\Tenant\Student\StudentPictureExerciseController;
-use App\Http\Controllers\API\Tenant\Student\StudentSpeakingExerciseController;
 use App\Http\Controllers\API\Tenant\Student\StudentTopicController;
 use App\Http\Controllers\API\Tenant\Student\StudentUnitController;
 use App\Http\Controllers\API\Tenant\Student\StudentUserLanguageController;
@@ -98,22 +94,10 @@ Route::prefix('student')->middleware(['auth:tenant', \App\Http\Middleware\Tenant
     Route::post('exercises/{exercise}/check', [StudentExerciseController::class, 'checkAnswer']);
     Route::get('exercises/{exercise}/statistics', [StudentExerciseController::class, 'statistics']);
 
-    // Speaking Exercises (requires file upload)
-    Route::post('exercises/speaking/check', [StudentSpeakingExerciseController::class, 'checkAnswer']);
-
-    // Conversation Exercises
-    Route::post('exercises/conversation/answer', [StudentConversationExerciseController::class, 'submitAnswer']);
-    Route::post('exercises/conversation/progress', [StudentConversationExerciseController::class, 'trackProgress']);
-    Route::get('exercises/conversation/progress/{exerciseId}', [StudentConversationExerciseController::class, 'getProgress']);
-    Route::get('exercises/conversation/language/{languageId}', [StudentConversationExerciseController::class, 'getExercisesByLanguage']);
-
-    // Listening Exercises
-    Route::post('exercises/listening/check', [StudentListeningExerciseController::class, 'checkAnswer']);
-    Route::get('exercises/listening/language/{languageCode}', [StudentListeningExerciseController::class, 'getByLanguage']);
-
-    // Picture Exercises
-    Route::post('exercises/picture/check', [StudentPictureExerciseController::class, 'checkAnswer']);
-    Route::get('exercises/picture/language/{languageCode}', [StudentPictureExerciseController::class, 'getByLanguage']);
+    // Exercise type-specific endpoints (consolidated into main controller)
+    Route::post('exercises/{exercise}/submit-answer', [StudentExerciseController::class, 'submitAnswer']);
+    Route::get('exercises/by-type/{type}', [StudentExerciseController::class, 'getByType']);
+    Route::get('exercises/by-language/{languageCode}', [StudentExerciseController::class, 'getByLanguage']);
 
     // Vocabulary
     Route::prefix('vocabulary')->group(function () {
@@ -137,6 +121,4 @@ Route::prefix('student')->middleware(['auth:tenant', \App\Http\Middleware\Tenant
     // Guide Entries
     Route::get('guide-entries', [StudentGuideController::class, 'index']);
     Route::get('guide-entries/{guideEntry}', [StudentGuideController::class, 'show']);
-
 });
-

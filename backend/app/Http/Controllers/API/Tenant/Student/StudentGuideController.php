@@ -27,7 +27,8 @@ class StudentGuideController extends BaseAPIController
      */
     public function __construct()
     {
-
+        // Apply policies - students can view guide entries
+        $this->authorizeResource(\App\Models\Tenants\GuideBookEntry::class, 'guide');
     }
 
     /**
@@ -38,6 +39,8 @@ class StudentGuideController extends BaseAPIController
      */
     public function index(Request $request): JsonResponse
     {
+        $this->authorize('viewAny', \App\Models\Tenants\GuideBookEntry::class);
+
         // TODO: Implement guide entries listing
         // - Available guide entries for student
         // - Filter by category, language, topic
@@ -54,6 +57,8 @@ class StudentGuideController extends BaseAPIController
      */
     public function show(Request $request, GuideBookEntry $guideEntry): JsonResponse
     {
+        $this->authorize('view', $guideEntry);
+
         // TODO: Implement guide entry details
         // - Validate guide entry is accessible
         // - Include full content and examples

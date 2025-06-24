@@ -33,6 +33,9 @@ class TeamLearningPathController extends BaseAPIController
     public function __construct(LearningPathService $learningPathService)
     {
         $this->learningPathService = $learningPathService;
+
+        // Apply policies
+        $this->authorizeResource(LearningPath::class, 'learningPath');
     }
 
     /**
@@ -43,6 +46,8 @@ class TeamLearningPathController extends BaseAPIController
      */
     public function index(Request $request): JsonResponse
     {
+        $this->authorize('viewAny', LearningPath::class);
+
         try {
             $learningPaths = $this->learningPathService->getFilteredLearningPaths($request, 'team');
             return $this->sendResponse($learningPaths, 'Learning paths retrieved successfully.');

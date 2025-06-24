@@ -28,7 +28,8 @@ class StudentTopicController extends BaseAPIController
      */
     public function __construct()
     {
-
+        // Apply policies - students can view topics
+        $this->authorizeResource(Topic::class, 'topic');
     }
 
     /**
@@ -40,6 +41,8 @@ class StudentTopicController extends BaseAPIController
      */
     public function index(Request $request, Unit $unit): JsonResponse
     {
+        $this->authorize('viewAny', Topic::class);
+
         // TODO: Implement topics listing
         // - All topics in the unit
         // - Show accessibility based on sequential learning
@@ -56,6 +59,8 @@ class StudentTopicController extends BaseAPIController
      */
     public function show(Request $request, Topic $topic): JsonResponse
     {
+        $this->authorize('view', $topic);
+
         // TODO: Implement topic details
         // - Validate topic is accessible (sequential learning)
         // - Include lessons and exercises structure
@@ -72,6 +77,8 @@ class StudentTopicController extends BaseAPIController
      */
     public function progress(Request $request, Topic $topic): JsonResponse
     {
+        $this->authorize('view', $topic);
+
         // TODO: Implement topic progress
         // - Student's progress in the topic
         // - Completed lessons and exercises

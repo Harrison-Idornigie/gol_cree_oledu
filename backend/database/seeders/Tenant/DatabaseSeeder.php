@@ -35,7 +35,10 @@ class DatabaseSeeder extends Seeder
             CurriculumTemplateSeeder::class,
             ContentTemplateSeeder::class,
 
-            // Exercise seeders
+            // Plains Cree Starter Pack (complete A1-C2 courses with real content)
+            PlainsCreeStarterPackSeeder::class,
+
+            // Exercise seeders (for additional demo content)
             FillInBlankExerciseSeeder::class,
             MultipleChoiceExerciseSeeder::class,
             MatchingExerciseSeeder::class,

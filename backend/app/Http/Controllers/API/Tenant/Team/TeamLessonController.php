@@ -42,6 +42,8 @@ class TeamLessonController extends BaseAPIController
      */
     public function index(Request $request): JsonResponse
     {
+        $this->authorize('viewAny', Lesson::class);
+
         try {
             $filters = [
                 'search' => $request->get('search'),
@@ -73,6 +75,8 @@ class TeamLessonController extends BaseAPIController
      */
     public function store(Request $request): JsonResponse
     {
+        $this->authorize('create', Lesson::class);
+
         try {
             $validated = $request->validate([
                 'topic_id' => 'required|exists:topics,id',
@@ -101,6 +105,8 @@ class TeamLessonController extends BaseAPIController
      */
     public function show(Request $request, Lesson $lesson): JsonResponse
     {
+        $this->authorize('view', $lesson);
+
         try {
             // Load relationships and statistics
             $lesson->load(['topic.unit.learningPath', 'exercises', 'template']);
@@ -124,6 +130,8 @@ class TeamLessonController extends BaseAPIController
      */
     public function update(Request $request, Lesson $lesson): JsonResponse
     {
+        $this->authorize('update', $lesson);
+
         try {
             $validated = $request->validate([
                 'title' => 'sometimes|string|max:255',
@@ -151,6 +159,8 @@ class TeamLessonController extends BaseAPIController
      */
     public function destroy(Request $request, Lesson $lesson): JsonResponse
     {
+        $this->authorize('delete', $lesson);
+
         try {
             $this->lessonService->deleteLesson($lesson, Auth::user());
 
@@ -169,6 +179,8 @@ class TeamLessonController extends BaseAPIController
      */
     public function submitForReview(Request $request, Lesson $lesson): JsonResponse
     {
+        $this->authorize('submitForReview', $lesson);
+
         // TODO: Implement review submission
         // - Validate lesson completeness
         // - Check all exercises are complete
@@ -186,6 +198,8 @@ class TeamLessonController extends BaseAPIController
      */
     public function updateStatus(Request $request, Lesson $lesson): JsonResponse
     {
+        $this->authorize('update', $lesson);
+
         // TODO: Implement status update
         // - Validate permissions for status change
         // - Update lesson status
@@ -203,6 +217,8 @@ class TeamLessonController extends BaseAPIController
      */
     public function reorderExercises(Request $request, Lesson $lesson): JsonResponse
     {
+        $this->authorize('manageExercises', $lesson);
+
         // TODO: Implement exercise reordering
         // - Validate exercise ownership
         // - Update exercise order within lesson

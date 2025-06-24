@@ -26,7 +26,11 @@ class TeamProgressController extends BaseAPIController
      */
     public function __construct()
     {
-
+        // Team members can view progress analytics for their content
+        $this->middleware(function ($request, $next) {
+            $this->authorize('viewAny', 'App\Models\Tenants\Progress');
+            return $next($request);
+        });
     }
 
     /**
@@ -37,6 +41,8 @@ class TeamProgressController extends BaseAPIController
      */
     public function overview(Request $request): JsonResponse
     {
+        // Authorization already handled in constructor
+
         // TODO: Implement progress overview
         // - Overall content creation statistics
         // - Student engagement with team's content

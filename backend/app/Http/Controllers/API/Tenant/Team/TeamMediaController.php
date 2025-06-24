@@ -27,7 +27,8 @@ class TeamMediaController extends BaseAPIController
      */
     public function __construct()
     {
-
+        // Apply policies
+        $this->authorizeResource(MediaFile::class, 'media');
     }
 
     /**
@@ -38,6 +39,8 @@ class TeamMediaController extends BaseAPIController
      */
     public function upload(Request $request): JsonResponse
     {
+        $this->authorize('create', MediaFile::class);
+
         // TODO: Implement media upload
         // - Validate file type and size
         // - Process and store media file

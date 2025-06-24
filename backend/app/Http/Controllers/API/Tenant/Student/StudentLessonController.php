@@ -28,7 +28,8 @@ class StudentLessonController extends BaseAPIController
      */
     public function __construct()
     {
-
+        // Apply policies - students can only view lessons
+        $this->authorizeResource(Lesson::class, 'lesson');
     }
 
     /**
@@ -40,6 +41,8 @@ class StudentLessonController extends BaseAPIController
      */
     public function index(Request $request, Topic $topic): JsonResponse
     {
+        $this->authorize('viewAny', Lesson::class);
+
         // TODO: Implement lessons listing
         // - All lessons in the topic
         // - Show accessibility based on sequential learning
@@ -56,6 +59,8 @@ class StudentLessonController extends BaseAPIController
      */
     public function show(Request $request, Lesson $lesson): JsonResponse
     {
+        $this->authorize('view', $lesson);
+
         // TODO: Implement lesson details
         // - Validate lesson is accessible (sequential learning)
         // - Include exercises and content
@@ -72,6 +77,8 @@ class StudentLessonController extends BaseAPIController
      */
     public function progress(Request $request, Lesson $lesson): JsonResponse
     {
+        $this->authorize('view', $lesson);
+
         // TODO: Implement lesson progress
         // - Student's progress in the lesson
         // - Completed exercises

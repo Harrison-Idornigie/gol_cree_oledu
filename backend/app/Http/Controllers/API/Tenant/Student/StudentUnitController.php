@@ -6,6 +6,7 @@ use App\Http\Controllers\API\BaseAPIController;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 use App\Models\Tenants\Unit;
 use App\Models\Tenants\LearningPath;
+use App\Services\Tenants\Course\UnitService;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 
@@ -23,12 +24,16 @@ class StudentUnitController extends BaseAPIController
 {
     use BelongsToTenant;
 
-    /**
-     * Constructor - Apply student middleware
-     */
-    public function __construct()
-    {
+    protected UnitService $unitService;
 
+    /**
+     * Constructor - Apply student middleware and inject service
+     */
+    public function __construct(UnitService $unitService)
+    {
+        $this->unitService = $unitService;
+        // Apply policies - students can only view units
+        $this->authorizeResource(Unit::class, 'unit');
     }
 
     /**
@@ -40,11 +45,11 @@ class StudentUnitController extends BaseAPIController
      */
     public function index(Request $request, LearningPath $learningPath): JsonResponse
     {
-        // TODO: Implement units listing
-        // - All units in the learning path
-        // - Show accessibility based on sequential learning
-        // - Include progress and completion status
-        return $this->sendResponse([], 'Units retrieved successfully.');
+        $this->authorize('viewAny', Unit::class);
+
+        $units = $this->unitService->getUnitsForLearningPath($learningPath, 'student');
+
+        return $this->sendResponse($units, 'Units retrieved successfully.');
     }
 
     /**
@@ -56,11 +61,15 @@ class StudentUnitController extends BaseAPIController
      */
     public function show(Request $request, Unit $unit): JsonResponse
     {
-        // TODO: Implement unit details
-        // - Validate unit is accessible (sequential learning)
-        // - Include topics and lessons structure
-        // - Show progress and next steps
-        return $this->sendResponse($unit, 'Unit retrieved successfully.');
+        $this->authorize('view', $unit);
+
+        $unitData = $this->unitService->getUnit($unit->id, 'student', ['topics.lessons']);
+
+        if (!$unitData) {
+            return $this->sendError('Unit not found or not accessible.', [], 404);
+        }
+
+        return $this->sendResponse($unitData, 'Unit retrieved successfully.');
     }
 
     /**
@@ -72,10 +81,10 @@ class StudentUnitController extends BaseAPIController
      */
     public function progress(Request $request, Unit $unit): JsonResponse
     {
-        // TODO: Implement unit progress
-        // - Student's progress in the unit
-        // - Completed topics and lessons
-        // - Next recommended content
-        return $this->sendResponse([], 'Unit progress retrieved successfully.');
+        $this->authorize('view', $unit);
+
+        $progress = $this->unitService->getUserProgress($unit, $request->user());
+
+        return $this->sendResponse($progress, 'Unit progress retrieved successfully.');
     }
 }

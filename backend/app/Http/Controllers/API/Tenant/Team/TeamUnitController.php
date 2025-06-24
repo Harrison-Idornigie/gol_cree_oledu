@@ -27,7 +27,8 @@ class TeamUnitController extends BaseAPIController
      */
     public function __construct()
     {
-
+        // Apply policies
+        $this->authorizeResource(Unit::class, 'unit');
     }
 
     /**
@@ -38,6 +39,8 @@ class TeamUnitController extends BaseAPIController
      */
     public function index(Request $request): JsonResponse
     {
+        $this->authorize('viewAny', Unit::class);
+
         // TODO: Implement units listing
         // - All units in current tenant
         // - Filter by learning path, creator, status

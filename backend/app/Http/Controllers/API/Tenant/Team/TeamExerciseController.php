@@ -43,6 +43,8 @@ class TeamExerciseController extends BaseAPIController
      */
     public function index(Request $request): JsonResponse
     {
+        $this->authorize('viewAny', Exercise::class);
+
         try {
             $filters = [
                 'search' => $request->get('search'),
@@ -75,6 +77,8 @@ class TeamExerciseController extends BaseAPIController
      */
     public function store(Request $request): JsonResponse
     {
+        $this->authorize('create', Exercise::class);
+
         try {
             $validated = $request->validate([
                 'lesson_id' => 'required|exists:lessons,id',
@@ -112,6 +116,8 @@ class TeamExerciseController extends BaseAPIController
      */
     public function show(Request $request, Exercise $exercise): JsonResponse
     {
+        $this->authorize('view', $exercise);
+
         try {
             // Load relationships
             $exercise->load(['lesson.topic.unit', 'template', 'attempts']);
@@ -131,6 +137,8 @@ class TeamExerciseController extends BaseAPIController
      */
     public function update(Request $request, Exercise $exercise): JsonResponse
     {
+        $this->authorize('update', $exercise);
+
         try {
             $validated = $request->validate([
                 'title' => 'sometimes|string|max:255',
@@ -168,6 +176,8 @@ class TeamExerciseController extends BaseAPIController
      */
     public function destroy(Request $request, Exercise $exercise): JsonResponse
     {
+        $this->authorize('delete', $exercise);
+
         try {
             $this->exerciseService->deleteExercise($exercise, Auth::user());
 

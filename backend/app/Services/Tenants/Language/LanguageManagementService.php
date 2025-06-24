@@ -27,6 +27,30 @@ use Illuminate\Support\Collection;
 class LanguageManagementService
 {
     /**
+     * Get a single language with relationships.
+     */
+    public function getLanguage(int $languageId, string $membership = 'student', array $with = []): ?Language
+    {
+        $query = Language::query();
+
+        // Apply membership-based filtering
+        if (!in_array($membership, ['super-admin', 'tenant-admin', 'team'])) {
+            // Students can only see active languages
+            $query->where('is_active', true);
+        }
+
+        // Default relationships
+        $defaultWith = [];
+        $with = array_merge($defaultWith, $with);
+
+        if (!empty($with)) {
+            $query->with($with);
+        }
+
+        return $query->find($languageId);
+    }
+
+    /**
      * Get filtered languages with membership-based access.
      */
     public function getFilteredLanguages(Request $request, string $membership = 'student'): LengthAwarePaginator
@@ -157,17 +181,17 @@ class LanguageManagementService
             $usageCheck = $this->checkLanguageUsage($language);
             if (!$usageCheck['can_delete']) {
                 throw new \Exception(
-                    "Cannot delete language '{$language->name}'. It is being used in: " . 
-                    implode(', ', $usageCheck['usage_locations'])
+                    "Cannot delete language '{$language->name}'. It is being used in: " .
+                        implode(', ', $usageCheck['usage_locations'])
                 );
             }
 
             $data = $language->toArray();
-            
+
             // Remove all language pairs
             $language->sourceLanguagePairs()->delete();
             $language->targetLanguagePairs()->delete();
-            
+
             $language->delete();
 
             // Log the deletion for audit trail

@@ -25,10 +25,7 @@ class TeamGuideBookEntryController extends BaseAPIController
     /**
      * Constructor - Apply team middleware
      */
-    public function __construct()
-    {
-
-    }
+    public function __construct() {}
 
     /**
      * Display a listing of guide book entries.
@@ -38,6 +35,8 @@ class TeamGuideBookEntryController extends BaseAPIController
      */
     public function index(Request $request): JsonResponse
     {
+        $this->authorize('viewAny', GuideBookEntry::class);
+
         // TODO: Implement guide entries listing
         // - All guide entries in current tenant
         // - Filter by category, creator, status
@@ -53,6 +52,8 @@ class TeamGuideBookEntryController extends BaseAPIController
      */
     public function store(Request $request): JsonResponse
     {
+        $this->authorize('create', GuideBookEntry::class);
+
         // TODO: Implement guide entry creation
         // - Validate guide entry data
         // - Create entry with tenant association
@@ -70,6 +71,8 @@ class TeamGuideBookEntryController extends BaseAPIController
      */
     public function show(Request $request, GuideBookEntry $guideEntry): JsonResponse
     {
+        $this->authorize('view', $guideEntry);
+
         // TODO: Implement guide entry details
         // - Validate entry belongs to tenant
         // - Include full content and examples
@@ -86,6 +89,8 @@ class TeamGuideBookEntryController extends BaseAPIController
      */
     public function update(Request $request, GuideBookEntry $guideEntry): JsonResponse
     {
+        $this->authorize('update', $guideEntry);
+
         // TODO: Implement guide entry update
         // - Validate entry belongs to tenant
         // - Update entry content
@@ -103,6 +108,8 @@ class TeamGuideBookEntryController extends BaseAPIController
      */
     public function destroy(Request $request, GuideBookEntry $guideEntry): JsonResponse
     {
+        $this->authorize('delete', $guideEntry);
+
         // TODO: Implement guide entry deletion
         // - Validate entry belongs to tenant
         // - Check for references in content

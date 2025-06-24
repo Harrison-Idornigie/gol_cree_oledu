@@ -33,6 +33,9 @@ class TeamContentTemplateController extends BaseAPIController
     public function __construct(ContentTemplateService $templateService)
     {
         $this->templateService = $templateService;
+
+        // Apply policies
+        $this->authorizeResource(\App\Models\Tenants\ContentTemplate::class, 'template');
     }
 
     /**
@@ -40,6 +43,8 @@ class TeamContentTemplateController extends BaseAPIController
      */
     public function index(Request $request): JsonResponse
     {
+        $this->authorize('viewAny', \App\Models\Tenants\ContentTemplate::class);
+
         try {
             $filters = [
                 'template_type' => $request->get('template_type'),
@@ -48,12 +53,12 @@ class TeamContentTemplateController extends BaseAPIController
                 'search' => $request->get('search'),
                 'created_by' => $request->get('created_by'),
             ];
-            
+
             $sorts = [
                 'field' => $request->get('sort_by', 'created_at'),
                 'direction' => $request->get('sort_direction', 'desc'),
             ];
-            
+
             $perPage = $request->get('per_page', 15);
 
             $templates = $this->templateService->getTemplates($filters, $sorts, $perPage);
@@ -69,6 +74,8 @@ class TeamContentTemplateController extends BaseAPIController
      */
     public function store(Request $request): JsonResponse
     {
+        $this->authorize('create', \App\Models\Tenants\ContentTemplate::class);
+
         try {
             $validated = $request->validate([
                 'template_type' => 'required|string|in:unit,topic,lesson,exercise',
@@ -96,9 +103,11 @@ class TeamContentTemplateController extends BaseAPIController
      */
     public function show(Request $request, ContentTemplate $template): JsonResponse
     {
+        $this->authorize('view', $template);
+
         try {
             $template->load(['createdBy']);
-            
+
             // Get template usage statistics
             $stats = $this->templateService->getTemplateStats($template);
             $template->stats = $stats;

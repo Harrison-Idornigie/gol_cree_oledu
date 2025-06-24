@@ -39,6 +39,9 @@ class TeamSentenceController extends BaseAPIController
     ) {
         $this->sentenceService = $sentenceService;
         $this->mappingService = $mappingService;
+
+        // Apply policies
+        $this->authorizeResource(Sentence::class, 'sentence');
     }
 
     /**
@@ -49,6 +52,8 @@ class TeamSentenceController extends BaseAPIController
      */
     public function index(Request $request): JsonResponse
     {
+        $this->authorize('viewAny', Sentence::class);
+
         try {
             $filters = [
                 'search' => $request->get('search'),
@@ -77,7 +82,6 @@ class TeamSentenceController extends BaseAPIController
                     'total' => $sentences->total()
                 ]
             ], 'Sentences retrieved successfully.');
-
         } catch (Exception $e) {
             return $this->sendError('Failed to retrieve sentences: ' . $e->getMessage());
         }
@@ -108,7 +112,6 @@ class TeamSentenceController extends BaseAPIController
             return $this->sendCreatedResponse([
                 'sentence' => $sentence->getPreviewData()
             ], 'Sentence created successfully.');
-
         } catch (Exception $e) {
             return $this->sendError('Failed to create sentence: ' . $e->getMessage());
         }
@@ -354,7 +357,6 @@ class TeamSentenceController extends BaseAPIController
                     ];
                 })
             ], 'Available words retrieved successfully.');
-
         } catch (Exception $e) {
             return $this->sendError('Failed to retrieve available words: ' . $e->getMessage());
         }
@@ -384,7 +386,6 @@ class TeamSentenceController extends BaseAPIController
             );
 
             return $this->sendResponse($validation, 'Sentence validation completed.');
-
         } catch (Exception $e) {
             return $this->sendError('Failed to validate sentence: ' . $e->getMessage());
         }
@@ -414,7 +415,6 @@ class TeamSentenceController extends BaseAPIController
                     'recommended_action' => $this->getRecommendedAction($analysis)
                 ]
             ], 'Sentence analysis completed successfully.');
-
         } catch (Exception $e) {
             Log::error('Sentence analysis failed: ' . $e->getMessage());
             return $this->sendError('Failed to analyze sentence.', [], 500);
@@ -456,7 +456,7 @@ class TeamSentenceController extends BaseAPIController
                 'metadata' => array_merge($validated['metadata'] ?? [], [
                     'difficulty' => $validated['difficulty'] ?? 'beginner',
                     'auto_mapped' => true,
-                    'mapping_percentage' => $mappingResult['mapped_words'] ? 
+                    'mapping_percentage' => $mappingResult['mapped_words'] ?
                         (count($mappingResult['mapped_words']) / $mappingResult['total_words'] * 100) : 0
                 ])
             ], $mappingResult['mapped_words'] ?? []);
@@ -466,7 +466,6 @@ class TeamSentenceController extends BaseAPIController
                 'mapping_result' => $mappingResult,
                 'created_words' => $mappingResult['created_words'] ?? []
             ], 'Sentence created successfully with automatic word mapping.');
-
         } catch (Exception $e) {
             Log::error('Auto-mapping sentence creation failed: ' . $e->getMessage());
             return $this->sendError('Failed to create sentence with auto-mapping.', [], 500);

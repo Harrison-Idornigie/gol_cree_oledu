@@ -4,7 +4,7 @@ namespace App\Http\Controllers\API\Tenant\Student;
 
 use App\Http\Controllers\API\BaseAPIController;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
-use App\Models\Tenants\Vocabulary;
+use App\Models\Tenants\VocabularyItem;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 
@@ -27,7 +27,11 @@ class StudentVocabularyController extends BaseAPIController
      */
     public function __construct()
     {
-
+        // Apply policies - students can view and practice vocabulary
+        $this->middleware(function ($request, $next) {
+            $this->authorize('viewAny', 'App\Models\Tenants\VocabularyItem');
+            return $next($request);
+        });
     }
 
     /**
@@ -38,6 +42,8 @@ class StudentVocabularyController extends BaseAPIController
      */
     public function index(Request $request): JsonResponse
     {
+        $this->authorize('viewAny', VocabularyItem::class);
+
         // TODO: Implement vocabulary listing
         // - Available vocabulary for student
         // - Filter by language, difficulty, unit
@@ -53,6 +59,8 @@ class StudentVocabularyController extends BaseAPIController
      */
     public function reviewItems(Request $request): JsonResponse
     {
+        $this->authorize('viewAny', VocabularyItem::class);
+
         // TODO: Implement vocabulary review
         // - Vocabulary items due for review
         // - Spaced repetition algorithm
@@ -68,6 +76,8 @@ class StudentVocabularyController extends BaseAPIController
      */
     public function mistakeItems(Request $request): JsonResponse
     {
+        $this->authorize('viewAny', VocabularyItem::class);
+
         // TODO: Implement mistake vocabulary
         // - Vocabulary items with incorrect answers
         // - Focus on problem areas
@@ -84,6 +94,8 @@ class StudentVocabularyController extends BaseAPIController
      */
     public function unitVocabulary(Request $request, int $unitId): JsonResponse
     {
+        $this->authorize('viewAny', VocabularyItem::class);
+
         // TODO: Implement unit-specific vocabulary
         // - All vocabulary items for specific unit
         // - Include learning progress and mastery
@@ -95,11 +107,13 @@ class StudentVocabularyController extends BaseAPIController
      * Check translation for vocabulary item.
      * 
      * @param Request $request
-     * @param Vocabulary $vocabulary
+     * @param VocabularyItem $vocabulary
      * @return JsonResponse
      */
-    public function checkTranslation(Request $request, Vocabulary $vocabulary): JsonResponse
+    public function checkTranslation(Request $request, VocabularyItem $vocabulary): JsonResponse
     {
+        $this->authorize('practice', $vocabulary);
+
         // TODO: Implement translation checking
         // - Validate student's translation
         // - Check against accepted answers
@@ -116,6 +130,8 @@ class StudentVocabularyController extends BaseAPIController
      */
     public function statistics(Request $request): JsonResponse
     {
+        $this->authorize('viewAny', VocabularyItem::class);
+
         // TODO: Implement vocabulary statistics
         // - Overall vocabulary progress
         // - Mastery levels and retention rates
@@ -127,11 +143,13 @@ class StudentVocabularyController extends BaseAPIController
      * Display the specified vocabulary item.
      * 
      * @param Request $request
-     * @param Vocabulary $vocabulary
+     * @param VocabularyItem $vocabulary
      * @return JsonResponse
      */
-    public function show(Request $request, Vocabulary $vocabulary): JsonResponse
+    public function show(Request $request, VocabularyItem $vocabulary): JsonResponse
     {
+        $this->authorize('view', $vocabulary);
+
         // TODO: Implement vocabulary details
         // - Validate vocabulary is accessible
         // - Include translations and examples

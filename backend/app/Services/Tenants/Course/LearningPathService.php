@@ -13,6 +13,29 @@ use Illuminate\Support\Facades\DB;
 class LearningPathService
 {
     /**
+     * Get a single learning path with relationships for students.
+     */
+    public function getLearningPath(int $learningPathId, string $membership = 'student', array $with = []): ?LearningPath
+    {
+        $query = LearningPath::query();
+
+        // Apply membership-based filtering
+        if (!in_array($membership, ['super-admin', 'tenant-admin', 'team'])) {
+            // Students can only see published content
+            $query->where('status', 'published');
+        }
+
+        // Default relationships for students
+        $defaultWith = ['language', 'units' => function ($query) {
+            $query->orderBy('order');
+        }];
+
+        $with = array_merge($defaultWith, $with);
+
+        return $query->with($with)->find($learningPathId);
+    }
+
+    /**
      * Get filtered learning paths with membership-based access.
      */
     public function getFilteredLearningPaths(Request $request, string $membership = 'student'): LengthAwarePaginator
@@ -44,7 +67,7 @@ class LearningPathService
             $search = $request->search;
             $query->where(function ($q) use ($search) {
                 $q->where('title', 'like', "%{$search}%")
-                  ->orWhere('description', 'like', "%{$search}%");
+                    ->orWhere('description', 'like', "%{$search}%");
             });
         }
 
@@ -136,10 +159,10 @@ class LearningPathService
 
         return DB::transaction(function () use ($learningPath, $user) {
             $data = $learningPath->toArray();
-            
+
             // Detach from all units
             $learningPath->units()->detach();
-            
+
             $learningPath->delete();
 
             // Log the deletion for audit trail
@@ -186,33 +209,6 @@ class LearningPathService
     }
 
     /**
-     * Get learning paths by target level (published only).
-     */
-    public function getByLevel(string $level): \Illuminate\Database\Eloquent\Collection
-    {
-        return LearningPath::where('target_level', $level)
-            ->where('status', 'published')
-            ->with(['units' => function ($query) {
-                $query->orderBy('order');
-            }])
-            ->get();
-    }
-
-    /**
-     * Get learning paths by language (published only).
-     */
-    public function getByLanguage(int $languageId): \Illuminate\Database\Eloquent\Collection
-    {
-        return LearningPath::where('language_id', $languageId)
-            ->where('status', 'published')
-            ->with(['units' => function ($query) {
-                $query->orderBy('order');
-            }])
-            ->with('language')
-            ->get();
-    }
-
-    /**
      * Get user progress for a learning path.
      */
     public function getUserProgress(LearningPath $learningPath, User $user): array
@@ -239,6 +235,51 @@ class LearningPathService
             'learning_path_progress' => $progress ? $progress->status : 'not_started',
             'units_progress'         => $unitsProgress,
         ];
+    }
+
+    /**
+     * Enroll user in a learning path.
+     */
+    public function enrollUser(LearningPath $learningPath, User $user): array
+    {
+        return DB::transaction(function () use ($learningPath, $user) {
+            // Check if already enrolled
+            $existingProgress = $learningPath->progress()
+                ->where('user_id', $user->id)
+                ->first();
+
+            if ($existingProgress) {
+                return [
+                    'success' => false,
+                    'message' => 'User is already enrolled in this learning path.',
+                    'enrollment' => $existingProgress
+                ];
+            }
+
+            // Create enrollment record
+            $enrollment = $learningPath->progress()->create([
+                'user_id' => $user->id,
+                'status' => 'in_progress',
+                'started_at' => now(),
+                'completion_percentage' => 0
+            ]);
+
+            // Log enrollment
+            AuditLog::log(
+                'enroll',
+                'learning_paths',
+                $learningPath,
+                [],
+                ['user_id' => $user->id, 'enrolled_at' => now()],
+                ['user_id' => $user->id]
+            );
+
+            return [
+                'success' => true,
+                'message' => 'Successfully enrolled in learning path.',
+                'enrollment' => $enrollment
+            ];
+        });
     }
 
     /**

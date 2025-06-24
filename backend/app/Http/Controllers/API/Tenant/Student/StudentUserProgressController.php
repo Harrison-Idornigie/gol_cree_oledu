@@ -24,10 +24,7 @@ class StudentUserProgressController extends BaseAPIController
     /**
      * Constructor - Apply student middleware
      */
-    public function __construct()
-    {
-
-    }
+    public function __construct() {}
 
     /**
      * Display student's overall progress.
@@ -37,6 +34,9 @@ class StudentUserProgressController extends BaseAPIController
      */
     public function index(Request $request): JsonResponse
     {
+        // Students can only view their own progress
+        $this->authorize('viewOwnProfile', $request->user());
+
         // TODO: Implement overall progress
         // - Student's progress across all learning paths
         // - Completion statistics and achievements
@@ -54,6 +54,9 @@ class StudentUserProgressController extends BaseAPIController
      */
     public function store(Request $request, string $type, int $id): JsonResponse
     {
+        // Students can only create their own progress records
+        $this->authorize('updateOwnProfile', $request->user());
+
         // TODO: Implement progress creation
         // - Create or update progress record
         // - Validate content access permissions
@@ -71,6 +74,9 @@ class StudentUserProgressController extends BaseAPIController
      */
     public function show(Request $request, string $type, int $id): JsonResponse
     {
+        // Students can only view their own progress
+        $this->authorize('viewOwnProfile', $request->user());
+
         // TODO: Implement specific progress retrieval
         // - Progress for specific content item
         // - Include completion details and scores
@@ -88,6 +94,9 @@ class StudentUserProgressController extends BaseAPIController
      */
     public function update(Request $request, string $type, int $id): JsonResponse
     {
+        // Students can only update their own progress
+        $this->authorize('updateOwnProfile', $request->user());
+
         // TODO: Implement progress update
         // - Update existing progress record
         // - Handle completion status changes

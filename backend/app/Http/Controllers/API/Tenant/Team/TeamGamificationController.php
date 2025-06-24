@@ -26,7 +26,11 @@ class TeamGamificationController extends BaseAPIController
      */
     public function __construct()
     {
-
+        // Team members can view gamification data (read-only)
+        $this->middleware(function ($request, $next) {
+            $this->authorize('viewAny', 'App\Models\Tenants\Achievement');
+            return $next($request);
+        });
     }
 
     /**
@@ -37,6 +41,8 @@ class TeamGamificationController extends BaseAPIController
      */
     public function getAchievements(Request $request): JsonResponse
     {
+        // Authorization already handled in constructor
+
         // TODO: Implement achievements listing
         // - All achievements available in tenant
         // - Achievement criteria and rewards

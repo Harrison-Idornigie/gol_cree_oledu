@@ -33,6 +33,9 @@ class TeamLanguageController extends BaseAPIController
     public function __construct(LanguageManagementService $languageService)
     {
         $this->languageService = $languageService;
+
+        // Apply policies
+        $this->authorizeResource(Language::class, 'language');
     }
 
     /**
@@ -43,6 +46,8 @@ class TeamLanguageController extends BaseAPIController
      */
     public function index(Request $request): JsonResponse
     {
+        $this->authorize('viewAny', Language::class);
+
         try {
             $languages = $this->languageService->getFilteredLanguages($request, 'team');
             return $this->sendResponse($languages, 'Languages retrieved successfully.');

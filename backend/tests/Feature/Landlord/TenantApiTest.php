@@ -3,10 +3,12 @@
 namespace Tests\Feature\Landlord;
 
 use App\Models\Landlord\Tenant;
+use App\Models\Tenants\User;
 use Illuminate\Support\Facades\Event;
+use Laravel\Sanctum\Sanctum;
 
 class TenantApiTest extends TenantTestCase
-
+{
     /** @test */
     public function it_can_create_tenant_via_api()
     {
@@ -17,7 +19,7 @@ class TenantApiTest extends TenantTestCase
         ]);
 
         $response = $this->actingAsSuperAdmin()
-                        ->postJson('/api/super-admin/tenants', $tenantData);
+            ->postJson('/api/super-admin/tenants', $tenantData);
 
         $this->assertTenantCreationApiResponse($response);
 
@@ -73,12 +75,12 @@ class TenantApiTest extends TenantTestCase
         $response = $this->postJson('/api/super-admin/tenants', []);
 
         $response->assertStatus(422)
-                ->assertJsonValidationErrors([
-                    'name',
-                    'admin_name',
-                    'admin_email',
-                    'admin_password',
-                ]);
+            ->assertJsonValidationErrors([
+                'name',
+                'admin_name',
+                'admin_email',
+                'admin_password',
+            ]);
     }
 
     /** @test */
@@ -96,7 +98,7 @@ class TenantApiTest extends TenantTestCase
         $response = $this->postJson('/api/super-admin/tenants', $tenantData);
 
         $response->assertStatus(422)
-                ->assertJsonValidationErrors(['admin_email']);
+            ->assertJsonValidationErrors(['admin_email']);
     }
 
     /** @test */
@@ -122,7 +124,7 @@ class TenantApiTest extends TenantTestCase
         $response = $this->postJson('/api/super-admin/tenants', $tenantData);
 
         $response->assertStatus(422)
-                ->assertJsonValidationErrors(['slug']);
+            ->assertJsonValidationErrors(['slug']);
     }
 
     /** @test */
@@ -136,28 +138,28 @@ class TenantApiTest extends TenantTestCase
         $response = $this->getJson('/api/super-admin/tenants');
 
         $response->assertStatus(200)
-                ->assertJson([
-                    'success' => true,
-                ])
-                ->assertJsonStructure([
-                    'success',
-                    'message',
+            ->assertJson([
+                'success' => true,
+            ])
+            ->assertJsonStructure([
+                'success',
+                'message',
+                'data' => [
                     'data' => [
-                        'data' => [
-                            '*' => [
-                                'id',
-                                'name',
-                                'slug',
-                                'status',
-                                'created_at',
-                                'updated_at',
-                            ]
-                        ],
-                        'current_page',
-                        'per_page',
-                        'total',
-                    ]
-                ]);
+                        '*' => [
+                            'id',
+                            'name',
+                            'slug',
+                            'status',
+                            'created_at',
+                            'updated_at',
+                        ]
+                    ],
+                    'current_page',
+                    'per_page',
+                    'total',
+                ]
+            ]);
     }
 
     /** @test */
@@ -174,15 +176,15 @@ class TenantApiTest extends TenantTestCase
         $response = $this->getJson("/api/super-admin/tenants/{$tenant->id}");
 
         $response->assertStatus(200)
-                ->assertJson([
-                    'success' => true,
-                    'data' => [
-                        'id' => $tenant->id,
-                        'name' => 'Test School',
-                        'slug' => 'test-school',
-                        'status' => 'active',
-                    ]
-                ]);
+            ->assertJson([
+                'success' => true,
+                'data' => [
+                    'id' => $tenant->id,
+                    'name' => 'Test School',
+                    'slug' => 'test-school',
+                    'status' => 'active',
+                ]
+            ]);
     }
 
     /** @test */
@@ -205,14 +207,14 @@ class TenantApiTest extends TenantTestCase
         $response = $this->putJson("/api/super-admin/tenants/{$tenant->id}", $updateData);
 
         $response->assertStatus(200)
-                ->assertJson([
-                    'success' => true,
-                    'data' => [
-                        'name' => 'Updated Name',
-                        'description' => 'Updated description',
-                        'status' => 'active',
-                    ]
-                ]);
+            ->assertJson([
+                'success' => true,
+                'data' => [
+                    'name' => 'Updated Name',
+                    'description' => 'Updated description',
+                    'status' => 'active',
+                ]
+            ]);
     }
 
     /** @test */

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API\Tenant\Student;
 use App\Http\Controllers\API\BaseAPIController;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 use App\Models\Tenants\LearningPath;
+use App\Services\Tenants\Course\LearningPathService;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 
@@ -22,12 +23,16 @@ class StudentLearningPathController extends BaseAPIController
 {
     use BelongsToTenant;
 
+    protected LearningPathService $learningPathService;
+
     /**
      * Constructor - Apply student middleware
      */
-    public function __construct()
+    public function __construct(LearningPathService $learningPathService)
     {
-
+        $this->learningPathService = $learningPathService;
+        // Apply policies - students can view and enroll in learning paths
+        $this->authorizeResource(LearningPath::class, 'learningPath');
     }
 
     /**
@@ -38,11 +43,11 @@ class StudentLearningPathController extends BaseAPIController
      */
     public function index(Request $request): JsonResponse
     {
-        // TODO: Implement learning paths listing
-        // - All published learning paths in current tenant
-        // - Filter by language, difficulty level
-        // - Include enrollment and progress status
-        return $this->sendResponse([], 'Learning paths retrieved successfully.');
+        $this->authorize('viewAny', LearningPath::class);
+
+        $learningPaths = $this->learningPathService->getFilteredLearningPaths($request, 'student');
+
+        return $this->sendResponse($learningPaths, 'Learning paths retrieved successfully.');
     }
 
     /**
@@ -54,11 +59,20 @@ class StudentLearningPathController extends BaseAPIController
      */
     public function show(Request $request, LearningPath $learningPath): JsonResponse
     {
-        // TODO: Implement learning path details
-        // - Validate learning path is published and in tenant
-        // - Include units and content structure
-        // - Show enrollment status and progress
-        return $this->sendResponse($learningPath, 'Learning path retrieved successfully.');
+        $this->authorize('view', $learningPath);
+
+        // Use service to get learning path with proper filtering and relationships
+        $learningPathData = $this->learningPathService->getLearningPath(
+            $learningPath->id,
+            'student',
+            ['units.topics.lessons']
+        );
+
+        if (!$learningPathData) {
+            return $this->sendError('Learning path not found or not accessible.', [], 404);
+        }
+
+        return $this->sendResponse($learningPathData, 'Learning path retrieved successfully.');
     }
 
     /**
@@ -70,11 +84,11 @@ class StudentLearningPathController extends BaseAPIController
      */
     public function progress(Request $request, LearningPath $learningPath): JsonResponse
     {
-        // TODO: Implement progress tracking
-        // - Student's progress in the learning path
-        // - Completed units and lessons
-        // - Next recommended content
-        return $this->sendResponse([], 'Learning path progress retrieved successfully.');
+        $this->authorize('view', $learningPath);
+
+        $progress = $this->learningPathService->getUserProgress($learningPath, $request->user());
+
+        return $this->sendResponse($progress, 'Learning path progress retrieved successfully.');
     }
 
     /**
@@ -86,12 +100,15 @@ class StudentLearningPathController extends BaseAPIController
      */
     public function enroll(Request $request, LearningPath $learningPath): JsonResponse
     {
-        // TODO: Implement enrollment
-        // - Validate learning path is available
-        // - Create enrollment record
-        // - Initialize progress tracking
-        // - Set up sequential access
-        return $this->sendCreatedResponse([], 'Enrolled in learning path successfully.');
+        $this->authorize('view', $learningPath);
+
+        $result = $this->learningPathService->enrollUser($learningPath, $request->user());
+
+        if ($result['success']) {
+            return $this->sendCreatedResponse($result['enrollment'], $result['message']);
+        } else {
+            return $this->sendError($result['message'], $result['enrollment'], 400);
+        }
     }
 
     /**
@@ -103,10 +120,14 @@ class StudentLearningPathController extends BaseAPIController
      */
     public function byLevel(Request $request, string $level): JsonResponse
     {
-        // TODO: Implement level-based filtering
-        // - Learning paths for specific difficulty level
-        // - Include enrollment recommendations
-        // - Show prerequisite information
-        return $this->sendResponse([], 'Learning paths by level retrieved successfully.');
+        $this->authorize('viewAny', LearningPath::class);
+
+        // Create a new request with the level filter
+        $filteredRequest = $request->duplicate();
+        $filteredRequest->merge(['target_level' => $level, 'with_language' => true]);
+
+        $learningPaths = $this->learningPathService->getFilteredLearningPaths($filteredRequest, 'student');
+
+        return $this->sendResponse($learningPaths, 'Learning paths by level retrieved successfully.');
     }
 }

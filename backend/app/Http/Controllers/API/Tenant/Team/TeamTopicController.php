@@ -32,6 +32,9 @@ class TeamTopicController extends BaseAPIController
     public function __construct(TopicService $topicService)
     {
         $this->topicService = $topicService;
+
+        // Apply policies
+        $this->authorizeResource(Topic::class, 'topic');
     }
 
     /**
@@ -42,6 +45,8 @@ class TeamTopicController extends BaseAPIController
      */
     public function index(Request $request): JsonResponse
     {
+        $this->authorize('viewAny', Topic::class);
+
         try {
             $filters = [
                 'search' => $request->get('search'),

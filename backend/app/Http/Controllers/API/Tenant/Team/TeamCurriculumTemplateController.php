@@ -47,6 +47,8 @@ class TeamCurriculumTemplateController extends BaseAPIController
      */
     public function index(Request $request): JsonResponse
     {
+        $this->authorize('viewAny', CurriculumTemplate::class);
+
         try {
             $languagePair = $request->get('language_pair');
             $level = $request->get('level');
@@ -76,6 +78,8 @@ class TeamCurriculumTemplateController extends BaseAPIController
      */
     public function show(Request $request, CurriculumTemplate $template): JsonResponse
     {
+        $this->authorize('view', $template);
+
         try {
             $template->load(['languagePair', 'createdBy', 'instantiations', 'reviews']);
 

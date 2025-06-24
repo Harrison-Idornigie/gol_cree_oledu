@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\Tenant\Student;
 
 use App\Http\Controllers\API\BaseAPIController;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
+use App\Models\Tenants\UserLanguage;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 
@@ -26,7 +27,8 @@ class StudentUserLanguageController extends BaseAPIController
      */
     public function __construct()
     {
-
+        // Apply policies - students can manage their own language selections
+        $this->authorizeResource(UserLanguage::class, 'userLanguage');
     }
 
     /**
@@ -84,6 +86,13 @@ class StudentUserLanguageController extends BaseAPIController
      */
     public function setPrimary(Request $request, int $languageId): JsonResponse
     {
+        // Find the user's language selection to authorize
+        $userLanguage = UserLanguage::where('user_id', $request->user()->id)
+            ->where('language_id', $languageId)
+            ->firstOrFail();
+
+        $this->authorize('update', $userLanguage);
+
         // TODO: Implement primary language setting
         // - Set language as primary learning language
         // - Update user preferences

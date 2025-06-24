@@ -33,6 +33,19 @@ class ExerciseService
     }
 
     /**
+     * Get a single exercise with relationships.
+     */
+    public function getExercise(int $exerciseId, array $with = []): ?Exercise
+    {
+        $defaultWith = ['lesson.topic.unit', 'template'];
+        $with = array_merge($defaultWith, $with);
+
+        return Exercise::with($with)
+            ->withCount(['attempts'])
+            ->find($exerciseId);
+    }
+
+    /**
      * Get paginated exercises with filters and relationships.
      */
     public function getExercises(array $filters = [], array $sorts = [], int $perPage = 15): LengthAwarePaginator
@@ -40,7 +53,7 @@ class ExerciseService
         $query = Exercise::with(['lesson.topic.unit', 'template', 'attempts'])
             ->withCount(['attempts']);
 
-        // Apply search
+        // Apply search,
         if (!empty($filters['search'])) {
             $search = $filters['search'];
             $query->where(function ($q) use ($search) {
@@ -109,7 +122,7 @@ class ExerciseService
         return DB::transaction(function () use ($data, $user) {
             // Validate lesson exists and user has access
             $lesson = Lesson::findOrFail($data['lesson_id']);
-            
+
             // Generate slug if not provided
             if (empty($data['slug'])) {
                 $data['slug'] = $this->generateUniqueSlug($data['title']);
@@ -269,7 +282,7 @@ class ExerciseService
     public function updateExerciseStatus(Exercise $exercise, string $status, User $user): Exercise
     {
         $validStatuses = ['draft', 'published', 'archived'];
-        
+
         if (!in_array($status, $validStatuses)) {
             throw new Exception("Invalid status. Must be one of: " . implode(', ', $validStatuses));
         }
@@ -297,13 +310,13 @@ class ExerciseService
     {
         return DB::transaction(function () use ($exercise, $overrides, $user) {
             $exerciseData = $exercise->toArray();
-            
+
             // Remove ID and timestamps
             unset($exerciseData['id'], $exerciseData['created_at'], $exerciseData['updated_at']);
-            
+
             // Apply overrides
             $exerciseData = array_merge($exerciseData, $overrides);
-            
+
             // Set new order if not specified
             if (!isset($overrides['order'])) {
                 $exerciseData['order'] = $this->getNextOrderForLesson($exerciseData['lesson_id']);
@@ -351,7 +364,7 @@ class ExerciseService
     private function slugExists(string $slug, ?int $excludeId = null): bool
     {
         $query = Exercise::where('slug', $slug);
-        
+
         if ($excludeId) {
             $query->where('id', '!=', $excludeId);
         }
