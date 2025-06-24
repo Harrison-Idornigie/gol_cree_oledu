@@ -2,14 +2,18 @@
 
 namespace App\Models\Tenants;
 
+use App\Traits\Tenant\HasAuditLog;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 
 class UserAnalytics extends Model
 {
-    use HasFactory, HasUuids;
+    use HasFactory, HasUuids, HasAuditLog, BelongsToTenant;
+
+    public const AUDIT_AREA = 'user_analytics';
 
     protected $table = 'user_analytics';
 
@@ -24,6 +28,19 @@ class UserAnalytics extends Model
     protected $casts = [
         'metric_value' => 'array',
         'recorded_at' => 'datetime',
+    ];
+
+    protected array $auditLogEvents = [
+        'created' => 'Created analytics record for user :user_id (:metric_type)',
+        'updated' => 'Updated analytics record for user :user_id (:metric_type)',
+        'deleted' => 'Deleted analytics record for user :user_id (:metric_type)',
+    ];
+
+    protected array $auditLogProperties = [
+        'user_id',
+        'language_id',
+        'metric_type',
+        'metric_value',
     ];
 
     public function user(): BelongsTo

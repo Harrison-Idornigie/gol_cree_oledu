@@ -2,14 +2,18 @@
 
 namespace App\Models\Tenants;
 
+use App\Traits\Tenant\HasAuditLog;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 
 class BulkOperation extends Model
 {
-    use HasFactory, HasUuids;
+    use HasFactory, HasUuids, HasAuditLog, BelongsToTenant;
+
+    public const AUDIT_AREA = 'bulk_operations';
 
     protected $fillable = [
         'user_id',
@@ -29,6 +33,21 @@ class BulkOperation extends Model
         'errors' => 'array',
         'options' => 'array',
         'completed_at' => 'datetime',
+    ];
+
+    protected array $auditLogEvents = [
+        'created' => 'Created bulk operation: :type',
+        'updated' => 'Updated bulk operation: :type (:status)',
+        'deleted' => 'Deleted bulk operation: :type',
+    ];
+
+    protected array $auditLogProperties = [
+        'type',
+        'status',
+        'total_items',
+        'processed_items',
+        'successful_items',
+        'failed_items',
     ];
 
     public function user(): BelongsTo

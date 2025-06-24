@@ -2,13 +2,16 @@
 
 namespace App\Models\Tenants;
 
+use App\Traits\Tenant\HasAuditLog;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 
 class XpHistory extends Model
 {
-    use BelongsToTenant;
+    use BelongsToTenant, HasAuditLog;
+
+    public const AUDIT_AREA = 'xp_history';
     protected $table = 'xp_history';
 
     protected $fillable = [
@@ -24,12 +27,25 @@ class XpHistory extends Model
         'metadata' => 'array'
     ];
 
+    protected array $auditLogEvents = [
+        'created' => 'Awarded :amount XP to user :user_id (:source)',
+        'updated' => 'Updated XP record for user :user_id',
+        'deleted' => 'Deleted XP record for user :user_id',
+    ];
+
+    protected array $auditLogProperties = [
+        'user_id',
+        'amount',
+        'source',
+        'lesson_id',
+    ];
+
     /**
      * The possible sources of XP.
      */
     const SOURCE_LESSON_COMPLETION = 'lesson_completion';
     const SOURCE_EXERCISE_COMPLETION = 'exercise_completion';
-     const SOURCE_STREAK_BONUS = 'streak_bonus';
+    const SOURCE_STREAK_BONUS = 'streak_bonus';
     const SOURCE_ACHIEVEMENT = 'achievement';
 
     /**
@@ -64,7 +80,7 @@ class XpHistory extends Model
         return match ($this->source) {
             self::SOURCE_LESSON_COMPLETION => 'Lesson Completed',
             self::SOURCE_EXERCISE_COMPLETION => 'Exercise Completed',
-             self::SOURCE_STREAK_BONUS => 'Streak Bonus',
+            self::SOURCE_STREAK_BONUS => 'Streak Bonus',
             self::SOURCE_ACHIEVEMENT => 'Achievement Unlocked',
             default => ucfirst(str_replace('_', ' ', $this->source))
         };

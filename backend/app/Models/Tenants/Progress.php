@@ -2,6 +2,7 @@
 
 namespace App\Models\Tenants;
 
+use App\Traits\Tenant\HasAuditLog;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -9,7 +10,9 @@ use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 
 class Progress extends Model
 {
-    use HasFactory, BelongsToTenant;
+    use HasFactory, BelongsToTenant, HasAuditLog;
+
+    public const AUDIT_AREA = 'progress';
 
     /**
      * The attributes that are mass assignable.
@@ -36,6 +39,20 @@ class Progress extends Model
         'progress_percentage' => 'integer',
         'completed_at' => 'datetime',
         'metadata' => 'array',
+    ];
+
+    protected array $auditLogEvents = [
+        'created' => 'Created progress record for user :user_id (:content_type)',
+        'updated' => 'Updated progress record for user :user_id (:status)',
+        'deleted' => 'Deleted progress record for user :user_id',
+    ];
+
+    protected array $auditLogProperties = [
+        'user_id',
+        'content_type',
+        'content_id',
+        'status',
+        'progress_percentage',
     ];
 
     /**
@@ -68,7 +85,7 @@ class Progress extends Model
     public function scopeForContent($query, $contentType, $contentId)
     {
         return $query->where('content_type', $contentType)
-                    ->where('content_id', $contentId);
+            ->where('content_id', $contentId);
     }
 
     /**

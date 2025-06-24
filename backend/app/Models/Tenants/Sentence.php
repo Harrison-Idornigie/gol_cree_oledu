@@ -2,7 +2,7 @@
 
 namespace App\Models\Tenants;
 
-use App\Traits\Tenant\{HasVersions, HasAuditLog };
+use App\Traits\Tenant\{HasVersions, HasAuditLog};
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\{BelongsTo, HasMany, BelongsToMany};
@@ -36,6 +36,15 @@ class Sentence extends Model implements HasMedia
         'text',
         'pronunciation_key',
         'metadata'
+    ];
+
+    /**
+     * The attributes that should be version controlled.
+     */
+    protected array $versionedAttributes = [
+        'text',
+        'pronunciation_key',
+        'metadata',
     ];
 
     public function registerMediaCollections(): void
@@ -118,7 +127,7 @@ class Sentence extends Model implements HasMedia
         // Add translations if they're loaded
         if ($this->relationLoaded('translations')) {
             $translations = $this->translations;
-            
+
             if ($targetLanguageCode) {
                 $targetLanguage = Language::where('code', $targetLanguageCode)->first();
                 if ($targetLanguage) {
@@ -128,7 +137,7 @@ class Sentence extends Model implements HasMedia
                     }
                 }
             }
-            
+
             $data['translations'] = $translations->map(function ($translation) {
                 return [
                     'id' => $translation->id,
@@ -167,18 +176,18 @@ class Sentence extends Model implements HasMedia
     public function addAudioFile($file, bool $isSlow = false, array $customProperties = [])
     {
         $collection = $isSlow ? 'audio_slow' : 'audio';
-        
+
         // Add language information to custom properties
         if ($this->language && isset($this->language->code)) {
             $customProperties['language_code'] = $this->language->code;
         }
         $customProperties['text'] = $this->text;
-        
+
         // Use app's MediaService to add the file
         return app(\App\Services\MediaService::class)->addMedia(
-            $this, 
-            $file, 
-            $collection, 
+            $this,
+            $file,
+            $collection,
             $customProperties
         );
     }

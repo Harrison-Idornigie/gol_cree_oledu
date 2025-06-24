@@ -2,6 +2,8 @@
 
 namespace App\Models\Tenants;
 
+use App\Traits\Tenant\HasAuditLog;
+use App\Traits\Tenant\HasVersions;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -12,7 +14,9 @@ use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 
 class MediaFile extends Model
 {
-    use HasFactory, SoftDeletes, BelongsToTenant;
+    use HasFactory, SoftDeletes, BelongsToTenant, HasAuditLog, HasVersions;
+
+    public const AUDIT_AREA = 'media_files';
 
     protected $fillable = [
         'collection_name',
@@ -37,6 +41,31 @@ class MediaFile extends Model
         'generated_conversions' => 'array',
         'metadata' => 'array',
         'order' => 'integer'
+    ];
+
+    protected array $auditLogEvents = [
+        'created' => 'Uploaded media file: :file_name (:collection_name)',
+        'updated' => 'Updated media file: :file_name',
+        'deleted' => 'Deleted media file: :file_name',
+    ];
+
+    protected array $auditLogProperties = [
+        'collection_name',
+        'file_name',
+        'mime_type',
+        'size',
+        'path',
+    ];
+
+    /**
+     * The attributes that should be version controlled.
+     */
+    protected array $versionedAttributes = [
+        'collection_name',
+        'file_name',
+        'custom_properties',
+        'metadata',
+        'order',
     ];
 
     /**
@@ -72,8 +101,8 @@ class MediaFile extends Model
      */
     protected function getCdnUrl(string $conversion = ''): string
     {
-        $path = $conversion ? 
-            $this->getConversionPath($conversion) : 
+        $path = $conversion ?
+            $this->getConversionPath($conversion) :
             $this->path;
 
         return $this->cdn_url . '/' . ltrim($path, '/');
@@ -84,8 +113,8 @@ class MediaFile extends Model
      */
     protected function getLocalUrl(string $conversion = ''): string
     {
-        $path = $conversion ? 
-            $this->getConversionPath($conversion) : 
+        $path = $conversion ?
+            $this->getConversionPath($conversion) :
             $this->path;
 
         return Storage::disk($this->disk)->url($path);
@@ -109,9 +138,10 @@ class MediaFile extends Model
         }
 
         return collect($this->responsive_images)
-            ->map(fn ($path) => $this->cdn_url ? 
-                $this->cdn_url . '/' . ltrim($path, '/') :
-                Storage::disk($this->disk)->url($path)
+            ->map(
+                fn($path) => $this->cdn_url ?
+                    $this->cdn_url . '/' . ltrim($path, '/') :
+                    Storage::disk($this->disk)->url($path)
             )
             ->toArray();
     }

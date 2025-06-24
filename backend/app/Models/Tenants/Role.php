@@ -2,6 +2,7 @@
 
 namespace App\Models\Tenants;
 
+use App\Traits\Tenant\HasAuditLog;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -9,7 +10,9 @@ use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 
 class Role extends Model
 {
-    use HasFactory, BelongsToTenant;
+    use HasFactory, BelongsToTenant, HasAuditLog;
+
+    public const AUDIT_AREA = 'roles';
 
     protected $fillable = [
         'name',
@@ -22,6 +25,19 @@ class Role extends Model
     protected $casts = [
         'is_system' => 'boolean',
         'metadata' => 'array'
+    ];
+
+    protected array $auditLogEvents = [
+        'created' => 'Created role: :name (:slug)',
+        'updated' => 'Updated role: :name',
+        'deleted' => 'Deleted role: :name',
+    ];
+
+    protected array $auditLogProperties = [
+        'name',
+        'slug',
+        'description',
+        'is_system',
     ];
 
     /**
@@ -140,7 +156,7 @@ class Role extends Model
     {
         $granted = $this->grantedPermissions()->pluck('slug')->toArray();
         $denied = $this->deniedPermissions()->pluck('slug')->toArray();
-        
+
         return array_diff($granted, $denied);
     }
 

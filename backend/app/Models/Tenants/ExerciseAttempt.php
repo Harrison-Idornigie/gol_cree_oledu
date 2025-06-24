@@ -1,13 +1,17 @@
 <?php
+
 namespace App\Models\Tenants;
 
+use App\Traits\Tenant\HasAuditLog;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 
 class ExerciseAttempt extends Model
 {
-    use BelongsToTenant;
+    use BelongsToTenant, HasAuditLog;
+
+    public const AUDIT_AREA = 'exercise_attempts';
 
     protected $fillable = [
         'exercise_id',
@@ -29,6 +33,21 @@ class ExerciseAttempt extends Model
         'passed'             => 'boolean',
         'feedback'           => 'array',
         'attempt_number'     => 'integer',
+    ];
+
+    protected array $auditLogEvents = [
+        'created' => 'Created exercise attempt for exercise :exercise_id by user :user_id',
+        'updated' => 'Updated exercise attempt for exercise :exercise_id',
+        'deleted' => 'Deleted exercise attempt for exercise :exercise_id',
+    ];
+
+    protected array $auditLogProperties = [
+        'exercise_id',
+        'user_id',
+        'is_correct',
+        'score',
+        'passed',
+        'attempt_number',
     ];
 
     public function exercise(): BelongsTo

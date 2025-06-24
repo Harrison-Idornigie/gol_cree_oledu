@@ -2,6 +2,7 @@
 
 namespace App\Models\Tenants;
 
+use App\Traits\Tenant\HasAuditLog;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -9,7 +10,9 @@ use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 
 class Permission extends Model
 {
-    use HasFactory, BelongsToTenant;
+    use HasFactory, BelongsToTenant, HasAuditLog;
+
+    public const AUDIT_AREA = 'permissions';
 
     protected $fillable = [
         'name',
@@ -27,7 +30,21 @@ class Permission extends Model
         'conditions' => 'array'
     ];
 
- 
+    protected array $auditLogEvents = [
+        'created' => 'Created permission: :name (:slug)',
+        'updated' => 'Updated permission: :name',
+        'deleted' => 'Deleted permission: :name',
+    ];
+
+    protected array $auditLogProperties = [
+        'name',
+        'slug',
+        'group',
+        'description',
+        'is_system',
+    ];
+
+
 
     /**
      * Roles that have this permission.
@@ -52,17 +69,17 @@ class Permission extends Model
                         ->where('permission_membership.is_denied', false);
                 });
             })
-            // Users with this permission through roles
-            ->orWhereHas('activeRoles', function ($roleQuery) {
-                $roleQuery->whereHas('permissions', function ($permissionQuery) {
-                    $permissionQuery->where('permissions.id', $this->id)
-                        ->where('role_permissions.is_denied', false);
+                // Users with this permission through roles
+                ->orWhereHas('activeRoles', function ($roleQuery) {
+                    $roleQuery->whereHas('permissions', function ($permissionQuery) {
+                        $permissionQuery->where('permissions.id', $this->id)
+                            ->where('role_permissions.is_denied', false);
+                    });
                 });
-            });
         });
     }
 
-    
+
 
     /**
      * Check if the permission is granted to a specific role.

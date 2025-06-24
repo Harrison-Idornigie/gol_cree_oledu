@@ -2,6 +2,7 @@
 
 namespace App\Models\Tenants;
 
+use App\Traits\Tenant\HasAuditLog;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,7 +11,9 @@ use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 
 class Review extends Model
 {
-    use HasFactory, BelongsToTenant;
+    use HasFactory, BelongsToTenant, HasAuditLog;
+
+    public const AUDIT_AREA = 'reviews';
 
     /**
      * The attributes that are mass assignable.
@@ -37,6 +40,20 @@ class Review extends Model
     protected $casts = [
         'submitted_at' => 'datetime',
         'reviewed_at' => 'datetime',
+    ];
+
+    protected array $auditLogEvents = [
+        'created' => 'Created review for :content_type by user :submitted_by',
+        'updated' => 'Updated review status to :status',
+        'deleted' => 'Deleted review for :content_type',
+    ];
+
+    protected array $auditLogProperties = [
+        'content_type',
+        'content_id',
+        'submitted_by',
+        'reviewed_by',
+        'status',
     ];
 
     /**

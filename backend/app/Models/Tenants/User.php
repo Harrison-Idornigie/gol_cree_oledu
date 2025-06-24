@@ -1,8 +1,10 @@
 <?php
+
 namespace App\Models\Tenants;
 
 use App\Notifications\ResetPasswordNotification;
 use App\Notifications\VerifyEmailNotification;
+use App\Traits\Tenant\HasAuditLog;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -17,7 +19,9 @@ use App\Traits\Tenant\HasPermissions;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens, HasFactory, Notifiable, BelongsToTenant, HasPermissions;
+    use HasApiTokens, HasFactory, Notifiable, BelongsToTenant, HasPermissions, HasAuditLog;
+
+    public const AUDIT_AREA = 'users';
 
     protected $fillable = [
         'name',
@@ -42,6 +46,20 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
         'password'          => 'hashed',
         'total_points'      => 'integer',
+    ];
+
+    protected array $auditLogEvents = [
+        'created' => 'Created user account: :name (:email)',
+        'updated' => 'Updated user account: :name',
+        'deleted' => 'Deleted user account: :name',
+    ];
+
+    protected array $auditLogProperties = [
+        'name',
+        'email',
+        'membership',
+        'interface_language',
+        'total_points',
     ];
 
     /**
@@ -173,9 +191,9 @@ class User extends Authenticatable implements MustVerifyEmail
         ];
     }
 
-  
 
- 
+
+
     /**
      * Check if user has a specific membership.
      */
@@ -197,7 +215,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function isSuperAdmin(): bool
     {
-        return $this->membership === 'super-admin' ;
+        return $this->membership === 'super-admin';
     }
 
     /**
@@ -205,7 +223,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function isTenantAdmin(): bool
     {
-        return $this->membership === 'tenant-admin' || $this->membership === 'admin' ;
+        return $this->membership === 'tenant-admin' || $this->membership === 'admin';
     }
 
     /**
@@ -260,24 +278,42 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         $fixedPermissions = [
             'admin' => [
-                'system.manage', 'tenants.manage', 'users.manage',
-                'content.manage', 'team', 'admin', 'words.manage', 'lessons.manage'
+                'system.manage',
+                'tenants.manage',
+                'users.manage',
+                'content.manage',
+                'team',
+                'admin',
+                'words.manage',
+                'lessons.manage'
             ],
             'tenant-admin' => [
-                'tenant-admin', 'users.manage', 'content.view',
-                'settings.manage', 'analytics.view', 'reports.view'
+                'tenant-admin',
+                'users.manage',
+                'content.view',
+                'settings.manage',
+                'analytics.view',
+                'reports.view'
             ],
             'team' => [
-                'content.create', 'words.manage', 'team', 'lessons.manage'
+                'content.create',
+                'words.manage',
+                'team',
+                'lessons.manage'
             ],
             'student' => [
-                'content.view', 'progress.track', 'exercises.attempt'
+                'content.view',
+                'progress.track',
+                'exercises.attempt'
             ],
             'system' => [
-                'system.seed', 'system.migrate', 'content.create', 'content.manage'
+                'system.seed',
+                'system.migrate',
+                'content.create',
+                'content.manage'
             ]
         ];
-        
+
         return $fixedPermissions[$this->membership] ?? [];
     }
 }

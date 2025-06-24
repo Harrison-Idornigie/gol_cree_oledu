@@ -3,6 +3,7 @@
 namespace App\Models\Tenants;
 
 use App\Traits\Tenant\HasAuditLog;
+use App\Traits\Tenant\HasVersions;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\{BelongsTo, HasMany, BelongsToMany};
@@ -12,7 +13,7 @@ use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 
 class Word extends Model implements HasMedia
 {
-    use HasFactory, InteractsWithMedia, HasAuditLog, BelongsToTenant;
+    use HasFactory, InteractsWithMedia, HasAuditLog, HasVersions, BelongsToTenant;
 
     protected $fillable = [
         'language_id',
@@ -38,6 +39,16 @@ class Word extends Model implements HasMedia
         'pronunciation_key',
         'part_of_speech',
         'metadata'
+    ];
+
+    /**
+     * The attributes that should be version controlled.
+     */
+    protected array $versionedAttributes = [
+        'text',
+        'pronunciation_key',
+        'part_of_speech',
+        'metadata',
     ];
 
     public function registerMediaCollections(): void
@@ -94,7 +105,7 @@ class Word extends Model implements HasMedia
      */
     public function getPronunciationUrl(): ?string
     {
-        return $this->hasMedia('pronunciation') ? 
+        return $this->hasMedia('pronunciation') ?
             $this->getFirstMediaUrl('pronunciation') : null;
     }
 
@@ -130,7 +141,7 @@ class Word extends Model implements HasMedia
         // Add translations if loaded
         if ($this->relationLoaded('translations')) {
             $translations = $this->translations;
-            
+
             // Filter by target language if specified
             if ($targetLanguage) {
                 $translations = $translations->filter(function ($translation) use ($targetLanguage) {
@@ -140,7 +151,7 @@ class Word extends Model implements HasMedia
                     return $translation->language->code === $targetLanguage;
                 });
             }
-            
+
             $data['translations'] = $translations->map(function ($translation) {
                 $translationData = [
                     'id' => $translation->id,
