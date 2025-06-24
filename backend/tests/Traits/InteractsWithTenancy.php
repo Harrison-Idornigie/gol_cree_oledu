@@ -49,6 +49,9 @@ trait InteractsWithTenancy
         // Use SQLite for testing with proper configuration to avoid VACUUM issues
         Config::set('database.default', 'sqlite');
 
+        // Configure tenancy to use SQLite for central connection in tests
+        Config::set('tenancy.database.central_connection', 'sqlite');
+
         // Set up central database for testing (needed for tenant lookup)
         $this->setupCentralDatabase();
 
@@ -62,12 +65,7 @@ trait InteractsWithTenancy
         ]);
 
         // Configure tenancy database manager for file-based SQLite
-        Config::set('tenancy.database.managers.sqlite', [
-            'driver' => 'sqlite',
-            'database' => database_path('testing/tenant_{tenant_id}.sqlite'),
-            'prefix' => '',
-            'foreign_key_constraints' => true,
-        ]);
+        Config::set('tenancy.database.managers.sqlite', \Stancl\Tenancy\TenantDatabaseManagers\SQLiteDatabaseManager::class);
 
         // Disable automatic tenant database creation events to avoid conflicts
         Config::set('tenancy.features', []);
@@ -77,6 +75,17 @@ trait InteractsWithTenancy
 
         // Run landlord migrations to ensure central database tables exist
         $this->runLandlordMigrations();
+    }
+
+    /**
+     * Ensure testing directory exists
+     */
+    protected function ensureTestingDirectoryExists(): void
+    {
+        $testingDir = database_path('testing');
+        if (!File::exists($testingDir)) {
+            File::makeDirectory($testingDir, 0755, true);
+        }
     }
 
     /**
@@ -497,7 +506,7 @@ trait InteractsWithTenancy
         return $this->runInTenantContext($this->tenant ?? $this->createTestTenant(), function () use ($attributes) {
             return \App\Models\Tenants\User::factory()->create(array_merge([
                 'email' => 'team@test.com',
-                'membership_type' => 'team',
+                'membership' => 'team',
                 'email_verified_at' => now(),
             ], $attributes));
         });
@@ -511,7 +520,7 @@ trait InteractsWithTenancy
         return $this->runInTenantContext($this->tenant ?? $this->createTestTenant(), function () use ($attributes) {
             return \App\Models\Tenants\User::factory()->create(array_merge([
                 'email' => 'student@test.com',
-                'membership_type' => 'student',
+                'membership' => 'student',
                 'email_verified_at' => now(),
             ], $attributes));
         });
@@ -525,7 +534,7 @@ trait InteractsWithTenancy
         return $this->runInTenantContext($this->tenant ?? $this->createTestTenant(), function () use ($attributes) {
             return \App\Models\Tenants\User::factory()->create(array_merge([
                 'email' => 'admin@test.com',
-                'membership_type' => 'tenant-admin',
+                'membership' => 'admin',
                 'email_verified_at' => now(),
             ], $attributes));
         });

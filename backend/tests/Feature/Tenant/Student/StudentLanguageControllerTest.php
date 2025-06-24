@@ -2,34 +2,23 @@
 
 namespace Tests\Feature\Tenant\Student;
 
-use Tests\TestCase;
-use Tests\Traits\InteractsWithTenancy;
+use Tests\TenantTestCase;
 use App\Models\Landlord\Tenant;
 use App\Models\Tenants\User;
 use App\Models\Tenants\Language;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
 
-class StudentLanguageControllerTest extends TestCase
+class StudentLanguageControllerTest extends TenantTestCase
 {
-    use RefreshDatabase, InteractsWithTenancy;
-
     protected Tenant $tenant;
     protected User $studentUser;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->setUpTenancy();
-        
-        $this->tenant = $this->createTestTenant();
-        $this->studentUser = $this->createTenantStudent();
-    }
 
-    protected function tearDown(): void
-    {
-        $this->tearDownTenancy();
-        parent::tearDown();
+        $this->tenant = $this->createTestTenant();
+        $this->studentUser = $this->createStudentUserForTest();
     }
 
     /**
@@ -82,7 +71,7 @@ class StudentLanguageControllerTest extends TestCase
         Sanctum::actingAs($this->studentUser, ['*']);
 
         // Create a language first
-        $language = $this->createLanguage();
+        $language = $this->createTestLanguage();
 
         $response = $this->getJson("/api/{$this->tenant->slug}/student/languages/{$language->id}");
 
@@ -104,7 +93,7 @@ class StudentLanguageControllerTest extends TestCase
     public function test_learning_paths_success()
     {
         Sanctum::actingAs($this->studentUser, ['*']);
-        $language = $this->createLanguage();
+        $language = $this->createTestLanguage();
 
         $response = $this->getJson("/api/{$this->tenant->slug}/student/languages/{$language->id}/learning-paths");
 
@@ -126,7 +115,7 @@ class StudentLanguageControllerTest extends TestCase
     public function test_proficiency_levels_success()
     {
         Sanctum::actingAs($this->studentUser, ['*']);
-        $language = $this->createLanguage();
+        $language = $this->createTestLanguage();
 
         $response = $this->getJson("/api/{$this->tenant->slug}/student/languages/{$language->id}/proficiency-levels");
 
@@ -148,7 +137,7 @@ class StudentLanguageControllerTest extends TestCase
     public function test_user_progress_success()
     {
         Sanctum::actingAs($this->studentUser, ['*']);
-        $language = $this->createLanguage();
+        $language = $this->createTestLanguage();
 
         $response = $this->getJson("/api/{$this->tenant->slug}/student/languages/{$language->id}/progress");
 
@@ -170,7 +159,7 @@ class StudentLanguageControllerTest extends TestCase
     public function test_dashboard_success()
     {
         Sanctum::actingAs($this->studentUser, ['*']);
-        $language = $this->createLanguage();
+        $language = $this->createTestLanguage();
 
         $response = $this->getJson("/api/{$this->tenant->slug}/student/languages/{$language->id}/dashboard");
 
@@ -226,25 +215,19 @@ class StudentLanguageControllerTest extends TestCase
         $response = $this->getJson("/api/{$this->tenant->slug}/student/languages");
 
         $response->assertStatus(200);
-        
+
         // When implemented, should contain these fields
-        $expectedStructure = [
-            'success',
-            'message',
-            'data' => [
-                // Expected language data structure
-                // 'languages' => [
-                //     [
-                //         'id' => 'string',
-                //         'name' => 'string',
-                //         'code' => 'string',
-                //         'native_name' => 'string',
-                //         'is_active' => 'boolean',
-                //         'learning_paths_count' => 'integer'
-                //     ]
-                // ]
-            ]
-        ];
+        // Expected language data structure:
+        // 'languages' => [
+        //     [
+        //         'id' => 'string',
+        //         'name' => 'string',
+        //         'code' => 'string',
+        //         'native_name' => 'string',
+        //         'is_active' => 'boolean',
+        //         'learning_paths_count' => 'integer'
+        //     ]
+        // ]
 
         $response->assertJsonStructure(['success', 'message', 'data']);
     }
@@ -252,18 +235,18 @@ class StudentLanguageControllerTest extends TestCase
     /**
      * Helper methods
      */
-    private function createTenantStudent(): User
+    protected function createStudentUserForTest(): User
     {
         return $this->runInTenantContext($this->tenant, function () {
             return User::factory()->create([
                 'email' => 'student@test.com',
-                'membership_type' => 'student',
+                'membership' => 'student',
                 'email_verified_at' => now(),
             ]);
         });
     }
 
-    private function createLanguage()
+    protected function createTestLanguage()
     {
         return $this->runInTenantContext($this->tenant, function () {
             return Language::create([

@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Tenant\Team;
 
-use Tests\TestCase;
+use Tests\TenantTestCase;
 use Tests\Traits\InteractsWithTenancy;
 use App\Models\Landlord\Tenant;
 use App\Models\Tenants\User;
@@ -12,7 +12,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
 use Illuminate\Support\Str;
 
-class TeamLearningPathControllerTest extends TestCase
+class TeamLearningPathControllerTest extends TenantTestCase
 {
     use RefreshDatabase, InteractsWithTenancy;
 
@@ -26,16 +26,16 @@ class TeamLearningPathControllerTest extends TestCase
     {
         parent::setUp();
         $this->setUpTenancy();
-        
+
         // Create test tenant
         $this->tenant = $this->createTestTenant();
         $this->initializeTenantContext($this->tenant);
-        
+
         // Create users with different roles in tenant context
         $this->teamUser = $this->createTenantTeam();
         $this->adminUser = $this->createTenantAdmin();
         $this->studentUser = $this->createTenantStudent();
-        
+
         // Create test language
         $this->language = $this->createLanguage();
     }
@@ -75,7 +75,7 @@ class TeamLearningPathControllerTest extends TestCase
             'status' => 'draft',
             'created_by' => $this->teamUser->id,
         ];
-        
+
         return $this->runInTenantContext($this->tenant, function () use ($defaultAttrs, $attributes) {
             return LearningPath::create(array_merge($defaultAttrs, $attributes));
         });
@@ -91,7 +91,7 @@ class TeamLearningPathControllerTest extends TestCase
         for ($i = 0; $i < 3; $i++) {
             $paths[] = $this->createLearningPath();
         }
-        
+
         // Authenticate as team member
         Sanctum::actingAs($this->teamUser, ['*']);
 
@@ -189,7 +189,7 @@ class TeamLearningPathControllerTest extends TestCase
     {
         // Create test learning path
         $path = $this->createLearningPath();
-        
+
         // Authenticate as team member
         Sanctum::actingAs($this->teamUser, ['*']);
 
@@ -229,7 +229,7 @@ class TeamLearningPathControllerTest extends TestCase
     {
         // Create test learning path
         $path = $this->createLearningPath();
-        
+
         // Authenticate as team member
         Sanctum::actingAs($this->teamUser, ['*']);
 
@@ -266,7 +266,7 @@ class TeamLearningPathControllerTest extends TestCase
     {
         // Create test learning path
         $path = $this->createLearningPath();
-        
+
         // Authenticate as team member
         Sanctum::actingAs($this->teamUser, ['*']);
 
@@ -281,7 +281,7 @@ class TeamLearningPathControllerTest extends TestCase
                 'success' => true,
                 'message' => 'Learning path deleted successfully.'
             ]);
-        
+
         // Verify the learning path was actually deleted
         $this->runInTenantContext($this->tenant, function () use ($path) {
             $this->assertDatabaseMissing('learning_paths', ['id' => $path->id]);
@@ -295,7 +295,7 @@ class TeamLearningPathControllerTest extends TestCase
     {
         // Create test learning path
         $path = $this->createLearningPath(['status' => 'draft']);
-        
+
         // Authenticate as team member
         Sanctum::actingAs($this->teamUser, ['*']);
 
@@ -311,7 +311,7 @@ class TeamLearningPathControllerTest extends TestCase
                 'success' => true,
                 'message' => 'Learning path submitted for review successfully.'
             ]);
-        
+
         // Verify the status was updated
         $this->runInTenantContext($this->tenant, function () use ($path) {
             $this->assertDatabaseHas('learning_paths', [
@@ -328,7 +328,7 @@ class TeamLearningPathControllerTest extends TestCase
     {
         // Create test learning path
         $path = $this->createLearningPath(['status' => 'pending_review']);
-        
+
         // Authenticate as team member with admin rights
         Sanctum::actingAs($this->adminUser, ['*']);
 
@@ -348,7 +348,7 @@ class TeamLearningPathControllerTest extends TestCase
                 'success' => true,
                 'message' => 'Learning path status updated successfully.'
             ]);
-        
+
         // Verify the status was updated
         $this->runInTenantContext($this->tenant, function () use ($path) {
             $this->assertDatabaseHas('learning_paths', [
@@ -365,7 +365,7 @@ class TeamLearningPathControllerTest extends TestCase
     {
         // Create test learning path
         $path = $this->createLearningPath();
-        
+
         // Authenticate as team member
         Sanctum::actingAs($this->teamUser, ['*']);
 

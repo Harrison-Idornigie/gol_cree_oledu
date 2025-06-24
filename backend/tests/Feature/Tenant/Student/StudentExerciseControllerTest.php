@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Tenant\Student;
 
-use Tests\TestCase;
+use Tests\TenantTestCase;
 use Tests\Traits\InteractsWithTenancy;
 use App\Models\Landlord\Tenant;
 use App\Models\Tenants\User;
@@ -13,7 +13,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
 use Illuminate\Support\Str;
 
-class StudentExerciseControllerTest extends TestCase
+class StudentExerciseControllerTest extends TenantTestCase
 {
     use RefreshDatabase, InteractsWithTenancy;
 
@@ -28,15 +28,15 @@ class StudentExerciseControllerTest extends TestCase
     {
         parent::setUp();
         $this->setUpTenancy();
-        
+
         // Create test tenant
         $this->tenant = $this->createTestTenant();
         $this->initializeTenantContext($this->tenant);
-        
+
         // Create users with different roles in tenant context
         $this->studentUser = $this->createTenantStudent();
         $this->teamUser = $this->createTenantTeam();
-        
+
         // Create test environment
         $this->language = $this->createLanguage();
         $this->lesson = $this->createLesson();

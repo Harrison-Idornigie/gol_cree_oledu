@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Tenant\Student;
 
-use Tests\TestCase;
+use Tests\TenantTestCase;
 use Tests\Traits\InteractsWithTenancy;
 use App\Models\Landlord\Tenant;
 use App\Models\Tenants\User;
@@ -10,7 +10,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
 use Illuminate\Support\Str;
 
-class StudentVocabularyControllerTest extends TestCase
+class StudentVocabularyControllerTest extends TenantTestCase
 {
     use RefreshDatabase, InteractsWithTenancy;
 
@@ -18,19 +18,19 @@ class StudentVocabularyControllerTest extends TestCase
     protected User $studentUser;
     protected User $teamUser;
     protected array $testData;
-    
+
     protected function setUp(): void
     {
         parent::setUp();
         $this->setUpTenancy();
-        
+
         // Create test tenant
         $this->tenant = $this->createTestTenant();
-        
+
         // Create users with different roles in tenant context
         $this->studentUser = $this->createTenantStudent();
         $this->teamUser = $this->createTenantTeamMember();
-        
+
         // Setup test data
         $this->testData = $this->setupTestData();
     }
@@ -40,7 +40,7 @@ class StudentVocabularyControllerTest extends TestCase
         $this->tearDownTenancy();
         parent::tearDown();
     }
-    
+
     /**
      * Helper to create a tenant team member
      */
@@ -53,7 +53,7 @@ class StudentVocabularyControllerTest extends TestCase
                 'password' => bcrypt('password'),
                 'email_verified_at' => now(),
             ]);
-            
+
             // Assign team role
             try {
                 // Direct DB insert to user_permissions for compatibility
@@ -66,7 +66,7 @@ class StudentVocabularyControllerTest extends TestCase
                         'updated_at' => now(),
                     ]);
                 }
-                
+
                 // If we're using membership_type
                 if (\Illuminate\Support\Facades\Schema::hasColumn('users', 'membership_type')) {
                     $user->membership_type = 'team';
@@ -75,11 +75,11 @@ class StudentVocabularyControllerTest extends TestCase
             } catch (\Exception $e) {
                 // Role assignment might fail if tables don't exist yet
             }
-            
+
             return $user;
         });
     }
-    
+
     /**
      * Helper to create a tenant student
      */
@@ -92,7 +92,7 @@ class StudentVocabularyControllerTest extends TestCase
                 'password' => bcrypt('password'),
                 'email_verified_at' => now(),
             ]);
-            
+
             // Assign student role
             try {
                 // Direct DB insert to user_permissions for compatibility
@@ -105,7 +105,7 @@ class StudentVocabularyControllerTest extends TestCase
                         'updated_at' => now(),
                     ]);
                 }
-                
+
                 // If we're using membership_type
                 if (\Illuminate\Support\Facades\Schema::hasColumn('users', 'membership_type')) {
                     $user->membership_type = 'student';
@@ -114,7 +114,7 @@ class StudentVocabularyControllerTest extends TestCase
             } catch (\Exception $e) {
                 // Role assignment might fail if tables don't exist yet
             }
-            
+
             return $user;
         });
     }
@@ -134,7 +134,7 @@ class StudentVocabularyControllerTest extends TestCase
                 'created_at' => now(),
                 'updated_at' => now()
             ]);
-            
+
             // Create another language for translations
             $nativeLanguageId = \Illuminate\Support\Facades\DB::table('languages')->insertGetId([
                 'name' => 'Native Language',
@@ -144,7 +144,7 @@ class StudentVocabularyControllerTest extends TestCase
                 'created_at' => now(),
                 'updated_at' => now()
             ]);
-            
+
             // Create learning path
             $learningPathId = (string) Str::uuid();
             \Illuminate\Support\Facades\DB::table('learning_paths')->insert([
@@ -157,7 +157,7 @@ class StudentVocabularyControllerTest extends TestCase
                 'created_at' => now(),
                 'updated_at' => now()
             ]);
-            
+
             // Create unit
             $unitId = (string) Str::uuid();
             \Illuminate\Support\Facades\DB::table('units')->insert([
@@ -171,13 +171,13 @@ class StudentVocabularyControllerTest extends TestCase
                 'created_at' => now(),
                 'updated_at' => now()
             ]);
-            
+
             // Create vocabulary items
             $vocabItems = [];
-            
+
             for ($i = 1; $i <= 5; $i++) {
                 $vocabId = (string) Str::uuid();
-                
+
                 \Illuminate\Support\Facades\DB::table('vocabularies')->insert([
                     'id' => $vocabId,
                     'word' => "Word {$i}",
@@ -190,7 +190,7 @@ class StudentVocabularyControllerTest extends TestCase
                     'created_at' => now(),
                     'updated_at' => now()
                 ]);
-                
+
                 // Assign vocabulary to unit
                 \Illuminate\Support\Facades\DB::table('unit_vocabularies')->insert([
                     'id' => (string) Str::uuid(),
@@ -199,10 +199,10 @@ class StudentVocabularyControllerTest extends TestCase
                     'created_at' => now(),
                     'updated_at' => now()
                 ]);
-                
+
                 $vocabItems[] = $vocabId;
             }
-            
+
             // Create user vocabulary progress for first item
             \Illuminate\Support\Facades\DB::table('user_vocabularies')->insert([
                 'id' => (string) Str::uuid(),
@@ -212,7 +212,7 @@ class StudentVocabularyControllerTest extends TestCase
                 'created_at' => now(),
                 'updated_at' => now()
             ]);
-            
+
             // Create a mistake record for second item
             \Illuminate\Support\Facades\DB::table('user_vocabulary_mistakes')->insert([
                 'id' => (string) Str::uuid(),
@@ -222,7 +222,7 @@ class StudentVocabularyControllerTest extends TestCase
                 'created_at' => now(),
                 'updated_at' => now()
             ]);
-            
+
             return [
                 'language_id' => $languageId,
                 'native_language_id' => $nativeLanguageId,
@@ -232,16 +232,16 @@ class StudentVocabularyControllerTest extends TestCase
             ];
         });
     }
-    
+
     /** @test */
     public function student_can_view_all_vocabulary_items()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
-        
+
         // API call to get all vocabulary items
         $response = $this->getJson("/api/{$this->tenant->slug}/student/vocabulary");
-        
+
         $response->assertStatus(200)
             ->assertJsonStructure([
                 'data' => [
@@ -261,16 +261,16 @@ class StudentVocabularyControllerTest extends TestCase
             ])
             ->assertJsonCount(5, 'data');
     }
-    
+
     /** @test */
     public function student_can_view_vocabulary_for_specific_unit()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
-        
+
         // API call to get unit vocabulary
         $response = $this->getJson("/api/{$this->tenant->slug}/student/vocabulary/unit/{$this->testData['unit_id']}");
-        
+
         $response->assertStatus(200)
             ->assertJsonStructure([
                 'data' => [
@@ -286,19 +286,19 @@ class StudentVocabularyControllerTest extends TestCase
             ])
             ->assertJsonCount(5, 'data');
     }
-    
+
     /** @test */
     public function student_can_view_individual_vocabulary_item()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
-        
+
         // Get first vocabulary item
         $vocabId = $this->testData['vocabulary_items'][0];
-        
+
         // API call to get specific vocabulary item
         $response = $this->getJson("/api/{$this->tenant->slug}/student/vocabulary/{$vocabId}");
-        
+
         $response->assertStatus(200)
             ->assertJsonStructure([
                 'data' => [
@@ -319,16 +319,16 @@ class StudentVocabularyControllerTest extends TestCase
                 'user_status' => 'learned' // This vocabulary was marked as learned for the student
             ]);
     }
-    
+
     /** @test */
     public function student_can_view_review_vocabulary()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
-        
+
         // API call to get review items
         $response = $this->getJson("/api/{$this->tenant->slug}/student/vocabulary/review");
-        
+
         $response->assertStatus(200)
             ->assertJsonStructure([
                 'data' => [
@@ -343,16 +343,16 @@ class StudentVocabularyControllerTest extends TestCase
                 ]
             ]);
     }
-    
+
     /** @test */
     public function student_can_view_mistake_vocabulary()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
-        
+
         // API call to get mistake items
         $response = $this->getJson("/api/{$this->tenant->slug}/student/vocabulary/mistakes");
-        
+
         $response->assertStatus(200)
             ->assertJsonStructure([
                 'data' => [
@@ -370,21 +370,21 @@ class StudentVocabularyControllerTest extends TestCase
                 'mistake_count' => 2
             ]);
     }
-    
+
     /** @test */
     public function student_can_check_translation()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
-        
+
         // Get first vocabulary item
         $vocabId = $this->testData['vocabulary_items'][0];
-        
+
         // API call to check translation - correct answer
         $response = $this->postJson("/api/{$this->tenant->slug}/student/vocabulary/{$vocabId}/check", [
             'translation' => 'Translation 1'
         ]);
-        
+
         $response->assertStatus(200)
             ->assertJsonStructure([
                 'data' => [
@@ -397,12 +397,12 @@ class StudentVocabularyControllerTest extends TestCase
                 'correct' => true,
                 'vocabulary_id' => $vocabId
             ]);
-        
+
         // API call to check translation - incorrect answer
         $response = $this->postJson("/api/{$this->tenant->slug}/student/vocabulary/{$vocabId}/check", [
             'translation' => 'Wrong translation'
         ]);
-        
+
         $response->assertStatus(200)
             ->assertJsonStructure([
                 'data' => [
@@ -416,27 +416,27 @@ class StudentVocabularyControllerTest extends TestCase
                 'expected_translation' => 'Translation 1',
                 'vocabulary_id' => $vocabId
             ]);
-        
+
         // Verify the mistake was recorded in DB
         $this->runInTenantContext($this->tenant, function () use ($vocabId) {
             $mistake = \Illuminate\Support\Facades\DB::table('user_vocabulary_mistakes')
                 ->where('user_id', $this->studentUser->id)
                 ->where('vocabulary_id', $vocabId)
                 ->first();
-                
+
             $this->assertNotNull($mistake);
         });
     }
-    
+
     /** @test */
     public function student_can_view_vocabulary_statistics()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
-        
+
         // API call to get vocabulary statistics
         $response = $this->getJson("/api/{$this->tenant->slug}/student/vocabulary/statistics");
-        
+
         $response->assertStatus(200)
             ->assertJsonStructure([
                 'data' => [
@@ -451,23 +451,23 @@ class StudentVocabularyControllerTest extends TestCase
             ->assertJsonPath('data.learned_count', 1) // We have 1 learned vocabulary
             ->assertJsonPath('data.mistake_count', 1); // We have 1 vocabulary with mistakes
     }
-    
+
     /** @test */
     public function unauthenticated_user_cannot_access_vocabulary()
     {
         // API call without authentication
         $response = $this->getJson("/api/{$this->tenant->slug}/student/vocabulary");
-        
+
         $response->assertStatus(401);
     }
-    
+
     /** @test */
     public function student_cannot_access_unpublished_vocabulary()
     {
         // Create an unpublished vocabulary item
         $unpublishedVocabId = $this->runInTenantContext($this->tenant, function () {
             $vocabId = (string) Str::uuid();
-            
+
             \Illuminate\Support\Facades\DB::table('vocabularies')->insert([
                 'id' => $vocabId,
                 'word' => "Unpublished Word",
@@ -480,16 +480,16 @@ class StudentVocabularyControllerTest extends TestCase
                 'created_at' => now(),
                 'updated_at' => now()
             ]);
-            
+
             return $vocabId;
         });
-        
+
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
-        
+
         // API call to access unpublished vocabulary
         $response = $this->getJson("/api/{$this->tenant->slug}/student/vocabulary/{$unpublishedVocabId}");
-        
+
         // Should return 404 as students shouldn't see unpublished content
         $response->assertStatus(404);
     }

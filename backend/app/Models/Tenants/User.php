@@ -23,6 +23,14 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public const AUDIT_AREA = 'users';
 
+    /**
+     * Create a new factory instance for the model.
+     */
+    protected static function newFactory()
+    {
+        return \Database\Factories\Tenant\UserFactory::new();
+    }
+
     protected $fillable = [
         'name',
         'email',

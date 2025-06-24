@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Tenant\Auth;
 
-use Tests\TestCase;
+use Tests\TenantTestCase;
 use Tests\Traits\InteractsWithTenancy;
 use App\Models\Landlord\Tenant;
 use App\Models\Tenants\User;
@@ -11,7 +11,7 @@ use Illuminate\Support\Str;
 use Laravel\Sanctum\Sanctum;
 use Illuminate\Support\Facades\Hash;
 
-class TenantLoginControllerTest extends TestCase
+class TenantLoginControllerTest extends TenantTestCase
 {
     use RefreshDatabase, InteractsWithTenancy;
 

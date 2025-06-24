@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Tenant\Student;
 
-use Tests\TestCase;
+use Tests\TenantTestCase;
 use Tests\Traits\InteractsWithTenancy;
 use App\Models\Landlord\Tenant;
 use App\Models\Tenants\User;
@@ -10,7 +10,7 @@ use App\Models\Tenants\Language;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
 
-class StudentUserSettingsControllerTest extends TestCase
+class StudentUserSettingsControllerTest extends TenantTestCase
 {
     use RefreshDatabase, InteractsWithTenancy;
 

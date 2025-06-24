@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Tenant\Student;
 
-use Tests\TestCase;
+use Tests\TenantTestCase;
 use Tests\Traits\InteractsWithTenancy;
 use App\Models\Landlord\Tenant;
 use App\Models\Tenants\User;
@@ -10,7 +10,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
 use Illuminate\Support\Str;
 
-class StudentLessonControllerTest extends TestCase
+class StudentLessonControllerTest extends TenantTestCase
 {
     use RefreshDatabase, InteractsWithTenancy;
 
@@ -18,19 +18,19 @@ class StudentLessonControllerTest extends TestCase
     protected User $studentUser;
     protected User $teamUser;
     protected array $testData;
-    
+
     protected function setUp(): void
     {
         parent::setUp();
         $this->setUpTenancy();
-        
+
         // Create test tenant
         $this->tenant = $this->createTestTenant();
-        
+
         // Create users with different roles in tenant context
         $this->studentUser = $this->createTenantStudent();
         $this->teamUser = $this->createTenantTeamMember();
-        
+
         // Setup test data
         $this->testData = $this->setupTestData();
     }
@@ -40,7 +40,7 @@ class StudentLessonControllerTest extends TestCase
         $this->tearDownTenancy();
         parent::tearDown();
     }
-    
+
     /**
      * Helper to create a tenant team member
      */
@@ -53,7 +53,7 @@ class StudentLessonControllerTest extends TestCase
                 'password' => bcrypt('password'),
                 'email_verified_at' => now(),
             ]);
-            
+
             // Assign team role
             try {
                 // Direct DB insert to user_permissions for compatibility
@@ -66,7 +66,7 @@ class StudentLessonControllerTest extends TestCase
                         'updated_at' => now(),
                     ]);
                 }
-                
+
                 // If we're using membership_type
                 if (\Illuminate\Support\Facades\Schema::hasColumn('users', 'membership_type')) {
                     $user->membership_type = 'team';
@@ -75,11 +75,11 @@ class StudentLessonControllerTest extends TestCase
             } catch (\Exception $e) {
                 // Role assignment might fail if tables don't exist yet
             }
-            
+
             return $user;
         });
     }
-    
+
     /**
      * Helper to create a tenant student
      */
@@ -92,7 +92,7 @@ class StudentLessonControllerTest extends TestCase
                 'password' => bcrypt('password'),
                 'email_verified_at' => now(),
             ]);
-            
+
             // Assign student role
             try {
                 // Direct DB insert to user_permissions for compatibility
@@ -105,7 +105,7 @@ class StudentLessonControllerTest extends TestCase
                         'updated_at' => now(),
                     ]);
                 }
-                
+
                 // If we're using membership_type
                 if (\Illuminate\Support\Facades\Schema::hasColumn('users', 'membership_type')) {
                     $user->membership_type = 'student';
@@ -114,7 +114,7 @@ class StudentLessonControllerTest extends TestCase
             } catch (\Exception $e) {
                 // Role assignment might fail if tables don't exist yet
             }
-            
+
             return $user;
         });
     }
@@ -134,7 +134,7 @@ class StudentLessonControllerTest extends TestCase
                 'created_at' => now(),
                 'updated_at' => now()
             ]);
-            
+
             // Create learning path
             $learningPathId = (string) Str::uuid();
             \Illuminate\Support\Facades\DB::table('learning_paths')->insert([
@@ -147,7 +147,7 @@ class StudentLessonControllerTest extends TestCase
                 'created_at' => now(),
                 'updated_at' => now()
             ]);
-            
+
             // Create unit
             $unitId = (string) Str::uuid();
             \Illuminate\Support\Facades\DB::table('units')->insert([
@@ -161,7 +161,7 @@ class StudentLessonControllerTest extends TestCase
                 'created_at' => now(),
                 'updated_at' => now()
             ]);
-            
+
             // Create topic
             $topicId = (string) Str::uuid();
             \Illuminate\Support\Facades\DB::table('topics')->insert([
@@ -175,11 +175,11 @@ class StudentLessonControllerTest extends TestCase
                 'created_at' => now(),
                 'updated_at' => now()
             ]);
-            
+
             // Create lessons for this topic
             $lesson1Id = (string) Str::uuid();
             $lesson2Id = (string) Str::uuid();
-            
+
             \Illuminate\Support\Facades\DB::table('lessons')->insert([
                 'id' => $lesson1Id,
                 'topic_id' => $topicId,
@@ -192,7 +192,7 @@ class StudentLessonControllerTest extends TestCase
                 'created_at' => now(),
                 'updated_at' => now()
             ]);
-            
+
             \Illuminate\Support\Facades\DB::table('lessons')->insert([
                 'id' => $lesson2Id,
                 'topic_id' => $topicId,
@@ -205,7 +205,7 @@ class StudentLessonControllerTest extends TestCase
                 'created_at' => now(),
                 'updated_at' => now()
             ]);
-            
+
             // Create user progress for first lesson
             \Illuminate\Support\Facades\DB::table('user_progress')->insert([
                 'id' => (string) Str::uuid(),
@@ -216,7 +216,7 @@ class StudentLessonControllerTest extends TestCase
                 'created_at' => now(),
                 'updated_at' => now()
             ]);
-            
+
             return [
                 'language_id' => $language,
                 'learning_path_id' => $learningPathId,
@@ -227,16 +227,16 @@ class StudentLessonControllerTest extends TestCase
             ];
         });
     }
-    
+
     /** @test */
     public function student_can_view_lessons_in_topic()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
-        
+
         // API call to get lessons in topic
         $response = $this->getJson("/api/{$this->tenant->slug}/student/topics/{$this->testData['topic_id']}/lessons");
-        
+
         $response->assertStatus(200)
             ->assertJsonStructure([
                 'data' => [
@@ -259,16 +259,16 @@ class StudentLessonControllerTest extends TestCase
                 'title' => 'Lesson 2'
             ]);
     }
-    
+
     /** @test */
     public function student_can_view_individual_lesson()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
-        
+
         // API call to get specific lesson
         $response = $this->getJson("/api/{$this->tenant->slug}/student/lessons/{$this->testData['lesson1_id']}");
-        
+
         $response->assertStatus(200)
             ->assertJsonStructure([
                 'data' => [
@@ -288,20 +288,20 @@ class StudentLessonControllerTest extends TestCase
                 'title' => 'Lesson 1',
                 'progress' => 80
             ]);
-        
+
         // Verify content is present
         $this->assertNotEmpty($response->json('data.content'));
     }
-    
+
     /** @test */
     public function student_can_view_lesson_progress()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
-        
+
         // API call to get lesson progress
         $response = $this->getJson("/api/{$this->tenant->slug}/student/lessons/{$this->testData['lesson1_id']}/progress");
-        
+
         $response->assertStatus(200)
             ->assertJsonStructure([
                 'data' => [
@@ -317,16 +317,16 @@ class StudentLessonControllerTest extends TestCase
                 'completed' => false
             ]);
     }
-    
+
     /** @test */
     public function unauthenticated_user_cannot_access_lessons()
     {
         // API call without authentication
         $response = $this->getJson("/api/{$this->tenant->slug}/student/lessons/{$this->testData['lesson1_id']}");
-        
+
         $response->assertStatus(401);
     }
-    
+
     /** @test */
     public function student_cannot_access_unpublished_lesson()
     {
@@ -347,29 +347,29 @@ class StudentLessonControllerTest extends TestCase
             ]);
             return $lessonId;
         });
-        
+
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
-        
+
         // API call to access unpublished lesson
         $response = $this->getJson("/api/{$this->tenant->slug}/student/lessons/{$unpublishedLessonId}");
-        
+
         // Should return 404 as students shouldn't see unpublished content
         $response->assertStatus(404);
     }
-    
+
     /** @test */
     public function student_can_mark_lesson_as_completed()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
-        
+
         // API call to mark lesson as completed
         $response = $this->putJson("/api/{$this->tenant->slug}/student/progress/lesson/{$this->testData['lesson1_id']}", [
             'progress' => 100,
             'completed' => true
         ]);
-        
+
         $response->assertStatus(200)
             ->assertJsonStructure([
                 'data' => [
@@ -384,7 +384,7 @@ class StudentLessonControllerTest extends TestCase
                     'progress' => 100
                 ]
             ]);
-        
+
         // Verify the lesson is marked as completed in DB
         $this->runInTenantContext($this->tenant, function () {
             $progress = \Illuminate\Support\Facades\DB::table('user_progress')
@@ -392,13 +392,13 @@ class StudentLessonControllerTest extends TestCase
                 ->where('item_id', $this->testData['lesson1_id'])
                 ->where('progress_type', 'lesson')
                 ->first();
-                
+
             $this->assertNotNull($progress);
             $this->assertEquals(100, $progress->progress);
             $this->assertNotNull($progress->completed_at);
         });
     }
-    
+
     /** @test */
     public function sequential_learning_prevents_skipping_lessons()
     {
@@ -410,13 +410,13 @@ class StudentLessonControllerTest extends TestCase
                 ->where('item_id', $this->testData['lesson1_id'])
                 ->delete();
         });
-        
+
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
-        
+
         // Try to access lesson 2 directly (should be prevented by sequential learning)
         $response = $this->getJson("/api/{$this->tenant->slug}/student/lessons/{$this->testData['lesson2_id']}");
-        
+
         // Should return 403 (forbidden) if sequential learning is enforced
         // Note: This test might need adjustment based on how sequential learning is implemented
         if ($response->status() === 403) {
@@ -430,19 +430,19 @@ class StudentLessonControllerTest extends TestCase
             $this->markTestIncomplete('Sequential learning middleware may not be implemented as expected');
         }
     }
-    
+
     /** @test */
     public function student_can_partially_update_lesson_progress()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
-        
+
         // API call to update lesson progress to 50%
         $response = $this->putJson("/api/{$this->tenant->slug}/student/progress/lesson/{$this->testData['lesson1_id']}", [
             'progress' => 50,
             'completed' => false
         ]);
-        
+
         $response->assertStatus(200)
             ->assertJsonStructure([
                 'data' => [
@@ -457,10 +457,10 @@ class StudentLessonControllerTest extends TestCase
                     'progress' => 50
                 ]
             ]);
-        
+
         // Verify the completed_at field is null since it's not marked as completed
         $this->assertNull($response->json('data.completed_at'));
-        
+
         // Verify the lesson progress is updated in DB
         $this->runInTenantContext($this->tenant, function () {
             $progress = \Illuminate\Support\Facades\DB::table('user_progress')
@@ -468,7 +468,7 @@ class StudentLessonControllerTest extends TestCase
                 ->where('item_id', $this->testData['lesson1_id'])
                 ->where('progress_type', 'lesson')
                 ->first();
-                
+
             $this->assertNotNull($progress);
             $this->assertEquals(50, $progress->progress);
             $this->assertNull($progress->completed_at);
@@ -480,10 +480,10 @@ class StudentLessonControllerTest extends TestCase
     {
         // Authenticate as team member
         Sanctum::actingAs($this->teamUser, [], 'tenant');
-        
+
         // API call to get lessons in topic
         $response = $this->getJson("/api/{$this->tenant->slug}/student/topics/{$this->testData['topic_id']}/lessons");
-        
+
         $response->assertStatus(200)
             ->assertJsonStructure([
                 'data' => [
@@ -496,61 +496,61 @@ class StudentLessonControllerTest extends TestCase
                     ]
                 ]
             ]);
-        
+
         // Team members should see the same lessons as students
         $this->assertCount(2, $response->json('data'));
     }
-    
+
     /** @test */
     public function invalid_lesson_id_returns_404()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
-        
+
         // API call with invalid UUID
         $invalidId = 'not-a-uuid';
         $response = $this->getJson("/api/{$this->tenant->slug}/student/lessons/{$invalidId}");
-        
+
         $response->assertStatus(404);
-        
+
         // API call with valid UUID format that doesn't exist
         $nonExistentId = '12345678-1234-1234-1234-123456789012';
         $response = $this->getJson("/api/{$this->tenant->slug}/student/lessons/{$nonExistentId}");
-        
+
         $response->assertStatus(404);
     }
-    
+
     /** @test */
     public function student_cannot_make_invalid_progress_update()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
-        
+
         // API call with invalid progress value (greater than 100)
         $response = $this->putJson("/api/{$this->tenant->slug}/student/progress/lesson/{$this->testData['lesson1_id']}", [
             'progress' => 150,
             'completed' => true
         ]);
-        
+
         $response->assertStatus(422)
             ->assertJsonValidationErrors(['progress']);
-        
+
         // API call with invalid progress value (negative)
         $response = $this->putJson("/api/{$this->tenant->slug}/student/progress/lesson/{$this->testData['lesson1_id']}", [
             'progress' => -10,
             'completed' => false
         ]);
-        
+
         $response->assertStatus(422)
             ->assertJsonValidationErrors(['progress']);
     }
-    
+
     /** @test */
     public function student_can_create_initial_progress_record()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
-        
+
         // Remove any existing progress for lesson 2
         $this->runInTenantContext($this->tenant, function () {
             \Illuminate\Support\Facades\DB::table('user_progress')
@@ -558,13 +558,13 @@ class StudentLessonControllerTest extends TestCase
                 ->where('item_id', $this->testData['lesson2_id'])
                 ->delete();
         });
-        
+
         // API call to create initial progress record for lesson 2
         $response = $this->postJson("/api/{$this->tenant->slug}/student/progress/lesson/{$this->testData['lesson2_id']}", [
             'progress' => 25,
             'completed' => false
         ]);
-        
+
         $response->assertStatus(201) // Created
             ->assertJsonStructure([
                 'data' => [
@@ -579,7 +579,7 @@ class StudentLessonControllerTest extends TestCase
                     'progress' => 25
                 ]
             ]);
-        
+
         // Verify the progress record was created in DB
         $this->runInTenantContext($this->tenant, function () {
             $progress = \Illuminate\Support\Facades\DB::table('user_progress')
@@ -587,27 +587,27 @@ class StudentLessonControllerTest extends TestCase
                 ->where('item_id', $this->testData['lesson2_id'])
                 ->where('progress_type', 'lesson')
                 ->first();
-                
+
             $this->assertNotNull($progress);
             $this->assertEquals(25, $progress->progress);
         });
     }
-    
+
     /** @test */
     public function lesson_progress_endpoint_returns_progress_data()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
-        
+
         // First create progress for lesson 2 to ensure it exists
         $this->postJson("/api/{$this->tenant->slug}/student/progress/lesson/{$this->testData['lesson2_id']}", [
             'progress' => 60,
             'completed' => false
         ]);
-        
+
         // API call to get progress for lesson 2
         $response = $this->getJson("/api/{$this->tenant->slug}/student/lessons/{$this->testData['lesson2_id']}/progress");
-        
+
         $response->assertStatus(200)
             ->assertJsonStructure([
                 'data' => [
@@ -624,7 +624,7 @@ class StudentLessonControllerTest extends TestCase
                     'completed' => false
                 ]
             ]);
-        
+
         // Ensure the last_accessed_at field exists and is a valid timestamp
         $this->assertNotNull($response->json('data.last_accessed_at'));
     }

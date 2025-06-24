@@ -11,10 +11,10 @@ use Database\Seeders\Tenant\PlainsCreeA1CourseSeeder;
 use Database\Seeders\Tenant\PlainsCreeA2CourseSeeder;
 use Database\Seeders\Tenant\PlainsCreeB1CourseSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
+use Tests\TenantTestCase;
 use Tests\Traits\InteractsWithTenancy;
 
-class PlainsCreeVocabularyProgressionTest extends TestCase
+class PlainsCreeVocabularyProgressionTest extends TenantTestCase
 {
     use RefreshDatabase, InteractsWithTenancy;
 

@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Tenant\Student;
 
-use Tests\TestCase;
+use Tests\TenantTestCase;
 use Tests\Traits\InteractsWithTenancy;
 use App\Models\Landlord\Tenant;
 use App\Models\Tenants\User;
@@ -22,7 +22,7 @@ use Illuminate\Support\Str;
  * Tests age-appropriate content delivery for different learning paths (kids vs teen/adult)
  * and ensures proper content filtering based on age groups for Plains Cree curriculum.
  */
-class StudentAgeAppropriateContentTest extends TestCase
+class StudentAgeAppropriateContentTest extends TenantTestCase
 {
     use RefreshDatabase, InteractsWithTenancy;
 

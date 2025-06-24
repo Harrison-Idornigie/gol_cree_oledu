@@ -11,10 +11,10 @@ use App\Services\Tenant\StarterPackService;
 use Database\Seeders\Tenant\PlainsCreeStarterPackSeeder;
 use Database\Seeders\Tenant\PlainsCreeVocabularySeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
+use Tests\TenantTestCase;
 use Tests\Traits\InteractsWithTenancy;
 
-class PlainsCreeStarterPackTest extends TestCase
+class PlainsCreeStarterPackTest extends TenantTestCase
 {
     use RefreshDatabase, InteractsWithTenancy;
 

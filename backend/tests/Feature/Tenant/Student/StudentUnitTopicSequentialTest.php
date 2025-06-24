@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Tenant\Student;
 
-use Tests\TestCase;
+use Tests\TenantTestCase;
 use Tests\Traits\InteractsWithTenancy;
 use App\Models\Landlord\Tenant;
 use App\Models\Tenants\User;
@@ -22,7 +22,7 @@ use Illuminate\Support\Str;
  * Tests sequential learning enforcement, syllabics content delivery,
  * and proper access controls for Plains Cree curriculum structure.
  */
-class StudentUnitTopicSequentialTest extends TestCase
+class StudentUnitTopicSequentialTest extends TenantTestCase
 {
     use RefreshDatabase, InteractsWithTenancy;
 

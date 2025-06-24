@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Tenant\Student;
 
-use Tests\TestCase;
+use Tests\TenantTestCase;
 use Tests\Traits\InteractsWithTenancy;
 use App\Models\Landlord\Tenant;
 use App\Models\Tenants\User;
@@ -25,7 +25,7 @@ use Illuminate\Support\Str;
  * and that the starter pack system works correctly across different tenants.
  * Ensures complete data isolation and proper access controls.
  */
-class StudentMultiTenantIsolationTest extends TestCase
+class StudentMultiTenantIsolationTest extends TenantTestCase
 {
     use RefreshDatabase, InteractsWithTenancy;
 

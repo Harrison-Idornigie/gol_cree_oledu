@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Tenant\Team;
 
-use Tests\TestCase;
+use Tests\TenantTestCase;
 use Tests\Traits\InteractsWithTenancy;
 use App\Models\Landlord\Tenant;
 use App\Models\Tenants\User;
@@ -14,7 +14,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\Sanctum;
 
-class TeamProgressControllerTest extends TestCase
+class TeamProgressControllerTest extends TenantTestCase
 {
     use RefreshDatabase, InteractsWithTenancy;
 

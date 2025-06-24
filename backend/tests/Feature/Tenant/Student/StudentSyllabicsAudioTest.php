@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Tenant\Student;
 
-use Tests\TestCase;
+use Tests\TenantTestCase;
 use Tests\Traits\InteractsWithTenancy;
 use App\Models\Landlord\Tenant;
 use App\Models\Tenants\User;
@@ -24,7 +24,7 @@ use Illuminate\Support\Str;
  * Tests Plains Cree specific features including syllabics content display,
  * audio pronunciation support, and cultural context integration in API responses.
  */
-class StudentSyllabicsAudioTest extends TestCase
+class StudentSyllabicsAudioTest extends TenantTestCase
 {
     use RefreshDatabase, InteractsWithTenancy;
 

@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Tenant\Team;
 
-use Tests\TestCase;
+use Tests\TenantTestCase;
 use Tests\Traits\InteractsWithTenancy;
 use App\Models\Landlord\Tenant;
 use App\Models\Tenants\User;
@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
 
-class TeamMediaControllerTest extends TestCase
+class TeamMediaControllerTest extends TenantTestCase
 {
     use RefreshDatabase, InteractsWithTenancy;
 
@@ -27,16 +27,16 @@ class TeamMediaControllerTest extends TestCase
     {
         parent::setUp();
         $this->setUpTenancy();
-        
+
         // Create test tenant
         $this->tenant = $this->createTestTenant();
         $this->initializeTenantContext($this->tenant);
-        
+
         // Create users with different roles in tenant context
         $this->teamUser = $this->createTenantTeam();
         $this->adminUser = $this->createTenantAdmin();
         $this->studentUser = $this->createTenantStudent();
-        
+
         // Mock the Storage facade
         Storage::fake('tenant-media');
     }
@@ -58,10 +58,10 @@ class TeamMediaControllerTest extends TestCase
         $fileName = 'test_media_' . rand(1000, 9999) . '.jpg';
         $file = UploadedFile::fake()->image($fileName);
         $fileSize = $file->getSize();
-        
+
         // Store the file
         Storage::disk('tenant-media')->put($fileName, $file->getContent());
-        
+
         $defaultAttrs = [
             'id' => $mediaId,
             'filename' => $fileName,
@@ -75,9 +75,9 @@ class TeamMediaControllerTest extends TestCase
             'created_at' => now()->toDateTimeString(),
             'updated_at' => now()->toDateTimeString(),
         ];
-        
+
         $attrs = array_merge($defaultAttrs, $attributes);
-        
+
         // Insert directly into database since model doesn't exist yet
         return $this->runInTenantContext($this->tenant, function () use ($attrs) {
             DB::table('media')->insert($attrs);
@@ -92,9 +92,9 @@ class TeamMediaControllerTest extends TestCase
     {
         // Authenticate as team member
         Sanctum::actingAs($this->teamUser, ['*']);
-        
+
         $file = UploadedFile::fake()->image('test_image.jpg');
-        
+
         $response = $this->postJson("/api/{$this->tenant->slug}/team/media/upload", [
             'file' => $file,
             'type' => 'image',
@@ -119,7 +119,7 @@ class TeamMediaControllerTest extends TestCase
                 'success' => true,
                 'message' => 'Media uploaded successfully.'
             ]);
-        
+
         // Verify the media was created in the database
         $this->runInTenantContext($this->tenant, function () use ($file) {
             $this->assertDatabaseHas('media', [
@@ -139,10 +139,10 @@ class TeamMediaControllerTest extends TestCase
         for ($i = 0; $i < 3; $i++) {
             $this->createMediaRecord();
         }
-        
+
         // Also create some media for another user
         $this->createMediaRecord(['created_by' => $this->adminUser->id]);
-        
+
         // Authenticate as team member
         Sanctum::actingAs($this->teamUser, ['*']);
 
@@ -158,11 +158,11 @@ class TeamMediaControllerTest extends TestCase
                 'success' => true,
                 'message' => 'Media retrieved successfully.'
             ]);
-        
+
         // Only media created by this user should be returned
         $responseData = json_decode($response->getContent(), true);
         $this->assertCount(3, $responseData['data']);
-        
+
         foreach ($responseData['data'] as $media) {
             $this->assertEquals($this->teamUser->id, $media['created_by']);
         }
@@ -175,7 +175,7 @@ class TeamMediaControllerTest extends TestCase
     {
         // Create test media
         $media = $this->createMediaRecord();
-        
+
         // Authenticate as team member
         Sanctum::actingAs($this->teamUser, ['*']);
 
@@ -190,7 +190,7 @@ class TeamMediaControllerTest extends TestCase
                 'success' => true,
                 'message' => 'Media deleted successfully.'
             ]);
-        
+
         // Verify the media was deleted from the database
         $this->runInTenantContext($this->tenant, function () use ($media) {
             $this->assertDatabaseMissing('media', ['id' => $media->id]);
@@ -204,7 +204,7 @@ class TeamMediaControllerTest extends TestCase
     {
         // Create test media owned by another user
         $media = $this->createMediaRecord(['created_by' => $this->adminUser->id]);
-        
+
         // Authenticate as team member
         Sanctum::actingAs($this->teamUser, ['*']);
 
@@ -233,7 +233,7 @@ class TeamMediaControllerTest extends TestCase
     {
         // Authenticate as team member
         Sanctum::actingAs($this->teamUser, ['*']);
-        
+
         // No file provided
         $response = $this->postJson("/api/{$this->tenant->slug}/team/media/upload", [
             'type' => 'image',
@@ -245,10 +245,10 @@ class TeamMediaControllerTest extends TestCase
                 'message',
                 'errors'
             ]);
-        
+
         // Invalid file type
         $file = UploadedFile::fake()->create('test.exe', 1000);
-        
+
         $response = $this->postJson("/api/{$this->tenant->slug}/team/media/upload", [
             'file' => $file,
             'type' => 'image',

@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Tenant\Student;
 
-use Tests\TestCase;
+use Tests\TenantTestCase;
 use Tests\Traits\InteractsWithTenancy;
 use App\Models\Landlord\Tenant;
 use App\Models\Tenants\User;
@@ -12,7 +12,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
 use Illuminate\Support\Str;
 
-class StudentLearningPathControllerTest extends TestCase
+class StudentLearningPathControllerTest extends TenantTestCase
 {
     use RefreshDatabase, InteractsWithTenancy;
 
@@ -26,15 +26,15 @@ class StudentLearningPathControllerTest extends TestCase
     {
         parent::setUp();
         $this->setUpTenancy();
-        
+
         // Create test tenant
         $this->tenant = $this->createTestTenant();
         $this->initializeTenantContext($this->tenant);
-        
+
         // Create users with different roles in tenant context
         $this->studentUser = $this->createTenantStudent();
         $this->teamUser = $this->createTenantTeam();
-        
+
         // Create test environment
         $this->language = $this->createLanguage();
         $this->learningPath = $this->createLearningPath();
@@ -180,7 +180,7 @@ class StudentLearningPathControllerTest extends TestCase
                 'success' => true,
                 'message' => 'Enrolled in learning path successfully.'
             ]);
-        
+
         // Verify enrollment was created
         $this->runInTenantContext($this->tenant, function () {
             $this->assertDatabaseHas('user_learning_paths', [
@@ -207,7 +207,7 @@ class StudentLearningPathControllerTest extends TestCase
                 'created_by' => $this->teamUser->id,
             ]);
         });
-        
+
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, ['*']);
 
@@ -223,7 +223,7 @@ class StudentLearningPathControllerTest extends TestCase
                 'success' => true,
                 'message' => 'Learning paths retrieved successfully.'
             ]);
-        
+
         // Verify the response contains only intermediate level paths
         $response->assertJsonFragment(['level' => 'intermediate']);
         $response->assertJsonMissing(['level' => 'beginner']);

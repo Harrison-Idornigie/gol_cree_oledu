@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Tenant\Team;
 
-use Tests\TestCase;
+use Tests\TenantTestCase;
 use Tests\Traits\InteractsWithTenancy;
 use App\Models\Landlord\Tenant;
 use App\Models\Tenants\User;
@@ -16,7 +16,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\Sanctum;
 
-class TeamAudioUploadControllerTest extends TestCase
+class TeamAudioUploadControllerTest extends TenantTestCase
 {
     use RefreshDatabase, InteractsWithTenancy;
 

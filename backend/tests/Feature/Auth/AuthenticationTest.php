@@ -2,13 +2,13 @@
 
 namespace Tests\Feature\Auth;
 
-use Tests\TestCase;
+use Tests\TenantTestCase;
 use App\Models\Tenants\User;
 use Laravel\Sanctum\Sanctum;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 
-class AuthenticationTest extends TestCase
+class AuthenticationTest extends TenantTestCase
 {
     use RefreshDatabase;
 

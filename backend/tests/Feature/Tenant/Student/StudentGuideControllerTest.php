@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Tenant\Student;
 
-use Tests\TestCase;
+use Tests\TenantTestCase;
 use Tests\Traits\InteractsWithTenancy;
 use App\Models\Landlord\Tenant;
 use App\Models\Tenants\User;
@@ -12,7 +12,7 @@ use App\Models\Tenants\Topic;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
 
-class StudentGuideControllerTest extends TestCase
+class StudentGuideControllerTest extends TenantTestCase
 {
     use RefreshDatabase, InteractsWithTenancy;
 
@@ -27,7 +27,7 @@ class StudentGuideControllerTest extends TestCase
     {
         parent::setUp();
         $this->setUpTenancy();
-        
+
         $this->tenant = $this->createTestTenant();
         $this->studentUser = $this->createTenantStudent();
         $this->teamUser = $this->createTenantTeamMember();
@@ -249,7 +249,7 @@ class StudentGuideControllerTest extends TestCase
 
         // Verify only appropriate entries are returned for students
         $data = $response->json('data');
-        
+
         foreach ($data as $entry) {
             $this->assertEquals('published', $entry['status']);
             $this->assertEquals('public', $entry['visibility']);
@@ -266,7 +266,7 @@ class StudentGuideControllerTest extends TestCase
         $response->assertStatus(200);
 
         $data = $response->json('data');
-        
+
         foreach ($data as $entry) {
             $this->assertEquals('grammar', $entry['category']);
         }
@@ -282,7 +282,7 @@ class StudentGuideControllerTest extends TestCase
         $response->assertStatus(200);
 
         $data = $response->json('data');
-        
+
         foreach ($data as $entry) {
             $this->assertEquals($this->language->id, $entry['language_id']);
         }
@@ -353,7 +353,7 @@ class StudentGuideControllerTest extends TestCase
                 'name' => 'Other Language',
                 'code' => 'oth'
             ]);
-            
+
             return GuideBookEntry::factory()->create([
                 'title' => 'Other Tenant Guide',
                 'language_id' => $otherLanguage->id,
@@ -398,17 +398,17 @@ class StudentGuideControllerTest extends TestCase
 
         // Should either succeed or handle error gracefully
         $this->assertContains($response->status(), [200, 500]);
-        
+
         if ($response->status() === 500) {
             $response->assertJsonStructure([
                 'success',
                 'message',
                 'errors'
             ])
-            ->assertJson([
-                'success' => false,
-                'message' => 'Failed to retrieve guide entries'
-            ]);
+                ->assertJson([
+                    'success' => false,
+                    'message' => 'Failed to retrieve guide entries'
+                ]);
         }
     }
 }

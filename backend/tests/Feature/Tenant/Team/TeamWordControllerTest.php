@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Tenant\Team;
 
-use Tests\TestCase;
+use Tests\TenantTestCase;
 use Tests\Traits\InteractsWithTenancy;
 use App\Models\Landlord\Tenant;
 use App\Models\Tenants\User;
@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
 
-class TeamWordControllerTest extends TestCase
+class TeamWordControllerTest extends TenantTestCase
 {
     use RefreshDatabase, InteractsWithTenancy;
 
@@ -28,16 +28,16 @@ class TeamWordControllerTest extends TestCase
     {
         parent::setUp();
         $this->setUpTenancy();
-        
+
         // Create test tenant
         $this->tenant = $this->createTestTenant();
         $this->initializeTenantContext($this->tenant);
-        
+
         // Create users with different roles in tenant context
         $this->teamUser = $this->createTenantTeam();
         $this->adminUser = $this->createTenantAdmin();
         $this->studentUser = $this->createTenantStudent();
-        
+
         // Create test language
         $this->language = $this->createLanguage();
     }
@@ -75,12 +75,12 @@ class TeamWordControllerTest extends TestCase
             'part_of_speech' => 'noun',
             'created_by' => $this->teamUser->id,
         ];
-        
+
         return $this->runInTenantContext($this->tenant, function () use ($defaultAttrs, $attributes) {
             return Word::create(array_merge($defaultAttrs, $attributes));
         });
     }
-    
+
     /**
      * Test listing words (index method)
      */
@@ -91,7 +91,7 @@ class TeamWordControllerTest extends TestCase
         for ($i = 0; $i < 3; $i++) {
             $words[] = $this->createWord();
         }
-        
+
         // Authenticate as team member
         Sanctum::actingAs($this->teamUser, ['*']);
 
@@ -186,7 +186,7 @@ class TeamWordControllerTest extends TestCase
     {
         // Create test word
         $word = $this->createWord();
-        
+
         // Authenticate as team member
         Sanctum::actingAs($this->teamUser, ['*']);
 
@@ -224,7 +224,7 @@ class TeamWordControllerTest extends TestCase
     {
         // Create test word
         $word = $this->createWord();
-        
+
         // Authenticate as team member
         Sanctum::actingAs($this->teamUser, ['*']);
 
@@ -259,7 +259,7 @@ class TeamWordControllerTest extends TestCase
     {
         // Create test word
         $word = $this->createWord();
-        
+
         // Authenticate as team member
         Sanctum::actingAs($this->teamUser, ['*']);
 
@@ -274,7 +274,7 @@ class TeamWordControllerTest extends TestCase
                 'success' => true,
                 'message' => 'Word deleted successfully.'
             ]);
-        
+
         // Verify the word was actually deleted
         $this->runInTenantContext($this->tenant, function () use ($word) {
             $this->assertDatabaseMissing('words', ['id' => $word->id]);
@@ -324,7 +324,7 @@ class TeamWordControllerTest extends TestCase
                 'success' => true,
                 'message' => 'Words created successfully.'
             ]);
-        
+
         // Verify the words were actually created
         $this->runInTenantContext($this->tenant, function () {
             $this->assertDatabaseHas('words', ['text' => 'bulk_word_1']);
@@ -340,7 +340,7 @@ class TeamWordControllerTest extends TestCase
         // Create test words
         $word1 = $this->createWord(['text' => 'bulk_update_1']);
         $word2 = $this->createWord(['text' => 'bulk_update_2']);
-        
+
         // Authenticate as team member
         Sanctum::actingAs($this->teamUser, ['*']);
 
@@ -371,7 +371,7 @@ class TeamWordControllerTest extends TestCase
                 'success' => true,
                 'message' => 'Words updated successfully.'
             ]);
-        
+
         // Verify the updates were applied
         $this->runInTenantContext($this->tenant, function () use ($word1, $word2) {
             $this->assertDatabaseHas('words', [
@@ -395,7 +395,7 @@ class TeamWordControllerTest extends TestCase
         // Create test words
         $word1 = $this->createWord(['text' => 'bulk_delete_1']);
         $word2 = $this->createWord(['text' => 'bulk_delete_2']);
-        
+
         // Authenticate as team member
         Sanctum::actingAs($this->teamUser, ['*']);
 
@@ -414,7 +414,7 @@ class TeamWordControllerTest extends TestCase
                 'success' => true,
                 'message' => 'Words deleted successfully.'
             ]);
-        
+
         // Verify the words were actually deleted
         $this->runInTenantContext($this->tenant, function () use ($word1, $word2) {
             $this->assertDatabaseMissing('words', ['id' => $word1->id]);
@@ -429,7 +429,7 @@ class TeamWordControllerTest extends TestCase
     {
         // Create test word
         $word = $this->createWord();
-        
+
         // Authenticate as team member
         Sanctum::actingAs($this->teamUser, ['*']);
 
@@ -482,15 +482,15 @@ class TeamWordControllerTest extends TestCase
     {
         // Create test word
         $word = $this->createWord();
-        
+
         // Authenticate as team member
         Sanctum::actingAs($this->teamUser, ['*']);
-        
+
         // Mock the Storage facade
         Storage::fake('public');
-        
+
         $file = UploadedFile::fake()->create('audio.mp3', 100);
-        
+
         $response = $this->postJson("/api/{$this->tenant->slug}/team/words/{$word->id}/audio", [
             'audio_file' => $file,
         ]);
@@ -518,7 +518,7 @@ class TeamWordControllerTest extends TestCase
         for ($i = 0; $i < 3; $i++) {
             $this->createWord(['text' => "export_word_{$i}"]);
         }
-        
+
         // Authenticate as team member
         Sanctum::actingAs($this->teamUser, ['*']);
 
@@ -548,7 +548,7 @@ class TeamWordControllerTest extends TestCase
                 'status' => 'published'
             ]);
         }
-        
+
         // Authenticate as team member
         Sanctum::actingAs($this->teamUser, ['*']);
 

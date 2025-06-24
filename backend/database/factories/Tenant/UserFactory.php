@@ -20,8 +20,10 @@ class UserFactory extends Factory
             'password' => Hash::make('password'),
             'remember_token' => Str::random(10),
             'membership' => 'user',
+            'points' => 0,
             'google_id' => null,
-            'avatar' => null,
+            'avatar_url' => null,
+            'interface_language' => 'en',
         ];
     }
 
@@ -30,7 +32,7 @@ class UserFactory extends Factory
      */
     public function admin(): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn(array $attributes) => [
             'membership' => 'admin'
         ]);
     }
@@ -40,7 +42,7 @@ class UserFactory extends Factory
      */
     public function unverified(): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn(array $attributes) => [
             'email_verified_at' => null,
         ]);
     }

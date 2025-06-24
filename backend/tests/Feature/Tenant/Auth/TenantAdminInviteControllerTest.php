@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Tenant\Auth;
 
-use Tests\TestCase;
+use Tests\TenantTestCase;
 use Tests\Traits\InteractsWithTenancy;
 use App\Models\Landlord\Tenant;
 use App\Models\Tenants\User;
@@ -11,7 +11,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
 use Illuminate\Support\Facades\URL;
 
-class TenantAdminInviteControllerTest extends TestCase
+class TenantAdminInviteControllerTest extends TenantTestCase
 {
     use RefreshDatabase, InteractsWithTenancy;
 
@@ -23,7 +23,7 @@ class TenantAdminInviteControllerTest extends TestCase
     {
         parent::setUp();
         $this->setUpTenancy();
-        
+
         $this->tenant = $this->createTestTenant();
         $this->adminUser = $this->createTenantAdmin();
         $this->regularUser = $this->createTenantUser();
@@ -106,7 +106,7 @@ class TenantAdminInviteControllerTest extends TestCase
         // Verify invite has valid token and expiration
         $this->runInTenantContext($this->tenant, function () {
             $invite = AdminInvite::where('email', 'newadmin@example.com')->first();
-            
+
             $this->assertNotNull($invite);
             $this->assertNotNull($invite->token);
             $this->assertEquals(32, strlen($invite->token));
@@ -251,7 +251,7 @@ class TenantAdminInviteControllerTest extends TestCase
         Sanctum::actingAs($this->adminUser, [], 'tenant');
 
         $beforeInvite = now();
-        
+
         $response = $this->postJson("/api/{$this->tenant->slug}/auth/admin-invite", [
             'email' => 'newadmin@example.com'
         ]);
@@ -262,7 +262,7 @@ class TenantAdminInviteControllerTest extends TestCase
 
         $this->runInTenantContext($this->tenant, function () use ($beforeInvite, $afterInvite) {
             $invite = AdminInvite::where('email', 'newadmin@example.com')->first();
-            
+
             // Should expire in 7 days
             $expectedExpiration = $beforeInvite->addDays(7);
             $this->assertTrue($invite->expires_at->between(
@@ -285,17 +285,17 @@ class TenantAdminInviteControllerTest extends TestCase
 
         // Should either succeed or handle error gracefully
         $this->assertContains($response->status(), [200, 500]);
-        
+
         if ($response->status() === 500) {
             $response->assertJsonStructure([
                 'success',
                 'message',
                 'errors'
             ])
-            ->assertJson([
-                'success' => false,
-                'message' => 'Failed to send invite'
-            ]);
+                ->assertJson([
+                    'success' => false,
+                    'message' => 'Failed to send invite'
+                ]);
         }
     }
 
@@ -337,7 +337,7 @@ class TenantAdminInviteControllerTest extends TestCase
         $response->assertStatus(200);
 
         $inviteUrl = $response->json('data.invite_url');
-        
+
         // Extract token from URL
         $urlParts = parse_url($inviteUrl);
         parse_str($urlParts['query'], $queryParams);

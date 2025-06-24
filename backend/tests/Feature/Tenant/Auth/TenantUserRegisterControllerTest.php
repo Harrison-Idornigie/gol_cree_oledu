@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Tenant\Auth;
 
-use Tests\TestCase;
+use Tests\TenantTestCase;
 use Tests\Traits\InteractsWithTenancy;
 use App\Models\Landlord\Tenant;
 use App\Models\Tenants\User;
@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Notification;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Support\Str;
 
-class TenantUserRegisterControllerTest extends TestCase
+class TenantUserRegisterControllerTest extends TenantTestCase
 {
     use RefreshDatabase, InteractsWithTenancy;
 

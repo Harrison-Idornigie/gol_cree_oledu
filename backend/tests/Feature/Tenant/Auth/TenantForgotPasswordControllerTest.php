@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Tenant\Auth;
 
-use Tests\TestCase;
+use Tests\TenantTestCase;
 use Tests\Traits\InteractsWithTenancy;
 use App\Models\Landlord\Tenant;
 use App\Models\Tenants\User;
@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Auth\Notifications\ResetPassword;
 
-class TenantForgotPasswordControllerTest extends TestCase
+class TenantForgotPasswordControllerTest extends TenantTestCase
 {
     use RefreshDatabase, InteractsWithTenancy;
 

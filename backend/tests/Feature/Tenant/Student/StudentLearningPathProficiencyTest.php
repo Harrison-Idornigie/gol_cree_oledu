@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Tenant\Student;
 
-use Tests\TestCase;
+use Tests\TenantTestCase;
 use Tests\Traits\InteractsWithTenancy;
 use App\Models\Landlord\Tenant;
 use App\Models\Tenants\User;
@@ -20,7 +20,7 @@ use Illuminate\Support\Str;
  * Tests comprehensive A1-C2 proficiency level filtering, enrollment,
  * progress tracking, and tenant isolation for Plains Cree content.
  */
-class StudentLearningPathProficiencyTest extends TestCase
+class StudentLearningPathProficiencyTest extends TenantTestCase
 {
     use RefreshDatabase, InteractsWithTenancy;
 

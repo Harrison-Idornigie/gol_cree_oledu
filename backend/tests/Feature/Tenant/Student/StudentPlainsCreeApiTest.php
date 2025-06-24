@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Tenant\Student;
 
-use Tests\TestCase;
+use Tests\TenantTestCase;
 use Tests\Traits\InteractsWithTenancy;
 use App\Models\Landlord\Tenant;
 use App\Models\Tenants\User;
@@ -29,7 +29,7 @@ use Illuminate\Support\Str;
  * - Multi-tenant isolation
  * - Duolingo-style features
  */
-class StudentPlainsCreeApiTest extends TestCase
+class StudentPlainsCreeApiTest extends TenantTestCase
 {
     use RefreshDatabase, InteractsWithTenancy;
 

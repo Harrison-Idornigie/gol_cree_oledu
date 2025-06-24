@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Tenant\Team;
 
-use Tests\TestCase;
 use Tests\Traits\InteractsWithTenancy;
 use App\Models\Landlord\Tenant;
 use App\Models\Tenants\User;
@@ -11,8 +10,9 @@ use App\Models\Tenants\CurriculumTemplate;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\Sanctum;
+use Tests\TenantTenantTestCase;
 
-class TeamCurriculumTemplateControllerTest extends TestCase
+class TeamCurriculumTemplateControllerTest extends TenantTenantTestCase
 {
     use RefreshDatabase, InteractsWithTenancy;
 

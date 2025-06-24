@@ -2,14 +2,14 @@
 
 namespace Tests\Feature\Tenant\Admin;
 
-use Tests\TestCase;
+use Tests\TenantTestCase;
 use Tests\Traits\InteractsWithTenancy;
 use App\Models\Landlord\Tenant;
 use App\Models\Tenants\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
 
-class TenantAdminUserControllerTest extends TestCase
+class TenantAdminUserControllerTest extends TenantTestCase
 {
     use RefreshDatabase, InteractsWithTenancy;
 
@@ -20,7 +20,7 @@ class TenantAdminUserControllerTest extends TestCase
     {
         parent::setUp();
         $this->setUpTenancy();
-        
+
         $this->tenant = $this->createTestTenant();
         $this->initializeTenantContext($this->tenant);
         $this->adminUser = $this->createTenantAdmin();
@@ -356,7 +356,7 @@ class TenantAdminUserControllerTest extends TestCase
         $response = $this->getJson("/api/{$this->tenant->slug}/tenant-admin/users");
 
         $response->assertStatus(200);
-        
+
         // When implemented, should contain these fields
         $expectedStructure = [
             'success',

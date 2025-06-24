@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Tenant\Student;
 
-use Tests\TestCase;
+use Tests\TenantTestCase;
 use Tests\Traits\InteractsWithTenancy;
 use App\Models\Landlord\Tenant;
 use App\Models\Tenants\User;
@@ -26,7 +26,7 @@ use Illuminate\Support\Str;
  * Tests vocabulary progression constraints (A1 words for A1 lessons, A1+A2 for A2 lessons, etc.)
  * and Duolingo-style features including clickable vocabulary, audio support, and syllabics.
  */
-class StudentLessonExerciseVocabularyTest extends TestCase
+class StudentLessonExerciseVocabularyTest extends TenantTestCase
 {
     use RefreshDatabase, InteractsWithTenancy;
 
