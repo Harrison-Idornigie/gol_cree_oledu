@@ -121,6 +121,9 @@ trait InteractsWithTenancy
      */
     protected function tearDownTenancy(): void
     {
+        // Clear any active tenant context
+        tenancy()->end();
+
         // Delete all created tenant databases
         foreach ($this->createdTenants as $tenant) {
             $this->deleteTenantDatabase($tenant);
@@ -130,6 +133,15 @@ trait InteractsWithTenancy
         foreach ($this->tempDbFiles as $tempFile) {
             if (file_exists($tempFile)) {
                 unlink($tempFile);
+            }
+        }
+
+        // Clear tenant records from central database
+        foreach ($this->createdTenants as $tenant) {
+            try {
+                DB::table('tenants')->where('id', $tenant->id)->delete();
+            } catch (\Exception $e) {
+                // Continue if deletion fails
             }
         }
 

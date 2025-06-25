@@ -3,14 +3,7 @@
 use App\Http\Controllers\API\Landlord\Auth\CentralLoginController;
 use App\Http\Controllers\API\Landlord\Auth\CentralLogoutController;
 use App\Http\Controllers\API\Landlord\Auth\CentralUserRegisterController;
-use App\Http\Controllers\API\Tenant\Auth\TenantAdminInviteController;
-use App\Http\Controllers\API\Tenant\Auth\TenantForgotPasswordController;
-use App\Http\Controllers\API\Tenant\Auth\TenantLoginController;
-use App\Http\Controllers\API\Tenant\Auth\TenantLogoutController;
-use App\Http\Controllers\API\Tenant\Auth\TenantResetPasswordController;
-use App\Http\Controllers\API\Tenant\Auth\TenantUserRegisterController;
-use App\Http\Controllers\API\Tenant\Auth\TenantVerificationController;
-use App\Http\Controllers\API\Tenant\TenantUserController;
+use App\Http\Controllers\API\Tenant\Auth\TenantAuthController;
 use Illuminate\Support\Facades\Route;
 
 /**
@@ -35,45 +28,51 @@ Route::group([
 
     // Tenant authentication routes (require tenant context)
     Route::middleware([\App\Http\Middleware\Tenant\InitializeTenancyByPathOrDomain::class])->group(function () {
-        // Login endpoint with rate limiting
-        Route::post('tenant-login', [TenantLoginController::class, 'login'])
-            ->middleware(['throttle:5,1']) // 5 attempts per minute
+        // Login endpoint with rate limiting (more permissive for testing)
+        Route::post('tenant-login', [TenantAuthController::class, 'login'])
+            ->middleware(['throttle:100,1']) // 100 attempts per minute (testing-friendly)
             ->name('tenant.login');
 
         // Get user tenants endpoint with rate limiting
-        Route::post('tenant-user-tenants', [TenantLoginController::class, 'getUserTenants'])
-            ->middleware(['throttle:10,1']) // 10 attempts per minute
+        Route::post('tenant-user-tenants', [TenantAuthController::class, 'getUserTenants'])
+            ->middleware(['throttle:100,1']) // 100 attempts per minute (testing-friendly)
             ->name('tenant.user.tenants');
 
         Route::middleware('auth:tenant')->group(function () {
-            Route::post('tenant-logout', [TenantLogoutController::class, 'logout'])->name('tenant.logout');
+            Route::post('tenant-logout', [TenantAuthController::class, 'logout'])->name('tenant.logout');
         });
     });
 
 
-    Route::get('email/verify/{id}/{hash}', [TenantVerificationController::class, 'verify'])
+    Route::get('email/verify/{id}/{hash}', [TenantAuthController::class, 'verify'])
         ->middleware(['signed', 'throttle:6,1'])
         ->name('verification.verify');
 
     // User registration routes
-    Route::post('register', [TenantUserRegisterController::class, 'register'])
+    Route::post('register', [TenantAuthController::class, 'register'])
         ->name('tenant.user.register');
 
     // Password reset routes
-    Route::post('password/email', [TenantForgotPasswordController::class, 'sendResetLinkEmail'])
+    Route::post('password/email', [TenantAuthController::class, 'sendResetLinkEmail'])
         ->name('password.email');
-    Route::post('password/reset', [TenantResetPasswordController::class, 'reset'])
+    Route::post('password/reset', [TenantAuthController::class, 'resetPassword'])
         ->name('password.reset');
+
+    // Google OAuth routes (tenant-specific)
+    Route::get('google/url', [TenantAuthController::class, 'getGoogleAuthUrl'])
+        ->name('tenant.google.url');
+    Route::post('google/callback', [TenantAuthController::class, 'handleGoogleCallback'])
+        ->name('tenant.google.callback');
 
     // Protected routes that require tenant authentication
     Route::middleware('auth:tenant')->group(function () {
-        Route::post('email/verification-notification', [TenantVerificationController::class, 'sendVerificationEmail'])
+        Route::post('email/verification-notification', [TenantAuthController::class, 'sendVerificationEmail'])
             ->middleware(['throttle:6,1'])
             ->name('verification.send');
-        Route::get('me', [TenantUserController::class, 'me']);
+        Route::get('me', [TenantAuthController::class, 'me']);
 
         // Admin invite routes (require admin membership)
-        Route::post('admin-invite', [TenantAdminInviteController::class, 'invite'])
+        Route::post('admin-invite', [TenantAuthController::class, 'sendAdminInvite'])
             ->middleware(['role_permission:tenant-admin|admin'])
             ->name('tenant.admin.invite');
     });

@@ -10,6 +10,15 @@ use Illuminate\Support\Str;
 use Laravel\Sanctum\Sanctum;
 use Illuminate\Support\Facades\Hash;
 
+/**
+ * Test suite for TenantAuthController (Login functionality)
+ *
+ * Tests tenant-specific authentication functionality including:
+ * - User login within tenant context
+ * - Multi-tenant user scenarios
+ * - Authorization policies
+ * - Error handling
+ */
 class TenantLoginControllerTest extends TenantTestCase
 {
 

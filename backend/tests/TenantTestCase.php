@@ -63,9 +63,11 @@ abstract class TenantTestCase extends TestCase
      */
     protected function createSuperAdmin(): void
     {
-        // Create super admin user in central database
+        // Create super admin user in central database with unique email
+        $uniqueEmail = 'superadmin+' . uniqid() . '@example.com';
+
         $this->superAdmin = CentralUser::create([
-            'email' => 'superadmin@example.com',
+            'email' => $uniqueEmail,
             'name' => 'Super Admin',
             'membership' => 'super-admin',
             'password' => bcrypt('password'),

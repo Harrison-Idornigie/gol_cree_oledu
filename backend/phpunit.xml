@@ -1,27 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites>
-  <testsuite name="Tests\Feature\Tenant\Auth\TenantLoginControllerTest" file="/home/onionlake-admin/PROJECT/gol_2025/backend/tests/Feature/Tenant/Auth/TenantLoginControllerTest.php" tests="8" assertions="35" errors="0" failures="2" skipped="0" time="35.255668">
-    <testcase name="user_can_login_with_valid_credentials" file="/home/onionlake-admin/PROJECT/gol_2025/backend/tests/Feature/Tenant/Auth/TenantLoginControllerTest.php" line="55" class="Tests\Feature\Tenant\Auth\TenantLoginControllerTest" classname="Tests.Feature.Tenant.Auth.TenantLoginControllerTest" assertions="12" time="5.080015"/>
-    <testcase name="login_fails_with_incorrect_password" file="/home/onionlake-admin/PROJECT/gol_2025/backend/tests/Feature/Tenant/Auth/TenantLoginControllerTest.php" line="98" class="Tests\Feature\Tenant\Auth\TenantLoginControllerTest" classname="Tests.Feature.Tenant.Auth.TenantLoginControllerTest" assertions="2" time="4.368862"/>
-    <testcase name="login_fails_with_nonexistent_email" file="/home/onionlake-admin/PROJECT/gol_2025/backend/tests/Feature/Tenant/Auth/TenantLoginControllerTest.php" line="114" class="Tests\Feature\Tenant\Auth\TenantLoginControllerTest" classname="Tests.Feature.Tenant.Auth.TenantLoginControllerTest" assertions="2" time="4.215342"/>
-    <testcase name="login_requires_device_name" file="/home/onionlake-admin/PROJECT/gol_2025/backend/tests/Feature/Tenant/Auth/TenantLoginControllerTest.php" line="130" class="Tests\Feature\Tenant\Auth\TenantLoginControllerTest" classname="Tests.Feature.Tenant.Auth.TenantLoginControllerTest" assertions="3" time="4.118976"/>
-    <testcase name="user_can_logout" file="/home/onionlake-admin/PROJECT/gol_2025/backend/tests/Feature/Tenant/Auth/TenantLoginControllerTest.php" line="143" class="Tests\Feature\Tenant\Auth\TenantLoginControllerTest" classname="Tests.Feature.Tenant.Auth.TenantLoginControllerTest" assertions="3" time="4.194883"/>
-    <testcase name="user_can_get_list_of_tenants" file="/home/onionlake-admin/PROJECT/gol_2025/backend/tests/Feature/Tenant/Auth/TenantLoginControllerTest.php" line="174" class="Tests\Feature\Tenant\Auth\TenantLoginControllerTest" classname="Tests.Feature.Tenant.Auth.TenantLoginControllerTest" assertions="8" time="4.473567">
-      <failure type="PHPUnit\Framework\ExpectationFailedException">Tests\Feature\Tenant\Auth\TenantLoginControllerTest::user_can_get_list_of_tenants
-Failed asserting that null is identical to 'test-tenant-hJG7EVSk'.
-
-/home/onionlake-admin/PROJECT/gol_2025/backend/vendor/laravel/framework/src/Illuminate/Testing/AssertableJsonString.php:241
-/home/onionlake-admin/PROJECT/gol_2025/backend/vendor/laravel/framework/src/Illuminate/Testing/TestResponse.php:772
-/home/onionlake-admin/PROJECT/gol_2025/backend/tests/Feature/Tenant/Auth/TenantLoginControllerTest.php:213</failure>
-    </testcase>
-    <testcase name="unverified_user_can_still_login" file="/home/onionlake-admin/PROJECT/gol_2025/backend/tests/Feature/Tenant/Auth/TenantLoginControllerTest.php" line="217" class="Tests\Feature\Tenant\Auth\TenantLoginControllerTest" classname="Tests.Feature.Tenant.Auth.TenantLoginControllerTest" assertions="2" time="4.412587">
-      <failure type="PHPUnit\Framework\ExpectationFailedException">Tests\Feature\Tenant\Auth\TenantLoginControllerTest::unverified_user_can_still_login
-Failed asserting that an array has the key 'user'.
-
-/home/onionlake-admin/PROJECT/gol_2025/backend/vendor/laravel/framework/src/Illuminate/Testing/AssertableJsonString.php:297
-/home/onionlake-admin/PROJECT/gol_2025/backend/vendor/laravel/framework/src/Illuminate/Testing/TestResponse.php:894
-/home/onionlake-admin/PROJECT/gol_2025/backend/tests/Feature/Tenant/Auth/TenantLoginControllerTest.php:238</failure>
-    </testcase>
-    <testcase name="login_validates_email_format" file="/home/onionlake-admin/PROJECT/gol_2025/backend/tests/Feature/Tenant/Auth/TenantLoginControllerTest.php" line="254" class="Tests\Feature\Tenant\Auth\TenantLoginControllerTest" classname="Tests.Feature.Tenant.Auth.TenantLoginControllerTest" assertions="3" time="4.391435"/>
-  </testsuite>
-</testsuites>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+         bootstrap="vendor/autoload.php"
+         colors="true"
+         processIsolation="false"
+         stopOnFailure="false"
+         executionOrder="random"
+         failOnWarning="true"
+         failOnRisky="true"
+         failOnEmptyTestSuite="true"
+         beStrictAboutOutputDuringTests="true"
+         timeoutForSmallTests="1"
+         timeoutForMediumTests="10"
+         timeoutForLargeTests="60">
+    <testsuites>
+        <testsuite name="Unit">
+            <directory>tests/Unit</directory>
+        </testsuite>
+        <testsuite name="Feature">
+            <directory>tests/Feature</directory>
+        </testsuite>
+    </testsuites>
+    <source>
+        <include>
+            <directory>app</directory>
+        </include>
+    </source>
+    <php>
+        <env name="APP_ENV" value="testing"/>
+        <env name="APP_KEY" value="base64:2fl+Ktvkdg+Yc/mlDQLUxq9DdUnkBfXBBVNWpVNFwec="/>
+        <env name="APP_DEBUG" value="true"/>
+        <env name="BCRYPT_ROUNDS" value="4"/>
+        <env name="CACHE_DRIVER" value="redis"/>
+        <env name="CACHE_STORE" value="redis"/>
+        <env name="DB_CONNECTION" value="sqlite"/>
+        <env name="DB_DATABASE" value="database/testing.sqlite"/>
+        <env name="MAIL_MAILER" value="array"/>
+        <env name="QUEUE_CONNECTION" value="sync"/>
+        <env name="SESSION_DRIVER" value="array"/>
+        <env name="TELESCOPE_ENABLED" value="false"/>
+        <env name="TENANCY_DATABASE_AUTO_DELETE" value="true"/>
+        <env name="TENANCY_DATABASE_TEMPLATE_TENANT_CONNECTION" value="sqlite"/>
+        <env name="TENANCY_DATABASE_TEMPLATE_TENANT_DATABASE" value="database/testing.sqlite"/>
+    </php>
+</phpunit>
