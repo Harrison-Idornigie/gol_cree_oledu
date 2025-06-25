@@ -13,7 +13,7 @@ use Illuminate\Support\Str;
 
 class TeamLanguageControllerTest extends TenantTestCase
 {
-    use RefreshDatabase, InteractsWithTenancy;
+
 
     protected Tenant $tenant;
     protected User $teamUser;
@@ -25,16 +25,16 @@ class TeamLanguageControllerTest extends TenantTestCase
     {
         parent::setUp();
         $this->setUpTenancy();
-        
+
         // Create test tenant
         $this->tenant = $this->createTestTenant();
-        
+
         // Create users with different roles in tenant context
         $this->teamUser = $this->createTenantTeamMember();
         $this->adminUser = $this->createTenantAdmin();
         $this->studentUser = $this->createTenantStudent();
     }
-    
+
     /**
      * Helper to initialize tenant context
      */
@@ -44,7 +44,7 @@ class TeamLanguageControllerTest extends TenantTestCase
             // Additional tenant initialization if needed
         });
     }
-    
+
     /**
      * Helper to create a tenant team member
      */
@@ -57,7 +57,7 @@ class TeamLanguageControllerTest extends TenantTestCase
                 'password' => bcrypt('password'),
                 'email_verified_at' => now(),
             ]);
-            
+
             // Assign team role if roles table exists
             try {
                 if (class_exists('Spatie\\Permission\\Models\\Role')) {
@@ -77,11 +77,11 @@ class TeamLanguageControllerTest extends TenantTestCase
             } catch (\Exception $e) {
                 // Role assignment might fail if tables don't exist yet
             }
-            
+
             return $user;
         });
     }
-    
+
     /**
      * Helper to create a tenant admin
      */
@@ -94,7 +94,7 @@ class TeamLanguageControllerTest extends TenantTestCase
                 'password' => bcrypt('password'),
                 'email_verified_at' => now(),
             ]);
-            
+
             // Assign admin role if roles table exists
             try {
                 if (class_exists('Spatie\\Permission\\Models\\Role')) {
@@ -121,11 +121,11 @@ class TeamLanguageControllerTest extends TenantTestCase
             } catch (\Exception $e) {
                 // Role assignment might fail if tables don't exist yet
             }
-            
+
             return $user;
         });
     }
-    
+
     /**
      * Helper to create a tenant student
      */
@@ -138,7 +138,7 @@ class TeamLanguageControllerTest extends TenantTestCase
                 'password' => bcrypt('password'),
                 'email_verified_at' => now(),
             ]);
-            
+
             // Assign student role if roles table exists
             try {
                 if (class_exists('Spatie\\Permission\\Models\\Role')) {
@@ -158,7 +158,7 @@ class TeamLanguageControllerTest extends TenantTestCase
             } catch (\Exception $e) {
                 // Role assignment might fail if tables don't exist yet
             }
-            
+
             return $user;
         });
     }
@@ -181,7 +181,7 @@ class TeamLanguageControllerTest extends TenantTestCase
             'is_active' => true,
             'created_by' => $this->teamUser->id,
         ];
-        
+
         return $this->runInTenantContext($this->tenant, function () use ($defaultAttrs, $attributes) {
             return Language::create(array_merge($defaultAttrs, $attributes));
         });
@@ -465,12 +465,12 @@ class TeamLanguageControllerTest extends TenantTestCase
                     $table->uuid('target_language_id');
                     $table->boolean('is_active')->default(true);
                     $table->timestamps();
-                    
+
                     $table->foreign('source_language_id')->references('id')->on('languages');
                     $table->foreign('target_language_id')->references('id')->on('languages');
                 });
             }
-            
+
             return \Illuminate\Support\Facades\DB::table('language_pairs')->insert([
                 'id' => (string) Str::uuid(),
                 'source_language_id' => $sourceLanguage->id,
@@ -496,7 +496,7 @@ class TeamLanguageControllerTest extends TenantTestCase
                 ->where('source_language_id', $sourceLanguage->id)
                 ->where('target_language_id', $targetLanguage->id)
                 ->first();
-            
+
             $this->assertNull($pair);
         });
     }
@@ -521,12 +521,12 @@ class TeamLanguageControllerTest extends TenantTestCase
                     $table->uuid('target_language_id');
                     $table->boolean('is_active')->default(true);
                     $table->timestamps();
-                    
+
                     $table->foreign('source_language_id')->references('id')->on('languages');
                     $table->foreign('target_language_id')->references('id')->on('languages');
                 });
             }
-            
+
             return \Illuminate\Support\Facades\DB::table('language_pairs')->insert([
                 'id' => (string) Str::uuid(),
                 'source_language_id' => $sourceLanguage->id,
@@ -553,7 +553,7 @@ class TeamLanguageControllerTest extends TenantTestCase
                 ->where('source_language_id', $sourceLanguage->id)
                 ->where('target_language_id', $targetLanguage->id)
                 ->first();
-            
+
             $this->assertFalse((bool) $pair->is_active);
         });
     }

@@ -3,16 +3,14 @@
 namespace Tests\Feature\Tenant\Auth;
 
 use Tests\TenantTestCase;
-use Tests\Traits\InteractsWithTenancy;
-use App\Models\Landlord\Tenant;
+ use App\Models\Landlord\Tenant;
 use App\Models\Tenants\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Laravel\Sanctum\Sanctum;
+ use Laravel\Sanctum\Sanctum;
 use Laravel\Sanctum\PersonalAccessToken;
 
 class TenantLogoutControllerTest extends TenantTestCase
 {
-    use RefreshDatabase, InteractsWithTenancy;
+    
 
     protected Tenant $tenant;
     protected User $user;

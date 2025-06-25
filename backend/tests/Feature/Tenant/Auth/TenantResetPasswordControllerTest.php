@@ -13,7 +13,7 @@ use Illuminate\Support\Str;
 
 class TenantResetPasswordControllerTest extends TenantTestCase
 {
-    use RefreshDatabase, InteractsWithTenancy;
+     
 
     protected Tenant $tenant;
     protected User $user;

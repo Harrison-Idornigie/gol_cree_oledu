@@ -97,6 +97,7 @@ abstract class TenantTestCase extends TestCase
             'email' => 'admin@' . $tenant->slug . '.test',
             'password' => 'password123',
             'interface_language' => 'en',
+            'membership' => 'admin',
         ];
 
         $adminData = array_merge($defaultAdminAttributes, $adminAttributes);

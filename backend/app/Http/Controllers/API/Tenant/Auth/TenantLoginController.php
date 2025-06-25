@@ -9,7 +9,6 @@ use App\Services\Auth\UserTenantAssociationService;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 
@@ -46,17 +45,37 @@ class TenantLoginController extends BaseAPIController
                 return $this->sendError('Tenant context required', ['tenant' => 'No tenant context available'], 400);
             }
 
-            // Use tenant guard for authentication
-            if (!Auth::guard('tenant')->attempt($request->only('email', 'password'))) {
-                Log::warning('Failed tenant login attempt', [
+            // Find user and verify credentials manually (Sanctum doesn't support attempt())
+            $user = User::where('email', $request->email)->first();
+
+            // Debug logging
+            $dbConfig = config('database.connections.' . \Illuminate\Support\Facades\DB::getDefaultConnection());
+            Log::info('Login attempt debug', [
+                'email' => $request->email,
+                'user_found' => $user ? 'yes' : 'no',
+                'user_id' => $user ? $user->id : null,
+                'tenant_slug' => $tenant->slug,
+                'database_connection' => \Illuminate\Support\Facades\DB::getDefaultConnection(),
+                'database_path' => $dbConfig['database'] ?? 'not set',
+            ]);
+
+            if (!$user) {
+                Log::warning('User not found in tenant database', [
                     'email' => $request->email,
                     'tenant_slug' => $tenant->slug
                 ]);
                 return $this->sendUnauthorizedResponse('Invalid credentials');
             }
 
-            $user = User::where('email', $request->email)->firstOrFail();
-            
+            if (!\Illuminate\Support\Facades\Hash::check($request->password, $user->password)) {
+                Log::warning('Password verification failed', [
+                    'email' => $request->email,
+                    'tenant_slug' => $tenant->slug,
+                    'user_id' => $user->id
+                ]);
+                return $this->sendUnauthorizedResponse('Invalid credentials');
+            }
+
             // Create token in tenant database
             $token = $user->createToken('tenant-auth-token')->plainTextToken;
 
@@ -86,7 +105,6 @@ class TenantLoginController extends BaseAPIController
             ];
 
             return $this->sendResponse($responseData, 'Successfully logged in');
-            
         } catch (ValidationException $e) {
             return $this->sendError('Validation error', $e->errors(), 422);
         } catch (ModelNotFoundException $e) {
@@ -138,7 +156,6 @@ class TenantLoginController extends BaseAPIController
                 'tenants' => $tenantsData,
                 'count' => $tenantsData->count(),
             ], 'User tenants retrieved successfully');
-            
         } catch (ValidationException $e) {
             return $this->sendError('Validation error', $e->errors(), 422);
         } catch (Exception $e) {

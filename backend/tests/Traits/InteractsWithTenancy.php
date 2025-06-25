@@ -67,6 +67,18 @@ trait InteractsWithTenancy
         // Configure tenancy database manager for file-based SQLite
         Config::set('tenancy.database.managers.sqlite', \Stancl\Tenancy\TenantDatabaseManagers\SQLiteDatabaseManager::class);
 
+        // Use simple naming for tests - let Stancl handle the paths
+        Config::set('tenancy.database.prefix', 'tenant_');
+        Config::set('tenancy.database.suffix', '');
+
+        // Configure the tenant template connection for file-based SQLite testing
+        Config::set('database.connections.tenant_template', [
+            'driver' => 'sqlite',
+            'database' => database_path('testing.sqlite'),
+            'prefix' => '',
+            'foreign_key_constraints' => true,
+        ]);
+
         // Disable automatic tenant database creation events to avoid conflicts
         Config::set('tenancy.features', []);
 
@@ -209,24 +221,9 @@ trait InteractsWithTenancy
      */
     protected function createTenantDatabase(Tenant $tenant): void
     {
-        // Use a file-based database in the testing directory
-        $tenantDbPath = database_path("testing/tenant_{$tenant->id}.sqlite");
-
-        // Create the database file if it doesn't exist
-        if (!file_exists($tenantDbPath)) {
-            touch($tenantDbPath);
-        }
-
-        // Configure tenant database connection to use file-based SQLite
-        Config::set("database.connections.tenant_{$tenant->id}", [
-            'driver' => 'sqlite',
-            'database' => $tenantDbPath,
-            'prefix' => '',
-            'foreign_key_constraints' => true,
-        ]);
-
-        // Store the file path for cleanup
-        $this->tempDbFiles[] = $tenantDbPath;
+        // Use Stancl's database manager to create the database
+        $manager = app(\Stancl\Tenancy\TenantDatabaseManagers\SQLiteDatabaseManager::class);
+        $manager->createDatabase($tenant);
     }
 
     /**
@@ -234,14 +231,10 @@ trait InteractsWithTenancy
      */
     protected function migrateTenantDatabase(Tenant $tenant): void
     {
-        // Switch to tenant database connection
-        $originalConnection = DB::getDefaultConnection();
+        // Use Stancl's tenancy helper to switch context
+        tenancy()->initialize($tenant);
 
         try {
-            // Set tenant database as default
-            Config::set('database.default', "tenant_{$tenant->id}");
-            DB::purge("tenant_{$tenant->id}");
-            DB::reconnect("tenant_{$tenant->id}");
 
             // Check if migrations table exists to avoid conflicts
             $hasTable = false;
@@ -257,7 +250,6 @@ trait InteractsWithTenancy
                 $migrationPath = 'database/migrations/tenants';
                 if (is_dir(base_path($migrationPath))) {
                     $exitCode = Artisan::call('migrate', [
-                        '--database' => "tenant_{$tenant->id}",
                         '--path' => $migrationPath,
                         '--force' => true,
                     ]);
@@ -269,7 +261,6 @@ trait InteractsWithTenancy
                 } else {
                     // Fallback to regular migrations if tenant-specific don't exist
                     $exitCode = Artisan::call('migrate', [
-                        '--database' => "tenant_{$tenant->id}",
                         '--force' => true,
                     ]);
 
@@ -287,9 +278,8 @@ trait InteractsWithTenancy
             // Run tenant seeders
             $this->seedTenantDatabase($tenant);
         } finally {
-            // Restore original connection
-            Config::set('database.default', $originalConnection);
-            DB::reconnect($originalConnection);
+            // End tenancy context
+            tenancy()->end();
         }
     }
 
@@ -299,9 +289,8 @@ trait InteractsWithTenancy
     protected function seedTenantDatabase(Tenant $tenant): void
     {
         try {
-            // Try to run tenant-specific seeders
+            // Try to run tenant-specific seeders (tenancy context already set)
             Artisan::call('db:seed', [
-                '--database' => "tenant_{$tenant->id}",
                 '--class' => 'TenantDatabaseSeeder',
                 '--force' => true,
             ]);
@@ -398,16 +387,21 @@ trait InteractsWithTenancy
      */
     protected function deleteTenantDatabase(Tenant $tenant): void
     {
+        // Get the database name using the same logic
+        $prefix = config('tenancy.database.prefix', '');
+        $suffix = config('tenancy.database.suffix', '');
+        $databaseName = $prefix . $tenant->id . $suffix;
+
         try {
-            // Purge the in-memory database connection
-            DB::purge("tenant_{$tenant->id}");
+            // Purge the database connection
+            DB::purge($databaseName);
         } catch (\Exception $e) {
             // Continue if connection doesn't exist
         }
 
         // Remove database connection configuration
         $connections = config('database.connections');
-        unset($connections["tenant_{$tenant->id}"]);
+        unset($connections[$databaseName]);
         Config::set('database.connections', $connections);
     }
 
@@ -424,20 +418,15 @@ trait InteractsWithTenancy
      */
     protected function runInTenantContext(Tenant $tenant, callable $callback)
     {
-        $originalConnection = DB::getDefaultConnection();
+        // Use Stancl's tenancy helper for context switching
+        tenancy()->initialize($tenant);
 
         try {
-            // Switch to tenant database
-            Config::set('database.default', "tenant_{$tenant->id}");
-            DB::purge("tenant_{$tenant->id}");
-            DB::reconnect("tenant_{$tenant->id}");
-
             // Run the callback
             return $callback();
         } finally {
-            // Restore original connection
-            Config::set('database.default', $originalConnection);
-            DB::reconnect($originalConnection);
+            // End tenancy context
+            tenancy()->end();
         }
     }
 
