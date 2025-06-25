@@ -73,7 +73,7 @@ class UserTenantAssociationService
         return $this->getUserTenantsLegacy($email);
     }
 
-  
+
     /**
      * Get user's primary tenant (most recently accessed or first tenant)
      *
@@ -96,7 +96,7 @@ class UserTenantAssociationService
             'memberships' => [$mostRecentAssociation->membership], // For backward compatibility
         ];
     }
-    
+
     /**
      * Check if user belongs to a specific tenant (OPTIMIZED)
      *
@@ -146,8 +146,8 @@ class UserTenantAssociationService
     public function getUserInTenantLegacy(string $email, string $tenantSlug): ?array
     {
         $tenant = Tenant::where('slug', $tenantSlug)
-                        ->where('status', 'active')
-                        ->first();
+            ->where('status', 'active')
+            ->first();
 
         if (!$tenant) {
             return null;
@@ -176,7 +176,7 @@ class UserTenantAssociationService
             return null;
         }
     }
-    
+
     /**
      * Handle OAuth user login with tenant detection
      * 
@@ -204,10 +204,10 @@ class UserTenantAssociationService
                 ];
             }
         }
-        
+
         // No specific tenant requested - find user's tenants
         $userTenants = $this->getUserTenants($email);
-        
+
         if ($userTenants->isEmpty()) {
             return [
                 'success' => false,
@@ -215,7 +215,7 @@ class UserTenantAssociationService
                 'message' => 'No organization found for this email address'
             ];
         }
-        
+
         if ($userTenants->count() === 1) {
             // Single tenant - direct login
             return [
@@ -224,7 +224,7 @@ class UserTenantAssociationService
                 'message' => 'User authenticated successfully'
             ];
         }
-        
+
         // Multiple tenants - return tenant selection data
         return [
             'success' => true,
@@ -245,7 +245,7 @@ class UserTenantAssociationService
             'message' => 'Multiple organizations found. Please select one.'
         ];
     }
-    
+
     /**
      * Create or update central user record for tenant admin
      * 
@@ -269,5 +269,56 @@ class UserTenantAssociationService
                 ]
             ]
         );
+    }
+
+    /**
+     * Legacy method to find all tenants a user belongs to (SLOW - O(n) where n = number of tenants)
+     *
+     * This method manually searches through all active tenants to find where a user exists.
+     * It's used as a fallback when the optimized central mapping table is not available.
+     *
+     * @param string $email
+     * @return Collection<array> [tenant, user, membership, permissions, memberships]
+     */
+    protected function getUserTenantsLegacy(string $email): Collection
+    {
+        $userTenants = collect();
+
+        // Get all active tenants
+        $tenants = \App\Models\Landlord\Tenant::where('status', 'active')->get();
+
+        foreach ($tenants as $tenant) {
+            try {
+                // Initialize tenant context
+                tenancy()->initialize($tenant);
+
+                // Look for user in this tenant's database
+                $user = \App\Models\Tenants\User::where('email', $email)->first();
+
+                if ($user) {
+                    $userTenants->push([
+                        'tenant' => $tenant,
+                        'user' => $user,
+                        'membership' => $user->membership ?? 'student',
+                        'permissions' => [],
+                        'memberships' => [$user->membership ?? 'student'], // For backward compatibility
+                        'last_accessed_at' => null,
+                    ]);
+                }
+            } catch (\Exception $e) {
+                // Log error but continue with other tenants
+                Log::warning('Error checking user in tenant during legacy lookup', [
+                    'email' => $email,
+                    'tenant_id' => $tenant->id,
+                    'tenant_slug' => $tenant->slug,
+                    'error' => $e->getMessage()
+                ]);
+            }
+        }
+
+        // End tenancy context
+        tenancy()->end();
+
+        return $userTenants;
     }
 }

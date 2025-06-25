@@ -87,13 +87,13 @@ class StudentLanguageController extends BaseAPIController
 
         try {
             $languageDetails = $this->languageService->getLanguage($language->id, 'student', ['learningPaths']);
-            
+
             if (!$languageDetails) {
                 return $this->sendErrorResponse('Language not found or not available', [], 404);
             }
 
             $contentOverview = $this->languageService->getLanguageContentOverview($languageDetails);
-            
+
             $result = array_merge($languageDetails->toArray(), ['content_overview' => $contentOverview]);
 
             return $this->sendResponse($result, 'Language retrieved successfully.');
@@ -115,7 +115,7 @@ class StudentLanguageController extends BaseAPIController
 
         try {
             $learningPaths = $this->learningPathService->getLearningPathsForLanguage($language->id, 'student');
-            
+
             // Add enrollment status for current user
             $user = $request->user();
             $enrichedPaths = $learningPaths->map(function ($path) use ($user) {

@@ -4,10 +4,10 @@ namespace App\Http\Controllers\API\Tenant\Auth;
 
 use App\Helpers\Tenants\TenantHelper;
 use App\Http\Controllers\API\BaseAPIController;
-use App\Models\Tenants\User;
+use App\Services\Auth\TenantAuthService;
 use App\Services\Auth\UserTenantAssociationService;
 use Exception;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
@@ -24,10 +24,14 @@ use Illuminate\Validation\ValidationException;
  */
 class TenantLoginController extends BaseAPIController
 {
+    protected TenantAuthService $tenantAuthService;
     protected UserTenantAssociationService $userTenantService;
 
-    public function __construct(UserTenantAssociationService $userTenantService)
-    {
+    public function __construct(
+        TenantAuthService $tenantAuthService,
+        UserTenantAssociationService $userTenantService
+    ) {
+        $this->tenantAuthService = $tenantAuthService;
         $this->userTenantService = $userTenantService;
     }
 
@@ -37,6 +41,7 @@ class TenantLoginController extends BaseAPIController
             $request->validate([
                 'email'    => 'required|email',
                 'password' => 'required',
+                'device_name' => 'required|string',
             ]);
 
             // Get current tenant context
@@ -45,77 +50,33 @@ class TenantLoginController extends BaseAPIController
                 return $this->sendError('Tenant context required', ['tenant' => 'No tenant context available'], 400);
             }
 
-            // Find user and verify credentials manually (Sanctum doesn't support attempt())
-            $user = User::where('email', $request->email)->first();
+            // Check if user can access tenant authentication
+            $this->authorize('accessTenantAuth', ['tenant-auth', $tenant]);
 
-            // Debug logging
-            $dbConfig = config('database.connections.' . \Illuminate\Support\Facades\DB::getDefaultConnection());
-            Log::info('Login attempt debug', [
-                'email' => $request->email,
-                'user_found' => $user ? 'yes' : 'no',
-                'user_id' => $user ? $user->id : null,
-                'tenant_slug' => $tenant->slug,
-                'database_connection' => \Illuminate\Support\Facades\DB::getDefaultConnection(),
-                'database_path' => $dbConfig['database'] ?? 'not set',
-            ]);
+            // Check if login is allowed for this tenant
+            $this->authorize('login', ['tenant-auth', $tenant]);
 
-            if (!$user) {
-                Log::warning('User not found in tenant database', [
-                    'email' => $request->email,
-                    'tenant_slug' => $tenant->slug
-                ]);
-                return $this->sendUnauthorizedResponse('Invalid credentials');
+            // Use service to handle authentication
+            $result = $this->tenantAuthService->authenticateUser(
+                $request->email,
+                $request->password,
+                $request->device_name,
+                $tenant
+            );
+
+            if ($result['success']) {
+                return $this->sendResponse($result['data'], $result['message']);
+            } else {
+                if ($result['status_code'] === 401) {
+                    return $this->sendUnauthorizedResponse($result['message']);
+                } else {
+                    return $this->sendError($result['message'], [], $result['status_code']);
+                }
             }
-
-            if (!\Illuminate\Support\Facades\Hash::check($request->password, $user->password)) {
-                Log::warning('Password verification failed', [
-                    'email' => $request->email,
-                    'tenant_slug' => $tenant->slug,
-                    'user_id' => $user->id
-                ]);
-                return $this->sendUnauthorizedResponse('Invalid credentials');
-            }
-
-            // Create token in tenant database
-            $token = $user->createToken('tenant-auth-token')->plainTextToken;
-
-            // Prepare response data
-            $userData = [
-                'id' => $user->id,
-                'name' => $user->name,
-                'email' => $user->email,
-                'membership' => $user->membership,
-                'email_verified_at' => $user->email_verified_at,
-                'total_points' => $user->total_points,
-                'interface_language' => $user->interface_language,
-            ];
-
-            // Add tenant context to user data
-            $userData = TenantHelper::addTenantContextToUser($userData, $tenant);
-
-            // Determine redirect path based on user membership and tenant
-            $redirectPath = $this->getPostLoginRedirectPath($user, $tenant);
-
-            $responseData = [
-                'token' => $token,
-                'user'  => $userData,
-                'redirect' => $redirectPath,
-                'auth_context' => 'tenant',
-                'tenant_slug' => $tenant->slug,
-            ];
-
-            return $this->sendResponse($responseData, 'Successfully logged in');
         } catch (ValidationException $e) {
             return $this->sendError('Validation error', $e->errors(), 422);
-        } catch (ModelNotFoundException $e) {
-            Log::error('Tenant user not found during login', [
-                'email' => $request->email,
-                'tenant_slug' => $tenant->slug ?? 'unknown'
-            ]);
-            return $this->sendError('Authentication failed', ['email' => 'User not found in this organization'], 404);
         } catch (Exception $e) {
-            Log::error('Tenant login error: ' . $e->getMessage(), [
-                'tenant_slug' => $tenant->slug ?? 'unknown',
+            Log::error('Tenant login controller error: ' . $e->getMessage(), [
                 'trace' => $e->getTraceAsString(),
             ]);
             return $this->sendError('Login failed', ['error' => 'An unexpected error occurred'], 500);
@@ -134,54 +95,26 @@ class TenantLoginController extends BaseAPIController
                 'email' => 'required|email',
             ]);
 
-            $userTenants = $this->userTenantService->getUserTenants($request->email);
+            // Check if user can retrieve tenant list
+            $this->authorize('getUserTenants', 'tenant-auth');
 
-            $tenantsData = $userTenants->map(function ($tenantData) {
-                return [
-                    'tenant' => [
-                        'id' => $tenantData['tenant']->id,
-                        'name' => $tenantData['tenant']->name,
-                        'slug' => $tenantData['tenant']->slug,
-                        'status' => $tenantData['tenant']->status,
-                    ],
-                    'user' => [
-                        'id' => $tenantData['user']->id,
-                        'membership' => $tenantData['user']->membership,
-                    ],
-                    'memberships' => $tenantData['memberships'],
-                ];
-            });
+            // Use service to get user tenants
+            $result = $this->tenantAuthService->getUserTenants($request->email);
 
-            return $this->sendResponse([
-                'tenants' => $tenantsData,
-                'count' => $tenantsData->count(),
-            ], 'User tenants retrieved successfully');
+            if ($result['success']) {
+                return $this->sendResponse($result['data'], $result['message']);
+            } else {
+                return $this->sendError($result['message'], [], $result['status_code']);
+            }
         } catch (ValidationException $e) {
             return $this->sendError('Validation error', $e->errors(), 422);
+        } catch (AuthorizationException $e) {
+            return $this->sendError('Forbidden', ['access' => 'You do not have permission to access this resource'], 403);
         } catch (Exception $e) {
-            Log::error('Get user tenants error: ' . $e->getMessage(), [
+            Log::error('Get user tenants controller error: ' . $e->getMessage(), [
                 'trace' => $e->getTraceAsString(),
             ]);
             return $this->sendError('Failed to retrieve user tenants', ['error' => 'An unexpected error occurred'], 500);
         }
-    }
-
-    /**
-     * Determine the appropriate redirect path after login based on user membership and tenant
-     */
-    protected function getPostLoginRedirectPath(User $user, $tenant): string
-    {
-        $tenantSlug = $tenant->slug;
-
-        if ($user->isTenantAdmin() || $user->isAdmin()) {
-            return "/{$tenantSlug}/admin/dashboard";
-        }
-
-        if ($user->isTeam()) {
-            return "/{$tenantSlug}/team/dashboard";
-        }
-
-        // Default to student dashboard
-        return "/{$tenantSlug}/student/dashboard";
     }
 }

@@ -321,8 +321,8 @@ class LearningPathService
         return $query->with(['language', 'units' => function ($query) {
             $query->orderBy('order');
         }])
-        ->orderBy('difficulty_level')
-        ->orderBy('order')
-        ->get();
+            ->orderBy('difficulty_level')
+            ->orderBy('order')
+            ->get();
     }
 }

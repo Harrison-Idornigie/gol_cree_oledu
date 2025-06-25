@@ -100,7 +100,7 @@ class LessonService
         return DB::transaction(function () use ($data, $user) {
             // Validate topic exists and user has access
             $topic = Topic::findOrFail($data['topic_id']);
-            
+
             // Set order if not provided
             if (empty($data['order'])) {
                 $data['order'] = $this->getNextOrderForTopic($data['topic_id']);
@@ -235,7 +235,7 @@ class LessonService
     public function updateLessonStatus(Lesson $lesson, string $status, User $user): Lesson
     {
         $validStatuses = ['draft', 'published', 'archived'];
-        
+
         if (!in_array($status, $validStatuses)) {
             throw new Exception("Invalid status. Must be one of: " . implode(', ', $validStatuses));
         }
@@ -250,13 +250,13 @@ class LessonService
     {
         return DB::transaction(function () use ($lesson, $overrides, $user) {
             $lessonData = $lesson->toArray();
-            
+
             // Remove ID and timestamps
             unset($lessonData['id'], $lessonData['created_at'], $lessonData['updated_at']);
-            
+
             // Apply overrides
             $lessonData = array_merge($lessonData, $overrides);
-            
+
             // Set new order if not specified
             if (!isset($overrides['order'])) {
                 $lessonData['order'] = $this->getNextOrderForTopic($lessonData['topic_id']);
@@ -348,13 +348,13 @@ class LessonService
     public function getLessonsForStudent(int $topicId, User $user): Collection
     {
         $lessons = $this->getLessonsByTopic($topicId);
-        
+
         return $lessons->map(function ($lesson) use ($user) {
             $lessonData = $lesson->toArray();
             $lessonData['progress'] = $this->getLessonProgress($lesson, $user);
             $lessonData['accessible'] = $this->isLessonAccessible($lesson, $user);
             $lessonData['prerequisite_completed'] = $this->arePrerequisitesCompleted($lesson, $user);
-            
+
             return (object) $lessonData;
         });
     }

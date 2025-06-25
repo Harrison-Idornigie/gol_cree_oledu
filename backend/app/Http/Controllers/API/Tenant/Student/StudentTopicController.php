@@ -71,7 +71,7 @@ class StudentTopicController extends BaseAPIController
 
         try {
             $user = $request->user();
-            
+
             // Check if topic is accessible to the student
             if (!$this->topicService->isTopicAccessible($topic, $user)) {
                 return $this->sendErrorResponse('Topic not accessible. Complete previous topics first.', [], 403);

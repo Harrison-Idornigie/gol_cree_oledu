@@ -45,13 +45,13 @@ class TenantAdminUserController extends BaseAPIController
     public function getUsers(Request $request): JsonResponse
     {
         $this->authorize('viewAny', User::class);
-        
+
         try {
             $filters = $request->only(['role', 'status', 'search', 'created_from', 'created_to']);
             $perPage = $request->get('per_page', 15);
-            
+
             $users = $this->userManagementService->getUsers($filters, $perPage);
-            
+
             return $this->sendResponse($users, 'Users retrieved successfully.');
         } catch (Exception $e) {
             return $this->sendErrorResponse('Failed to retrieve users', ['error' => $e->getMessage()], 500);
@@ -68,7 +68,7 @@ class TenantAdminUserController extends BaseAPIController
     public function getUser(Request $request, User $user): JsonResponse
     {
         $this->authorize('view', $user);
-        
+
         try {
             return $this->sendResponse($user->load(['roles', 'permissions']), 'User retrieved successfully.');
         } catch (Exception $e) {
@@ -95,7 +95,7 @@ class TenantAdminUserController extends BaseAPIController
 
         try {
             $user = $this->userManagementService->createUser($request->all(), $request->user());
-            
+
             return $this->sendResponse($user, 'User created successfully.', 201);
         } catch (Exception $e) {
             return $this->sendErrorResponse('Failed to create user', ['error' => $e->getMessage()], 422);
@@ -122,7 +122,7 @@ class TenantAdminUserController extends BaseAPIController
 
         try {
             $updatedUser = $this->userManagementService->updateUser($user, $request->all(), $request->user());
-            
+
             return $this->sendResponse($updatedUser, 'User updated successfully.');
         } catch (Exception $e) {
             return $this->sendErrorResponse('Failed to update user', ['error' => $e->getMessage()], 422);
@@ -147,7 +147,7 @@ class TenantAdminUserController extends BaseAPIController
 
         try {
             $invitation = $this->userManagementService->sendInvitation($request->all(), $request->user());
-            
+
             return $this->sendResponse($invitation, 'Invitation sent successfully.', 201);
         } catch (Exception $e) {
             return $this->sendErrorResponse('Failed to send invitation', ['error' => $e->getMessage()], 422);
@@ -167,7 +167,7 @@ class TenantAdminUserController extends BaseAPIController
 
         try {
             $this->userManagementService->cancelInvitation($invitation, $request->user());
-            
+
             return $this->sendResponse([], 'Invitation cancelled successfully.');
         } catch (Exception $e) {
             return $this->sendErrorResponse('Failed to cancel invitation', ['error' => $e->getMessage()], 422);
@@ -187,7 +187,7 @@ class TenantAdminUserController extends BaseAPIController
 
         try {
             $this->userManagementService->resendInvitation($invitation, $request->user());
-            
+
             return $this->sendResponse([], 'Invitation resent successfully.');
         } catch (Exception $e) {
             return $this->sendErrorResponse('Failed to resend invitation', ['error' => $e->getMessage()], 422);
@@ -207,9 +207,9 @@ class TenantAdminUserController extends BaseAPIController
         try {
             $filters = $request->only(['status', 'email', 'membership']);
             $perPage = $request->get('per_page', 15);
-            
+
             $invitations = $this->userManagementService->getInvitations($filters, $perPage);
-            
+
             return $this->sendResponse($invitations, 'Invitations retrieved successfully.');
         } catch (Exception $e) {
             return $this->sendErrorResponse('Failed to retrieve invitations', ['error' => $e->getMessage()], 500);
@@ -233,11 +233,11 @@ class TenantAdminUserController extends BaseAPIController
 
         try {
             $updatedUser = $this->userManagementService->updateUser(
-                $user, 
-                ['role' => $request->role], 
+                $user,
+                ['role' => $request->role],
                 $request->user()
             );
-            
+
             return $this->sendResponse($updatedUser, 'User membership updated successfully.');
         } catch (Exception $e) {
             return $this->sendErrorResponse('Failed to update membership', ['error' => $e->getMessage()], 422);
@@ -261,7 +261,7 @@ class TenantAdminUserController extends BaseAPIController
 
         try {
             $this->userManagementService->updateUserStatus($user, $request->status, $request->user());
-            
+
             return $this->sendResponse([], 'User status updated successfully.');
         } catch (Exception $e) {
             return $this->sendErrorResponse('Failed to update status', ['error' => $e->getMessage()], 422);
@@ -281,7 +281,7 @@ class TenantAdminUserController extends BaseAPIController
 
         try {
             $this->userManagementService->deleteUser($user, $request->user());
-            
+
             return $this->sendResponse([], 'User deleted successfully.');
         } catch (Exception $e) {
             return $this->sendErrorResponse('Failed to delete user', ['error' => $e->getMessage()], 422);
@@ -302,7 +302,7 @@ class TenantAdminUserController extends BaseAPIController
         try {
             $filters = $request->only(['date_from', 'date_to']);
             $activity = $this->userManagementService->getUserActivity($user, $filters);
-            
+
             return $this->sendResponse($activity, 'User activity retrieved successfully.');
         } catch (Exception $e) {
             return $this->sendErrorResponse('Failed to retrieve user activity', ['error' => $e->getMessage()], 500);
@@ -322,7 +322,7 @@ class TenantAdminUserController extends BaseAPIController
         try {
             $filters = $request->only(['date_from', 'date_to']);
             $statistics = $this->userManagementService->getUserStatistics($filters);
-            
+
             return $this->sendResponse($statistics, 'User statistics retrieved successfully.');
         } catch (Exception $e) {
             return $this->sendErrorResponse('Failed to retrieve statistics', ['error' => $e->getMessage()], 500);

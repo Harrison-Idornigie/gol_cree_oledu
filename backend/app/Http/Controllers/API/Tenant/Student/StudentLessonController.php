@@ -33,7 +33,7 @@ class StudentLessonController extends BaseAPIController
     public function __construct(LessonService $lessonService)
     {
         $this->lessonService = $lessonService;
-        
+
         // Apply policies - students can only view lessons
         $this->authorizeResource(Lesson::class, 'lesson');
     }
@@ -142,15 +142,15 @@ class StudentLessonController extends BaseAPIController
         if ($progress['completed']) {
             return 'lesson_completed';
         }
-        
+
         if ($progress['next_exercise_id']) {
             return 'continue_exercises';
         }
-        
+
         if ($progress['exercises_completed'] === 0) {
             return 'start_exercises';
         }
-        
+
         return 'review_lesson';
     }
 
@@ -162,7 +162,7 @@ class StudentLessonController extends BaseAPIController
         if ($progress['completed']) {
             return 0; // No more time needed
         }
-        
+
         $remainingExercises = $progress['exercises_total'] - $progress['exercises_completed'];
         return max(10, $remainingExercises * 5); // 5 minutes per exercise, minimum 10 minutes
     }
@@ -174,10 +174,10 @@ class StudentLessonController extends BaseAPIController
     {
         // This would analyze user's attempt patterns and success rates
         // For now, return a default based on completion rate
-        $completionRate = $lesson->exercises()->count() > 0 
+        $completionRate = $lesson->exercises()->count() > 0
             ? ($this->lessonService->getLessonProgress($lesson, $user)['exercises_completed'] / $lesson->exercises()->count())
             : 0;
-            
+
         if ($completionRate >= 0.8) {
             return 'easy';
         } elseif ($completionRate >= 0.5) {

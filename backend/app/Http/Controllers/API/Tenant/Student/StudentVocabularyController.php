@@ -180,7 +180,7 @@ class StudentVocabularyController extends BaseAPIController
 
         try {
             $vocabularyDetails = $this->vocabularyService->getVocabularyItem($vocabulary->id, 'student', ['language', 'lesson', 'unit']);
-            
+
             if (!$vocabularyDetails) {
                 return $this->sendErrorResponse('Vocabulary item not found or not available', [], 404);
             }

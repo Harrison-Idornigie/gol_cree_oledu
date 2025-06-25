@@ -27,7 +27,7 @@ class TenantSettingsService
     public function getTenantSettings(): array
     {
         $cacheKey = 'tenant_settings_' . tenant('id');
-        
+
         return Cache::remember($cacheKey, 3600, function () {
             // This would typically come from a TenantSettings model
             return [
@@ -75,19 +75,19 @@ class TenantSettingsService
 
             // Update each section
             $updatedSettings = [];
-            
+
             if (isset($settings['general'])) {
                 $updatedSettings['general'] = $this->updateGeneralSettings($settings['general'], $user);
             }
-            
+
             if (isset($settings['learning'])) {
                 $updatedSettings['learning'] = $this->updateLearningSettings($settings['learning'], $user);
             }
-            
+
             if (isset($settings['notifications'])) {
                 $updatedSettings['notifications'] = $this->updateNotificationSettings($settings['notifications'], $user);
             }
-            
+
             if (isset($settings['integrations'])) {
                 $updatedSettings['integrations'] = $this->updateIntegrationSettings($settings['integrations'], $user);
             }
@@ -111,7 +111,7 @@ class TenantSettingsService
     public function getBrandingSettings(): array
     {
         $cacheKey = 'tenant_branding_' . tenant('id');
-        
+
         return Cache::remember($cacheKey, 3600, function () {
             return [
                 'logo' => [
@@ -183,7 +183,7 @@ class TenantSettingsService
     public function getFeatureSettings(): array
     {
         $cacheKey = 'tenant_features_' . tenant('id');
-        
+
         return Cache::remember($cacheKey, 3600, function () {
             return [
                 'core_features' => [
@@ -249,7 +249,7 @@ class TenantSettingsService
     private function validateSettings(array $settings): void
     {
         $allowedSections = ['general', 'learning', 'notifications', 'integrations'];
-        
+
         foreach (array_keys($settings) as $section) {
             if (!in_array($section, $allowedSections)) {
                 throw new Exception("Invalid settings section: {$section}");

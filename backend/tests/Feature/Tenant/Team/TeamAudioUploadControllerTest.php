@@ -3,7 +3,6 @@
 namespace Tests\Feature\Tenant\Team;
 
 use Tests\TenantTestCase;
-use Tests\Traits\InteractsWithTenancy;
 use App\Models\Landlord\Tenant;
 use App\Models\Tenants\User;
 use App\Models\Tenants\Language;
@@ -11,14 +10,13 @@ use App\Models\Tenants\Word;
 use App\Models\Tenants\WordTranslation;
 use App\Models\Tenants\Sentence;
 use App\Models\Tenants\SentenceTranslation;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\Sanctum;
 
 class TeamAudioUploadControllerTest extends TenantTestCase
 {
-    use RefreshDatabase, InteractsWithTenancy;
+
 
     protected Tenant $tenant;
     protected User $teamUser;
@@ -33,7 +31,7 @@ class TeamAudioUploadControllerTest extends TenantTestCase
 
         // Create test tenant
         $this->tenant = $this->createTestTenant();
-        $this->initializeTenantContext($this->tenant);
+        // $this->initializeTenantContext($this->tenant);
 
         // Create users
         $this->teamUser = $this->createTenantTeam();

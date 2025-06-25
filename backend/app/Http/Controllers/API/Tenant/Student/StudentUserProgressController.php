@@ -46,7 +46,7 @@ class StudentUserProgressController extends BaseAPIController
 
         try {
             $user = $request->user();
-            
+
             // Use existing ProgressService method
             $myProgress = $this->progressService->getMyContentProgress($user->id, $request);
 
@@ -110,7 +110,7 @@ class StudentUserProgressController extends BaseAPIController
 
         try {
             $user = $request->user();
-            
+
             // Use existing ProgressService method
             $progress = $this->progressService->getContentProgressDetails($user->id, $type, $id, $request);
 

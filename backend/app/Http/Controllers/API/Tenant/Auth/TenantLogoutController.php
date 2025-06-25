@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\API\Tenant\Auth;
 
-use App\Helpers\Tenants\TenantHelper;
 use App\Http\Controllers\API\BaseAPIController;
+use App\Services\Auth\TenantAuthService;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -17,6 +17,13 @@ use Illuminate\Support\Facades\Log;
  */
 class TenantLogoutController extends BaseAPIController
 {
+    protected TenantAuthService $tenantAuthService;
+
+    public function __construct(TenantAuthService $tenantAuthService)
+    {
+        $this->tenantAuthService = $tenantAuthService;
+    }
+
     public function logout(Request $request)
     {
         try {
@@ -24,25 +31,20 @@ class TenantLogoutController extends BaseAPIController
                 return $this->sendUnauthorizedResponse('User not authenticated');
             }
 
-            // Get current tenant context for logging
-            $tenant = TenantHelper::current();
+            // Check authorization
+            $this->authorize('logout', 'tenant-auth');
 
-            // Delete the current access token from tenant database
-            $request->user()->currentAccessToken()->delete();
+            // Use service to handle logout
+            $result = $this->tenantAuthService->logoutUser($request->user());
 
-            Log::info('Tenant user logged out successfully', [
-                'user_id' => $request->user()->id,
-                'email' => $request->user()->email,
-                'tenant_slug' => $tenant?->slug,
-            ]);
-
-            return $this->sendResponse([], 'Successfully logged out');
-
+            if ($result['success']) {
+                return $this->sendResponse($result['data'], $result['message']);
+            } else {
+                return $this->sendError($result['message'], [], $result['status_code']);
+            }
         } catch (Exception $e) {
-            $tenant = TenantHelper::current();
-            Log::error('Tenant logout error: ' . $e->getMessage(), [
+            Log::error('Tenant logout controller error: ' . $e->getMessage(), [
                 'user_id' => $request->user()?->id,
-                'tenant_slug' => $tenant?->slug,
                 'trace' => $e->getTraceAsString(),
             ]);
             return $this->sendError('Logout failed', ['error' => 'An unexpected error occurred'], 500);

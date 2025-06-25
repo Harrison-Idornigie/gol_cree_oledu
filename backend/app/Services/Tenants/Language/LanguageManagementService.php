@@ -409,7 +409,7 @@ class LanguageManagementService
             ],
             'elementary' => [
                 'level' => 'elementary',
-                'name' => 'Elementary (A2)', 
+                'name' => 'Elementary (A2)',
                 'description' => 'Simple conversations and everyday topics',
                 'content_count' => 0
             ],
@@ -519,7 +519,7 @@ class LanguageManagementService
         // Basic calculation based on content volume
         $lessonCount = $language->lessons()->where('status', 'published')->count();
         $exerciseCount = $language->exercises()->where('status', 'published')->count();
-        
+
         // Rough estimate: 30 minutes per lesson, 15 minutes per exercise
         return ($lessonCount * 0.5) + ($exerciseCount * 0.25);
     }

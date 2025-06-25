@@ -48,12 +48,12 @@ class UserLanguageService
         return DB::transaction(function () use ($user, $languageId, $options) {
             // Validate language exists and is available
             $language = Language::findOrFail($languageId);
-            
+
             // Check if already selected
             $existing = UserLanguage::where('user_id', $user->id)
                 ->where('language_id', $languageId)
                 ->first();
-                
+
             if ($existing) {
                 throw new Exception('Language is already in your learning list.');
             }
@@ -61,7 +61,7 @@ class UserLanguageService
             // Determine if this should be primary (first language or explicitly set)
             $isPrimary = $options['is_primary'] ?? false;
             $hasExistingLanguages = UserLanguage::where('user_id', $user->id)->exists();
-            
+
             if (!$hasExistingLanguages) {
                 $isPrimary = true; // First language is always primary
             } elseif ($isPrimary) {

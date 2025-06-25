@@ -403,10 +403,10 @@ class ExerciseService
         return DB::transaction(function () use ($exercise, $user, $answerData) {
             // Get attempt number
             $attemptNumber = $this->getNextAttemptNumber($exercise, $user);
-            
+
             // Validate answer based on exercise type
             $result = $this->validateAnswer($exercise, $answerData);
-            
+
             // Record the attempt
             $attempt = ExerciseAttempt::create([
                 'exercise_id' => $exercise->id,
@@ -464,7 +464,7 @@ class ExerciseService
         $averageScore = $attempts->avg('score');
         $totalTime = $attempts->sum('time_taken_seconds');
         $completed = $attempts->where('passed', true)->isNotEmpty();
-        
+
         return [
             'total_attempts' => $attempts->count(),
             'best_score' => round($bestScore, 2),
@@ -518,8 +518,8 @@ class ExerciseService
     public function getExercisesByLanguage(string $languageCode, User $user, array $filters = []): Collection
     {
         $query = Exercise::whereHas('lesson.topic.unit.learningPath.language', function ($q) use ($languageCode) {
-                $q->where('code', $languageCode);
-            })
+            $q->where('code', $languageCode);
+        })
             ->where('status', 'active')
             ->with(['lesson.topic.unit.learningPath.language', 'attempts' => function ($q) use ($user) {
                 $q->where('user_id', $user->id);
@@ -559,11 +559,11 @@ class ExerciseService
         // Basic validation - this should be enhanced with type-specific logic
         $userAnswer = $answerData['answer'] ?? '';
         $correctAnswer = $exercise->correct_answer ?? '';
-        
+
         // Simple comparison for now - should be enhanced per exercise type
         $isCorrect = strtolower(trim($userAnswer)) === strtolower(trim($correctAnswer));
         $score = $isCorrect ? 100 : 0;
-        
+
         return [
             'is_correct' => $isCorrect,
             'score' => $score,
@@ -613,8 +613,8 @@ class ExerciseService
                 'trackable_id' => $lesson->id,
             ],
             [
-                'status' => $completedExercises === $totalExercises 
-                    ? UserProgress::STATUS_COMPLETED 
+                'status' => $completedExercises === $totalExercises
+                    ? UserProgress::STATUS_COMPLETED
                     : UserProgress::STATUS_IN_PROGRESS,
                 'completed_at' => $completedExercises === $totalExercises ? now() : null,
                 'meta_data' => [
@@ -637,10 +637,10 @@ class ExerciseService
                 ->where('order', '>', $exercise->order)
                 ->orderBy('order')
                 ->first();
-                
+
             return $nextExercise ? 'next_exercise' : 'lesson_complete';
         }
-        
+
         return 'retry_exercise';
     }
 
@@ -655,7 +655,7 @@ class ExerciseService
 
         $recentAttempts = $attempts->take(-3); // Last 3 attempts
         $scores = $recentAttempts->pluck('score')->toArray();
-        
+
         if (count($scores) < 2) {
             return 'insufficient_data';
         }

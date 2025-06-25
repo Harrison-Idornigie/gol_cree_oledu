@@ -56,6 +56,10 @@ class User extends Authenticatable implements MustVerifyEmail
         'total_points'      => 'integer',
     ];
 
+    protected $attributes = [
+        'membership' => 'student',
+    ];
+
     protected array $auditLogEvents = [
         'created' => 'Created user account: :name (:email)',
         'updated' => 'Updated user account: :name',

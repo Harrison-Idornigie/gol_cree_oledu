@@ -97,7 +97,7 @@ class TopicService
         return DB::transaction(function () use ($data, $user) {
             // Validate unit exists and user has access
             $unit = Unit::findOrFail($data['unit_id']);
-            
+
             // Generate slug if not provided
             if (empty($data['slug'])) {
                 $data['slug'] = $this->generateUniqueSlug($data['title']);
@@ -245,7 +245,7 @@ class TopicService
     public function updateTopicStatus(Topic $topic, string $status, User $user): Topic
     {
         $validStatuses = ['draft', 'published', 'archived'];
-        
+
         if (!in_array($status, $validStatuses)) {
             throw new Exception("Invalid status. Must be one of: " . implode(', ', $validStatuses));
         }
@@ -276,7 +276,7 @@ class TopicService
     private function slugExists(string $slug, ?int $excludeId = null): bool
     {
         $query = Topic::where('slug', $slug);
-        
+
         if ($excludeId) {
             $query->where('id', '!=', $excludeId);
         }

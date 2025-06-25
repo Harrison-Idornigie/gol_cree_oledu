@@ -123,7 +123,7 @@ class TenantAdminAuditController extends BaseAPIController
     {
         try {
             $auditLog = $this->auditService->getAuditLogDetails($logId);
-            
+
             $this->authorize('view', $auditLog);
 
             return $this->sendResponse($auditLog, 'Audit log retrieved successfully.');

@@ -10,7 +10,7 @@ use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 class AdminInvite extends Model
 {
     use BelongsToTenant, SoftDeletes;
-    
+
     protected $fillable = [
         'email',
         'token',
@@ -131,8 +131,8 @@ class AdminInvite extends Model
     public function scopePending($query)
     {
         return $query->where('status', 'pending')
-                    ->whereNull('used_at')
-                    ->where('expires_at', '>', now());
+            ->whereNull('used_at')
+            ->where('expires_at', '>', now());
     }
 
     /**

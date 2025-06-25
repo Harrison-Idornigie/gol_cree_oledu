@@ -68,7 +68,7 @@ class StudentGuideController extends BaseAPIController
 
         try {
             $guideEntryDetails = $this->guideBookEntryService->getGuideBookEntry($guideEntry->id, 'student', ['language', 'topic', 'lessons']);
-            
+
             if (!$guideEntryDetails) {
                 return $this->sendErrorResponse('Guide entry not found or not available', [], 404);
             }

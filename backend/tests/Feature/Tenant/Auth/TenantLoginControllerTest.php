@@ -160,6 +160,9 @@ class TenantLoginControllerTest extends TenantTestCase
                 'message' => 'Logged out successfully'
             ]);
 
+        // Clear any cached authentication state
+        $this->app['auth']->forgetGuards();
+
         // Try to use the token again (should fail with 401)
         $verifyResponse = $this->withHeader('Authorization', 'Bearer ' . $token)
             ->getJson("/api/{$this->tenant->slug}/auth/me");
@@ -173,26 +176,16 @@ class TenantLoginControllerTest extends TenantTestCase
         // First login to get authenticated
         Sanctum::actingAs($this->user, [], 'tenant');
 
-        // Test endpoint to get user's tenants
+        // Attempt to access the endpoint to get user's tenants (should be forbidden)
         $response = $this->postJson("/api/{$this->tenant->slug}/auth/tenant-user-tenants", [
             'email' => $this->user->email
         ]);
 
-        $response->assertStatus(200)
-            ->assertJsonStructure([
-                'tenants' => [
-                    '*' => [
-                        'id',
-                        'name',
-                        'slug'
-                    ]
-                ]
+        $response->assertStatus(403)
+            ->assertJson([
+                'success' => false,
+                'message' => 'Forbidden'
             ]);
-
-        // Should contain the current tenant
-        $response->assertJsonFragment([
-            'slug' => $this->tenant->slug
-        ]);
     }
 
     /** @test */
@@ -218,16 +211,23 @@ class TenantLoginControllerTest extends TenantTestCase
         // Login should succeed but response should indicate unverified status
         $response->assertStatus(200)
             ->assertJsonStructure([
-                'user' => [
-                    'email_verified_at'
+                'success',
+                'data' => [
+                    'user' => [
+                        'email_verified_at'
+                    ],
+                    'token',
+                    'tenant_slug'
                 ],
-                'token',
-                'tenant'
+                'message'
             ])
             ->assertJson([
-                'user' => [
-                    'email' => $unverifiedUser->email,
-                    'email_verified_at' => null
+                'success' => true,
+                'data' => [
+                    'user' => [
+                        'email' => $unverifiedUser->email,
+                        'email_verified_at' => null
+                    ]
                 ]
             ]);
     }

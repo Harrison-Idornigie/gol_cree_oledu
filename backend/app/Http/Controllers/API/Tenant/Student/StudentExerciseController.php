@@ -168,7 +168,7 @@ class StudentExerciseController extends BaseAPIController
             ]);
 
             $user = Auth::user();
-            
+
             // Handle file uploads if present
             if ($request->hasFile('files')) {
                 $validated['files'] = [];

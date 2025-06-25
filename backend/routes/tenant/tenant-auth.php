@@ -35,8 +35,16 @@ Route::group([
 
     // Tenant authentication routes (require tenant context)
     Route::middleware([\App\Http\Middleware\Tenant\InitializeTenancyByPathOrDomain::class])->group(function () {
-        Route::post('tenant-login', [TenantLoginController::class, 'login'])->name('tenant.login');
-        Route::post('tenant-user-tenants', [TenantLoginController::class, 'getUserTenants'])->name('tenant.user.tenants');
+        // Login endpoint with rate limiting
+        Route::post('tenant-login', [TenantLoginController::class, 'login'])
+            ->middleware(['throttle:5,1']) // 5 attempts per minute
+            ->name('tenant.login');
+
+        // Get user tenants endpoint with rate limiting
+        Route::post('tenant-user-tenants', [TenantLoginController::class, 'getUserTenants'])
+            ->middleware(['throttle:10,1']) // 10 attempts per minute
+            ->name('tenant.user.tenants');
+
         Route::middleware('auth:tenant')->group(function () {
             Route::post('tenant-logout', [TenantLogoutController::class, 'logout'])->name('tenant.logout');
         });
@@ -66,6 +74,7 @@ Route::group([
 
         // Admin invite routes (require admin membership)
         Route::post('admin-invite', [TenantAdminInviteController::class, 'invite'])
+            ->middleware(['role_permission:tenant-admin|admin'])
             ->name('tenant.admin.invite');
     });
 });

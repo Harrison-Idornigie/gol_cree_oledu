@@ -35,14 +35,14 @@ class TenantAdminInviteControllerTest extends TenantTestCase
         parent::tearDown();
     }
 
-    protected function createTenantAdmin(): User
+    protected function createTenantAdmin(array $attributes = []): User
     {
-        return $this->runInTenantContext($this->tenant, function () {
-            return User::factory()->create([
+        return $this->runInTenantContext($this->tenant, function () use ($attributes) {
+            return User::factory()->create(array_merge([
                 'email' => 'admin@example.com',
                 'password' => bcrypt('password123'),
                 'membership' => 'admin'
-            ]);
+            ], $attributes));
         });
     }
 

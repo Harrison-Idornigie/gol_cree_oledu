@@ -38,6 +38,7 @@ use App\Policies\CurriculumTemplatePolicy;
 use App\Policies\ContentTemplatePolicy;
 use App\Policies\ContentScaffoldingPolicy;
 use App\Policies\TenantAnalyticsPolicy;
+use App\Policies\TenantAuthPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -80,6 +81,7 @@ class AuthServiceProvider extends ServiceProvider
 
         // Tenant Admin Policies (for specific functionality, not models)
         'tenant-analytics' => TenantAnalyticsPolicy::class,
+        'tenant-auth' => TenantAuthPolicy::class,
     ];
 
     /**

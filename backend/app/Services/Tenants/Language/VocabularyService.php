@@ -330,7 +330,7 @@ class VocabularyService
     {
         $acceptedAnswers = $this->getAcceptedAnswers($vocabularyItem);
         $isCorrect = $this->isAnswerCorrect($userAnswer, $acceptedAnswers);
-        
+
         // Record the attempt (this would be saved to database)
         $this->recordVocabularyAttempt($vocabularyItem, $userAnswer, $isCorrect, $user);
 
@@ -390,11 +390,11 @@ class VocabularyService
     private function getAcceptedAnswers(VocabularyItem $vocabularyItem): array
     {
         $answers = [$vocabularyItem->target_word];
-        
+
         // Add alternative translations if they exist
         if ($vocabularyItem->alternative_translations) {
-            $alternatives = is_array($vocabularyItem->alternative_translations) 
-                ? $vocabularyItem->alternative_translations 
+            $alternatives = is_array($vocabularyItem->alternative_translations)
+                ? $vocabularyItem->alternative_translations
                 : json_decode($vocabularyItem->alternative_translations, true) ?? [];
             $answers = array_merge($answers, $alternatives);
         }

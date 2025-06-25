@@ -56,11 +56,11 @@ class AuditService
             $search = $filters['search'];
             $query->where(function ($q) use ($search) {
                 $q->where('action', 'like', '%' . $search . '%')
-                  ->orWhere('area', 'like', '%' . $search . '%')
-                  ->orWhereHas('user', function ($userQuery) use ($search) {
-                      $userQuery->where('name', 'like', '%' . $search . '%')
-                               ->orWhere('email', 'like', '%' . $search . '%');
-                  });
+                    ->orWhere('area', 'like', '%' . $search . '%')
+                    ->orWhereHas('user', function ($userQuery) use ($search) {
+                        $userQuery->where('name', 'like', '%' . $search . '%')
+                            ->orWhere('email', 'like', '%' . $search . '%');
+                    });
             });
         }
 
@@ -94,10 +94,10 @@ class AuditService
      */
     public function getAuditSummary(array $filters = []): array
     {
-        $dateFrom = isset($filters['date_from']) 
+        $dateFrom = isset($filters['date_from'])
             ? Carbon::parse($filters['date_from'])->startOfDay()
             : Carbon::now()->subDays(30)->startOfDay();
-        
+
         $dateTo = isset($filters['date_to'])
             ? Carbon::parse($filters['date_to'])->endOfDay()
             : Carbon::now()->endOfDay();
@@ -339,7 +339,7 @@ class AuditService
     public function cleanupOldLogs(int $retentionDays = 365): int
     {
         $cutoffDate = Carbon::now()->subDays($retentionDays);
-        
+
         return AuditLog::where('created_at', '<', $cutoffDate)->delete();
     }
 

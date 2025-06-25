@@ -39,7 +39,7 @@ class StudentUserSettingsController extends BaseAPIController
 
         try {
             $user = $request->user();
-            
+
             $settings = [
                 'interface_language' => $user->interface_language ?? 'en',
                 'notification_preferences' => [

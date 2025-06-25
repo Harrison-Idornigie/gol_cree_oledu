@@ -98,7 +98,7 @@ class TeamSentenceController extends BaseAPIController
     {
         try {
             $this->authorize('create', Sentence::class);
-            
+
             $sentenceData = $request->only(['language_id', 'text', 'pronunciation_key', 'metadata']);
             $wordData = $request->get('words', []);
 
@@ -131,7 +131,7 @@ class TeamSentenceController extends BaseAPIController
     {
         try {
             $this->authorize('view', $sentence);
-            
+
             $withRelations = $request->boolean('with_relations', true);
             $context = $request->get('context', 'team');
 
@@ -161,7 +161,7 @@ class TeamSentenceController extends BaseAPIController
     {
         try {
             $this->authorize('update', $sentence);
-            
+
             $validatedData = $request->validate([
                 'text' => 'sometimes|required|string|max:1000',
                 'pronunciation_key' => 'nullable|string|max:255',
@@ -202,7 +202,7 @@ class TeamSentenceController extends BaseAPIController
     {
         try {
             $this->authorize('delete', $sentence);
-            
+
             $deleted = $this->sentenceService->deleteSentence($sentence);
 
             if ($deleted) {
@@ -226,7 +226,7 @@ class TeamSentenceController extends BaseAPIController
     {
         try {
             $this->authorize('update', $sentence);
-            
+
             $validatedData = $request->validate([
                 'language_id' => 'required|exists:languages,id',
                 'text' => 'required|string|max:1000',
@@ -264,7 +264,7 @@ class TeamSentenceController extends BaseAPIController
     {
         try {
             $this->authorize('update', $sentence);
-            
+
             $translation = $sentence->translations()->findOrFail($translationId);
 
             $validatedData = $request->validate([
@@ -304,7 +304,7 @@ class TeamSentenceController extends BaseAPIController
     {
         try {
             $this->authorize('update', $sentence);
-            
+
             $translation = $sentence->translations()->findOrFail($translationId);
 
             $deleted = $this->sentenceService->deleteTranslation($translation);
@@ -330,7 +330,7 @@ class TeamSentenceController extends BaseAPIController
     {
         try {
             $this->authorize('update', $sentence);
-            
+
             $request->validate([
                 'audio' => 'required|file|mimes:mp3,wav,m4a|max:20480' // 20MB limit
             ]);
@@ -357,7 +357,7 @@ class TeamSentenceController extends BaseAPIController
     {
         try {
             $this->authorize('update', $sentence);
-            
+
             $request->validate([
                 'audio' => 'required|file|mimes:mp3,wav,m4a|max:20480' // 20MB limit
             ]);
@@ -385,7 +385,7 @@ class TeamSentenceController extends BaseAPIController
     {
         try {
             $this->authorize('update', $sentence);
-            
+
             $translation = $sentence->translations()->findOrFail($translationId);
 
             $request->validate([
@@ -414,7 +414,7 @@ class TeamSentenceController extends BaseAPIController
     {
         try {
             $this->authorize('update', $sentence);
-            
+
             $validatedData = $request->validate([
                 'timings' => 'required|array',
                 'timings.*.word_id' => 'required|exists:words,id',
@@ -448,7 +448,7 @@ class TeamSentenceController extends BaseAPIController
     {
         try {
             $this->authorize('update', $sentence);
-            
+
             $validatedData = $request->validate([
                 'word_order' => 'required|array',
                 'word_order.*.word_id' => 'required|exists:words,id',
@@ -478,7 +478,7 @@ class TeamSentenceController extends BaseAPIController
     {
         try {
             $this->authorize('viewAny', Sentence::class);
-            
+
             $languageId = $request->get('language_id');
             $search = $request->get('search', '');
             $limit = min($request->get('limit', 50), 100);
@@ -536,7 +536,7 @@ class TeamSentenceController extends BaseAPIController
     {
         try {
             $this->authorize('create', Sentence::class);
-            
+
             $sentenceText = $request->get('text');
             $wordData = $request->get('words', []);
             $languageId = $request->get('language_id');
@@ -564,7 +564,7 @@ class TeamSentenceController extends BaseAPIController
     {
         try {
             $this->authorize('create', Sentence::class);
-            
+
             $validated = $request->validate([
                 'text' => 'required|string|max:1000',
                 'language_id' => 'required|exists:languages,id'
@@ -596,7 +596,7 @@ class TeamSentenceController extends BaseAPIController
     {
         try {
             $this->authorize('create', Sentence::class);
-            
+
             $validated = $request->validate([
                 'text' => 'required|string|max:1000',
                 'language_id' => 'required|exists:languages,id',

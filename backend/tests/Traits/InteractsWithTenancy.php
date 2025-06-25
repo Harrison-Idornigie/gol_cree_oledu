@@ -183,10 +183,13 @@ trait InteractsWithTenancy
         // Use a file-based database for central database
         $centralDbPath = database_path('testing_central.sqlite');
 
-        // Create the database file if it doesn't exist
-        if (!file_exists($centralDbPath)) {
-            touch($centralDbPath);
+        // Delete the database file if it exists to ensure a fresh start
+        if (file_exists($centralDbPath)) {
+            unlink($centralDbPath);
         }
+
+        // Create the database file
+        touch($centralDbPath);
 
         // Configure the default SQLite connection to use the file
         Config::set('database.connections.sqlite', [
@@ -199,15 +202,26 @@ trait InteractsWithTenancy
         // Store the file path for cleanup
         $this->tempDbFiles[] = $centralDbPath;
 
-        // Run central database migrations (landlord migrations)
-        $exitCode = Artisan::call('migrate', [
-            '--database' => 'sqlite',
-            '--path' => 'database/migrations/landlord',
-            '--force' => true,
-        ]);
+        // Run central database migrations fresh (landlord migrations), skipping Telescope migrations
+        $migrationDir = base_path('database/migrations/landlord');
+        $migrationFiles = collect(File::files($migrationDir))
+            ->filter(function ($file) {
+                return strpos($file->getFilename(), 'telescope') === false;
+            })
+            ->map(function ($file) use ($migrationDir) {
+                return 'database/migrations/landlord/' . $file->getFilename();
+            })
+            ->toArray();
 
-        if ($exitCode !== 0) {
-            throw new \Exception("Central database migrations failed with exit code: {$exitCode}");
+        foreach ($migrationFiles as $migrationPath) {
+            $exitCode = Artisan::call('migrate', [
+                '--database' => 'sqlite',
+                '--path' => $migrationPath,
+                '--force' => true,
+            ]);
+            if ($exitCode !== 0) {
+                throw new \Exception("Central database migration failed for {$migrationPath} with exit code: {$exitCode}");
+            }
         }
 
         // Verify that the tenants table was created
@@ -235,44 +249,26 @@ trait InteractsWithTenancy
         tenancy()->initialize($tenant);
 
         try {
-
-            // Check if migrations table exists to avoid conflicts
-            $hasTable = false;
-            try {
-                $hasTable = DB::getSchemaBuilder()->hasTable('migrations');
-            } catch (\Exception $e) {
-                // Continue if we can't check
+            // Always run migrate:fresh for tenant DB to ensure a clean state
+            $migrationPath = 'database/migrations/tenants';
+            if (is_dir(base_path($migrationPath))) {
+                $exitCode = Artisan::call('migrate:fresh', [
+                    '--path' => $migrationPath,
+                    '--force' => true,
+                ]);
+            } else {
+                $exitCode = Artisan::call('migrate:fresh', [
+                    '--force' => true,
+                ]);
             }
 
-            // Run tenant migrations (avoid VACUUM issues with migrate instead of migrate:fresh)
-            if (!$hasTable) {
-                // First try tenant-specific migrations
-                $migrationPath = 'database/migrations/tenants';
-                if (is_dir(base_path($migrationPath))) {
-                    $exitCode = Artisan::call('migrate', [
-                        '--path' => $migrationPath,
-                        '--force' => true,
-                    ]);
+            if ($exitCode !== 0) {
+                throw new \Exception("Tenant migrations failed with exit code: {$exitCode}");
+            }
 
-                    // Check if migrations actually ran
-                    if ($exitCode !== 0) {
-                        throw new \Exception("Tenant migrations failed with exit code: {$exitCode}");
-                    }
-                } else {
-                    // Fallback to regular migrations if tenant-specific don't exist
-                    $exitCode = Artisan::call('migrate', [
-                        '--force' => true,
-                    ]);
-
-                    if ($exitCode !== 0) {
-                        throw new \Exception("Tenant migrations failed with exit code: {$exitCode}");
-                    }
-                }
-
-                // Verify that the users table was created
-                if (!DB::getSchemaBuilder()->hasTable('users')) {
-                    throw new \Exception("Users table was not created in tenant database");
-                }
+            // Verify that the users table was created
+            if (!DB::getSchemaBuilder()->hasTable('users')) {
+                throw new \Exception("Users table was not created in tenant database");
             }
 
             // Run tenant seeders
