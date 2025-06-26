@@ -59,7 +59,7 @@ Route::group([
         ->name('password.reset');
 
     // Google OAuth routes (tenant-specific)
-    Route::get('google/url', [TenantAuthController::class, 'getGoogleAuthUrl'])
+    Route::post('google/url', [TenantAuthController::class, 'getGoogleAuthUrl'])
         ->name('tenant.google.url');
     Route::post('google/callback', [TenantAuthController::class, 'handleGoogleCallback'])
         ->name('tenant.google.callback');

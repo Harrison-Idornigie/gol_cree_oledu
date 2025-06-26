@@ -145,6 +145,9 @@ trait InteractsWithTenancy
             }
         }
 
+        // Clean up any leftover tenant database files
+        $this->cleanupLeftoverTenantDatabases();
+
         // Clear arrays
         $this->createdTenants = [];
         $this->tempDbFiles = [];
@@ -391,7 +394,7 @@ trait InteractsWithTenancy
     }
 
     /**
-     * Delete tenant database (cleanup MySQL database)
+     * Delete tenant database (cleanup SQLite database files)
      */
     protected function deleteTenantDatabase(Tenant $tenant): void
     {
@@ -411,6 +414,54 @@ trait InteractsWithTenancy
         $connections = config('database.connections');
         unset($connections[$databaseName]);
         Config::set('database.connections', $connections);
+
+        // Delete the actual SQLite database file
+        // The SQLiteDatabaseManager creates files in database/tenant_{id}
+        $sqliteFile = database_path("tenant_{$tenant->id}");
+        if (file_exists($sqliteFile)) {
+            unlink($sqliteFile);
+        }
+
+        // Also check for alternative paths that might be used
+        $alternativePaths = [
+            storage_path("framework/testing/tenant_{$tenant->id}.sqlite"),
+            database_path("tenant_{$tenant->id}.sqlite"),
+            base_path("database/tenant_{$tenant->id}"),
+        ];
+
+        foreach ($alternativePaths as $path) {
+            if (file_exists($path)) {
+                unlink($path);
+            }
+        }
+    }
+
+    /**
+     * Clean up any leftover tenant database files from previous test runs
+     */
+    protected function cleanupLeftoverTenantDatabases(): void
+    {
+        $databasePath = database_path();
+
+        // Find all tenant database files
+        $tenantFiles = glob($databasePath . '/tenant_*');
+
+        foreach ($tenantFiles as $file) {
+            if (file_exists($file)) {
+                unlink($file);
+            }
+        }
+
+        // Also clean up any files in storage/framework/testing
+        $testingPath = storage_path('framework/testing');
+        if (is_dir($testingPath)) {
+            $testingFiles = glob($testingPath . '/tenant_*.sqlite');
+            foreach ($testingFiles as $file) {
+                if (file_exists($file)) {
+                    unlink($file);
+                }
+            }
+        }
     }
 
     /**

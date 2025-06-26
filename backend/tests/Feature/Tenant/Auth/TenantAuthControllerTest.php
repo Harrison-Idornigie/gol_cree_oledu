@@ -12,6 +12,7 @@ use Laravel\Sanctum\Sanctum;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\URL;
 use App\Notifications\ResetPasswordNotification;
 use App\Notifications\VerifyEmailNotification;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -175,7 +176,23 @@ class TenantAuthControllerTest extends TenantTestCase
 
             $hash = sha1($unverifiedUser->getEmailForVerification());
 
-            $response = $this->getJson("/api/{$this->tenant->slug}/auth/email/verify/{$unverifiedUser->id}/{$hash}");
+            // Generate signed URL for email verification
+            $verificationUrl = URL::temporarySignedRoute(
+                'verification.verify',
+                now()->addMinutes(60),
+                [
+                    'id' => $unverifiedUser->id,
+                    'hash' => $hash,
+                ]
+            );
+
+            // Extract the path and query from the signed URL
+            $parsedUrl = parse_url($verificationUrl);
+            $path = $parsedUrl['path'] ?? '';
+            $query = $parsedUrl['query'] ?? '';
+            $fullPath = $path . ($query ? '?' . $query : '');
+
+            $response = $this->getJson($fullPath);
 
             $response->assertStatus(200);
             $response->assertJsonStructure([
