@@ -481,25 +481,23 @@ class StudentLearningPathProficiencyTest extends TenantTestCase
     }
 
     // Helper methods
-    private function createTenantStudent(): User
+    protected function createTenantStudent(array $attributes = []): User
     {
-        return $this->runInTenantContext($this->tenant, function () {
-            return User::factory()->create([
-                'email' => 'student@test.com',
-                'membership_type' => 'student',
+        return $this->runInTenantContext($this->tenant, function () use ($attributes) {
+            return User::factory()->create(array_merge(['email' => 'student@test.com',
+                'membership' => 'student',
                 'email_verified_at' => now(),
-            ]);
+            ], $attributes));
         });
     }
 
-    private function createTenantTeam(): User
+    protected function createTenantTeam(array $attributes = []): User
     {
-        return $this->runInTenantContext($this->tenant, function () {
-            return User::factory()->create([
-                'email' => 'team@test.com',
-                'membership_type' => 'team',
+        return $this->runInTenantContext($this->tenant, function () use ($attributes) {
+            return User::factory()->create(array_merge(['email' => 'team@test.com',
+                'membership' => 'team',
                 'email_verified_at' => now(),
-            ]);
+            ], $attributes));
         });
     }
 }

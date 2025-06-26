@@ -66,6 +66,18 @@ return [
 
     'domain' => env('APP_DOMAIN', 'localhost'),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Frontend Application URL
+    |--------------------------------------------------------------------------
+    |
+    | This is the URL of the frontend application. Used for generating
+    | frontend URLs in emails and other notifications.
+    |
+    */
+
+    'frontend_url' => env('FRONTEND_URL', env('APP_URL', 'http://localhost')),
+
     'asset_url' => env('ASSET_URL'),
 
     /*

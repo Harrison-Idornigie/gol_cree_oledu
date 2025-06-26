@@ -44,9 +44,15 @@ Route::group([
     });
 
 
+    // Email verification routes
     Route::get('email/verify/{id}/{hash}', [TenantAuthController::class, 'verify'])
         ->middleware(['signed', 'throttle:6,1'])
         ->name('verification.verify');
+
+    // API-friendly email verification (for frontend to POST verification data)
+    Route::post('email/verify', [TenantAuthController::class, 'verify'])
+        ->middleware(['throttle:6,1'])
+        ->name('verification.verify.api');
 
     // User registration routes
     Route::post('register', [TenantAuthController::class, 'register'])

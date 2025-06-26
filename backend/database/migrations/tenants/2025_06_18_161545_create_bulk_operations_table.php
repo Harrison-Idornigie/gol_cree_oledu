@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('bulk_operations', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->uuid('user_id');
+            $table->unsignedBigInteger('user_id');
             $table->string('type', 50); // import/export
             $table->string('status', 20)->default('queued'); // queued/processing/completed/failed
             $table->string('file_path', 255)->nullable();

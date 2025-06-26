@@ -708,34 +708,34 @@ class TenantAdminAnalyticsControllerTest extends TenantTestCase
     /**
      * Helper methods
      */
-    private function createTenantAdmin(): User
+    protected function createTenantAdmin(array $attributes = []): User
     {
-        return User::factory()->create([
+        return User::factory()->create(array_merge([
             'email' => 'admin@test.com',
-            'membership_type' => 'tenant-admin',
+            'membership' => 'admin',
             'email_verified_at' => now(),
-        ]);
+        ], $attributes));
     }
 
-    private function createTenantStudent(): User
+    protected function createTenantStudent(array $attributes = []): User
     {
-        return User::factory()->create([
+        return User::factory()->create(array_merge([
             'email' => 'student@test.com',
             'membership_type' => 'student',
             'email_verified_at' => now(),
-        ]);
+        ], $attributes));
     }
 
-    private function createTenantTeam(): User
+    protected function createTenantTeam(array $attributes = []): User
     {
-        return User::factory()->create([
+        return User::factory()->create(array_merge([
             'email' => 'team@test.com',
-            'membership_type' => 'team',
+            'membership' => 'team',
             'email_verified_at' => now(),
-        ]);
+        ], $attributes));
     }
 
-    private function initializeTenantContext(Tenant $tenant): void
+    protected function initializeTenantContext(Tenant $tenant): void
     {
         tenancy()->initialize($tenant);
         $this->artisan('migrate:fresh', [

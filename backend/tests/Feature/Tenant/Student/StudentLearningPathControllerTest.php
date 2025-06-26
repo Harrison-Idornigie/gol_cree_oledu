@@ -49,25 +49,25 @@ class StudentLearningPathControllerTest extends TenantTestCase
     /**
      * Helper to create a test language
      */
-    protected function createLanguage()
+    protected function createLanguage(array $attributes = []): Language
     {
-        return $this->runInTenantContext($this->tenant, function () {
-            return Language::create([
+        return $this->runInTenantContext($this->tenant, function () use ($attributes) {
+            return Language::create(array_merge([
                 'name' => 'Test Language',
                 'code' => 'tl',
                 'native_name' => 'Test Language Native',
                 'is_active' => true
-            ]);
+            ], $attributes));
         });
     }
 
     /**
      * Helper to create a test learning path
      */
-    protected function createLearningPath()
+    protected function createLearningPath(array $attributes = []): LearningPath
     {
-        return $this->runInTenantContext($this->tenant, function () {
-            return LearningPath::create([
+        return $this->runInTenantContext($this->tenant, function () use ($attributes) {
+            return LearningPath::create(array_merge([
                 'title' => 'Test Learning Path',
                 'slug' => 'test-lp-' . Str::random(8),
                 'description' => 'This is a test learning path',
@@ -75,7 +75,7 @@ class StudentLearningPathControllerTest extends TenantTestCase
                 'level' => 'beginner',
                 'status' => 'published',
                 'created_by' => $this->teamUser->id,
-            ]);
+            ], $attributes));
         });
     }
 
@@ -267,7 +267,7 @@ class StudentLearningPathControllerTest extends TenantTestCase
     /**
      * Helper method to initialize tenant context
      */
-    private function initializeTenantContext(Tenant $tenant): void
+    protected function initializeTenantContext(Tenant $tenant): void
     {
         // The tenant is already initialized and seeded in createTestTenant
         // This method is kept for compatibility but not needed with enhanced trait
@@ -276,28 +276,28 @@ class StudentLearningPathControllerTest extends TenantTestCase
     /**
      * Helper method to create tenant team member
      */
-    private function createTenantTeam(): User
+    protected function createTenantTeam(array $attributes = []): User
     {
-        return $this->runInTenantContext($this->tenant, function () {
-            return User::factory()->create([
+        return $this->runInTenantContext($this->tenant, function () use ($attributes) {
+            return User::factory()->create(array_merge([
                 'email' => 'team@test.com',
-                'membership_type' => 'team',
+                'membership' => 'team',
                 'email_verified_at' => now(),
-            ]);
+            ], $attributes));
         });
     }
 
     /**
      * Helper method to create tenant student
      */
-    private function createTenantStudent(): User
+    protected function createTenantStudent(array $attributes = []): User
     {
-        return $this->runInTenantContext($this->tenant, function () {
-            return User::factory()->create([
+        return $this->runInTenantContext($this->tenant, function () use ($attributes) {
+            return User::factory()->create(array_merge([
                 'email' => 'student@test.com',
-                'membership_type' => 'student',
+                'membership' => 'student',
                 'email_verified_at' => now(),
-            ]);
+            ], $attributes));
         });
     }
 }

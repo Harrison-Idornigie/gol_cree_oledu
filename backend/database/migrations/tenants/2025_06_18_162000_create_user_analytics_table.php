@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('user_analytics', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->uuid('user_id');
-            $table->uuid('language_id')->nullable();
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('language_id')->nullable();
             $table->string('metric_type', 50); // learning_time, exercise_completion, word_mastery, etc.
             $table->json('metric_value'); // Flexible JSON storage for different metric types
             $table->string('context', 100)->nullable(); // lesson_id, exercise_id, etc.
@@ -23,7 +23,7 @@ return new class extends Migration
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('language_id')->references('id')->on('languages')->onDelete('cascade');
-            
+
             $table->index(['user_id', 'metric_type', 'recorded_at']);
             $table->index(['language_id', 'metric_type', 'recorded_at']);
             $table->index(['metric_type', 'recorded_at']);

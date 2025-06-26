@@ -52,9 +52,8 @@ class TeamSentenceControllerTest extends TenantTestCase
     /**
      * Helper to create a test language
      */
-    protected function createLanguage()
-    {
-        return $this->runInTenantContext($this->tenant, function () {
+    protected function createLanguage() {
+        return $this->runInTenantContext($this->tenant, function () use ($attributes) {
             return Language::create([
                 'name' => 'Test Language',
                 'code' => 'tl',
@@ -603,7 +602,7 @@ class TeamSentenceControllerTest extends TenantTestCase
     /**
      * Helper method to initialize tenant context
      */
-    private function initializeTenantContext(Tenant $tenant): void
+    protected function initializeTenantContext(Tenant $tenant): void
     {
         // The tenant is already initialized and seeded in createTestTenant
         // This method is kept for compatibility but not needed with enhanced trait
@@ -612,42 +611,39 @@ class TeamSentenceControllerTest extends TenantTestCase
     /**
      * Helper method to create tenant admin
      */
-    private function createTenantAdmin(): User
+    protected function createTenantAdmin(array $attributes = []): User
     {
-        return $this->runInTenantContext($this->tenant, function () {
-            return User::factory()->create([
-                'email' => 'admin@test.com',
-                'membership_type' => 'tenant-admin',
+        return $this->runInTenantContext($this->tenant, function () use ($attributes) {
+            return User::factory()->create(array_merge(['email' => 'admin@test.com',
+                'membership' => 'admin',
                 'email_verified_at' => now(),
-            ]);
+            ], $attributes));
         });
     }
 
     /**
      * Helper method to create tenant team member
      */
-    private function createTenantTeam(): User
+    protected function createTenantTeam(array $attributes = []): User
     {
-        return $this->runInTenantContext($this->tenant, function () {
-            return User::factory()->create([
-                'email' => 'team@test.com',
-                'membership_type' => 'team',
+        return $this->runInTenantContext($this->tenant, function () use ($attributes) {
+            return User::factory()->create(array_merge(['email' => 'team@test.com',
+                'membership' => 'team',
                 'email_verified_at' => now(),
-            ]);
+            ], $attributes));
         });
     }
 
     /**
      * Helper method to create tenant student
      */
-    private function createTenantStudent(): User
+    protected function createTenantStudent(array $attributes = []): User
     {
-        return $this->runInTenantContext($this->tenant, function () {
-            return User::factory()->create([
-                'email' => 'student@test.com',
-                'membership_type' => 'student',
+        return $this->runInTenantContext($this->tenant, function () use ($attributes) {
+            return User::factory()->create(array_merge(['email' => 'student@test.com',
+                'membership' => 'student',
                 'email_verified_at' => now(),
-            ]);
+            ], $attributes));
         });
     }
 }

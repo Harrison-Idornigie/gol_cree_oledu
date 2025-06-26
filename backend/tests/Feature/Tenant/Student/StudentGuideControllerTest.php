@@ -42,37 +42,37 @@ class StudentGuideControllerTest extends TenantTestCase
         parent::tearDown();
     }
 
-    protected function createTenantStudent(): User
+    protected function createTenantStudent(array $attributes = []): User
     {
-        return $this->runInTenantContext($this->tenant, function () {
-            return User::factory()->create([
+        return $this->runInTenantContext($this->tenant, function () use ($attributes) {
+            return User::factory()->create(array_merge([
                 'email' => 'student@example.com',
                 'password' => bcrypt('password123'),
                 'membership' => 'student'
-            ]);
+            ], $attributes));
         });
     }
 
-    protected function createTenantTeamMember(): User
+    protected function createTenantTeamMember(array $attributes = []): User
     {
-        return $this->runInTenantContext($this->tenant, function () {
-            return User::factory()->create([
+        return $this->runInTenantContext($this->tenant, function () use ($attributes) {
+            return User::factory()->create(array_merge([
                 'email' => 'team@example.com',
                 'password' => bcrypt('password123'),
                 'membership' => 'team'
-            ]);
+            ], $attributes));
         });
     }
 
-    protected function createLanguage(): Language
+    protected function createLanguage(array $attributes = []): Language
     {
-        return $this->runInTenantContext($this->tenant, function () {
-            return Language::factory()->create([
+        return $this->runInTenantContext($this->tenant, function () use ($attributes) {
+            return Language::factory()->create(array_merge([
                 'name' => 'Plains Cree',
                 'code' => 'crk',
                 'native_name' => 'nêhiyawêwin',
                 'is_active' => true
-            ]);
+            ], $attributes));
         });
     }
 

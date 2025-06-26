@@ -495,7 +495,7 @@ class StudentMultiTenantIsolationTest extends TenantTestCase
         });
     }
 
-    private function createProgressForStudent(Tenant $tenant, User $student, string $tenantLabel): void
+    protected function createProgressForStudent(Tenant $tenant, User $student, string $tenantLabel): void
     {
         $this->runInTenantContext($tenant, function () use ($student, $tenantLabel) {
             \Illuminate\Support\Facades\DB::table('user_progress')->insert([
@@ -512,21 +512,19 @@ class StudentMultiTenantIsolationTest extends TenantTestCase
         });
     }
 
-    private function createTenantStudent(string $email): User
+    protected function createTenantStudent(string $email): User
     {
-        return User::factory()->create([
-            'email' => $email,
-            'membership_type' => 'student',
+        return User::factory()->create(array_merge(['email' => $email,
+            'membership' => 'student',
             'email_verified_at' => now(),
-        ]);
+        ], $attributes));
     }
 
-    private function createTenantTeam(string $email): User
+    protected function createTenantTeam(string $email): User
     {
-        return User::factory()->create([
-            'email' => $email,
-            'membership_type' => 'team',
+        return User::factory()->create(array_merge(['email' => $email,
+            'membership' => 'team',
             'email_verified_at' => now(),
-        ]);
+        ], $attributes));
     }
 }

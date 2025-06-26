@@ -6,6 +6,9 @@ namespace App\Providers;
 
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Carbon;
+use App\Notifications\VerifyEmailNotification;
 use Stancl\JobPipeline\JobPipeline;
 use Stancl\Tenancy\Events;
 use Stancl\Tenancy\Jobs;
@@ -84,11 +87,28 @@ class TenancyServiceProvider extends BaseTenancyServiceProvider
             Events\InitializingTenancy::class => [],
             Events\TenancyInitialized::class => [
                 Listeners\BootstrapTenancy::class,
+                function (Events\TenancyInitialized $event) {
+                    // Set up tenant-aware verification URL callback
+                    VerifyEmailNotification::createUrlUsing(function ($notifiable) use ($event) {
+                        return URL::temporarySignedRoute(
+                            'verification.verify',
+                            Carbon::now()->addMinutes(config('auth.verification.expire', 60)),
+                            [
+                                'id' => $notifiable->getKey(),
+                                'hash' => sha1($notifiable->getEmailForVerification()),
+                            ]
+                        );
+                    });
+                },
             ],
 
             Events\EndingTenancy::class => [],
             Events\TenancyEnded::class => [
                 Listeners\RevertToCentralContext::class,
+                function (Events\TenancyEnded $event) {
+                    // Reset verification URL callback to default
+                    VerifyEmailNotification::createUrlUsing(null);
+                },
             ],
 
             Events\BootstrappingTenancy::class => [],

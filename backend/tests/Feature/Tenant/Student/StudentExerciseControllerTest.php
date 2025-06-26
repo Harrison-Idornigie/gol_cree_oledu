@@ -52,15 +52,15 @@ class StudentExerciseControllerTest extends TenantTestCase
     /**
      * Helper to create a test language
      */
-    protected function createLanguage()
+    protected function createLanguage(array $attributes = []): Language
     {
-        return $this->runInTenantContext($this->tenant, function () {
-            return Language::create([
+        return $this->runInTenantContext($this->tenant, function () use ($attributes) {
+            return Language::create(array_merge([
                 'name' => 'Test Language',
                 'code' => 'tl',
                 'native_name' => 'Test Language Native',
                 'is_active' => true
-            ]);
+            ], $attributes));
         });
     }
 
@@ -69,7 +69,7 @@ class StudentExerciseControllerTest extends TenantTestCase
      */
     protected function createLesson()
     {
-        return $this->runInTenantContext($this->tenant, function () {
+        return $this->runInTenantContext($this->tenant, function () use ($attributes) {
             return Lesson::create([
                 'title' => 'Test Lesson',
                 'slug' => 'test-lesson-' . Str::random(8),
@@ -84,10 +84,10 @@ class StudentExerciseControllerTest extends TenantTestCase
     /**
      * Helper to create a test exercise
      */
-    protected function createExercise()
+    protected function createExercise(array $attributes = []): Exercise
     {
-        return $this->runInTenantContext($this->tenant, function () {
-            return Exercise::create([
+        return $this->runInTenantContext($this->tenant, function () use ($attributes) {
+            return Exercise::create(array_merge([
                 'title' => 'Test Exercise',
                 'type' => 'multiple_choice',
                 'lesson_id' => $this->lesson->id,
@@ -99,7 +99,7 @@ class StudentExerciseControllerTest extends TenantTestCase
                     'correct_answer' => 'Option 2',
                 ]),
                 'created_by' => $this->teamUser->id,
-            ]);
+            ], $attributes));
         });
     }
 
@@ -285,7 +285,7 @@ class StudentExerciseControllerTest extends TenantTestCase
     /**
      * Helper method to initialize tenant context
      */
-    private function initializeTenantContext(Tenant $tenant): void
+    protected function initializeTenantContext(Tenant $tenant): void
     {
         // The tenant is already initialized and seeded in createTestTenant
         // This method is kept for compatibility but not needed with enhanced trait
@@ -294,28 +294,28 @@ class StudentExerciseControllerTest extends TenantTestCase
     /**
      * Helper method to create tenant team member
      */
-    private function createTenantTeam(): User
+    protected function createTenantTeam(array $attributes = []): User
     {
-        return $this->runInTenantContext($this->tenant, function () {
-            return User::factory()->create([
+        return $this->runInTenantContext($this->tenant, function () use ($attributes) {
+            return User::factory()->create(array_merge([
                 'email' => 'team@test.com',
-                'membership_type' => 'team',
+                'membership' => 'team',
                 'email_verified_at' => now(),
-            ]);
+            ], $attributes));
         });
     }
 
     /**
      * Helper method to create tenant student
      */
-    private function createTenantStudent(): User
+    protected function createTenantStudent(array $attributes = []): User
     {
-        return $this->runInTenantContext($this->tenant, function () {
-            return User::factory()->create([
+        return $this->runInTenantContext($this->tenant, function () use ($attributes) {
+            return User::factory()->create(array_merge([
                 'email' => 'student@test.com',
-                'membership_type' => 'student',
+                'membership' => 'student',
                 'email_verified_at' => now(),
-            ]);
+            ], $attributes));
         });
     }
 }

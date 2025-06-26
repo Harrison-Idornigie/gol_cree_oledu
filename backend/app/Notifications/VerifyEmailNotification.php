@@ -7,6 +7,7 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\URL;
+use Stancl\Tenancy\Facades\Tenancy;
 
 class VerifyEmailNotification extends Notification
 {
@@ -55,14 +56,33 @@ class VerifyEmailNotification extends Notification
             return call_user_func(static::$createUrlCallback, $notifiable);
         }
 
-        return URL::temporarySignedRoute(
-            'auth.verification.verify',
-            Carbon::now()->addMinutes(Config::get('auth.verification.expire', 60)),
-            [
-                'id' => $notifiable->getKey(),
-                'hash' => sha1($notifiable->getEmailForVerification()),
-            ]
+        // Generate frontend URL for email verification
+        // The frontend will extract the parameters and call the backend API
+        $frontendUrl = config('app.frontend_url', config('app.url'));
+        $hash = sha1($notifiable->getEmailForVerification());
+        $expires = Carbon::now()->addMinutes(Config::get('auth.verification.expire', 60))->timestamp;
+
+        // Check if we're in a tenant context
+        if (Tenancy::initialized()) {
+            $tenant = tenant();
+
+            // Generate tenant-aware frontend verification URL
+            // Frontend route: /{tenant}/verify-email?id={id}&hash={hash}&expires={expires}&signature={signature}
+            $url = "{$frontendUrl}/{$tenant->slug}/verify-email";
+        } else {
+            // Central verification URL
+            // Frontend route: /verify-email?id={id}&hash={hash}&expires={expires}&signature={signature}
+            $url = "{$frontendUrl}/verify-email";
+        }
+
+        // Generate signature for URL verification (same as Laravel's signed URLs)
+        $signature = hash_hmac(
+            'sha256',
+            "id={$notifiable->getKey()}&hash={$hash}&expires={$expires}",
+            config('app.key')
         );
+
+        return "{$url}?id={$notifiable->getKey()}&hash={$hash}&expires={$expires}&signature={$signature}";
     }
 
     /**
