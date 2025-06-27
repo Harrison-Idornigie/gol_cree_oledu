@@ -365,7 +365,9 @@ class LessonService
     public function getLessonForStudent(Lesson $lesson, User $user): array
     {
         // Check if lesson is accessible to student
+        \Illuminate\Support\Facades\Log::info("LessonService: Checking accessibility for lesson {$lesson->id} for user {$user->id}");
         if (!$this->isLessonAccessible($lesson, $user)) {
+            \Illuminate\Support\Facades\Log::warning("LessonService: Lesson {$lesson->id} not accessible for user {$user->id}");
             throw new \Illuminate\Auth\Access\AuthorizationException('This lesson is not yet accessible.');
         }
 
@@ -399,6 +401,14 @@ class LessonService
      */
     public function isLessonAccessible(Lesson $lesson, User $user): bool
     {
+        \Illuminate\Support\Facades\Log::info("LessonService: Checking if lesson {$lesson->id} is accessible for user {$user->id}");
+
+        // Students can only access published lessons
+        if ($lesson->status !== 'published') {
+            \Illuminate\Support\Facades\Log::warning("LessonService: Lesson {$lesson->id} is not published (status: {$lesson->status})");
+            return false;
+        }
+
         // Get previous lesson in the topic
         $previousLesson = Lesson::where('topic_id', $lesson->topic_id)
             ->where('order', '<', $lesson->order)
@@ -407,11 +417,15 @@ class LessonService
 
         // If no previous lesson, this lesson is accessible
         if (!$previousLesson) {
+            \Illuminate\Support\Facades\Log::info("LessonService: Lesson {$lesson->id} has no previous lesson, accessible.");
             return true;
         }
 
         // Check if previous lesson is completed
-        return $this->isLessonCompleted($previousLesson, $user);
+        $isPreviousCompleted = $this->isLessonCompleted($previousLesson, $user);
+        \Illuminate\Support\Facades\Log::info("LessonService: Previous lesson {$previousLesson->id} completed status: " . ($isPreviousCompleted ? 'true' : 'false'));
+
+        return $isPreviousCompleted;
     }
 
     /**
@@ -419,17 +433,21 @@ class LessonService
      */
     public function arePrerequisitesCompleted(Lesson $lesson, User $user): bool
     {
+        \Illuminate\Support\Facades\Log::info("LessonService: Checking prerequisites for lesson {$lesson->id} for user {$user->id}");
         // Check if previous lessons in topic are completed
         $previousLessons = Lesson::where('topic_id', $lesson->topic_id)
             ->where('order', '<', $lesson->order)
             ->get();
 
         foreach ($previousLessons as $prevLesson) {
-            if (!$this->isLessonCompleted($prevLesson, $user)) {
+            $isCompleted = $this->isLessonCompleted($prevLesson, $user);
+            \Illuminate\Support\Facades\Log::info("LessonService: Prerequisite lesson {$prevLesson->id} completed status: " . ($isCompleted ? 'true' : 'false'));
+            if (!$isCompleted) {
                 return false;
             }
         }
 
+        \Illuminate\Support\Facades\Log::info("LessonService: All prerequisites for lesson {$lesson->id} are completed.");
         return true;
     }
 
@@ -443,7 +461,10 @@ class LessonService
             ->where('trackable_id', $lesson->id)
             ->first();
 
-        return $progress && $progress->status === UserProgress::STATUS_COMPLETED;
+        $isCompleted = $progress && $progress->status === UserProgress::STATUS_COMPLETED;
+        \Illuminate\Support\Facades\Log::info("LessonService: User {$user->id} progress for lesson {$lesson->id}: status " . ($progress ? $progress->status : 'none') . ", completed: " . ($isCompleted ? 'true' : 'false'));
+
+        return $isCompleted;
     }
 
     /**

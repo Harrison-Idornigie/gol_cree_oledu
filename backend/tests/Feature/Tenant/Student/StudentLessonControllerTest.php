@@ -93,7 +93,7 @@ class StudentLessonControllerTest extends TenantTestCase
                 'slug' => 'test-topic',
                 'description' => 'Test topic description',
                 'order' => 1,
-                'status' => 'published',
+                'status' => 'published', // Ensure published
                 'created_at' => now(),
                 'updated_at' => now()
             ]);
@@ -104,7 +104,7 @@ class StudentLessonControllerTest extends TenantTestCase
                 'title' => 'Lesson 1',
                 'description' => 'Lesson 1 description',
                 'order' => 1,
-                'status' => 'published',
+                'status' => 'published', // Ensure published
                 'created_by' => $this->teamUser->id,
                 'created_at' => now(),
                 'updated_at' => now()
@@ -115,7 +115,7 @@ class StudentLessonControllerTest extends TenantTestCase
                 'title' => 'Lesson 2',
                 'description' => 'Lesson 2 description',
                 'order' => 2,
-                'status' => 'published',
+                'status' => 'published', // Ensure published
                 'created_by' => $this->teamUser->id,
                 'created_at' => now(),
                 'updated_at' => now()
@@ -268,6 +268,33 @@ class StudentLessonControllerTest extends TenantTestCase
         $response = $this->getJson("/api/{$this->tenant->slug}/student/lessons/{$unpublishedLessonId}");
 
         // Should return 404 as students shouldn't see unpublished content
+        $response->assertStatus(404);
+    }
+
+    /** @test */
+    public function student_cannot_access_lessons_of_unpublished_topic()
+    {
+        // Create an unpublished topic
+        $unpublishedTopicId = $this->runInTenantContext($this->tenant, function () {
+            return \Illuminate\Support\Facades\DB::table('topics')->insertGetId([
+                'unit_id' => $this->testData['unit_id'],
+                'title' => 'Unpublished Topic',
+                'slug' => 'unpublished-topic',
+                'description' => 'Unpublished topic description',
+                'order' => 2,
+                'status' => 'draft', // Unpublished
+                'created_at' => now(),
+                'updated_at' => now()
+            ]);
+        });
+
+        // Authenticate as student
+        Sanctum::actingAs($this->studentUser, [], 'tenant');
+
+        // API call to access lessons in an unpublished topic
+        $response = $this->getJson("/api/{$this->tenant->slug}/student/topics/{$unpublishedTopicId}/lessons");
+
+        // Should return 404 as students shouldn't see content from unpublished topics
         $response->assertStatus(404);
     }
 

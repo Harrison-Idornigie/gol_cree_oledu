@@ -54,7 +54,7 @@ class StudentUserProgressController extends BaseAPIController
 
             return $this->sendResponse($myProgress, 'Progress overview retrieved successfully.');
         } catch (Exception $e) {
-            return $this->sendErrorResponse('Failed to retrieve progress overview', ['error' => $e->getMessage()], 500);
+            return $this->sendError('Failed to retrieve progress overview', ['error' => $e->getMessage()], 500);
         }
     }
 
@@ -119,7 +119,7 @@ class StudentUserProgressController extends BaseAPIController
 
             return $this->sendCreatedResponse($progressData, 'Progress recorded successfully.');
         } catch (Exception $e) {
-            return $this->sendErrorResponse('Failed to record progress', ['error' => $e->getMessage()], 422);
+            return $this->sendError('Failed to record progress', ['error' => $e->getMessage()], 422);
         }
     }
 
@@ -145,7 +145,7 @@ class StudentUserProgressController extends BaseAPIController
 
             return $this->sendResponse($progress, 'Progress retrieved successfully.');
         } catch (Exception $e) {
-            return $this->sendErrorResponse('Failed to retrieve progress', ['error' => $e->getMessage()], 500);
+            return $this->sendError('Failed to retrieve progress', ['error' => $e->getMessage()], 500);
         }
     }
 
@@ -185,7 +185,7 @@ class StudentUserProgressController extends BaseAPIController
             ])->first();
 
             if (!$progress) {
-                return $this->sendErrorResponse('Progress record not found', [], 404);
+                return $this->sendError('Progress record not found', [], 404);
             }
 
             // Update progress record
@@ -227,7 +227,7 @@ class StudentUserProgressController extends BaseAPIController
 
             return $this->sendResponse($responseData, 'Progress updated successfully.');
         } catch (Exception $e) {
-            return $this->sendErrorResponse('Failed to update progress', ['error' => $e->getMessage()], 422);
+            return $this->sendError('Failed to update progress', ['error' => $e->getMessage()], 422);
         }
     }
 }

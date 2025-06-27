@@ -37,6 +37,9 @@ Route::prefix('student')->middleware(['auth:tenant'])->group(function () {
 
 // Routes that require both authentication and email verification
 Route::prefix('student')->middleware(['auth:tenant', \App\Http\Middleware\Tenant\EnsureEmailIsVerifiedWithGracePeriod::class])->group(function () {
+    // Enforce integer IDs for lessons and topics
+    Route::pattern('lesson', '[0-9]+');
+    Route::pattern('topic', '[0-9]+');
     // Learning Content Routes - Read-only access for regular users
     // These routes should only provide access to published content
 

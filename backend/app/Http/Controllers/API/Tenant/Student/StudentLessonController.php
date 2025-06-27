@@ -51,6 +51,7 @@ class StudentLessonController extends BaseAPIController
             $this->authorize('viewAny', Lesson::class);
 
             $user = Auth::user();
+            \Illuminate\Support\Facades\Log::info("StudentLessonController: Index method called for topic {$topic->id} by user {$user->id}");
             $lessons = $this->lessonService->getLessonsForStudent($topic->id, $user);
 
             return $this->sendResponse([
@@ -88,6 +89,7 @@ class StudentLessonController extends BaseAPIController
             $this->authorize('view', $lesson);
 
             $user = Auth::user();
+            \Illuminate\Support\Facades\Log::info("StudentLessonController: Show method called for lesson {$lesson->id} by user {$user->id}");
             $lessonData = $this->lessonService->getLessonForStudent($lesson, $user);
 
             return $this->sendResponse($lessonData, 'Lesson retrieved successfully.');
@@ -111,6 +113,7 @@ class StudentLessonController extends BaseAPIController
             $this->authorize('view', $lesson);
 
             $user = Auth::user();
+            \Illuminate\Support\Facades\Log::info("StudentLessonController: Progress method called for lesson {$lesson->id} by user {$user->id}");
             $progress = $this->lessonService->getLessonProgress($lesson, $user);
 
             // Add additional progress details

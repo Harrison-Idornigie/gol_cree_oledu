@@ -22,6 +22,7 @@ class LessonPolicy
     {
         // Students can only view published lessons
         if ($user->isStudent()) {
+            \Illuminate\Support\Facades\Log::info("LessonPolicy: Student {$user->id} attempting to view lesson {$lesson->id} with status {$lesson->status}");
             return $lesson->status === 'published';
         }
 

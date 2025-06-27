@@ -24,6 +24,7 @@ class TopicPolicy
     {
         // Students can only view published topics
         if ($user->isStudent()) {
+            \Illuminate\Support\Facades\Log::info("TopicPolicy: Student {$user->id} attempting to view topic {$topic->id} with status {$topic->status}");
             return $topic->status === 'published';
         }
 
