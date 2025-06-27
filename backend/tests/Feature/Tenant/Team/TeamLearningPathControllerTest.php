@@ -49,21 +49,22 @@ class TeamLearningPathControllerTest extends TenantTestCase
     /**
      * Helper to create a test language
      */
-    protected function createLanguage() {
+    protected function createLanguage(array $attributes = []): Language
+    {
         return $this->runInTenantContext($this->tenant, function () use ($attributes) {
-            return Language::create([
+            return Language::create(array_merge([
                 'name' => 'Test Language',
                 'code' => 'tl',
                 'native_name' => 'Test Language Native',
                 'is_active' => true
-            ]);
+            ], $attributes));
         });
     }
 
     /**
      * Helper to create a test learning path
      */
-    protected function createLearningPath(array $attributes = [])
+    protected function createLearningPath(array $attributes = []): LearningPath
     {
         $defaultAttrs = [
             'title' => 'Test Learning Path ' . rand(1000, 9999),
@@ -420,7 +421,8 @@ class TeamLearningPathControllerTest extends TenantTestCase
     protected function createTenantAdmin(array $attributes = []): User
     {
         return $this->runInTenantContext($this->tenant, function () use ($attributes) {
-            return User::factory()->create(array_merge(['email' => 'admin@test.com',
+            return User::factory()->create(array_merge([
+                'email' => 'admin@test.com',
                 'membership' => 'admin',
                 'email_verified_at' => now(),
             ], $attributes));
@@ -433,7 +435,8 @@ class TeamLearningPathControllerTest extends TenantTestCase
     protected function createTenantTeam(array $attributes = []): User
     {
         return $this->runInTenantContext($this->tenant, function () use ($attributes) {
-            return User::factory()->create(array_merge(['email' => 'team@test.com',
+            return User::factory()->create(array_merge([
+                'email' => 'team@test.com',
                 'membership' => 'team',
                 'email_verified_at' => now(),
             ], $attributes));
@@ -446,7 +449,8 @@ class TeamLearningPathControllerTest extends TenantTestCase
     protected function createTenantStudent(array $attributes = []): User
     {
         return $this->runInTenantContext($this->tenant, function () use ($attributes) {
-            return User::factory()->create(array_merge(['email' => 'student@test.com',
+            return User::factory()->create(array_merge([
+                'email' => 'student@test.com',
                 'membership' => 'student',
                 'email_verified_at' => now(),
             ], $attributes));

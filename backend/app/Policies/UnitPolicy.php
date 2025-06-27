@@ -12,7 +12,9 @@ class UnitPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasAnyRole(['admin', 'team', 'content_creator']);
+        // Students can view units, but only published ones
+        // Admins and team members can view all units
+        return true;
     }
 
     /**
@@ -20,7 +22,13 @@ class UnitPolicy
      */
     public function view(User $user, Unit $unit): bool
     {
-        return $user->hasAnyRole(['admin', 'team', 'content_creator']);
+        // Students can only view published units
+        if ($user->isStudent()) {
+            return $unit->status === 'published';
+        }
+
+        // Admins and team members can view all units
+        return $user->isTenantAdmin() || $user->isTeam();
     }
 
     /**
@@ -28,7 +36,7 @@ class UnitPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasAnyRole(['admin', 'team', 'content_creator']);
+        return $user->isTenantAdmin() || $user->isTeam();
     }
 
     /**
@@ -36,7 +44,7 @@ class UnitPolicy
      */
     public function update(User $user, Unit $unit): bool
     {
-        return $user->hasAnyRole(['admin', 'team', 'content_creator']);
+        return $user->isTenantAdmin() || $user->isTeam();
     }
 
     /**
@@ -44,7 +52,7 @@ class UnitPolicy
      */
     public function delete(User $user, Unit $unit): bool
     {
-        return $user->hasAnyRole(['admin', 'team', 'content_creator']);
+        return $user->isTenantAdmin() || $user->isTeam();
     }
 
     /**
@@ -52,7 +60,7 @@ class UnitPolicy
      */
     public function restore(User $user, Unit $unit): bool
     {
-        return $user->hasRole('admin');
+        return $user->isTenantAdmin();
     }
 
     /**
@@ -60,6 +68,6 @@ class UnitPolicy
      */
     public function forceDelete(User $user, Unit $unit): bool
     {
-        return $user->hasRole('admin');
+        return $user->isTenantAdmin();
     }
 }

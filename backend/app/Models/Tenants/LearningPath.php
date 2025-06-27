@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models\Tenants;
 
 use App\Traits\Tenant\HasAuditLog;
@@ -25,6 +26,7 @@ class LearningPath extends Model
         'status',
         'review_status',
         'tenant_id',
+        'created_by',
     ];
 
     protected $casts = [
@@ -50,6 +52,14 @@ class LearningPath extends Model
     public function language(): BelongsTo
     {
         return $this->belongsTo(Language::class);
+    }
+
+    /**
+     * Get the user who created this learning path.
+     */
+    public function creator(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'created_by');
     }
 
     /**

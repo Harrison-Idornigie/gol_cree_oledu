@@ -53,27 +53,9 @@ class TeamAudioUploadControllerTest extends TenantTestCase
         parent::tearDown();
     }
 
-    protected function createTenantTeam(): User
-    {
-        return $this->runInTenantContext($this->tenant, function () {
-            return User::factory()->create([
-                'email' => 'team@test.com',
-                'membership' => 'team',
-                'email_verified_at' => now(),
-            ]);
-        });
-    }
 
-    protected function createTenantStudent(): User
-    {
-        return $this->runInTenantContext($this->tenant, function () {
-            return User::factory()->create([
-                'email' => 'student@test.com',
-                'membership' => 'student',
-                'email_verified_at' => now(),
-            ]);
-        });
-    }
+
+
 
     protected function createLanguage(array $attributes = []): Language
     {

@@ -35,133 +35,8 @@ class TeamLanguageControllerTest extends TenantTestCase
         $this->studentUser = $this->createTenantStudent();
     }
 
-    /**
-     * Helper to initialize tenant context
-     */
-    protected function initializeTenantContext(Tenant $tenant)
-    {
-        return $this->runInTenantContext($tenant, function () {
-            // Additional tenant initialization if needed
-        });
-    }
 
-    /**
-     * Helper to create a tenant team member
-     */
-    protected function createTenantTeamMember()
-    {
-        return $this->runInTenantContext($this->tenant, function () {
-            $user = User::create([
-                'name' => 'Team User',
-                'email' => 'team_' . Str::random(5) . '@example.com',
-                'password' => bcrypt('password'),
-                'email_verified_at' => now(),
-            ]);
-
-            // Assign team role if roles table exists
-            try {
-                if (class_exists('Spatie\\Permission\\Models\\Role')) {
-                    $user->assignRole('team');
-                } else {
-                    // Fallback: direct DB insert to user_permissions
-                    if (\Illuminate\Support\Facades\Schema::hasTable('user_permissions')) {
-                        \Illuminate\Support\Facades\DB::table('user_permissions')->insert([
-                            'id' => (string) Str::uuid(),
-                            'user_id' => $user->id,
-                            'permission' => 'team',
-                            'created_at' => now(),
-                            'updated_at' => now(),
-                        ]);
-                    }
-                }
-            } catch (\Exception $e) {
-                // Role assignment might fail if tables don't exist yet
-            }
-
-            return $user;
-        });
-    }
-
-    /**
-     * Helper to create a tenant admin
-     */
-    protected function createTenantAdmin()
-    {
-        return $this->runInTenantContext($this->tenant, function () {
-            $user = User::create([
-                'name' => 'Admin User',
-                'email' => 'admin_' . Str::random(5) . '@example.com',
-                'password' => bcrypt('password'),
-                'email_verified_at' => now(),
-            ]);
-
-            // Assign admin role if roles table exists
-            try {
-                if (class_exists('Spatie\\Permission\\Models\\Role')) {
-                    $user->assignRole(['admin', 'tenant-admin']);
-                } else {
-                    // Fallback: direct DB insert to user_permissions
-                    if (\Illuminate\Support\Facades\Schema::hasTable('user_permissions')) {
-                        \Illuminate\Support\Facades\DB::table('user_permissions')->insert([
-                            'id' => (string) Str::uuid(),
-                            'user_id' => $user->id,
-                            'permission' => 'admin',
-                            'created_at' => now(),
-                            'updated_at' => now(),
-                        ]);
-                        \Illuminate\Support\Facades\DB::table('user_permissions')->insert([
-                            'id' => (string) Str::uuid(),
-                            'user_id' => $user->id,
-                            'permission' => 'tenant-admin',
-                            'created_at' => now(),
-                            'updated_at' => now(),
-                        ]);
-                    }
-                }
-            } catch (\Exception $e) {
-                // Role assignment might fail if tables don't exist yet
-            }
-
-            return $user;
-        });
-    }
-
-    /**
-     * Helper to create a tenant student
-     */
-    protected function createTenantStudent()
-    {
-        return $this->runInTenantContext($this->tenant, function () {
-            $user = User::create([
-                'name' => 'Student User',
-                'email' => 'student_' . Str::random(5) . '@example.com',
-                'password' => bcrypt('password'),
-                'email_verified_at' => now(),
-            ]);
-
-            // Assign student role if roles table exists
-            try {
-                if (class_exists('Spatie\\Permission\\Models\\Role')) {
-                    $user->assignRole('student');
-                } else {
-                    // Fallback: direct DB insert to user_permissions
-                    if (\Illuminate\Support\Facades\Schema::hasTable('user_permissions')) {
-                        \Illuminate\Support\Facades\DB::table('user_permissions')->insert([
-                            'id' => (string) Str::uuid(),
-                            'user_id' => $user->id,
-                            'permission' => 'student',
-                            'created_at' => now(),
-                            'updated_at' => now(),
-                        ]);
-                    }
-                }
-            } catch (\Exception $e) {
-                // Role assignment might fail if tables don't exist yet
-            }
-
-            return $user;
-        });
-    }
+ 
 
     protected function tearDown(): void
     {
@@ -169,24 +44,7 @@ class TeamLanguageControllerTest extends TenantTestCase
         parent::tearDown();
     }
 
-    /**
-     * Helper to create a test language
-     */
-    protected function createTestLanguage(array $attributes = [])
-    {
-        $defaultAttrs = [
-            'name' => 'Test Language ' . Str::random(4),
-            'code' => 'tl' . Str::random(2),
-            'native_name' => 'Test Native Name ' . Str::random(4),
-            'is_active' => true,
-            'created_by' => $this->teamUser->id,
-        ];
-
-        return $this->runInTenantContext($this->tenant, function () use ($defaultAttrs, $attributes) {
-            return Language::create(array_merge($defaultAttrs, $attributes));
-        });
-    }
-
+ 
     /** @test */
     public function team_member_can_view_languages_list()
     {

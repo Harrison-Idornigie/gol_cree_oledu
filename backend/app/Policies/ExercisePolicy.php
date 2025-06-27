@@ -22,7 +22,7 @@ class ExercisePolicy
     {
         // Students can only view published exercises
         if ($user->isStudent()) {
-            return $exercise->is_published ?? false;
+            return $exercise->status === 'published';
         }
 
         // Admins and team members can view all exercises
@@ -67,7 +67,7 @@ class ExercisePolicy
     public function attempt(User $user, Exercise $exercise): bool
     {
         // All users can attempt published exercises
-        return $exercise->is_published ?? false;
+        return $exercise->status === 'published';
     }
 
     /**

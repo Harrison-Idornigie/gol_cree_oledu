@@ -29,7 +29,7 @@ class StudentUserLanguageControllerTest extends TenantTestCase
 
         // Create users with different roles in tenant context
         $this->studentUser = $this->createTenantStudent();
-        $this->teamUser = $this->createTenantTeamMember();
+        $this->teamUser = $this->createTenantTeam();
 
         // Setup test data
         $this->testData = $this->setupTestData();
@@ -41,83 +41,9 @@ class StudentUserLanguageControllerTest extends TenantTestCase
         parent::tearDown();
     }
 
-    /**
-     * Helper to create a tenant team member
-     */
-    protected function createTenantTeamMember()
-    {
-        return $this->runInTenantContext($this->tenant, function () {
-            $user = User::create([
-                'name' => 'Team User',
-                'email' => 'team_' . Str::random(5) . '@example.com',
-                'password' => bcrypt('password'),
-                'email_verified_at' => now(),
-            ]);
 
-            // Assign team role
-            try {
-                // Direct DB insert to user_permissions for compatibility
-                if (\Illuminate\Support\Facades\Schema::hasTable('user_permissions')) {
-                    \Illuminate\Support\Facades\DB::table('user_permissions')->insert([
-                        'id' => (string) Str::uuid(),
-                        'user_id' => $user->id,
-                        'permission' => 'team',
-                        'created_at' => now(),
-                        'updated_at' => now(),
-                    ]);
-                }
 
-                // If we're using membership_type
-                if (\Illuminate\Support\Facades\Schema::hasColumn('users', 'membership_type')) {
-                    $user->membership_type = 'team';
-                    $user->save();
-                }
-            } catch (\Exception $e) {
-                // Role assignment might fail if tables don't exist yet
-            }
 
-            return $user;
-        });
-    }
-
-    /**
-     * Helper to create a tenant student
-     */
-    protected function createTenantStudent()
-    {
-        return $this->runInTenantContext($this->tenant, function () {
-            $user = User::create([
-                'name' => 'Student User',
-                'email' => 'student_' . Str::random(5) . '@example.com',
-                'password' => bcrypt('password'),
-                'email_verified_at' => now(),
-            ]);
-
-            // Assign student role
-            try {
-                // Direct DB insert to user_permissions for compatibility
-                if (\Illuminate\Support\Facades\Schema::hasTable('user_permissions')) {
-                    \Illuminate\Support\Facades\DB::table('user_permissions')->insert([
-                        'id' => (string) Str::uuid(),
-                        'user_id' => $user->id,
-                        'permission' => 'student',
-                        'created_at' => now(),
-                        'updated_at' => now(),
-                    ]);
-                }
-
-                // If we're using membership_type
-                if (\Illuminate\Support\Facades\Schema::hasColumn('users', 'membership_type')) {
-                    $user->membership_type = 'student';
-                    $user->save();
-                }
-            } catch (\Exception $e) {
-                // Role assignment might fail if tables don't exist yet
-            }
-
-            return $user;
-        });
-    }
 
     /**
      * Setup test data for user language selection

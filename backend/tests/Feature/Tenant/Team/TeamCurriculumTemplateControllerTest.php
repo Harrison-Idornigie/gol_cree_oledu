@@ -10,9 +10,9 @@ use App\Models\Tenants\CurriculumTemplate;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\Sanctum;
-use Tests\TenantTenantTestCase;
+use Tests\TenantTestCase;
 
-class TeamCurriculumTemplateControllerTest extends TenantTenantTestCase
+class TeamCurriculumTemplateControllerTest extends TenantTestCase
 {
     use RefreshDatabase, InteractsWithTenancy;
 

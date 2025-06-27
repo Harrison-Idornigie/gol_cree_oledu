@@ -12,7 +12,9 @@ class TopicPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasAnyRole(['admin', 'team', 'content_creator']);
+        // Students can view topics, but only published ones
+        // Admins and team members can view all topics
+        return true;
     }
 
     /**
@@ -20,7 +22,13 @@ class TopicPolicy
      */
     public function view(User $user, Topic $topic): bool
     {
-        return $user->hasAnyRole(['admin', 'team', 'content_creator']);
+        // Students can only view published topics
+        if ($user->isStudent()) {
+            return $topic->status === 'published';
+        }
+
+        // Admins and team members can view all topics
+        return $user->isTenantAdmin() || $user->isTeam();
     }
 
     /**
@@ -28,7 +36,7 @@ class TopicPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasAnyRole(['admin', 'team', 'content_creator']);
+        return $user->isTenantAdmin() || $user->isTeam();
     }
 
     /**
@@ -36,7 +44,7 @@ class TopicPolicy
      */
     public function update(User $user, Topic $topic): bool
     {
-        return $user->hasAnyRole(['admin', 'team', 'content_creator']);
+        return $user->isTenantAdmin() || $user->isTeam();
     }
 
     /**
@@ -44,7 +52,7 @@ class TopicPolicy
      */
     public function delete(User $user, Topic $topic): bool
     {
-        return $user->hasAnyRole(['admin', 'team', 'content_creator']);
+        return $user->isTenantAdmin() || $user->isTeam();
     }
 
     /**
@@ -52,7 +60,7 @@ class TopicPolicy
      */
     public function restore(User $user, Topic $topic): bool
     {
-        return $user->hasRole('admin');
+        return $user->isTenantAdmin();
     }
 
     /**
@@ -60,6 +68,6 @@ class TopicPolicy
      */
     public function forceDelete(User $user, Topic $topic): bool
     {
-        return $user->hasRole('admin');
+        return $user->isTenantAdmin();
     }
 }

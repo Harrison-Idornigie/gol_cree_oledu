@@ -30,7 +30,7 @@ class StudentUserProgressControllerTest extends TenantTestCase
 
         // Create users with different roles in tenant context
         $this->studentUser = $this->createTenantStudent();
-        $this->teamUser = $this->createTenantTeamMember();
+        $this->teamUser = $this->createTenantTeam();
 
         // Setup test data
         $this->testData = $this->setupTestData();
@@ -42,15 +42,7 @@ class StudentUserProgressControllerTest extends TenantTestCase
         parent::tearDown();
     }
 
-    /**
-     * Helper to initialize tenant context
-     */
-    protected function initializeTenantContext(Tenant $tenant)
-    {
-        return $this->runInTenantContext($tenant, function () {
-            // Additional tenant initialization if needed
-        });
-    }
+
 
     /**
      * Helper to create a tenant team member
@@ -97,50 +89,7 @@ class StudentUserProgressControllerTest extends TenantTestCase
         });
     }
 
-    /**
-     * Helper to create a tenant student
-     */
-    protected function createTenantStudent()
-    {
-        return $this->runInTenantContext($this->tenant, function () {
-            $user = User::create([
-                'name' => 'Student User',
-                'email' => 'student_' . Str::random(5) . '@example.com',
-                'password' => bcrypt('password'),
-                'email_verified_at' => now(),
-            ]);
 
-            // Try to assign role using different methods depending on implementation
-            try {
-                if (class_exists('Spatie\\Permission\\Models\\Role')) {
-                    // For Spatie Permission
-                    $user->assignRole('student');
-                } elseif (method_exists($user, 'givePermissionTo')) {
-                    // Direct permission
-                    $user->givePermissionTo('student');
-                }
-            } catch (\Exception $e) {
-                // Role assignment might fail if tables don't exist
-            }
-
-            // Fallback: direct DB insert to user_permissions
-            try {
-                if (\Illuminate\Support\Facades\Schema::hasTable('user_permissions')) {
-                    \Illuminate\Support\Facades\DB::table('user_permissions')->insert([
-                        'id' => (string) Str::uuid(),
-                        'user_id' => $user->id,
-                        'permission' => 'student',
-                        'created_at' => now(),
-                        'updated_at' => now(),
-                    ]);
-                }
-            } catch (\Exception $e) {
-                // Table might not exist
-            }
-
-            return $user;
-        });
-    }
 
     /**
      * Setup test data for progress tracking

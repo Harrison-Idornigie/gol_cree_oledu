@@ -14,7 +14,7 @@ class UserLanguagePolicy
     {
         // Students can only view their own language selections
         // Team members and admins can view all
-        return $user->isStudent() || $user->isTeam() || $user->isAdmin();
+        return $user->isStudent() || $user->isTeam() || $user->isTenantAdmin();
     }
 
     /**
@@ -28,7 +28,7 @@ class UserLanguagePolicy
         }
 
         // Team members and admins can view any user language
-        return $user->isTeam() || $user->isAdmin();
+        return $user->isTeam() || $user->isTenantAdmin();
     }
 
     /**
@@ -38,7 +38,7 @@ class UserLanguagePolicy
     {
         // Students can create their own language selections
         // Team members and admins can create for any user
-        return $user->isStudent() || $user->isTeam() || $user->isAdmin();
+        return $user->isStudent() || $user->isTeam() || $user->isTenantAdmin();
     }
 
     /**
@@ -52,7 +52,7 @@ class UserLanguagePolicy
         }
 
         // Team members and admins can update any user language
-        return $user->isTeam() || $user->isAdmin();
+        return $user->isTeam() || $user->isTenantAdmin();
     }
 
     /**
@@ -66,7 +66,7 @@ class UserLanguagePolicy
         }
 
         // Team members and admins can delete any user language
-        return $user->isTeam() || $user->isAdmin();
+        return $user->isTeam() || $user->isTenantAdmin();
     }
 
     /**
@@ -83,6 +83,6 @@ class UserLanguagePolicy
     public function forceDelete(User $user, UserLanguage $userLanguage): bool
     {
         // Only admins can permanently delete
-        return $user->isAdmin();
+        return $user->isTenantAdmin();
     }
 }

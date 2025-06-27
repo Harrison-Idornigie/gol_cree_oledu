@@ -22,7 +22,7 @@ class LessonPolicy
     {
         // Students can only view published lessons
         if ($user->isStudent()) {
-            return $lesson->is_published ?? false;
+            return $lesson->status === 'published';
         }
 
         // Admins and team members can view all lessons

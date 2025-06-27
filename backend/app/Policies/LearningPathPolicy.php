@@ -22,7 +22,7 @@ class LearningPathPolicy
     {
         // Students can only view published learning paths
         if ($user->isStudent()) {
-            return $learningPath->is_published ?? false;
+            return $learningPath->status === 'published';
         }
 
         // Admins and team members can view all learning paths
@@ -75,7 +75,7 @@ class LearningPathPolicy
     public function enroll(User $user, LearningPath $learningPath): bool
     {
         // Students can enroll in published learning paths
-        return $user->isStudent() && ($learningPath->is_published ?? false);
+        return $user->isStudent() && $learningPath->status === 'published';
     }
 
     /**

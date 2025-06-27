@@ -20,6 +20,11 @@ return new class extends Migration
             $table->text('description');
             $table->string('target_level');
             $table->enum('status', ['draft', 'published', 'archived'])->default('draft');
+            $table->foreignId('created_by')
+                ->nullable()
+                ->constrained('users')
+                ->onDelete('set null')
+                ->comment('User who created this learning path');
             $table->timestamps();
 
             $table->index(['tenant_id', 'status']);

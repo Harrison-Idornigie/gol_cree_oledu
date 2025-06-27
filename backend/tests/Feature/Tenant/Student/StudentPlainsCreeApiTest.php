@@ -293,26 +293,7 @@ class StudentPlainsCreeApiTest extends TenantTestCase
         return $constraints[$level] ?? ['A1'];
     }
 
-    // Helper methods for creating users
-    protected function createTenantStudent(array $attributes = []): User
-    {
-        return $this->runInTenantContext($this->tenant, function () use ($attributes) {
-            return User::factory()->create(array_merge(['email' => 'student@test.com',
-                'membership' => 'student',
-                'email_verified_at' => now(),
-            ], $attributes));
-        });
-    }
 
-    protected function createTenantTeam(array $attributes = []): User
-    {
-        return $this->runInTenantContext($this->tenant, function () use ($attributes) {
-            return User::factory()->create(array_merge(['email' => 'team@test.com',
-                'membership' => 'team',
-                'email_verified_at' => now(),
-            ], $attributes));
-        });
-    }
 
     /** @test */
     public function student_can_access_plains_cree_languages_with_starter_pack_metadata()

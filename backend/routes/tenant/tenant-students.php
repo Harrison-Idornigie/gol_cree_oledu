@@ -25,7 +25,7 @@ use Illuminate\Support\Facades\Route;
  */
 
 // Routes that require authentication but not email verification
-Route::prefix('student')->middleware(['auth:sanctum'])->group(function () {
+Route::prefix('student')->middleware(['auth:tenant'])->group(function () {
     // User Progress Routes - Allow users to track their own progress even without verification
     Route::prefix('progress')->group(function () {
         Route::get('/', [StudentUserProgressController::class, 'index']);

@@ -372,26 +372,7 @@ class TenantAdminUserControllerTest extends TenantTestCase
         $response->assertJsonStructure(['success', 'message', 'data']);
     }
 
-    /**
-     * Helper methods
-     */
-    protected function createTenantAdmin(array $attributes = []): User
-    {
-        return User::factory()->create(array_merge([
-            'email' => 'admin@test.com',
-            'membership' => 'admin',
-            'email_verified_at' => now(),
-        ], $attributes));
-    }
 
-    protected function createTenantStudent(array $attributes = []): User
-    {
-        return User::factory()->create(array_merge([
-            'email' => 'student@test.com',
-            'membership' => 'student',
-            'email_verified_at' => now(),
-        ], $attributes));
-    }
 
     protected function initializeTenantContext(Tenant $tenant): void
     {

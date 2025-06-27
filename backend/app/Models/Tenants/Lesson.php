@@ -26,6 +26,7 @@ class Lesson extends Model
         'order',
         'status',
         'review_status',
+        'created_by',
         'tenant_id',
     ];
 
@@ -52,6 +53,14 @@ class Lesson extends Model
     public function topic(): BelongsTo
     {
         return $this->belongsTo(Topic::class);
+    }
+
+    /**
+     * Get the user who created the lesson.
+     */
+    public function creator(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'created_by');
     }
 
     /**

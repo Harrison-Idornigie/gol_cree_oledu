@@ -19,12 +19,18 @@ return new class extends Migration
             $table->text('description');
             $table->integer('order');
             $table->enum('status', ['draft', 'published', 'archived'])->default('draft');
+            $table->foreignId('created_by')
+                ->nullable()
+                ->constrained('users')
+                ->onDelete('set null')
+                ->comment('User who created this lesson');
             $table->timestamps();
 
             // Add index for ordering
             $table->index(['topic_id', 'order']);
             $table->index(['tenant_id', 'status']);
             $table->index(['template_id']);
+            $table->index('created_by');
         });
     }
 

@@ -60,13 +60,13 @@ class StudentMultiTenantIsolationTest extends TenantTestCase
     {
         // Create users for Tenant A
         $this->initializeTenantContext($this->tenantA);
-        $this->studentUserA = $this->createTenantStudent('student-a@tenanta.com');
-        $this->teamUserA = $this->createTenantTeam('team-a@tenanta.com');
+        $this->studentUserA = $this->createTenantStudent(['email' => 'student-a@tenanta.com']);
+        $this->teamUserA = $this->createTenantTeam(['email' => 'team-a@tenanta.com']);
 
         // Create users for Tenant B
         $this->initializeTenantContext($this->tenantB);
-        $this->studentUserB = $this->createTenantStudent('student-b@tenantb.com');
-        $this->teamUserB = $this->createTenantTeam('team-b@tenantb.com');
+        $this->studentUserB = $this->createTenantStudent(['email' => 'student-b@tenantb.com']);
+        $this->teamUserB = $this->createTenantTeam(['email' => 'team-b@tenantb.com']);
 
         // Create users for Tenant C
         $this->initializeTenantContext($this->tenantC);
@@ -510,21 +510,5 @@ class StudentMultiTenantIsolationTest extends TenantTestCase
                 'updated_at' => now(),
             ]);
         });
-    }
-
-    protected function createTenantStudent(string $email): User
-    {
-        return User::factory()->create(array_merge(['email' => $email,
-            'membership' => 'student',
-            'email_verified_at' => now(),
-        ], $attributes));
-    }
-
-    protected function createTenantTeam(string $email): User
-    {
-        return User::factory()->create(array_merge(['email' => $email,
-            'membership' => 'team',
-            'email_verified_at' => now(),
-        ], $attributes));
     }
 }

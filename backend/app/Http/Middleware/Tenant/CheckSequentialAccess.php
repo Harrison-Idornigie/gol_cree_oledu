@@ -5,7 +5,7 @@ namespace App\Http\Middleware\Tenant;
 use App\Models\Tenants\Lesson;
 use App\Models\Tenants\Section;
 use App\Models\Tenants\Unit;
-use App\Services\Tenants\SequentialLearningService;
+use App\Services\Tenants\Progress\SequentialLearningService;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,7 +14,7 @@ class CheckSequentialAccess
 {
     protected $sequentialLearningService;
 
-    public function __construct(SequentialLearningService $sequentialLearningService)
+    public function __construct(\App\Services\Tenants\Progress\SequentialLearningService $sequentialLearningService)
     {
         $this->sequentialLearningService = $sequentialLearningService;
     }
@@ -28,7 +28,7 @@ class CheckSequentialAccess
     {
         // Extract the model type and ID from the route parameters
         $routeName = $request->route()->getName();
-        
+
         // Check if we need to validate sequential access for this route
         if (str_contains($routeName, 'units.show')) {
             $unit = $request->route('unit');
@@ -40,7 +40,7 @@ class CheckSequentialAccess
                         'locked' => true
                     ], 403);
                 }
-                
+
                 return redirect()->route('learning-paths.show', $unit->learning_path_id)
                     ->with('error', 'This unit is locked. Complete previous units to unlock it.');
             }
@@ -54,7 +54,7 @@ class CheckSequentialAccess
                         'locked' => true
                     ], 403);
                 }
-                
+
                 return redirect()->route('units.show', $lesson->unit_id)
                     ->with('error', 'This lesson is locked. Complete previous lessons to unlock it.');
             }
@@ -68,7 +68,7 @@ class CheckSequentialAccess
                         'locked' => true
                     ], 403);
                 }
-                
+
                 return redirect()->route('lessons.show', $section->lesson_id)
                     ->with('error', 'This section is locked. Complete previous sections to unlock it.');
             }

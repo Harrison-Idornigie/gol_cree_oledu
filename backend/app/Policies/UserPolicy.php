@@ -108,6 +108,22 @@ class UserPolicy
     }
 
     /**
+     * Determine if the user can view their own profile.
+     */
+    public function viewOwnProfile(User $user): bool
+    {
+        return true; // All authenticated users can view their own profile
+    }
+
+    /**
+     * Determine if the user can update their own profile.
+     */
+    public function updateOwnProfile(User $user): bool
+    {
+        return true; // All authenticated users can update their own profile
+    }
+
+    /**
      * Determine if the user can suspend users.
      */
     public function suspend(User $user, User $targetUser): bool

@@ -629,24 +629,4 @@ class StudentSyllabicsAudioTest extends TenantTestCase
             ]);
         });
     }
-
-    protected function createTenantStudent(array $attributes = []): User
-    {
-        return $this->runInTenantContext($this->tenant, function () use ($attributes) {
-            return User::factory()->create(array_merge(['email' => 'student@test.com',
-                'membership' => 'student',
-                'email_verified_at' => now(),
-            ], $attributes));
-        });
-    }
-
-    protected function createTenantTeam(array $attributes = []): User
-    {
-        return $this->runInTenantContext($this->tenant, function () use ($attributes) {
-            return User::factory()->create(array_merge(['email' => 'team@test.com',
-                'membership' => 'team',
-                'email_verified_at' => now(),
-            ], $attributes));
-        });
-    }
 }

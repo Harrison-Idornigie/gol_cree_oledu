@@ -44,9 +44,9 @@ class StudentUnitControllerTest extends TenantTestCase
     /**
      * Helper to initialize tenant context
      */
-    protected function initializeTenantContext(Tenant $tenant)
+    protected function initializeTenantContext(Tenant $tenant): void
     {
-        return $this->runInTenantContext($tenant, function () {
+        $this->runInTenantContext($tenant, function () {
             // Additional tenant initialization if needed
         });
     }
@@ -97,51 +97,7 @@ class StudentUnitControllerTest extends TenantTestCase
         });
     }
 
-    /**
-     * Helper to create a tenant student
-     */
-    protected function createTenantStudent()
-    {
-        return $this->runInTenantContext($this->tenant, function () {
-            $user = User::create([
-                'name' => 'Student User',
-                'email' => 'student_' . Str::random(5) . '@example.com',
-                'password' => bcrypt('password'),
-                'email_verified_at' => now(),
-            ]);
 
-            // Assign student role if roles table exists
-            try {
-                // Try to assign role using different methods depending on implementation
-                try {
-                    if (class_exists('Spatie\\Permission\\Models\\Role')) {
-                        // For Spatie Permission
-                        $user->assignRole('student');
-                    } elseif (method_exists($user, 'givePermissionTo')) {
-                        // Direct permission
-                        $user->givePermissionTo('student');
-                    }
-                } catch (\Exception $e) {
-                    // Role assignment might fail if tables don't exist
-                }
-
-                // Fallback: direct DB insert to user_permissions
-                if (\Illuminate\Support\Facades\Schema::hasTable('user_permissions')) {
-                    \Illuminate\Support\Facades\DB::table('user_permissions')->insert([
-                        'id' => (string) Str::uuid(),
-                        'user_id' => $user->id,
-                        'permission' => 'student',
-                        'created_at' => now(),
-                        'updated_at' => now(),
-                    ]);
-                }
-            } catch (\Exception $e) {
-                // Role assignment might fail if tables don't exist yet
-            }
-
-            return $user;
-        });
-    }
 
     /**
      * Setup test data for units, learning paths, etc.
@@ -159,14 +115,14 @@ class StudentUnitControllerTest extends TenantTestCase
 
             // Create learning path
             $learningPathId = Str::uuid();
-            $learningPath = $this->createLearningPath($learningPathId, $language->id);
+            $learningPath = $this->createLearningPathWithId($learningPathId, $language->id);
 
             // Create units for this learning path
             $unit1Id = Str::uuid();
             $unit2Id = Str::uuid();
 
-            $this->createUnit($unit1Id, $learningPathId, 'Unit 1', 1);
-            $this->createUnit($unit2Id, $learningPathId, 'Unit 2', 2);
+            $this->createUnitWithId($unit1Id, $learningPathId, 'Unit 1', 1);
+            $this->createUnitWithId($unit2Id, $learningPathId, 'Unit 2', 2);
 
             // Create user progress for first unit
             $this->createUserProgress('unit', $unit1Id, $this->studentUser->id, 50);
@@ -181,9 +137,9 @@ class StudentUnitControllerTest extends TenantTestCase
     }
 
     /**
-     * Helper to create a learning path
+     * Helper to create a learning path with specific ID
      */
-    protected function createLearningPath($id, $languageId)
+    protected function createLearningPathWithId($id, $languageId)
     {
         \Illuminate\Support\Facades\DB::table('learning_paths')->insert([
             'id' => $id,
@@ -200,9 +156,9 @@ class StudentUnitControllerTest extends TenantTestCase
     }
 
     /**
-     * Helper to create a unit
+     * Helper to create a unit with specific parameters
      */
-    protected function createUnit($id, $learningPathId, $title, $order, $status = 'published')
+    protected function createUnitWithId($id, $learningPathId, $title, $order, $status = 'published')
     {
         \Illuminate\Support\Facades\DB::table('units')->insert([
             'id' => $id,
@@ -399,7 +355,7 @@ class StudentUnitControllerTest extends TenantTestCase
         // Create an unpublished unit
         $unpublishedUnitId = Str::uuid();
         $this->runInTenantContext($this->tenant, function () use ($unpublishedUnitId, $testData) {
-            return $this->createUnit(
+            return $this->createUnitWithId(
                 $unpublishedUnitId,
                 $testData['learning_path_id'],
                 'Unpublished Unit',
@@ -759,11 +715,11 @@ class StudentUnitControllerTest extends TenantTestCase
 
             // Create another learning path
             $learningPathId = Str::uuid();
-            $this->createLearningPath($learningPathId, $language->id);
+            $this->createLearningPathWithId($learningPathId, $language->id);
 
             // Create unit for this learning path
             $unitId = Str::uuid();
-            $this->createUnit($unitId, $learningPathId, 'Restricted Unit', 1);
+            $this->createUnitWithId($unitId, $learningPathId, 'Restricted Unit', 1);
 
             return [
                 'learning_path_id' => $learningPathId,

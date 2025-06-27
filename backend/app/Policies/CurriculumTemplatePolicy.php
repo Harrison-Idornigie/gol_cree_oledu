@@ -64,12 +64,12 @@ class CurriculumTemplatePolicy
     public function delete(User $user, CurriculumTemplate $template): bool
     {
         // Super admins can delete any template
-        if ($user->hasRole('super_admin')) {
+        if ($user->isSuperAdmin()) {
             return true;
         }
 
         // Admins can delete non-official templates in their tenant
-        if ($user->hasRole('admin') && !$template->is_official) {
+        if ($user->isTenantAdmin() && !$template->is_official) {
             return true;
         }
 
