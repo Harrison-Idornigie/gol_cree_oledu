@@ -48,37 +48,9 @@ class TeamWordControllerTest extends TenantTestCase
         parent::tearDown();
     }
 
-    /**
-     * Helper to create a test language
-     */
-    protected function createLanguage() {
-        return $this->runInTenantContext($this->tenant, function () use ($attributes) {
-            return Language::create([
-                'name' => 'Test Language',
-                'code' => 'tl',
-                'native_name' => 'Test Language Native',
-                'is_active' => true
-            ]);
-        });
-    }
 
-    /**
-     * Helper to create a test word
-     */
-    protected function createWord(array $attributes = [])
-    {
-        $defaultAttrs = [
-            'text' => 'test_word_' . rand(1000, 9999),
-            'language_id' => $this->language->id,
-            'status' => 'published',
-            'part_of_speech' => 'noun',
-            'created_by' => $this->teamUser->id,
-        ];
 
-        return $this->runInTenantContext($this->tenant, function () use ($defaultAttrs, $attributes) {
-            return Word::create(array_merge($defaultAttrs, $attributes));
-        });
-    }
+
 
     /**
      * Test listing words (index method)
@@ -580,7 +552,8 @@ class TeamWordControllerTest extends TenantTestCase
     protected function createTenantAdmin(array $attributes = []): User
     {
         return $this->runInTenantContext($this->tenant, function () use ($attributes) {
-            return User::factory()->create(array_merge(['email' => 'admin@test.com',
+            return User::factory()->create(array_merge([
+                'email' => 'admin@test.com',
                 'membership' => 'admin',
                 'email_verified_at' => now(),
             ], $attributes));
@@ -593,7 +566,8 @@ class TeamWordControllerTest extends TenantTestCase
     protected function createTenantTeam(array $attributes = []): User
     {
         return $this->runInTenantContext($this->tenant, function () use ($attributes) {
-            return User::factory()->create(array_merge(['email' => 'team@test.com',
+            return User::factory()->create(array_merge([
+                'email' => 'team@test.com',
                 'membership' => 'team',
                 'email_verified_at' => now(),
             ], $attributes));
@@ -606,7 +580,8 @@ class TeamWordControllerTest extends TenantTestCase
     protected function createTenantStudent(array $attributes = []): User
     {
         return $this->runInTenantContext($this->tenant, function () use ($attributes) {
-            return User::factory()->create(array_merge(['email' => 'student@test.com',
+            return User::factory()->create(array_merge([
+                'email' => 'student@test.com',
                 'membership' => 'student',
                 'email_verified_at' => now(),
             ], $attributes));

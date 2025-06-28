@@ -53,92 +53,88 @@ class StudentLessonControllerTest extends TenantTestCase
     protected function setupTestData()
     {
         return $this->runInTenantContext($this->tenant, function () {
-            // Create language for testing
-            $language = \Illuminate\Support\Facades\DB::table('languages')->insertGetId([
+            // Create language for testing using Eloquent
+            $language = \App\Models\Tenants\Language::create([
                 'name' => 'Test Language',
                 'code' => 'tl',
                 'native_name' => 'Test Native',
-                'is_active' => true,
-                'created_at' => now(),
-                'updated_at' => now()
+                'is_active' => true
             ]);
 
-            // Create learning path
-            $learningPathId = \Illuminate\Support\Facades\DB::table('learning_paths')->insertGetId([
+            // Create learning path using Eloquent
+            $learningPath = \App\Models\Tenants\LearningPath::create([
                 'title' => 'Test Learning Path',
                 'description' => 'A test learning path',
-                'language_id' => $language,
+                'language_id' => $language->id,
                 'target_level' => 'A1',
                 'status' => 'published',
-                'created_by' => $this->teamUser->id,
-                'created_at' => now(),
-                'updated_at' => now()
+                'created_by' => $this->teamUser->id
             ]);
 
-            // Create unit
-            $unitId = \Illuminate\Support\Facades\DB::table('units')->insertGetId([
-                'learning_path_id' => $learningPathId,
+            // Create unit using Eloquent
+            $unit = \App\Models\Tenants\Unit::create([
+                'learning_path_id' => $learningPath->id,
                 'title' => 'Test Unit',
                 'description' => 'Test unit description',
                 'order' => 1,
-                'status' => 'published',
-                'created_at' => now(),
-                'updated_at' => now()
+                'status' => 'published'
             ]);
 
-            // Create topic
-            $topicId = \Illuminate\Support\Facades\DB::table('topics')->insertGetId([
-                'unit_id' => $unitId,
+            // Create topic using Eloquent
+            $topic = \App\Models\Tenants\Topic::create([
+                'unit_id' => $unit->id,
                 'title' => 'Test Topic',
                 'slug' => 'test-topic',
                 'description' => 'Test topic description',
                 'order' => 1,
-                'status' => 'published', // Ensure published
-                'created_at' => now(),
-                'updated_at' => now()
+                'status' => 'published'
             ]);
 
-            // Create lessons for this topic
-            $lesson1Id = \Illuminate\Support\Facades\DB::table('lessons')->insertGetId([
-                'topic_id' => $topicId,
+            // Create lessons for this topic using Eloquent
+            $lesson1 = \App\Models\Tenants\Lesson::create([
+                'topic_id' => $topic->id,
                 'title' => 'Lesson 1',
                 'description' => 'Lesson 1 description',
                 'order' => 1,
-                'status' => 'published', // Ensure published
-                'created_by' => $this->teamUser->id,
-                'created_at' => now(),
-                'updated_at' => now()
+                'status' => 'published',
+                'created_by' => $this->teamUser->id
             ]);
 
-            $lesson2Id = \Illuminate\Support\Facades\DB::table('lessons')->insertGetId([
-                'topic_id' => $topicId,
+            $lesson2 = \App\Models\Tenants\Lesson::create([
+                'topic_id' => $topic->id,
                 'title' => 'Lesson 2',
                 'description' => 'Lesson 2 description',
                 'order' => 2,
-                'status' => 'published', // Ensure published
-                'created_by' => $this->teamUser->id,
-                'created_at' => now(),
-                'updated_at' => now()
+                'status' => 'published',
+                'created_by' => $this->teamUser->id
             ]);
 
-            // Create user progress for first lesson
-            \Illuminate\Support\Facades\DB::table('user_progress')->insert([
+            // Create user progress for first lesson using Eloquent
+            \App\Models\Tenants\UserProgress::create([
                 'user_id' => $this->studentUser->id,
                 'trackable_type' => 'App\\Models\\Tenants\\Lesson',
-                'trackable_id' => $lesson1Id,
+                'trackable_id' => $lesson1->id,
                 'status' => 'in_progress',
-                'meta_data' => json_encode(['progress' => 80]),
-                'created_at' => now(),
-                'updated_at' => now()
+                'meta_data' => ['progress' => 80]
+            ]);
+
+            // Debug: Log the created IDs
+            \Illuminate\Support\Facades\Log::info('Test data created:', [
+                'language_id' => $language->id,
+                'learning_path_id' => $learningPath->id,
+                'unit_id' => $unit->id,
+                'topic_id' => $topic->id,
+                'lesson1_id' => $lesson1->id,
+                'lesson2_id' => $lesson2->id
             ]);
 
             return [
-                'language_id' => $language,
-                'learning_path_id' => $learningPathId,
-                'unit_id' => $unitId,
-                'topic_id' => $topicId,
-                'lesson1_id' => $lesson1Id,
-                'lesson2_id' => $lesson2Id
+                'language_id' => $language->id,
+                'learning_path_id' => $learningPath->id,
+                'unit_id' => $unit->id,
+                'topic_id' => $topic->id,
+                'lesson1_id' => $lesson1->id,
+                'lesson2_id' => $lesson2->id
             ];
         });
     }
@@ -195,19 +191,30 @@ class StudentLessonControllerTest extends TenantTestCase
                     'order',
                     'status',
                     'topic_id',
-                    'content',
-                    'progress',
+                    'exercises',
+                    'progress' => [
+                        'completed',
+                        'progress_percentage',
+                        'exercises_completed',
+                        'exercises_total',
+                        'last_accessed',
+                        'time_spent',
+                        'status',
+                        'next_exercise_id'
+                    ],
                     'created_at',
                     'updated_at'
                 ]
             ])
             ->assertJsonFragment([
                 'title' => 'Lesson 1',
-                'progress' => 80
-            ]);
+                'description' => 'Lesson 1 description'
+            ])
+            ->assertJsonPath('data.progress.completed', false)
+            ->assertJsonPath('data.progress.progress_percentage', 80);
 
-        // Verify content is present
-        $this->assertNotEmpty($response->json('data.content'));
+        // Verify exercises array is present (content is stored in exercises)
+        $this->assertIsArray($response->json('data.exercises'));
     }
 
     /** @test */
@@ -439,18 +446,30 @@ class StudentLessonControllerTest extends TenantTestCase
         $response->assertStatus(200)
             ->assertJsonStructure([
                 'data' => [
-                    '*' => [
+                    'lessons' => [
+                        '*' => [
+                            'id',
+                            'title',
+                            'description',
+                            'order',
+                            'status'
+                        ]
+                    ],
+                    'topic' => [
                         'id',
                         'title',
-                        'description',
-                        'order',
-                        'status'
+                        'description'
+                    ],
+                    'meta' => [
+                        'total_lessons',
+                        'completed_lessons',
+                        'accessible_lessons'
                     ]
                 ]
             ]);
 
         // Team members should see the same lessons as students
-        $this->assertCount(2, $response->json('data'));
+        $this->assertCount(2, $response->json('data.lessons'));
     }
 
     /** @test */
@@ -559,8 +578,8 @@ class StudentLessonControllerTest extends TenantTestCase
 
         // First create progress for lesson 2 to ensure it exists
         $this->postJson("/api/{$this->tenant->slug}/student/progress/lesson/{$this->testData['lesson2_id']}", [
-            'progress' => 60,
-            'completed' => false
+            'completion_percentage' => 60,
+            'time_spent' => 30
         ]);
 
         // API call to get progress for lesson 2

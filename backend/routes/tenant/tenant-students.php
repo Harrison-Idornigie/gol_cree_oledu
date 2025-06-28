@@ -71,10 +71,10 @@ Route::prefix('student')->middleware(['auth:tenant', \App\Http\Middleware\Tenant
 
     // Learning Paths
     Route::get('learning-paths', [StudentLearningPathController::class, 'index']);
+    Route::get('learning-paths/by-level/{level}', [StudentLearningPathController::class, 'byLevel']);
     Route::get('learning-paths/{learningPath}', [StudentLearningPathController::class, 'show']);
     Route::get('learning-paths/{learningPath}/progress', [StudentLearningPathController::class, 'progress']);
     Route::post('learning-paths/{learningPath}/enroll', [StudentLearningPathController::class, 'enroll']);
-    Route::get('learning-paths/by-level/{level}', [StudentLearningPathController::class, 'byLevel']);
 
     // Units
     Route::get('learning-paths/{learningPath}/units', [StudentUnitController::class, 'index']);

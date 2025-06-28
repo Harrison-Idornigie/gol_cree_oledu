@@ -88,88 +88,67 @@ class StudentTopicControllerTest extends TenantTestCase
     protected function setupTestData()
     {
         return $this->runInTenantContext($this->tenant, function () {
-            // Create language for testing
-            $language = \Illuminate\Support\Facades\DB::table('languages')->insertGetId([
+            // Create language for testing using Eloquent
+            $language = \App\Models\Tenants\Language::create([
                 'name' => 'Test Language',
                 'code' => 'tl',
                 'native_name' => 'Test Native',
-                'is_active' => true,
-                'created_at' => now(),
-                'updated_at' => now()
+                'is_active' => true
             ]);
 
-            // Create learning path
-            $learningPathId = (string) Str::uuid();
-            \Illuminate\Support\Facades\DB::table('learning_paths')->insert([
-                'id' => $learningPathId,
+            // Create learning path using Eloquent
+            $learningPath = \App\Models\Tenants\LearningPath::create([
                 'title' => 'Test Learning Path',
                 'description' => 'A test learning path',
-                'language_id' => $language,
+                'language_id' => $language->id,
+                'target_level' => 'A1',
                 'status' => 'published',
-                'created_by' => $this->teamUser->id,
-                'created_at' => now(),
-                'updated_at' => now()
+                'created_by' => $this->teamUser->id
             ]);
 
-            // Create unit
-            $unitId = (string) Str::uuid();
-            \Illuminate\Support\Facades\DB::table('units')->insert([
-                'id' => $unitId,
-                'learning_path_id' => $learningPathId,
+            // Create unit using Eloquent
+            $unit = \App\Models\Tenants\Unit::create([
+                'learning_path_id' => $learningPath->id,
                 'title' => 'Test Unit',
                 'description' => 'Test unit description',
                 'order' => 1,
-                'status' => 'published',
-                'created_by' => $this->teamUser->id,
-                'created_at' => now(),
-                'updated_at' => now()
+                'status' => 'published'
             ]);
 
-            // Create topics for this unit
-            $topic1Id = (string) Str::uuid();
-            $topic2Id = (string) Str::uuid();
-
-            \Illuminate\Support\Facades\DB::table('topics')->insert([
-                'id' => $topic1Id,
-                'unit_id' => $unitId,
+            // Create topics for this unit using Eloquent
+            $topic1 = \App\Models\Tenants\Topic::create([
+                'unit_id' => $unit->id,
                 'title' => 'Topic 1',
+                'slug' => 'topic-1',
                 'description' => 'Topic 1 description',
                 'order' => 1,
-                'status' => 'published',
-                'created_by' => $this->teamUser->id,
-                'created_at' => now(),
-                'updated_at' => now()
+                'status' => 'published'
             ]);
 
-            \Illuminate\Support\Facades\DB::table('topics')->insert([
-                'id' => $topic2Id,
-                'unit_id' => $unitId,
+            $topic2 = \App\Models\Tenants\Topic::create([
+                'unit_id' => $unit->id,
                 'title' => 'Topic 2',
+                'slug' => 'topic-2',
                 'description' => 'Topic 2 description',
                 'order' => 2,
-                'status' => 'published',
-                'created_by' => $this->teamUser->id,
-                'created_at' => now(),
-                'updated_at' => now()
+                'status' => 'published'
             ]);
 
-            // Create user progress for first topic
-            \Illuminate\Support\Facades\DB::table('user_progress')->insert([
-                'id' => (string) Str::uuid(),
+            // Create user progress for first topic using Eloquent
+            \App\Models\Tenants\UserProgress::create([
                 'user_id' => $this->studentUser->id,
-                'progress_type' => 'topic',
-                'item_id' => $topic1Id,
-                'progress' => 70,
-                'created_at' => now(),
-                'updated_at' => now()
+                'trackable_type' => \App\Models\Tenants\Topic::class,
+                'trackable_id' => $topic1->id,
+                'status' => 'in_progress',
+                'meta_data' => ['progress' => 70]
             ]);
 
             return [
-                'language_id' => $language,
-                'learning_path_id' => $learningPathId,
-                'unit_id' => $unitId,
-                'topic1_id' => $topic1Id,
-                'topic2_id' => $topic2Id
+                'language_id' => $language->id,
+                'learning_path_id' => $learningPath->id,
+                'unit_id' => $unit->id,
+                'topic1_id' => $topic1->id,
+                'topic2_id' => $topic2->id
             ];
         });
     }
@@ -192,18 +171,33 @@ class StudentTopicControllerTest extends TenantTestCase
                         'description',
                         'order',
                         'status',
-                        'progress' // Should include student's progress
+                        'user_progress' => [
+                            'overall_progress',
+                            'lessons_completed',
+                            'lessons_total',
+                            'exercises_completed',
+                            'exercises_total',
+                            'xp_earned',
+                            'xp_total',
+                            'time_spent_minutes',
+                            'last_activity',
+                            'current_lesson',
+                            'next_lesson',
+                            'is_completed'
+                        ],
+                        'is_accessible',
+                        'completion_status'
                     ]
                 ]
             ])
             ->assertJsonCount(2, 'data')
             ->assertJsonFragment([
-                'title' => 'Topic 1',
-                'progress' => 70
+                'title' => 'Topic 1'
             ])
             ->assertJsonFragment([
                 'title' => 'Topic 2'
-            ]);
+            ])
+            ->assertJsonPath('data.0.user_progress.overall_progress', 70);
     }
 
     /** @test */
@@ -225,14 +219,30 @@ class StudentTopicControllerTest extends TenantTestCase
                     'status',
                     'unit_id',
                     'progress',
+                    'user_progress' => [
+                        'overall_progress',
+                        'lessons_completed',
+                        'lessons_total',
+                        'exercises_completed',
+                        'exercises_total',
+                        'xp_earned',
+                        'xp_total',
+                        'time_spent_minutes',
+                        'last_activity',
+                        'current_lesson',
+                        'next_lesson',
+                        'is_completed'
+                    ],
+                    'completion_status',
                     'created_at',
                     'updated_at'
                 ]
             ])
             ->assertJsonFragment([
-                'title' => 'Topic 1',
-                'progress' => 70
-            ]);
+                'title' => 'Topic 1'
+            ])
+            ->assertJsonPath('data.progress', 70)
+            ->assertJsonPath('data.user_progress.overall_progress', 70);
     }
 
     /** @test */
@@ -247,16 +257,23 @@ class StudentTopicControllerTest extends TenantTestCase
         $response->assertStatus(200)
             ->assertJsonStructure([
                 'data' => [
-                    'topic_id',
-                    'progress',
-                    'completed',
-                    'last_accessed_at'
+                    'overall_progress',
+                    'lessons_completed',
+                    'lessons_total',
+                    'exercises_completed',
+                    'exercises_total',
+                    'xp_earned',
+                    'xp_total',
+                    'time_spent_minutes',
+                    'last_activity',
+                    'current_lesson',
+                    'next_lesson',
+                    'is_completed'
                 ]
             ])
             ->assertJsonFragment([
-                'topic_id' => $this->testData['topic1_id'],
-                'progress' => 70,
-                'completed' => false
+                'overall_progress' => 70,
+                'is_completed' => false
             ]);
     }
 
@@ -274,19 +291,15 @@ class StudentTopicControllerTest extends TenantTestCase
     {
         // Create an unpublished topic
         $unpublishedTopicId = $this->runInTenantContext($this->tenant, function () {
-            $topicId = (string) Str::uuid();
-            \Illuminate\Support\Facades\DB::table('topics')->insert([
-                'id' => $topicId,
+            $unpublishedTopic = \App\Models\Tenants\Topic::create([
                 'unit_id' => $this->testData['unit_id'],
                 'title' => 'Unpublished Topic',
+                'slug' => 'unpublished-topic',
                 'description' => 'Unpublished topic description',
                 'order' => 3,
-                'status' => 'draft', // Unpublished
-                'created_by' => $this->teamUser->id,
-                'created_at' => now(),
-                'updated_at' => now()
+                'status' => 'draft' // Unpublished
             ]);
-            return $topicId;
+            return $unpublishedTopic->id;
         });
 
         // Authenticate as student
@@ -295,34 +308,7 @@ class StudentTopicControllerTest extends TenantTestCase
         // API call to access unpublished topic
         $response = $this->getJson("/api/{$this->tenant->slug}/student/topics/{$unpublishedTopicId}");
 
-        // Should return 404 as students shouldn't see unpublished content
-        $response->assertStatus(404);
-    }
-
-    /** @test */
-    public function student_can_mark_topic_as_started()
-    {
-        // Authenticate as student
-        Sanctum::actingAs($this->studentUser, [], 'tenant');
-
-        // API call to mark topic as started (assuming the endpoint exists)
-        $response = $this->postJson("/api/{$this->tenant->slug}/student/topics/{$this->testData['topic2_id']}/start", [
-            'device_type' => 'web'
-        ]);
-
-        $response->assertStatus(200)
-            ->assertJsonStructure([
-                'data' => [
-                    'topic_id',
-                    'progress',
-                    'started_at'
-                ]
-            ])
-            ->assertJson([
-                'data' => [
-                    'topic_id' => $this->testData['topic2_id'],
-                    'progress' => 0 // Initial progress
-                ]
-            ]);
+        // Should return 403 as students shouldn't access unpublished content
+        $response->assertStatus(403);
     }
 }

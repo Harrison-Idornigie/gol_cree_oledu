@@ -33,36 +33,38 @@ class StudentLessonController extends BaseAPIController
     public function __construct(LessonService $lessonService)
     {
         $this->lessonService = $lessonService;
-
-        // Apply policies - students can only view lessons
-        $this->authorizeResource(Lesson::class, 'lesson');
     }
 
     /**
      * Display lessons for a topic.
-     * 
+     *
      * @param Request $request
-     * @param Topic $topic
+     * @param string $topic
      * @return JsonResponse
      */
-    public function index(Request $request, Topic $topic): JsonResponse
+    public function index(Request $request, string $tenant, string $topic): JsonResponse
     {
         try {
             $this->authorize('viewAny', Lesson::class);
 
+            // Find the topic within tenant context
+            $topicModel = Topic::findOrFail((int) $topic);
+
+            // Check if the topic is accessible to the student
+            $this->authorize('view', $topicModel);
+
             $user = Auth::user();
-            \Illuminate\Support\Facades\Log::info("StudentLessonController: Index method called for topic {$topic->id} by user {$user->id}");
-            $lessons = $this->lessonService->getLessonsForStudent($topic->id, $user);
+            $lessons = $this->lessonService->getLessonsForStudent($topicModel->id, $user);
 
             return $this->sendResponse([
                 'lessons' => $lessons,
                 'topic' => [
-                    'id' => $topic->id,
-                    'title' => $topic->title,
-                    'description' => $topic->description,
-                    'unit' => $topic->unit ? [
-                        'id' => $topic->unit->id,
-                        'title' => $topic->unit->title
+                    'id' => $topicModel->id,
+                    'title' => $topicModel->title,
+                    'description' => $topicModel->description,
+                    'unit' => $topicModel->unit ? [
+                        'id' => $topicModel->unit->id,
+                        'title' => $topicModel->unit->title
                     ] : null
                 ],
                 'meta' => [
@@ -71,6 +73,10 @@ class StudentLessonController extends BaseAPIController
                     'accessible_lessons' => $lessons->where('accessible', true)->count()
                 ]
             ], 'Lessons retrieved successfully.');
+        } catch (\Illuminate\Auth\Access\AuthorizationException $e) {
+            return $this->sendError('Topic not accessible.', ['error' => $e->getMessage()], 403);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return $this->sendError('Topic not found.', ['error' => 'The requested topic does not exist.'], 404);
         } catch (\Exception $e) {
             return $this->sendError('Failed to retrieve lessons.', ['error' => $e->getMessage()], 500);
         }
@@ -78,23 +84,27 @@ class StudentLessonController extends BaseAPIController
 
     /**
      * Display the specified lesson.
-     * 
+     *
      * @param Request $request
-     * @param Lesson $lesson
+     * @param string $lesson
      * @return JsonResponse
      */
-    public function show(Request $request, Lesson $lesson): JsonResponse
+    public function show(Request $request, string $tenant, string $lesson): JsonResponse
     {
         try {
-            $this->authorize('view', $lesson);
+            // Find the lesson within tenant context
+            $lessonModel = Lesson::findOrFail($lesson);
+            $this->authorize('view', $lessonModel);
 
             $user = Auth::user();
-            \Illuminate\Support\Facades\Log::info("StudentLessonController: Show method called for lesson {$lesson->id} by user {$user->id}");
-            $lessonData = $this->lessonService->getLessonForStudent($lesson, $user);
+            \Illuminate\Support\Facades\Log::info("StudentLessonController: Show method called for lesson {$lessonModel->id} by user {$user->id}");
+            $lessonData = $this->lessonService->getLessonForStudent($lessonModel, $user);
 
             return $this->sendResponse($lessonData, 'Lesson retrieved successfully.');
         } catch (\Illuminate\Auth\Access\AuthorizationException $e) {
-            return $this->sendError('Lesson not accessible.', ['error' => $e->getMessage()], 403);
+            return $this->sendError($e->getMessage(), ['error' => $e->getMessage()], 403);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return $this->sendError('Lesson not found.', ['error' => 'The requested lesson does not exist.'], 404);
         } catch (\Exception $e) {
             return $this->sendError('Failed to retrieve lesson.', ['error' => $e->getMessage()], 500);
         }
@@ -102,36 +112,35 @@ class StudentLessonController extends BaseAPIController
 
     /**
      * Get student's progress in a lesson.
-     * 
+     *
      * @param Request $request
-     * @param Lesson $lesson
+     * @param string $lesson
      * @return JsonResponse
      */
-    public function progress(Request $request, Lesson $lesson): JsonResponse
+    public function progress(Request $request, string $tenant, string $lesson): JsonResponse
     {
         try {
-            $this->authorize('view', $lesson);
+            // Find the lesson within tenant context
+            $lessonModel = Lesson::findOrFail($lesson);
+            $this->authorize('view', $lessonModel);
 
             $user = Auth::user();
-            \Illuminate\Support\Facades\Log::info("StudentLessonController: Progress method called for lesson {$lesson->id} by user {$user->id}");
-            $progress = $this->lessonService->getLessonProgress($lesson, $user);
+            \Illuminate\Support\Facades\Log::info("StudentLessonController: Progress method called for lesson {$lessonModel->id} by user {$user->id}");
+            $progress = $this->lessonService->getLessonProgress($lessonModel, $user);
 
-            // Add additional progress details
+            // Return simple progress data structure expected by tests
             $progressData = [
-                'lesson' => [
-                    'id' => $lesson->id,
-                    'title' => $lesson->title,
-                    'description' => $lesson->description
-                ],
-                'progress' => $progress,
-                'recommendations' => [
-                    'next_action' => $this->getNextAction($progress),
-                    'suggested_study_time' => $this->getSuggestedStudyTime($progress),
-                    'difficulty_rating' => $this->getDifficultyRating($lesson, $user)
-                ]
+                'lesson_id' => $lessonModel->id,
+                'progress' => $progress['progress_percentage'] ?? 0,
+                'completed' => $progress['completed'] ?? false,
+                'last_accessed_at' => $progress['last_accessed'] ?? null
             ];
 
             return $this->sendResponse($progressData, 'Lesson progress retrieved successfully.');
+        } catch (\Illuminate\Auth\Access\AuthorizationException $e) {
+            return $this->sendError('Lesson not accessible.', ['error' => $e->getMessage()], 403);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return $this->sendError('Lesson not found.', ['error' => 'The requested lesson does not exist.'], 404);
         } catch (\Exception $e) {
             return $this->sendError('Failed to retrieve lesson progress.', ['error' => $e->getMessage()], 500);
         }

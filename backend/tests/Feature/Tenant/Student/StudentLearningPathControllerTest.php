@@ -69,10 +69,9 @@ class StudentLearningPathControllerTest extends TenantTestCase
         return $this->runInTenantContext($this->tenant, function () use ($attributes) {
             return LearningPath::create(array_merge([
                 'title' => 'Test Learning Path',
-                'slug' => 'test-lp-' . Str::random(8),
                 'description' => 'This is a test learning path',
                 'language_id' => $this->language->id,
-                'level' => 'beginner',
+                'target_level' => 'beginner',
                 'status' => 'published',
                 'created_by' => $this->teamUser->id,
             ], $attributes));
@@ -85,7 +84,7 @@ class StudentLearningPathControllerTest extends TenantTestCase
     public function test_index_success()
     {
         // Authenticate as student
-        Sanctum::actingAs($this->studentUser, ['*']);
+        Sanctum::actingAs($this->studentUser, ['*'], 'tenant');
 
         $response = $this->getJson("/api/{$this->tenant->slug}/student/learning-paths");
 
@@ -107,7 +106,7 @@ class StudentLearningPathControllerTest extends TenantTestCase
     public function test_show_success()
     {
         // Authenticate as student
-        Sanctum::actingAs($this->studentUser, ['*']);
+        Sanctum::actingAs($this->studentUser, ['*'], 'tenant');
 
         $response = $this->getJson("/api/{$this->tenant->slug}/student/learning-paths/{$this->learningPath->id}");
 
@@ -118,10 +117,9 @@ class StudentLearningPathControllerTest extends TenantTestCase
                 'data' => [
                     'id',
                     'title',
-                    'slug',
                     'description',
                     'language_id',
-                    'level',
+                    'target_level',
                     'status',
                     'created_by',
                     'created_at',
@@ -144,7 +142,7 @@ class StudentLearningPathControllerTest extends TenantTestCase
     public function test_progress_success()
     {
         // Authenticate as student
-        Sanctum::actingAs($this->studentUser, ['*']);
+        Sanctum::actingAs($this->studentUser, ['*'], 'tenant');
 
         $response = $this->getJson("/api/{$this->tenant->slug}/student/learning-paths/{$this->learningPath->id}/progress");
 
@@ -166,7 +164,7 @@ class StudentLearningPathControllerTest extends TenantTestCase
     public function test_enroll_success()
     {
         // Authenticate as student
-        Sanctum::actingAs($this->studentUser, ['*']);
+        Sanctum::actingAs($this->studentUser, ['*'], 'tenant');
 
         $response = $this->postJson("/api/{$this->tenant->slug}/student/learning-paths/{$this->learningPath->id}/enroll");
 
@@ -199,17 +197,16 @@ class StudentLearningPathControllerTest extends TenantTestCase
         $this->runInTenantContext($this->tenant, function () {
             return LearningPath::create([
                 'title' => 'Intermediate Learning Path',
-                'slug' => 'intermediate-lp-' . Str::random(8),
                 'description' => 'This is an intermediate learning path',
                 'language_id' => $this->language->id,
-                'level' => 'intermediate',
+                'target_level' => 'intermediate',
                 'status' => 'published',
                 'created_by' => $this->teamUser->id,
             ]);
         });
 
         // Authenticate as student
-        Sanctum::actingAs($this->studentUser, ['*']);
+        Sanctum::actingAs($this->studentUser, ['*'], 'tenant');
 
         $response = $this->getJson("/api/{$this->tenant->slug}/student/learning-paths/by-level/intermediate");
 
@@ -225,8 +222,8 @@ class StudentLearningPathControllerTest extends TenantTestCase
             ]);
 
         // Verify the response contains only intermediate level paths
-        $response->assertJsonFragment(['level' => 'intermediate']);
-        $response->assertJsonMissing(['level' => 'beginner']);
+        $response->assertJsonFragment(['target_level' => 'intermediate']);
+        $response->assertJsonMissing(['target_level' => 'beginner']);
     }
 
     /**

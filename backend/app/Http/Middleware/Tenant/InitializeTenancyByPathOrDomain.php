@@ -40,14 +40,14 @@ class InitializeTenancyByPathOrDomain
 
         // Attempt path-based tenant identification first
         $tenant = $this->identifyTenantFromPath($request);
-        
+
         if ($tenant) {
             // Initialize tenancy with path-identified tenant
             $this->tenancy->initialize($tenant);
-            
+
             // Store tenant slug in request for controllers to access
             $request->merge(['tenant_slug' => $tenant->slug]);
-            
+
             return $next($request);
         }
 
@@ -126,11 +126,11 @@ class InitializeTenancyByPathOrDomain
 
             // Directly query the tenant model
             $tenant = Tenant::where('slug', $tenantSlug)
-                            // ->where('status', 'active')
-                            ->first();
+                // ->where('status', 'active')
+                ->first();
             Log::info('Tenant found from path: ' . ($tenant ? $tenant->slug : 'null'));
-            
-            
+
+
             // If tenant is found, initialize tenancy
             // and set tenant slug in request for controllers
 
@@ -138,9 +138,8 @@ class InitializeTenancyByPathOrDomain
                 // Add tenant slug to route parameters for controllers
                 Log::info('Tenant identified from path: ' . $tenant);
                 Log::info('Tenant slug: ' . $tenantSlug);
-                if ($request->route()) {
-                    $request->route()->setParameter('tenant', $tenantSlug);
-                }
+                // Don't set route parameter as it conflicts with the route group prefix
+                // The tenant parameter is already available via the route group prefix
                 return $tenant;
             }
         }
@@ -206,7 +205,7 @@ class InitializeTenancyByPathOrDomain
             'health',
             'info'
         ];
-        
+
         return in_array($slug, $nonTenantRoutes);
     }
 }

@@ -222,6 +222,7 @@ class StudentUserProgressController extends BaseAPIController
                 'time_spent_minutes' => $metaData['time_spent_minutes'] ?? null,
                 'score' => $metaData['score'] ?? null,
                 'completed_at' => $progress->completed_at,
+                'updated_at' => $progress->updated_at,
                 'metadata' => $metaData['metadata'] ?? []
             ];
 

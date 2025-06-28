@@ -328,7 +328,16 @@ class LessonService
 
         $exercisesCompleted = $this->getCompletedExercisesCount($lesson, $user);
         $totalExercises = $lesson->exercises()->count();
-        $progressPercentage = $totalExercises > 0 ? ($exercisesCompleted / $totalExercises) * 100 : 0;
+
+        // Check if progress is stored in meta_data, otherwise calculate from exercises
+        $progressPercentage = 0;
+        if ($progress && isset($progress->meta_data['progress'])) {
+            $progressPercentage = $progress->meta_data['progress'];
+        } elseif ($progress && isset($progress->meta_data['completion_percentage'])) {
+            $progressPercentage = $progress->meta_data['completion_percentage'];
+        } elseif ($totalExercises > 0) {
+            $progressPercentage = ($exercisesCompleted / $totalExercises) * 100;
+        }
 
         return [
             'completed' => $progress && $progress->status === UserProgress::STATUS_COMPLETED,
@@ -349,7 +358,8 @@ class LessonService
     {
         $lessons = $this->getLessonsByTopic($topicId);
 
-        return $lessons->map(function ($lesson) use ($user) {
+        // Transform the lessons and return as a Collection
+        $transformedLessons = $lessons->map(function ($lesson) use ($user) {
             $lessonData = $lesson->toArray();
             $lessonData['progress'] = $this->getLessonProgress($lesson, $user);
             $lessonData['accessible'] = $this->isLessonAccessible($lesson, $user);
@@ -357,6 +367,9 @@ class LessonService
 
             return (object) $lessonData;
         });
+
+        // Convert to Eloquent Collection to match return type
+        return new Collection($transformedLessons->all());
     }
 
     /**
@@ -365,10 +378,8 @@ class LessonService
     public function getLessonForStudent(Lesson $lesson, User $user): array
     {
         // Check if lesson is accessible to student
-        \Illuminate\Support\Facades\Log::info("LessonService: Checking accessibility for lesson {$lesson->id} for user {$user->id}");
         if (!$this->isLessonAccessible($lesson, $user)) {
-            \Illuminate\Support\Facades\Log::warning("LessonService: Lesson {$lesson->id} not accessible for user {$user->id}");
-            throw new \Illuminate\Auth\Access\AuthorizationException('This lesson is not yet accessible.');
+            throw new \Illuminate\Auth\Access\AuthorizationException('You must complete previous lessons first');
         }
 
         $lessonData = $lesson->load([
@@ -401,11 +412,8 @@ class LessonService
      */
     public function isLessonAccessible(Lesson $lesson, User $user): bool
     {
-        \Illuminate\Support\Facades\Log::info("LessonService: Checking if lesson {$lesson->id} is accessible for user {$user->id}");
-
         // Students can only access published lessons
         if ($lesson->status !== 'published') {
-            \Illuminate\Support\Facades\Log::warning("LessonService: Lesson {$lesson->id} is not published (status: {$lesson->status})");
             return false;
         }
 
@@ -417,13 +425,11 @@ class LessonService
 
         // If no previous lesson, this lesson is accessible
         if (!$previousLesson) {
-            \Illuminate\Support\Facades\Log::info("LessonService: Lesson {$lesson->id} has no previous lesson, accessible.");
             return true;
         }
 
         // Check if previous lesson is completed
         $isPreviousCompleted = $this->isLessonCompleted($previousLesson, $user);
-        \Illuminate\Support\Facades\Log::info("LessonService: Previous lesson {$previousLesson->id} completed status: " . ($isPreviousCompleted ? 'true' : 'false'));
 
         return $isPreviousCompleted;
     }
@@ -433,7 +439,6 @@ class LessonService
      */
     public function arePrerequisitesCompleted(Lesson $lesson, User $user): bool
     {
-        \Illuminate\Support\Facades\Log::info("LessonService: Checking prerequisites for lesson {$lesson->id} for user {$user->id}");
         // Check if previous lessons in topic are completed
         $previousLessons = Lesson::where('topic_id', $lesson->topic_id)
             ->where('order', '<', $lesson->order)
@@ -441,13 +446,11 @@ class LessonService
 
         foreach ($previousLessons as $prevLesson) {
             $isCompleted = $this->isLessonCompleted($prevLesson, $user);
-            \Illuminate\Support\Facades\Log::info("LessonService: Prerequisite lesson {$prevLesson->id} completed status: " . ($isCompleted ? 'true' : 'false'));
             if (!$isCompleted) {
                 return false;
             }
         }
 
-        \Illuminate\Support\Facades\Log::info("LessonService: All prerequisites for lesson {$lesson->id} are completed.");
         return true;
     }
 
@@ -462,7 +465,6 @@ class LessonService
             ->first();
 
         $isCompleted = $progress && $progress->status === UserProgress::STATUS_COMPLETED;
-        \Illuminate\Support\Facades\Log::info("LessonService: User {$user->id} progress for lesson {$lesson->id}: status " . ($progress ? $progress->status : 'none') . ", completed: " . ($isCompleted ? 'true' : 'false'));
 
         return $isCompleted;
     }

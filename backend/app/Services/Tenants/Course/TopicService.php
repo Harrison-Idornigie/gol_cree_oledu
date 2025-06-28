@@ -337,13 +337,16 @@ class TopicService
             ->orderBy('order')
             ->get();
 
-        return $topics->map(function ($topic) use ($user) {
+        $transformedTopics = $topics->map(function ($topic) use ($user) {
             $topicArray = $topic->toArray();
             $topicArray['user_progress'] = $this->getUserTopicProgress($topic, $user);
             $topicArray['is_accessible'] = $this->isTopicAccessible($topic, $user);
             $topicArray['completion_status'] = $this->getTopicCompletionStatus($topic, $user);
             return (object) $topicArray;
         });
+
+        // Convert to Eloquent Collection to match return type
+        return new Collection($transformedTopics->all());
     }
 
     /**
@@ -351,9 +354,19 @@ class TopicService
      */
     public function getUserTopicProgress(Topic $topic, User $user): array
     {
-        // This would integrate with actual progress tracking
+        // Check if there's actual progress data for this topic
+        $progress = \App\Models\Tenants\UserProgress::where('user_id', $user->id)
+            ->where('trackable_type', Topic::class)
+            ->where('trackable_id', $topic->id)
+            ->first();
+
+        $overallProgress = 0;
+        if ($progress && isset($progress->meta_data['progress'])) {
+            $overallProgress = $progress->meta_data['progress'];
+        }
+
         return [
-            'overall_progress' => 0,
+            'overall_progress' => $overallProgress,
             'lessons_completed' => 0,
             'lessons_total' => $topic->lessons()->where('status', 'published')->count(),
             'exercises_completed' => 0,
@@ -361,9 +374,10 @@ class TopicService
             'xp_earned' => 0,
             'xp_total' => $topic->xp_reward ?? 0,
             'time_spent_minutes' => 0,
-            'last_activity' => null,
+            'last_activity' => $progress?->updated_at,
             'current_lesson' => null,
-            'next_lesson' => null
+            'next_lesson' => null,
+            'is_completed' => $progress && $progress->status === 'completed'
         ];
     }
 
@@ -408,13 +422,16 @@ class TopicService
      */
     private function isTopicCompleted(Topic $topic, User $user): bool
     {
-        // This would check actual progress tracking
-        // For now, return false as placeholder
-        return false;
+        $progress = \App\Models\Tenants\UserProgress::where('user_id', $user->id)
+            ->where('trackable_type', Topic::class)
+            ->where('trackable_id', $topic->id)
+            ->first();
+
+        return $progress && $progress->status === 'completed';
     }
 
     /**
-     * Get total number of exercises in a topic.
+     * Get total exercises in a topic.
      */
     private function getTotalExercisesInTopic(Topic $topic): int
     {
