@@ -20,7 +20,8 @@ class LearningPath extends Model
 
     protected $fillable = [
         'title',
-        'language_id',
+        'language_id', // Legacy - use language_pair_id instead
+        'language_pair_id',
         'description',
         'target_level',
         'status',
@@ -39,7 +40,8 @@ class LearningPath extends Model
      */
     protected array $versionedAttributes = [
         'title',
-        'language_id',
+        'language_id', // Legacy
+        'language_pair_id',
         'description',
         'target_level',
         'status',
@@ -47,11 +49,36 @@ class LearningPath extends Model
     ];
 
     /**
-     * Get the language this learning path belongs to.
+     * Get the language this learning path belongs to (legacy).
+     * @deprecated Use languagePair() instead
      */
     public function language(): BelongsTo
     {
         return $this->belongsTo(Language::class);
+    }
+
+    /**
+     * Get the language pair for this learning path.
+     */
+    public function languagePair(): BelongsTo
+    {
+        return $this->belongsTo(LanguagePair::class);
+    }
+
+    /**
+     * Get the source language (what the user already knows).
+     */
+    public function sourceLanguage(): ?Language
+    {
+        return $this->languagePair?->sourceLanguage;
+    }
+
+    /**
+     * Get the target language (what the user is learning).
+     */
+    public function targetLanguage(): ?Language
+    {
+        return $this->languagePair?->targetLanguage;
     }
 
     /**
@@ -157,16 +184,17 @@ class LearningPath extends Model
     public function getExportData(): array
     {
         return [
-            'id'           => $this->id,
-            'title'        => $this->title,
-            'language_id'  => $this->language_id,
-            'description'  => $this->description,
-            'target_level' => $this->target_level,
-            'status'       => $this->status,
-            'units'        => $this->units->map->getExportData()->toArray(),
-            'media'        => $this->media->groupBy('collection_name')->toArray(),
-            'created_at'   => $this->created_at,
-            'updated_at'   => $this->updated_at,
+            'id'               => $this->id,
+            'title'            => $this->title,
+            'language_id'      => $this->language_id, // Legacy
+            'language_pair_id' => $this->language_pair_id,
+            'description'      => $this->description,
+            'target_level'     => $this->target_level,
+            'status'           => $this->status,
+            'units'            => $this->units->map->getExportData()->toArray(),
+            'media'            => $this->media->groupBy('collection_name')->toArray(),
+            'created_at'       => $this->created_at,
+            'updated_at'       => $this->updated_at,
         ];
     }
 
@@ -176,11 +204,12 @@ class LearningPath extends Model
     public static function importData(array $data): self
     {
         $learningPath = static::create([
-            'title'        => $data['title'],
-            'language_id'  => $data['language_id'] ?? null,
-            'description'  => $data['description'],
-            'target_level' => $data['target_level'],
-            'status'       => 'draft',
+            'title'            => $data['title'],
+            'language_id'      => $data['language_id'] ?? null, // Legacy fallback
+            'language_pair_id' => $data['language_pair_id'] ?? null,
+            'description'      => $data['description'],
+            'target_level'     => $data['target_level'],
+            'status'           => 'draft',
         ]);
 
         foreach ($data['units'] ?? [] as $unitData) {
@@ -188,5 +217,52 @@ class LearningPath extends Model
         }
 
         return $learningPath;
+    }
+
+    /**
+     * Helper method to get the effective target language.
+     * Uses language_pair_id if available, falls back to language_id.
+     */
+    public function getTargetLanguage(): ?Language
+    {
+        if ($this->language_pair_id && $this->languagePair) {
+            return $this->languagePair->targetLanguage;
+        }
+
+        return $this->language;
+    }
+
+    /**
+     * Helper method to get the effective source language.
+     * Uses language_pair_id if available, falls back to English as default.
+     */
+    public function getSourceLanguage(): ?Language
+    {
+        if ($this->language_pair_id && $this->languagePair) {
+            return $this->languagePair->sourceLanguage;
+        }
+
+        // Fallback to English for legacy learning paths
+        return Language::where('code', 'en')->first();
+    }
+
+    /**
+     * Scope to filter by language pair.
+     */
+    public function scopeForLanguagePair($query, int $languagePairId)
+    {
+        return $query->where('language_pair_id', $languagePairId);
+    }
+
+    /**
+     * Scope to filter by target language (works with both new and legacy structure).
+     */
+    public function scopeForTargetLanguage($query, int $languageId)
+    {
+        return $query->where(function ($q) use ($languageId) {
+            $q->whereHas('languagePair', function ($lpQuery) use ($languageId) {
+                $lpQuery->where('target_language_id', $languageId);
+            })->orWhere('language_id', $languageId);
+        });
     }
 }

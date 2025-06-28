@@ -3,18 +3,15 @@
 namespace Tests\Feature\Tenant\Student;
 
 use Tests\TenantTestCase;
-use Tests\Traits\InteractsWithTenancy;
 use App\Models\Landlord\Tenant;
 use App\Models\Tenants\User;
 use App\Models\Tenants\Language;
 use App\Models\Tenants\LearningPath;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
 use Illuminate\Support\Str;
 
 class StudentLearningPathControllerTest extends TenantTestCase
 {
-    use RefreshDatabase, InteractsWithTenancy;
 
     protected Tenant $tenant;
     protected User $studentUser;
@@ -25,7 +22,6 @@ class StudentLearningPathControllerTest extends TenantTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->setUpTenancy();
 
         // Create test tenant
         $this->tenant = $this->createTestTenant();
@@ -37,45 +33,14 @@ class StudentLearningPathControllerTest extends TenantTestCase
 
         // Create test environment
         $this->language = $this->createLanguage();
-        $this->learningPath = $this->createLearningPath();
-    }
-
-    protected function tearDown(): void
-    {
-        $this->tearDownTenancy();
-        parent::tearDown();
-    }
-
-    /**
-     * Helper to create a test language
-     */
-    protected function createLanguage(array $attributes = []): Language
-    {
-        return $this->runInTenantContext($this->tenant, function () use ($attributes) {
-            return Language::create(array_merge([
-                'name' => 'Test Language',
-                'code' => 'tl',
-                'native_name' => 'Test Language Native',
-                'is_active' => true
-            ], $attributes));
-        });
-    }
-
-    /**
-     * Helper to create a test learning path
-     */
-    protected function createLearningPath(array $attributes = []): LearningPath
-    {
-        return $this->runInTenantContext($this->tenant, function () use ($attributes) {
-            return LearningPath::create(array_merge([
-                'title' => 'Test Learning Path',
-                'description' => 'This is a test learning path',
-                'language_id' => $this->language->id,
-                'target_level' => 'beginner',
-                'status' => 'published',
-                'created_by' => $this->teamUser->id,
-            ], $attributes));
-        });
+        $this->learningPath = $this->createLearningPath([
+            'title' => 'Test Learning Path',
+            'description' => 'This is a test learning path',
+            'language_id' => $this->language->id,
+            'target_level' => 'beginner',
+            'status' => 'published',
+            'created_by' => $this->teamUser->id,
+        ]);
     }
 
     /**
@@ -92,7 +57,19 @@ class StudentLearningPathControllerTest extends TenantTestCase
             ->assertJsonStructure([
                 'success',
                 'message',
-                'data'
+                'data' => [
+                    'data' => [
+                        '*' => [
+                            'id',
+                            'title',
+                            'target_level',
+                            'status'
+                        ]
+                    ],
+                    'current_page',
+                    'total',
+                    'per_page'
+                ]
             ])
             ->assertJson([
                 'success' => true,
@@ -107,6 +84,8 @@ class StudentLearningPathControllerTest extends TenantTestCase
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, ['*'], 'tenant');
+
+
 
         $response = $this->getJson("/api/{$this->tenant->slug}/student/learning-paths/{$this->learningPath->id}");
 
@@ -168,7 +147,7 @@ class StudentLearningPathControllerTest extends TenantTestCase
 
         $response = $this->postJson("/api/{$this->tenant->slug}/student/learning-paths/{$this->learningPath->id}/enroll");
 
-        $response->assertStatus(200)
+        $response->assertStatus(201)
             ->assertJsonStructure([
                 'success',
                 'message',
@@ -176,14 +155,16 @@ class StudentLearningPathControllerTest extends TenantTestCase
             ])
             ->assertJson([
                 'success' => true,
-                'message' => 'Enrolled in learning path successfully.'
+                'message' => 'Successfully enrolled in learning path.'
             ]);
 
-        // Verify enrollment was created
+        // Verify enrollment was created in user_progress table
         $this->runInTenantContext($this->tenant, function () {
-            $this->assertDatabaseHas('user_learning_paths', [
+            $this->assertDatabaseHas('user_progress', [
                 'user_id' => $this->studentUser->id,
-                'learning_path_id' => $this->learningPath->id,
+                'trackable_type' => 'App\\Models\\Tenants\\LearningPath',
+                'trackable_id' => $this->learningPath->id,
+                'status' => 'in_progress',
             ]);
         });
     }
@@ -194,7 +175,7 @@ class StudentLearningPathControllerTest extends TenantTestCase
     public function test_by_level_success()
     {
         // Create a learning path with a different level
-        $this->runInTenantContext($this->tenant, function () {
+        $intermediatePath = $this->runInTenantContext($this->tenant, function () {
             return LearningPath::create([
                 'title' => 'Intermediate Learning Path',
                 'description' => 'This is an intermediate learning path',
@@ -205,25 +186,52 @@ class StudentLearningPathControllerTest extends TenantTestCase
             ]);
         });
 
+        // Debug: Verify the learning path was created
+        $this->assertNotNull($intermediatePath, 'Intermediate learning path should be created');
+        $this->assertEquals('intermediate', $intermediatePath->target_level, 'Learning path should have intermediate level');
+
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, ['*'], 'tenant');
 
+
+
         $response = $this->getJson("/api/{$this->tenant->slug}/student/learning-paths/by-level/intermediate");
+
+
 
         $response->assertStatus(200)
             ->assertJsonStructure([
                 'success',
                 'message',
-                'data'
+                'data' => [
+                    'data' => [
+                        '*' => [
+                            'id',
+                            'title',
+                            'target_level',
+                            'status'
+                        ]
+                    ],
+                    'current_page',
+                    'total'
+                ]
             ])
             ->assertJson([
                 'success' => true,
-                'message' => 'Learning paths retrieved successfully.'
+                'message' => 'Learning paths by level retrieved successfully.'
             ]);
 
         // Verify the response contains only intermediate level paths
-        $response->assertJsonFragment(['target_level' => 'intermediate']);
-        $response->assertJsonMissing(['target_level' => 'beginner']);
+        $learningPaths = $response->json('data.data');
+        $this->assertNotEmpty($learningPaths, 'Should have at least one intermediate learning path');
+
+        foreach ($learningPaths as $path) {
+            $this->assertEquals('intermediate', $path['target_level']);
+        }
+
+        // Verify no beginner level paths are included
+        $beginnerPaths = collect($learningPaths)->where('target_level', 'beginner');
+        $this->assertEmpty($beginnerPaths, 'Should not contain any beginner level paths');
     }
 
     /**
@@ -245,56 +253,18 @@ class StudentLearningPathControllerTest extends TenantTestCase
         $unpublishedPath = $this->runInTenantContext($this->tenant, function () {
             return LearningPath::create([
                 'title' => 'Unpublished Learning Path',
-                'slug' => 'unpublished-lp-' . Str::random(8),
                 'description' => 'This is an unpublished learning path',
                 'language_id' => $this->language->id,
-                'level' => 'beginner',
+                'target_level' => 'beginner',
                 'status' => 'draft', // Unpublished status
                 'created_by' => $this->teamUser->id,
             ]);
         });
 
         // Authenticate as student
-        Sanctum::actingAs($this->studentUser, ['*']);
+        Sanctum::actingAs($this->studentUser, ['*'], 'tenant');
 
         $response = $this->getJson("/api/{$this->tenant->slug}/student/learning-paths/{$unpublishedPath->id}");
         $response->assertStatus(404);
-    }
-
-    /**
-     * Helper method to initialize tenant context
-     */
-    protected function initializeTenantContext(Tenant $tenant): void
-    {
-        // The tenant is already initialized and seeded in createTestTenant
-        // This method is kept for compatibility but not needed with enhanced trait
-    }
-
-    /**
-     * Helper method to create tenant team member
-     */
-    protected function createTenantTeam(array $attributes = []): User
-    {
-        return $this->runInTenantContext($this->tenant, function () use ($attributes) {
-            return User::factory()->create(array_merge([
-                'email' => 'team@test.com',
-                'membership' => 'team',
-                'email_verified_at' => now(),
-            ], $attributes));
-        });
-    }
-
-    /**
-     * Helper method to create tenant student
-     */
-    protected function createTenantStudent(array $attributes = []): User
-    {
-        return $this->runInTenantContext($this->tenant, function () use ($attributes) {
-            return User::factory()->create(array_merge([
-                'email' => 'student@test.com',
-                'membership' => 'student',
-                'email_verified_at' => now(),
-            ], $attributes));
-        });
     }
 }

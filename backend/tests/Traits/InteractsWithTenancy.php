@@ -552,10 +552,15 @@ trait InteractsWithTenancy
     protected function createTenantTeam(array $attributes = []): \App\Models\Tenants\User
     {
         return $this->runInTenantContext($this->tenant ?? $this->createTestTenant(), function () use ($attributes) {
-            return \App\Models\Tenants\User::factory()->create(array_merge([
+            return \App\Models\Tenants\User::create(array_merge([
+                'id' => \Illuminate\Support\Str::uuid(),
+                'name' => 'Team User',
                 'email' => 'team@test.com',
+                'password' => bcrypt('password'),
                 'membership' => 'team',
                 'email_verified_at' => now(),
+                'created_at' => now(),
+                'updated_at' => now(),
             ], $attributes));
         });
     }
@@ -566,10 +571,15 @@ trait InteractsWithTenancy
     protected function createTenantStudent(array $attributes = []): \App\Models\Tenants\User
     {
         return $this->runInTenantContext($this->tenant ?? $this->createTestTenant(), function () use ($attributes) {
-            return \App\Models\Tenants\User::factory()->create(array_merge([
+            return \App\Models\Tenants\User::create(array_merge([
+                'id' => \Illuminate\Support\Str::uuid(),
+                'name' => 'Student User',
                 'email' => 'student@test.com',
+                'password' => bcrypt('password'),
                 'membership' => 'student',
                 'email_verified_at' => now(),
+                'created_at' => now(),
+                'updated_at' => now(),
             ], $attributes));
         });
     }
@@ -580,10 +590,15 @@ trait InteractsWithTenancy
     protected function createTenantAdmin(array $attributes = []): \App\Models\Tenants\User
     {
         return $this->runInTenantContext($this->tenant ?? $this->createTestTenant(), function () use ($attributes) {
-            return \App\Models\Tenants\User::factory()->create(array_merge([
+            return \App\Models\Tenants\User::create(array_merge([
+                'id' => \Illuminate\Support\Str::uuid(),
+                'name' => 'Admin User',
                 'email' => 'admin@test.com',
+                'password' => bcrypt('password'),
                 'membership' => 'admin',
                 'email_verified_at' => now(),
+                'created_at' => now(),
+                'updated_at' => now(),
             ], $attributes));
         });
     }
@@ -594,11 +609,14 @@ trait InteractsWithTenancy
     protected function createLanguage(array $attributes = []): \App\Models\Tenants\Language
     {
         return $this->runInTenantContext($this->tenant ?? $this->createTestTenant(), function () use ($attributes) {
-            return \App\Models\Tenants\Language::factory()->create(array_merge([
+            return \App\Models\Tenants\Language::create(array_merge([
+                'id' => \Illuminate\Support\Str::uuid(),
                 'code' => 'crk',
                 'name' => 'Plains Cree',
                 'native_name' => 'nēhiyawēwin',
                 'is_active' => true,
+                'created_at' => now(),
+                'updated_at' => now(),
             ], $attributes));
         });
     }
@@ -638,12 +656,46 @@ trait InteractsWithTenancy
     {
         $tenant = $this->tenant ?? $this->createTestTenant();
         return $this->runInTenantContext($tenant, function () use ($attributes) {
-            $language = $attributes['language_id'] ?? $this->createLanguage()->id;
-            return \App\Models\Tenants\LearningPath::factory()->create(array_merge([
-                'language_id' => $language,
-                'status' => 'draft',
+            // Ensure we have a language_id
+            if (!isset($attributes['language_id'])) {
+                $language = $this->createLanguage();
+                $attributes['language_id'] = $language->id;
+            }
+
+            return \App\Models\Tenants\LearningPath::create(array_merge([
+                'id' => \Illuminate\Support\Str::uuid(),
+                'title' => 'Test Learning Path',
+                'description' => 'A test learning path for automated testing',
+                'target_level' => 'beginner',
+                'status' => 'published',
+                'review_status' => 'approved',
+                'created_at' => now(),
+                'updated_at' => now(),
             ], $attributes));
         });
+    }
+
+    /**
+     * Get or create language pair for testing (English -> Target Language)
+     */
+    protected function getOrCreateLanguagePair(\App\Models\Tenants\Language $targetLanguage): \App\Models\Tenants\LanguagePair
+    {
+        $english = \App\Models\Tenants\Language::where('code', 'en')->first();
+
+        if (!$english) {
+            $english = \App\Models\Tenants\Language::factory()->create([
+                'code' => 'en',
+                'name' => 'English',
+                'native_name' => 'English',
+            ]);
+        }
+
+        return \App\Models\Tenants\LanguagePair::firstOrCreate([
+            'source_language_id' => $english->id,
+            'target_language_id' => $targetLanguage->id,
+        ], [
+            'is_active' => true,
+        ]);
     }
 
     /**

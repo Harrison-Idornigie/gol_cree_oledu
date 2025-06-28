@@ -26,9 +26,14 @@ class LearningPathService
         }
 
         // Default relationships for students
-        $defaultWith = ['language', 'units' => function ($query) {
-            $query->orderBy('order');
-        }];
+        $defaultWith = [
+            'language', // Legacy support
+            'languagePair.sourceLanguage',
+            'languagePair.targetLanguage',
+            'units' => function ($query) {
+                $query->orderBy('order');
+            }
+        ];
 
         $with = array_merge($defaultWith, $with);
 
@@ -55,11 +60,27 @@ class LearningPathService
         }
 
         if ($request->has('target_level')) {
+            \Log::info('Filtering by target_level: ' . $request->target_level);
             $query->where('target_level', $request->target_level);
         }
 
         if ($request->has('language_id')) {
-            $query->where('language_id', $request->language_id);
+            // Support both legacy language_id and new language_pair filtering
+            $query->forTargetLanguage($request->language_id);
+        }
+
+        if ($request->has('language_pair_id')) {
+            $query->where('language_pair_id', $request->language_pair_id);
+        }
+
+        if ($request->has('source_language_id')) {
+            $query->whereHas('languagePair', function ($q) use ($request) {
+                $q->where('source_language_id', $request->source_language_id);
+            });
+        }
+
+        if ($request->has('target_language_id')) {
+            $query->forTargetLanguage($request->target_language_id);
         }
 
         // Search functionality
@@ -99,7 +120,16 @@ class LearningPathService
         $query->orderBy($sortBy, $sortOrder);
 
         $perPage = $request->input('per_page', 15);
-        return $query->paginate($perPage);
+
+        // Debug: Log the final query and results
+        \Log::info('Final query SQL: ' . $query->toSql());
+        \Log::info('Query bindings: ' . json_encode($query->getBindings()));
+
+        $result = $query->paginate($perPage);
+        \Log::info('Paginated result count: ' . $result->count());
+        \Log::info('Total items: ' . $result->total());
+
+        return $result;
     }
 
     /**
@@ -306,11 +336,11 @@ class LearningPathService
     }
 
     /**
-     * Get learning paths for a specific language.
+     * Get learning paths for a specific target language.
      */
     public function getLearningPathsForLanguage(int $languageId, string $membership = 'student'): \Illuminate\Database\Eloquent\Collection
     {
-        $query = LearningPath::where('language_id', $languageId);
+        $query = LearningPath::forTargetLanguage($languageId);
 
         // Apply membership-based filtering
         if (!in_array($membership, ['super-admin', 'tenant-admin', 'team'])) {
@@ -318,11 +348,41 @@ class LearningPathService
             $query->where('status', 'published');
         }
 
-        return $query->with(['language', 'units' => function ($query) {
-            $query->orderBy('order');
-        }])
-            ->orderBy('difficulty_level')
-            ->orderBy('order')
+        return $query->with([
+            'language', // Legacy support
+            'languagePair.sourceLanguage',
+            'languagePair.targetLanguage',
+            'units' => function ($query) {
+                $query->orderBy('order');
+            }
+        ])
+            ->orderBy('target_level')
+            ->orderBy('created_at')
+            ->get();
+    }
+
+    /**
+     * Get learning paths for a specific language pair.
+     */
+    public function getLearningPathsForLanguagePair(int $languagePairId, string $membership = 'student'): \Illuminate\Database\Eloquent\Collection
+    {
+        $query = LearningPath::where('language_pair_id', $languagePairId);
+
+        // Apply membership-based filtering
+        if (!in_array($membership, ['super-admin', 'tenant-admin', 'team'])) {
+            // Students can only see published content
+            $query->where('status', 'published');
+        }
+
+        return $query->with([
+            'languagePair.sourceLanguage',
+            'languagePair.targetLanguage',
+            'units' => function ($query) {
+                $query->orderBy('order');
+            }
+        ])
+            ->orderBy('target_level')
+            ->orderBy('created_at')
             ->get();
     }
 }

@@ -9,13 +9,28 @@ export interface Language {
   is_popular?: boolean;
 }
 
+export interface LanguagePair {
+  id: number;
+  source_language_id: number;
+  target_language_id: number;
+  is_active: boolean;
+  source_language?: Language;
+  target_language?: Language;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface LearningPath {
   id: number;
   title: string;
   name?: string; // For compatibility with existing components
   description: string;
-  language_id: number;
-  language?: string;
+  language_id?: number; // Legacy support
+  language_pair_id?: number;
+  language?: string; // Legacy support
+  language_pair?: LanguagePair;
+  source_language?: Language;
+  target_language?: Language;
   target_level: string;
   status: string;
   units_count: number;

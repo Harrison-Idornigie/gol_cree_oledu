@@ -129,7 +129,8 @@ class CurriculumTemplateService
         // Create the learning path
         $learningPath = LearningPath::create([
             'title' => $customizations['title'] ?? $templateData['title'] ?? $template->name,
-            'language_id' => $customizations['language_id'] ?? $languagePair->target_language_id,
+            'language_id' => $customizations['language_id'] ?? $languagePair->target_language_id, // Legacy support
+            'language_pair_id' => $template->language_pair_id,
             'description' => $customizations['description'] ?? $templateData['description'] ?? $template->description,
             'target_level' => $template->proficiency_level,
             'status' => 'draft',

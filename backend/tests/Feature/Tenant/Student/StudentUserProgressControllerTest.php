@@ -7,6 +7,12 @@ use Tests\Traits\InteractsWithTenancy;
 use App\Models\Landlord\Tenant;
 use App\Models\Tenants\User;
 use App\Models\Tenants\Language;
+use App\Models\Tenants\LearningPath;
+use App\Models\Tenants\Unit;
+use App\Models\Tenants\Topic;
+use App\Models\Tenants\Lesson;
+use App\Models\Tenants\Exercise;
+use App\Models\Tenants\UserProgress;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
 use Illuminate\Support\Str;
@@ -105,65 +111,51 @@ class StudentUserProgressControllerTest extends TenantTestCase
                 'is_active' => true
             ]);
 
-            // Create learning path
-            $learningPathId = (string)Str::uuid();
-            \Illuminate\Support\Facades\DB::table('learning_paths')->insert([
-                'id' => $learningPathId,
+            // Create learning path using Eloquent model
+            $learningPath = LearningPath::create([
                 'title' => 'Test Learning Path',
                 'description' => 'A test learning path',
                 'language_id' => $language->id,
                 'status' => 'published',
                 'created_by' => $this->teamUser->id,
-                'created_at' => now(),
-                'updated_at' => now()
             ]);
+            $learningPathId = $learningPath->id;
 
-            // Create unit
-            $unitId = (string)Str::uuid();
-            \Illuminate\Support\Facades\DB::table('units')->insert([
-                'id' => $unitId,
+            // Create unit using Eloquent model
+            $unit = Unit::create([
                 'learning_path_id' => $learningPathId,
                 'title' => 'Test Unit',
                 'description' => 'Test unit description',
                 'order' => 1,
                 'status' => 'published',
                 'created_by' => $this->teamUser->id,
-                'created_at' => now(),
-                'updated_at' => now()
             ]);
+            $unitId = $unit->id;
 
-            // Create topic
-            $topicId = (string)Str::uuid();
-            \Illuminate\Support\Facades\DB::table('topics')->insert([
-                'id' => $topicId,
+            // Create topic using Eloquent model
+            $topic = Topic::create([
                 'unit_id' => $unitId,
                 'title' => 'Test Topic',
+                'slug' => 'test-topic',
                 'description' => 'Test topic description',
                 'order' => 1,
                 'status' => 'published',
-                'created_by' => $this->teamUser->id,
-                'created_at' => now(),
-                'updated_at' => now()
             ]);
+            $topicId = $topic->id;
 
-            // Create lesson
-            $lessonId = (string)Str::uuid();
-            \Illuminate\Support\Facades\DB::table('lessons')->insert([
-                'id' => $lessonId,
+            // Create lesson using Eloquent model
+            $lesson = Lesson::create([
                 'topic_id' => $topicId,
                 'title' => 'Test Lesson',
                 'description' => 'Test lesson description',
                 'order' => 1,
                 'status' => 'published',
                 'created_by' => $this->teamUser->id,
-                'created_at' => now(),
-                'updated_at' => now()
             ]);
+            $lessonId = $lesson->id;
 
-            // Create exercise
-            $exerciseId = (string)Str::uuid();
-            \Illuminate\Support\Facades\DB::table('exercises')->insert([
-                'id' => $exerciseId,
+            // Create exercise using Eloquent model
+            $exercise = Exercise::create([
                 'lesson_id' => $lessonId,
                 'title' => 'Test Exercise',
                 'description' => 'Test exercise description',
@@ -171,29 +163,24 @@ class StudentUserProgressControllerTest extends TenantTestCase
                 'order' => 1,
                 'status' => 'published',
                 'created_by' => $this->teamUser->id,
-                'created_at' => now(),
-                'updated_at' => now()
+            ]);
+            $exerciseId = $exercise->id;
+
+            // Add some existing progress for learning path and unit using Eloquent
+            UserProgress::create([
+                'user_id' => $this->studentUser->id,
+                'trackable_type' => LearningPath::class,
+                'trackable_id' => $learningPathId,
+                'status' => 'in_progress',
+                'meta_data' => ['completion_percentage' => 25]
             ]);
 
-            // Add some existing progress for learning path and unit
-            \Illuminate\Support\Facades\DB::table('user_progress')->insert([
-                'id' => (string)Str::uuid(),
+            UserProgress::create([
                 'user_id' => $this->studentUser->id,
-                'progress_type' => 'learning_path',
-                'item_id' => $learningPathId,
-                'progress' => 25,
-                'created_at' => now(),
-                'updated_at' => now()
-            ]);
-
-            \Illuminate\Support\Facades\DB::table('user_progress')->insert([
-                'id' => (string)Str::uuid(),
-                'user_id' => $this->studentUser->id,
-                'progress_type' => 'unit',
-                'item_id' => $unitId,
-                'progress' => 50,
-                'created_at' => now(),
-                'updated_at' => now()
+                'trackable_type' => Unit::class,
+                'trackable_id' => $unitId,
+                'status' => 'in_progress',
+                'meta_data' => ['completion_percentage' => 50]
             ]);
 
             return [

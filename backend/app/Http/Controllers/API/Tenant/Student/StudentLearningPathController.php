@@ -31,8 +31,6 @@ class StudentLearningPathController extends BaseAPIController
     public function __construct(LearningPathService $learningPathService)
     {
         $this->learningPathService = $learningPathService;
-        // Apply policies - students can view and enroll in learning paths
-        $this->authorizeResource(LearningPath::class, 'learningPath');
     }
 
     /**
@@ -57,14 +55,16 @@ class StudentLearningPathController extends BaseAPIController
      * @param string|LearningPath $learningPath
      * @return JsonResponse
      */
-    public function show(Request $request, $learningPath): JsonResponse
+    public function show(Request $request, string $tenant, $learningPath): JsonResponse
     {
         // Handle both string ID and model binding
         if (is_string($learningPath) || is_numeric($learningPath)) {
+            // For students, only find published learning paths to return 404 for unpublished ones
             $learningPath = LearningPath::where('status', 'published')->findOrFail($learningPath);
         }
 
         $this->authorize('view', $learningPath);
+
 
         // Use service to get learning path with proper filtering and relationships
         $learningPathData = $this->learningPathService->getLearningPath(
@@ -87,7 +87,7 @@ class StudentLearningPathController extends BaseAPIController
      * @param string|LearningPath $learningPath
      * @return JsonResponse
      */
-    public function progress(Request $request, $learningPath): JsonResponse
+    public function progress(Request $request, string $tenant, $learningPath): JsonResponse
     {
         // Handle both string ID and model binding
         if (is_string($learningPath) || is_numeric($learningPath)) {
@@ -95,6 +95,7 @@ class StudentLearningPathController extends BaseAPIController
         }
 
         $this->authorize('view', $learningPath);
+
 
         $progress = $this->learningPathService->getUserProgress($learningPath, $request->user());
 
@@ -108,25 +109,22 @@ class StudentLearningPathController extends BaseAPIController
      * @param string|LearningPath $learningPath
      * @return JsonResponse
      */
-    public function enroll(Request $request, $learningPath): JsonResponse
+    public function enroll(Request $request, string $tenant, $learningPath): JsonResponse
     {
         // Handle both string ID and model binding
         if (is_string($learningPath) || is_numeric($learningPath)) {
-            // Debug: Log what we're looking for
-            \Log::info("Looking for learning path ID: " . $learningPath);
-            \Log::info("Available learning paths: " . LearningPath::pluck('id', 'title')->toJson());
-
             $learningPath = LearningPath::where('status', 'published')->findOrFail($learningPath);
         }
 
         $this->authorize('enroll', $learningPath);
 
+
         $result = $this->learningPathService->enrollUser($learningPath, $request->user());
 
         if ($result['success']) {
-            return $this->sendCreatedResponse($result['enrollment'], $result['message']);
+            return $this->sendCreatedResponse($result, $result['message']);
         } else {
-            return $this->sendError($result['message'], $result['enrollment'], 400);
+            return $this->sendError($result['message'], [], 400);
         }
     }
 
@@ -137,7 +135,7 @@ class StudentLearningPathController extends BaseAPIController
      * @param string $level
      * @return JsonResponse
      */
-    public function byLevel(Request $request, string $level): JsonResponse
+    public function byLevel(Request $request, string $tenant, string $level): JsonResponse
     {
         $this->authorize('viewAny', LearningPath::class);
 

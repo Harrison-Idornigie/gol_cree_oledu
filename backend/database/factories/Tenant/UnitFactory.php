@@ -23,7 +23,7 @@ class UnitFactory extends Factory
     public function definition(): array
     {
         return [
-            'learning_path_id' => LearningPath::factory(),
+            'learning_path_id' => fn() => LearningPath::factory()->create()->id,
             'title' => $this->faker->sentence(3),
             'description' => $this->faker->paragraph(),
             'order' => $this->faker->numberBetween(1, 10),

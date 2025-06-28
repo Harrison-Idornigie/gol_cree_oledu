@@ -168,10 +168,14 @@ class StarterPackService
         $clonedPaths = [];
 
         foreach ($sourcePaths as $path) {
+            // Get or create language pair for this target language
+            $languagePairId = $this->getOrCreateLanguagePair($targetLanguage);
+
             $cloned = LearningPath::create([
                 'title' => str_replace('Plains Cree', $targetLanguage->name, $path->title),
                 'description' => str_replace('Plains Cree', $targetLanguage->name, $path->description),
-                'language_id' => $targetLanguage->id,
+                'language_id' => $targetLanguage->id, // Legacy support
+                'language_pair_id' => $languagePairId,
                 'target_level' => $path->target_level,
                 'status' => 'draft', // Cloned paths start as drafts
                 'review_status' => 'pending',

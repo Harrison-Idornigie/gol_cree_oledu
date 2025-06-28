@@ -83,18 +83,43 @@ abstract class PlainsCreeBaseCourseSeeder extends Seeder
      */
     protected function createLearningPath(string $title, string $description): LearningPath
     {
+        // Get or create language pair (English -> Plains Cree)
+        $languagePairId = $this->getOrCreateLanguagePair();
+
         return LearningPath::updateOrCreate(
             [
                 'title' => $title,
-                'language_id' => $this->plainsCree->id,
+                'language_id' => $this->plainsCree->id, // Legacy support
             ],
             [
                 'description' => $description,
+                'language_pair_id' => $languagePairId,
                 'target_level' => $this->level,
                 'status' => 'published',
                 'review_status' => 'approved',
             ]
         );
+    }
+
+    /**
+     * Get or create language pair for Plains Cree (English -> Plains Cree)
+     */
+    protected function getOrCreateLanguagePair(): int
+    {
+        $english = Language::where('code', 'en')->first();
+
+        if (!$english) {
+            throw new \Exception('English language not found. Please run LanguageSeeder first.');
+        }
+
+        $pair = \App\Models\Tenants\LanguagePair::firstOrCreate([
+            'source_language_id' => $english->id,
+            'target_language_id' => $this->plainsCree->id,
+        ], [
+            'is_active' => true,
+        ]);
+
+        return $pair->id;
     }
 
     /**

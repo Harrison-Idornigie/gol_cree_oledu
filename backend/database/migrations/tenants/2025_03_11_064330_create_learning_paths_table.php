@@ -15,7 +15,14 @@ return new class extends Migration
             $table->foreignId('language_id')
                 ->nullable()
                 ->constrained()
-                ->onDelete('set null');
+                ->onDelete('set null')
+                ->comment('Legacy: Single language reference - use language_pair_id instead');
+
+            $table->foreignId('language_pair_id')
+                ->nullable()
+                ->constrained('language_pairs')
+                ->onDelete('set null')
+                ->comment('Language pair for this learning path (source -> target)');
 
             $table->text('description');
             $table->string('target_level');
@@ -28,6 +35,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->index(['tenant_id', 'status']);
+            $table->index(['tenant_id', 'language_pair_id', 'status']);
         });
     }
 

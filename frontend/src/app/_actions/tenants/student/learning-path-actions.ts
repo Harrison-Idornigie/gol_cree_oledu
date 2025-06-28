@@ -11,7 +11,10 @@ import {
 
 // Get all learning paths with optional filters
 export async function getLearningPaths(filters?: {
-  language_id?: number;
+  language_id?: number; // Legacy support
+  language_pair_id?: number;
+  source_language_id?: number;
+  target_language_id?: number;
   target_level?: string;
   with_language?: boolean;
   with_units?: boolean;
@@ -21,6 +24,18 @@ export async function getLearningPaths(filters?: {
 
     if (filters?.language_id) {
       params.append("language_id", filters.language_id.toString());
+    }
+
+    if (filters?.language_pair_id) {
+      params.append("language_pair_id", filters.language_pair_id.toString());
+    }
+
+    if (filters?.source_language_id) {
+      params.append("source_language_id", filters.source_language_id.toString());
+    }
+
+    if (filters?.target_language_id) {
+      params.append("target_language_id", filters.target_language_id.toString());
     }
 
     if (filters?.target_level) {

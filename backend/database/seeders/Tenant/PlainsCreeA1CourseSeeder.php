@@ -74,13 +74,17 @@ class PlainsCreeA1CourseSeeder extends PlainsCreeBaseCourseSeeder
      */
     private function createA1LearningPath(): LearningPath
     {
+        // Get or create language pair (English -> Plains Cree)
+        $languagePairId = $this->getOrCreateLanguagePair();
+
         return LearningPath::updateOrCreate(
             [
                 'title' => 'Plains Cree Foundations (A1) - nēhiyawēwin kiskēyihtamowin',
-                'language_id' => $this->plainsCree->id,
+                'language_id' => $this->plainsCree->id, // Legacy support
             ],
             [
                 'description' => 'Complete beginner Plains Cree course introducing syllabics, basic vocabulary, cultural protocols, and foundational language skills. Perfect for K-12 students and adult learners starting their Plains Cree journey.',
+                'language_pair_id' => $languagePairId,
                 'target_level' => 'A1',
                 'status' => 'published',
                 'review_status' => 'approved',
@@ -551,5 +555,26 @@ class PlainsCreeA1CourseSeeder extends PlainsCreeBaseCourseSeeder
         ];
 
         return $colors[$unitIndex % count($colors)];
+    }
+
+    /**
+     * Get or create language pair for Plains Cree (English -> Plains Cree)
+     */
+    private function getOrCreateLanguagePair(): int
+    {
+        $english = Language::where('code', 'en')->first();
+
+        if (!$english) {
+            throw new \Exception('English language not found. Please run LanguageSeeder first.');
+        }
+
+        $pair = \App\Models\Tenants\LanguagePair::firstOrCreate([
+            'source_language_id' => $english->id,
+            'target_language_id' => $this->plainsCree->id,
+        ], [
+            'is_active' => true,
+        ]);
+
+        return $pair->id;
     }
 }

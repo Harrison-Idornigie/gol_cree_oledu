@@ -80,7 +80,8 @@ class TeamLearningPathController extends BaseAPIController
             $validatedData = $request->validate([
                 'title' => 'required|string|max:255',
                 'description' => 'nullable|string',
-                'language_id' => 'required|exists:languages,id',
+                'language_id' => 'nullable|exists:languages,id', // Legacy support
+                'language_pair_id' => 'nullable|exists:language_pairs,id',
                 'target_level' => 'required|string|in:beginner,elementary,intermediate,upper_intermediate,advanced,proficiency',
                 'estimated_duration_hours' => 'nullable|integer|min:1',
                 'difficulty_level' => 'nullable|integer|between:1,10',
@@ -88,6 +89,11 @@ class TeamLearningPathController extends BaseAPIController
                 'learning_objectives' => 'nullable|array',
                 'tags' => 'nullable|array',
             ]);
+
+            // Ensure either language_id or language_pair_id is provided
+            if (!$request->has('language_id') && !$request->has('language_pair_id')) {
+                return $this->sendError('Either language_id or language_pair_id must be provided.', [], 422);
+            }
 
             $learningPath = $this->learningPathService->createLearningPath($validatedData, Auth::user());
 

@@ -24,7 +24,7 @@ class LearningPathFactory extends Factory
     {
         return [
             'title' => $this->faker->sentence(3),
-            'language_id' => Language::factory(),
+            'language_id' => fn() => Language::factory()->create()->id,
             'description' => $this->faker->paragraph(),
             'target_level' => $this->faker->randomElement(['beginner', 'intermediate', 'advanced']),
             'status' => 'published',

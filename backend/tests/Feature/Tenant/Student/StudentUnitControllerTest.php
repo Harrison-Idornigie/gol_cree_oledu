@@ -13,7 +13,7 @@ use Illuminate\Support\Str;
 
 class StudentUnitControllerTest extends TenantTestCase
 {
-    use RefreshDatabase, InteractsWithTenancy;
+    use InteractsWithTenancy;
 
     protected Tenant $tenant;
     protected User $studentUser;
@@ -56,45 +56,9 @@ class StudentUnitControllerTest extends TenantTestCase
      */
     protected function createTenantTeamMember()
     {
-        return $this->runInTenantContext($this->tenant, function () {
-            $user = User::create([
-                'name' => 'Team User',
-                'email' => 'team_' . Str::random(5) . '@example.com',
-                'password' => bcrypt('password'),
-                'email_verified_at' => now(),
-            ]);
-
-            // Assign team role if roles table exists
-            try {
-                // Try to assign role using different methods depending on implementation
-                try {
-                    if (class_exists('Spatie\\Permission\\Models\\Role')) {
-                        // For Spatie Permission
-                        $user->assignRole('team');
-                    } elseif (method_exists($user, 'givePermissionTo')) {
-                        // Direct permission
-                        $user->givePermissionTo('team');
-                    }
-                } catch (\Exception $e) {
-                    // Role assignment might fail if tables don't exist yet
-                }
-
-                // Fallback: direct DB insert to user_permissions
-                if (\Illuminate\Support\Facades\Schema::hasTable('user_permissions')) {
-                    \Illuminate\Support\Facades\DB::table('user_permissions')->insert([
-                        'id' => (string) Str::uuid(),
-                        'user_id' => $user->id,
-                        'permission' => 'team',
-                        'created_at' => now(),
-                        'updated_at' => now(),
-                    ]);
-                }
-            } catch (\Exception $e) {
-                // Role assignment might fail if tables don't exist yet
-            }
-
-            return $user;
-        });
+        return $this->createTenantTeam([
+            'email' => 'team_' . Str::random(5) . '@example.com',
+        ]);
     }
 
 
@@ -113,102 +77,81 @@ class StudentUnitControllerTest extends TenantTestCase
                 'is_active' => true
             ]);
 
-            // Create learning path
-            $learningPathId = Str::uuid();
-            $learningPath = $this->createLearningPathWithId($learningPathId, $language->id);
+            // Create learning path using Eloquent
+            $learningPath = \App\Models\Tenants\LearningPath::create([
+                'title' => 'Test Learning Path',
+                'description' => 'A test learning path',
+                'language_id' => $language->id,
+                'status' => 'published',
+                'target_level' => 'beginner',
+                'created_by' => $this->teamUser->id,
+            ]);
 
-            // Create units for this learning path
-            $unit1Id = Str::uuid();
-            $unit2Id = Str::uuid();
+            // Create units using Eloquent
+            $unit1 = \App\Models\Tenants\Unit::create([
+                'learning_path_id' => $learningPath->id,
+                'title' => 'Unit 1',
+                'description' => 'Test unit description',
+                'order' => 1,
+                'status' => 'published',
+                'created_by' => $this->teamUser->id,
+            ]);
 
-            $this->createUnitWithId($unit1Id, $learningPathId, 'Unit 1', 1);
-            $this->createUnitWithId($unit2Id, $learningPathId, 'Unit 2', 2);
+            $unit2 = \App\Models\Tenants\Unit::create([
+                'learning_path_id' => $learningPath->id,
+                'title' => 'Unit 2',
+                'description' => 'Test unit description',
+                'order' => 2,
+                'status' => 'published',
+                'created_by' => $this->teamUser->id,
+            ]);
 
-            // Create user progress for first unit
-            $this->createUserProgress('unit', $unit1Id, $this->studentUser->id, 50);
+            // Create user progress for first unit using Eloquent
+            \App\Models\Tenants\UserProgress::create([
+                'user_id' => $this->studentUser->id,
+                'trackable_type' => \App\Models\Tenants\Unit::class,
+                'trackable_id' => $unit1->id,
+                'status' => 'in_progress',
+                'meta_data' => ['completion_percentage' => 50]
+            ]);
 
             return [
                 'language_id' => $language->id,
-                'learning_path_id' => $learningPathId,
-                'unit1_id' => $unit1Id,
-                'unit2_id' => $unit2Id
+                'learning_path_id' => $learningPath->id,
+                'unit1_id' => $unit1->id,
+                'unit2_id' => $unit2->id
             ];
         });
     }
 
     /**
-     * Helper to create a learning path with specific ID
-     */
-    protected function createLearningPathWithId($id, $languageId)
-    {
-        \Illuminate\Support\Facades\DB::table('learning_paths')->insert([
-            'id' => $id,
-            'title' => 'Test Learning Path',
-            'description' => 'A test learning path',
-            'language_id' => $languageId,
-            'status' => 'published',
-            'created_by' => $this->teamUser->id,
-            'created_at' => now(),
-            'updated_at' => now()
-        ]);
-
-        return $id;
-    }
-
-    /**
      * Helper to create a unit with specific parameters
      */
-    protected function createUnitWithId($id, $learningPathId, $title, $order, $status = 'published')
+    protected function createUnitWithId($learningPathId, $title, $order, $status = 'published')
     {
-        \Illuminate\Support\Facades\DB::table('units')->insert([
-            'id' => $id,
+        return \App\Models\Tenants\Unit::create([
             'learning_path_id' => $learningPathId,
             'title' => $title,
             'description' => 'Test unit description',
             'order' => $order,
             'status' => $status,
             'created_by' => $this->teamUser->id,
-            'created_at' => now(),
-            'updated_at' => now()
-        ]);
-
-        return $id;
-    }
-
-    /**
-     * Helper to create user progress
-     */
-    protected function createUserProgress($type, $itemId, $userId, $progress)
-    {
-        \Illuminate\Support\Facades\DB::table('user_progress')->insert([
-            'id' => Str::uuid(),
-            'user_id' => $userId,
-            'progress_type' => $type,
-            'item_id' => $itemId,
-            'progress' => $progress,
-            'created_at' => now(),
-            'updated_at' => now()
         ]);
     }
 
     /**
      * Helper to create a topic within a unit
      */
-    protected function createTopic($id, $unitId, $title, $order)
+    protected function createTopic($unitId, $title, $order)
     {
-        \Illuminate\Support\Facades\DB::table('topics')->insert([
-            'id' => $id,
+        return \App\Models\Tenants\Topic::create([
             'unit_id' => $unitId,
             'title' => $title,
+            'slug' => Str::slug($title),
             'description' => 'Test topic description',
             'order' => $order,
             'status' => 'published',
-            'created_by' => $this->teamUser->id,
-            'created_at' => now(),
-            'updated_at' => now()
         ]);
-
-        return $id;
     }
 
     /** @test */
@@ -353,10 +296,8 @@ class StudentUnitControllerTest extends TenantTestCase
         $testData = $this->setupTestData();
 
         // Create an unpublished unit
-        $unpublishedUnitId = Str::uuid();
-        $this->runInTenantContext($this->tenant, function () use ($unpublishedUnitId, $testData) {
+        $unpublishedUnit = $this->runInTenantContext($this->tenant, function () use ($testData) {
             return $this->createUnitWithId(
-                $unpublishedUnitId,
                 $testData['learning_path_id'],
                 'Unpublished Unit',
                 3,
@@ -368,7 +309,7 @@ class StudentUnitControllerTest extends TenantTestCase
         Sanctum::actingAs($this->studentUser, [], 'tenant');
 
         // API call to access unpublished unit
-        $response = $this->getJson("/api/{$this->tenant->slug}/student/units/{$unpublishedUnitId}");
+        $response = $this->getJson("/api/{$this->tenant->slug}/student/units/{$unpublishedUnit->id}");
 
         // Should return 404 as students shouldn't see unpublished content
         $response->assertStatus(404);
@@ -509,15 +450,18 @@ class StudentUnitControllerTest extends TenantTestCase
         $testData = $this->setupTestData();
 
         // Add topics to first unit
-        $topic1Id = Str::uuid();
-        $topic2Id = Str::uuid();
-
-        $this->runInTenantContext($this->tenant, function () use ($testData, $topic1Id, $topic2Id) {
-            $this->createTopic($topic1Id, $testData['unit1_id'], 'Topic 1', 1);
-            $this->createTopic($topic2Id, $testData['unit1_id'], 'Topic 2', 2);
+        $this->runInTenantContext($this->tenant, function () use ($testData) {
+            $topic1 = $this->createTopic($testData['unit1_id'], 'Topic 1', 1);
+            $topic2 = $this->createTopic($testData['unit1_id'], 'Topic 2', 2);
 
             // Create progress for first topic
-            $this->createUserProgress('topic', $topic1Id, $this->studentUser->id, 60);
+            \App\Models\Tenants\UserProgress::create([
+                'user_id' => $this->studentUser->id,
+                'trackable_type' => \App\Models\Tenants\Topic::class,
+                'trackable_id' => $topic1->id,
+                'status' => 'in_progress',
+                'meta_data' => ['completion_percentage' => 60]
+            ]);
         });
 
         // Authenticate as student
@@ -556,23 +500,17 @@ class StudentUnitControllerTest extends TenantTestCase
         $testData = $this->setupTestData();
 
         // Add topics and lessons to first unit
-        $topic1Id = Str::uuid();
-        $lesson1Id = Str::uuid();
-
-        $this->runInTenantContext($this->tenant, function () use ($testData, $topic1Id, $lesson1Id) {
-            $this->createTopic($topic1Id, $testData['unit1_id'], 'Topic 1', 1);
+        $this->runInTenantContext($this->tenant, function () use ($testData) {
+            $topic1 = $this->createTopic($testData['unit1_id'], 'Topic 1', 1);
 
             // Create a lesson in topic
-            \Illuminate\Support\Facades\DB::table('lessons')->insert([
-                'id' => $lesson1Id,
-                'topic_id' => $topic1Id,
+            \App\Models\Tenants\Lesson::create([
+                'topic_id' => $topic1->id,
                 'title' => 'Lesson 1',
                 'description' => 'Test lesson description',
                 'order' => 1,
                 'status' => 'published',
                 'created_by' => $this->teamUser->id,
-                'created_at' => now(),
-                'updated_at' => now()
             ]);
         });
 
@@ -714,16 +652,21 @@ class StudentUnitControllerTest extends TenantTestCase
             ]);
 
             // Create another learning path
-            $learningPathId = Str::uuid();
-            $this->createLearningPathWithId($learningPathId, $language->id);
+            $learningPath = \App\Models\Tenants\LearningPath::create([
+                'title' => 'Another Learning Path',
+                'description' => 'Another test learning path',
+                'language_id' => $language->id,
+                'status' => 'published',
+                'target_level' => 'beginner',
+                'created_by' => $this->teamUser->id,
+            ]);
 
             // Create unit for this learning path
-            $unitId = Str::uuid();
-            $this->createUnitWithId($unitId, $learningPathId, 'Restricted Unit', 1);
+            $unit = $this->createUnitWithId($learningPath->id, 'Restricted Unit', 1);
 
             return [
-                'learning_path_id' => $learningPathId,
-                'unit_id' => $unitId
+                'learning_path_id' => $learningPath->id,
+                'unit_id' => $unit->id
             ];
         });
 

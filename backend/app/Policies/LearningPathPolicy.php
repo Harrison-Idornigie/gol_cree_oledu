@@ -20,13 +20,19 @@ class LearningPathPolicy
      */
     public function view(User $user, LearningPath $learningPath): bool
     {
+        \Illuminate\Support\Facades\Log::info("LearningPathPolicy: User {$user->id} (membership: {$user->membership}) attempting to view learning path {$learningPath->id} (status: {$learningPath->status})");
+
         // Students can only view published learning paths
         if ($user->isStudent()) {
-            return $learningPath->status === 'published';
+            $canView = $learningPath->status === 'published';
+            \Illuminate\Support\Facades\Log::info("LearningPathPolicy: Student can view: " . ($canView ? 'true' : 'false'));
+            return $canView;
         }
 
         // Admins and team members can view all learning paths
-        return $user->isTenantAdmin() || $user->isTeam();
+        $canView = $user->isTenantAdmin() || $user->isTeam();
+        \Illuminate\Support\Facades\Log::info("LearningPathPolicy: Admin/Team can view: " . ($canView ? 'true' : 'false'));
+        return $canView;
     }
 
     /**

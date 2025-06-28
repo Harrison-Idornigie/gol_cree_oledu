@@ -1,4 +1,5 @@
 <?php
+
 namespace Database\Seeders\Tenant;
 
 use App\Models\Tenants\Language;
@@ -197,18 +198,43 @@ class LearningPathSeeder extends Seeder
      */
     private function createLearningPathsForLanguage(Language $language, array $pathsData): void
     {
+        // Get or create language pair (English -> Target Language)
+        $languagePairId = $this->getOrCreateLanguagePair($language);
+
         foreach ($pathsData as $level => $data) {
             LearningPath::updateOrCreate(
                 [
                     'title'       => $data['title'],
-                    'language_id' => $language->id,
+                    'language_id' => $language->id, // Legacy support
                 ],
                 [
-                    'description'  => $data['description'],
-                    'target_level' => $level,
-                    'status'       => 'published',
+                    'description'     => $data['description'],
+                    'language_pair_id' => $languagePairId,
+                    'target_level'    => $level,
+                    'status'          => 'published',
                 ]
             );
         }
+    }
+
+    /**
+     * Get or create language pair for target language (English -> Target)
+     */
+    private function getOrCreateLanguagePair(Language $targetLanguage): int
+    {
+        $english = Language::where('code', 'en')->first();
+
+        if (!$english) {
+            throw new \Exception('English language not found. Please run LanguageSeeder first.');
+        }
+
+        $pair = \App\Models\Tenants\LanguagePair::firstOrCreate([
+            'source_language_id' => $english->id,
+            'target_language_id' => $targetLanguage->id,
+        ], [
+            'is_active' => true,
+        ]);
+
+        return $pair->id;
     }
 }
