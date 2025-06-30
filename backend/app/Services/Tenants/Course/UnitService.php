@@ -6,6 +6,8 @@ use App\Models\Tenants\Unit;
 use App\Models\Tenants\LearningPath;
 use App\Models\Tenants\AuditLog;
 use App\Models\Tenants\User;
+use App\Models\Tenants\UserProgress;
+use App\Models\Tenants\Topic;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
@@ -15,7 +17,7 @@ class UnitService
     /**
      * Get a single unit with relationships for students.
      */
-    public function getUnit(int $unitId, string $membership = 'student', array $with = []): ?Unit
+    public function getUnit(int $unitId, string $membership = 'student', array $with = [], User $user = null): ?array
     {
         $query = Unit::query();
 
@@ -32,7 +34,25 @@ class UnitService
 
         $with = array_merge($defaultWith, $with);
 
-        return $query->with($with)->find($unitId);
+        $unit = $query->with($with)->find($unitId);
+
+        if (!$unit) {
+            return null;
+        }
+
+        $unitArray = $unit->toArray();
+
+        // Add progress information for students
+        if ($user && $membership === 'student') {
+            $progress = UserProgress::where('user_id', $user->id)
+                ->where('trackable_type', Unit::class)
+                ->where('trackable_id', $unit->id)
+                ->first();
+
+            $unitArray['progress'] = $progress ? ($progress->meta_data['completion_percentage'] ?? 0) : 0;
+        }
+
+        return $unitArray;
     }
 
     /**
@@ -100,7 +120,7 @@ class UnitService
     /**
      * Get units for a specific learning path.
      */
-    public function getUnitsForLearningPath(LearningPath $learningPath, string $membership = 'student'): \Illuminate\Database\Eloquent\Collection
+    public function getUnitsForLearningPath(LearningPath $learningPath, string $membership = 'student', User $user = null): \Illuminate\Database\Eloquent\Collection
     {
         $query = $learningPath->units()->orderBy('order');
 
@@ -109,7 +129,23 @@ class UnitService
             $query->where('status', 'published');
         }
 
-        return $query->get();
+        $units = $query->get();
+
+        // Add progress information for students
+        if ($user && $membership === 'student') {
+            // Transform each unit to include progress, but keep as Eloquent models
+            foreach ($units as $unit) {
+                $progress = UserProgress::where('user_id', $user->id)
+                    ->where('trackable_type', Unit::class)
+                    ->where('trackable_id', $unit->id)
+                    ->first();
+
+                // Add progress as an attribute to the model
+                $unit->setAttribute('progress', $progress ? ($progress->meta_data['completion_percentage'] ?? 0) : 0);
+            }
+        }
+
+        return $units;
     }
 
     /**
@@ -118,6 +154,9 @@ class UnitService
     public function createUnit(array $data, User $user): Unit
     {
         return DB::transaction(function () use ($data, $user) {
+            // Set default status if not provided
+            $data['status'] = $data['status'] ?? 'draft';
+
             $unit = Unit::create($data);
 
             // Log the creation for audit trail
@@ -255,27 +294,32 @@ class UnitService
      */
     public function getUserProgress(Unit $unit, User $user): array
     {
-        $progress = $unit->progress()
-            ->where('user_id', $user->id)
+        $progress = UserProgress::where('user_id', $user->id)
+            ->where('trackable_type', Unit::class)
+            ->where('trackable_id', $unit->id)
             ->first();
 
         $topicsProgress = $unit->topics()
-            ->with(['progress' => function ($query) use ($user) {
-                $query->where('user_id', $user->id);
-            }])
             ->get()
-            ->map(function ($topic) {
-                $progress = $topic->progress->first();
+            ->map(function ($topic) use ($user) {
+                $topicProgress = UserProgress::where('user_id', $user->id)
+                    ->where('trackable_type', Topic::class)
+                    ->where('trackable_id', $topic->id)
+                    ->first();
+
                 return [
-                    'topic_id'              => $topic->id,
-                    'status'                => $progress ? $progress->status : 'not_started',
-                    'completion_percentage' => $topic->getCompletionPercentage($topic->progress->first()?->user_id ?? 0),
+                    'id' => $topic->id,
+                    'title' => $topic->title,
+                    'progress' => $topicProgress ? ($topicProgress->meta_data['completion_percentage'] ?? 0) : 0,
                 ];
             });
 
         return [
-            'unit_progress'   => $progress ? $progress->status : 'not_started',
-            'topics_progress' => $topicsProgress,
+            'unit_id' => $unit->id,
+            'progress' => $progress ? ($progress->meta_data['completion_percentage'] ?? 0) : 0,
+            'completed' => $progress ? $progress->status === 'completed' : false,
+            'last_accessed_at' => $progress ? $progress->updated_at : null,
+            'topics' => $topicsProgress,
         ];
     }
 
@@ -301,5 +345,253 @@ class UnitService
         }
 
         return true;
+    }
+
+    /**
+     * Get topics for a unit with student-specific information.
+     */
+    public function getTopicsForUnit(Unit $unit, string $membership = 'student', User $user = null): \Illuminate\Database\Eloquent\Collection
+    {
+        $query = $unit->topics()->orderBy('order');
+
+        // Apply membership-based filtering
+        if (!in_array($membership, ['super-admin', 'tenant-admin', 'team'])) {
+            $query->where('status', 'published');
+        }
+
+        $topics = $query->get();
+
+        // Add progress information for students
+        if ($user && $membership === 'student') {
+            // Transform each topic to include progress, but keep as Eloquent models
+            foreach ($topics as $topic) {
+                $progress = UserProgress::where('user_id', $user->id)
+                    ->where('trackable_type', Topic::class)
+                    ->where('trackable_id', $topic->id)
+                    ->first();
+
+                // Add progress as an attribute to the model
+                $topic->setAttribute('progress', $progress ? ($progress->meta_data['completion_percentage'] ?? 0) : 0);
+            }
+        }
+
+        return $topics;
+    }
+
+    /**
+     * Get unit with contents (topics and lessons).
+     */
+    public function getUnitWithContents(Unit $unit, string $membership = 'student', User $user = null): array
+    {
+        $unitData = $unit->toArray();
+
+        $query = $unit->topics()->with(['lessons' => function ($query) use ($membership) {
+            if (!in_array($membership, ['super-admin', 'tenant-admin', 'team'])) {
+                $query->where('status', 'published');
+            }
+            $query->orderBy('order');
+        }])->orderBy('order');
+
+        if (!in_array($membership, ['super-admin', 'tenant-admin', 'team'])) {
+            $query->where('status', 'published');
+        }
+
+        $topics = $query->get();
+        $unitData['topics'] = $topics->toArray();
+
+        // Add progress information for students
+        if ($user && $membership === 'student') {
+            // Unit progress
+            $progress = UserProgress::where('user_id', $user->id)
+                ->where('trackable_type', Unit::class)
+                ->where('trackable_id', $unit->id)
+                ->first();
+
+            $unitData['progress'] = $progress ? ($progress->meta_data['completion_percentage'] ?? 0) : 0;
+
+            // Topic and lesson progress
+            foreach ($unitData['topics'] as $topicIndex => $topicData) {
+                // Get topic progress
+                $topicProgress = UserProgress::where('user_id', $user->id)
+                    ->where('trackable_type', Topic::class)
+                    ->where('trackable_id', $topicData['id'])
+                    ->first();
+
+                $unitData['topics'][$topicIndex]['progress'] = $topicProgress ? ($topicProgress->meta_data['completion_percentage'] ?? 0) : 0;
+
+                // Get lesson progress for each lesson in this topic
+                foreach ($unitData['topics'][$topicIndex]['lessons'] as $lessonIndex => $lessonData) {
+                    $lessonProgress = UserProgress::where('user_id', $user->id)
+                        ->where('trackable_type', \App\Models\Tenants\Lesson::class)
+                        ->where('trackable_id', $lessonData['id'])
+                        ->first();
+
+                    $unitData['topics'][$topicIndex]['lessons'][$lessonIndex]['progress'] = $lessonProgress ? ($lessonProgress->meta_data['completion_percentage'] ?? 0) : 0;
+                }
+            }
+        }
+
+        return $unitData;
+    }
+
+    /**
+     * Start a unit for a user.
+     */
+    public function startUnit(Unit $unit, User $user, string $deviceType = 'web'): array
+    {
+        $progress = UserProgress::updateOrCreate(
+            [
+                'user_id' => $user->id,
+                'trackable_type' => Unit::class,
+                'trackable_id' => $unit->id,
+            ],
+            [
+                'status' => 'in_progress',
+                'meta_data' => [
+                    'completion_percentage' => 0,
+                    'device_type' => $deviceType,
+                    'started_at' => now(),
+                ]
+            ]
+        );
+
+        return [
+            'unit_id' => $unit->id,
+            'progress' => 0,
+            'started_at' => $progress->meta_data['started_at'] ?? now(),
+            'last_accessed_at' => $progress->updated_at,
+        ];
+    }
+
+    /**
+     * Update unit progress for a user.
+     */
+    public function updateProgress(Unit $unit, User $user, int $progressPercentage, bool $completed = false): array
+    {
+        $progress = UserProgress::updateOrCreate(
+            [
+                'user_id' => $user->id,
+                'trackable_type' => Unit::class,
+                'trackable_id' => $unit->id,
+            ],
+            [
+                'status' => $completed ? 'completed' : 'in_progress',
+                'meta_data' => [
+                    'completion_percentage' => $progressPercentage,
+                    'completed_at' => $completed ? now() : null,
+                ]
+            ]
+        );
+
+        return [
+            'unit_id' => $unit->id,
+            'progress' => $progressPercentage,
+            'completed' => $completed,
+            'last_accessed_at' => $progress->updated_at,
+        ];
+    }
+
+    /**
+     * Mark unit as completed for a user.
+     */
+    public function completeUnit(Unit $unit, User $user, string $deviceType = 'web'): array
+    {
+        $completedAt = now();
+
+        $progress = UserProgress::updateOrCreate(
+            [
+                'user_id' => $user->id,
+                'trackable_type' => Unit::class,
+                'trackable_id' => $unit->id,
+            ],
+            [
+                'status' => 'completed',
+                'completed_at' => $completedAt,
+                'meta_data' => [
+                    'completion_percentage' => 100,
+                    'device_type' => $deviceType,
+                ]
+            ]
+        );
+
+        return [
+            'unit_id' => $unit->id,
+            'progress' => 100,
+            'completed' => true,
+            'completed_at' => $progress->completed_at,
+            'last_accessed_at' => $progress->updated_at,
+        ];
+    }
+
+    /**
+     * Get unit recommendations for a user.
+     */
+    public function getRecommendations(User $user): array
+    {
+        // Get units in progress
+        $inProgressUnits = UserProgress::where('user_id', $user->id)
+            ->where('trackable_type', Unit::class)
+            ->where('status', 'in_progress')
+            ->with('trackable')
+            ->get()
+            ->map(function ($progress) {
+                return [
+                    'id' => $progress->trackable->id,
+                    'title' => $progress->trackable->title,
+                    'progress' => $progress->meta_data['completion_percentage'] ?? 0,
+                ];
+            });
+
+        // Get recommended next units (simplified logic)
+        $recommendedUnits = Unit::where('status', 'published')
+            ->whereNotIn('id', UserProgress::where('user_id', $user->id)
+                ->where('trackable_type', Unit::class)
+                ->pluck('trackable_id'))
+            ->limit(5)
+            ->get()
+            ->map(function ($unit) {
+                return [
+                    'id' => $unit->id,
+                    'title' => $unit->title,
+                ];
+            });
+
+        return [
+            'in_progress' => $inProgressUnits,
+            'recommended' => $recommendedUnits,
+        ];
+    }
+
+    /**
+     * Get next unit in a learning path for a user.
+     */
+    public function getNextUnit(LearningPath $learningPath, User $user): ?array
+    {
+        // Get completed units for this user in this learning path
+        $completedUnitIds = UserProgress::where('user_id', $user->id)
+            ->where('trackable_type', Unit::class)
+            ->where('status', 'completed')
+            ->whereIn('trackable_id', $learningPath->units()->pluck('id'))
+            ->pluck('trackable_id');
+
+        // Find the next unit in order that hasn't been completed
+        $nextUnit = $learningPath->units()
+            ->where('status', 'published')
+            ->whereNotIn('id', $completedUnitIds)
+            ->orderBy('order')
+            ->first();
+
+        if (!$nextUnit) {
+            return null;
+        }
+
+        return [
+            'id' => $nextUnit->id,
+            'title' => $nextUnit->title,
+            'description' => $nextUnit->description,
+            'order' => $nextUnit->order,
+            'progress' => 0,
+            'learning_path_id' => $learningPath->id,
+        ];
     }
 }

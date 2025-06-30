@@ -10,6 +10,8 @@ use App\Models\Tenants\Lesson;
 use App\Models\Tenants\Exercise;
 use App\Models\Tenants\Language;
 use App\Models\Tenants\LearningPath;
+use App\Models\Tenants\Unit;
+use App\Models\Tenants\Topic;
 use App\Models\Tenants\MediaFile;
 use App\Models\Tenants\BulkOperation;
 use App\Models\Tenants\Review;
@@ -26,6 +28,8 @@ use App\Policies\LessonPolicy;
 use App\Policies\ExercisePolicy;
 use App\Policies\LanguagePolicy;
 use App\Policies\LearningPathPolicy;
+use App\Policies\UnitPolicy;
+use App\Policies\TopicPolicy;
 use App\Policies\MediaFilePolicy;
 use App\Policies\BulkOperationPolicy;
 use App\Policies\ReviewPolicy;
@@ -60,6 +64,8 @@ class AuthServiceProvider extends ServiceProvider
         Exercise::class => ExercisePolicy::class,
         Language::class => LanguagePolicy::class,
         LearningPath::class => LearningPathPolicy::class,
+        Unit::class => UnitPolicy::class,
+        Topic::class => TopicPolicy::class,
 
         // Media and Bulk Operations
         MediaFile::class => MediaFilePolicy::class,

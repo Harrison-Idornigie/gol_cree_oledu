@@ -22,9 +22,24 @@ class UnitPolicy
      */
     public function view(User $user, Unit $unit): bool
     {
-        // Students can only view published units
+        // Students can only view published units and must be enrolled in the learning path
         if ($user->isStudent()) {
-            return $unit->status === 'published';
+            if ($unit->status !== 'published') {
+                return false;
+            }
+
+            // Check if student is enrolled in the learning path that contains this unit
+            $learningPath = $unit->learningPath;
+            if ($learningPath) {
+                // Check if user has progress record for this learning path (indicates enrollment)
+                $enrollment = $learningPath->progress()
+                    ->where('user_id', $user->id)
+                    ->exists();
+
+                return $enrollment;
+            }
+
+            return false;
         }
 
         // Admins and team members can view all units

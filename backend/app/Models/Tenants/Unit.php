@@ -36,6 +36,10 @@ class Unit extends Model
         'review_status' => 'string',
     ];
 
+    protected $attributes = [
+        'status' => 'draft',
+    ];
+
     /**
      * The attributes that should be version controlled.
      */

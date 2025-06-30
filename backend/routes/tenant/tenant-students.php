@@ -76,10 +76,17 @@ Route::prefix('student')->middleware(['auth:tenant', \App\Http\Middleware\Tenant
     Route::get('learning-paths/{learningPath}/progress', [StudentLearningPathController::class, 'progress']);
     Route::post('learning-paths/{learningPath}/enroll', [StudentLearningPathController::class, 'enroll']);
 
-    // Units
-    Route::get('learning-paths/{learningPath}/units', [StudentUnitController::class, 'index']);
-    Route::get('units/{unit}', [StudentUnitController::class, 'show'])->middleware('sequential-learning');
-    Route::get('units/{unit}/progress', [StudentUnitController::class, 'progress']);
+    // Units - Disable automatic model binding for these routes
+    Route::get('learning-paths/{learningPathId}/units', [StudentUnitController::class, 'index'])->withoutMiddleware('Illuminate\Routing\Middleware\SubstituteBindings');
+    Route::get('learning-paths/{learningPathId}/next-unit', [StudentUnitController::class, 'nextUnit'])->withoutMiddleware('Illuminate\Routing\Middleware\SubstituteBindings');
+    Route::get('units/recommendations', [StudentUnitController::class, 'recommendations']);
+    Route::get('units/{unitId}', [StudentUnitController::class, 'show'])->middleware('sequential-learning')->withoutMiddleware('Illuminate\Routing\Middleware\SubstituteBindings');
+    Route::get('units/{unitId}/progress', [StudentUnitController::class, 'progress'])->withoutMiddleware('Illuminate\Routing\Middleware\SubstituteBindings');
+    Route::get('units/{unitId}/topics', [StudentUnitController::class, 'topics'])->withoutMiddleware('Illuminate\Routing\Middleware\SubstituteBindings');
+    Route::get('units/{unitId}/contents', [StudentUnitController::class, 'contents'])->withoutMiddleware('Illuminate\Routing\Middleware\SubstituteBindings');
+    Route::post('units/{unitId}/start', [StudentUnitController::class, 'start'])->withoutMiddleware('Illuminate\Routing\Middleware\SubstituteBindings');
+    Route::put('units/{unitId}/progress', [StudentUnitController::class, 'updateProgress'])->withoutMiddleware('Illuminate\Routing\Middleware\SubstituteBindings');
+    Route::put('units/{unitId}/complete', [StudentUnitController::class, 'complete'])->withoutMiddleware('Illuminate\Routing\Middleware\SubstituteBindings');
 
     // Topics
     Route::get('units/{unit}/topics', [StudentTopicController::class, 'index']);

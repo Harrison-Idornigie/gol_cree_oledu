@@ -195,27 +195,13 @@ trait InteractsWithTenancy
      */
     protected function setupCentralDatabase(): void
     {
-        // Use a file-based database for central database
-        $centralDbPath = database_path('testing_central.sqlite');
-
-        // Delete the database file if it exists to ensure a fresh start
-        if (file_exists($centralDbPath)) {
-            unlink($centralDbPath);
-        }
-
-        // Create the database file
-        touch($centralDbPath);
-
-        // Configure the default SQLite connection to use the file
+        // Use in-memory database for central database to avoid permissions issues
         Config::set('database.connections.sqlite', [
             'driver' => 'sqlite',
-            'database' => $centralDbPath,
+            'database' => ':memory:',
             'prefix' => '',
             'foreign_key_constraints' => true,
         ]);
-
-        // Store the file path for cleanup
-        $this->tempDbFiles[] = $centralDbPath;
 
         // Run central database migrations fresh (landlord migrations), skipping Telescope migrations
         $migrationDir = base_path('database/migrations/landlord');
@@ -299,16 +285,9 @@ trait InteractsWithTenancy
      */
     protected function seedTenantDatabase(Tenant $tenant): void
     {
-        try {
-            // Try to run tenant-specific seeders (tenancy context already set)
-            Artisan::call('db:seed', [
-                '--class' => 'TenantDatabaseSeeder',
-                '--force' => true,
-            ]);
-        } catch (\Exception $e) {
-            // If no seeder exists, create basic test data
-            $this->createBasicTenantTestData($tenant);
-        }
+        // Skip all seeding during testing to avoid data pollution
+        // Tests should create their own minimal test data as needed
+        // $this->createBasicTenantTestData($tenant);
     }
 
     /**

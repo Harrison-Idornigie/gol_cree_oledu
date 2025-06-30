@@ -44,19 +44,21 @@ class TeamUnitController extends BaseAPIController
         $this->topicService = $topicService;
         $this->reviewService = $reviewService;
 
-        // Apply policies
-        $this->authorizeResource(Unit::class, 'unit');
+        // Note: We handle authorization manually in each method since we need to handle string IDs
     }
 
     /**
      * Display a listing of units.
-     * 
+     *
      * @param Request $request
      * @return JsonResponse
      */
     public function index(Request $request): JsonResponse
     {
-        $this->authorize('viewAny', Unit::class);
+        // Check if user is team member for team endpoints
+        if (!$request->user()->isTeam()) {
+            return $this->sendError('Access denied. Team membership required.', [], 403);
+        }
 
         try {
             $units = $this->unitService->getFilteredUnits($request, 'team');
@@ -74,7 +76,10 @@ class TeamUnitController extends BaseAPIController
      */
     public function store(Request $request): JsonResponse
     {
-        $this->authorize('create', Unit::class);
+        // Check if user is team member for team endpoints
+        if (!$request->user()->isTeam()) {
+            return $this->sendError('Access denied. Team membership required.', [], 403);
+        }
 
         try {
             $validatedData = $request->validate([
@@ -99,16 +104,25 @@ class TeamUnitController extends BaseAPIController
 
     /**
      * Display the specified unit.
-     * 
+     *
      * @param Request $request
-     * @param Unit $unit
+     * @param string $tenant
+     * @param string $unit
      * @return JsonResponse
      */
-    public function show(Request $request, Unit $unit): JsonResponse
+    public function show(Request $request, string $tenant, string $unit): JsonResponse
     {
-        $this->authorize('view', $unit);
+
+
+        // Check if user is team member for team endpoints
+        if (!$request->user()->isTeam()) {
+            return $this->sendError('Access denied. Team membership required.', [], 403);
+        }
 
         try {
+            // Find the unit within the current tenant context
+            $unitModel = Unit::with(['learningPath', 'topics'])->findOrFail($unit);
+
             $withRelations = [];
 
             if ($request->has('with_topics')) {
@@ -121,13 +135,15 @@ class TeamUnitController extends BaseAPIController
                 $withRelations[] = 'progress';
             }
 
-            $unit = $this->unitService->getUnit($unit->id, 'team', $withRelations);
+            $unitData = $this->unitService->getUnit($unitModel->id, 'team', $withRelations);
 
-            if (!$unit) {
+            if (!$unitData) {
                 return $this->sendError('Unit not found.', [], 404);
             }
 
-            return $this->sendResponse($unit, 'Unit retrieved successfully.');
+            return $this->sendResponse($unitData, 'Unit retrieved successfully.');
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return $this->sendError('Unit not found.', [], 404);
         } catch (Exception $e) {
             return $this->sendError('Failed to retrieve unit.', ['error' => $e->getMessage()]);
         }
@@ -135,16 +151,23 @@ class TeamUnitController extends BaseAPIController
 
     /**
      * Update the specified unit.
-     * 
+     *
      * @param Request $request
-     * @param Unit $unit
+     * @param string $tenant
+     * @param string $unit
      * @return JsonResponse
      */
-    public function update(Request $request, Unit $unit): JsonResponse
+    public function update(Request $request, string $tenant, string $unit): JsonResponse
     {
-        $this->authorize('update', $unit);
+        // Check if user is team member for team endpoints
+        if (!$request->user()->isTeam()) {
+            return $this->sendError('Access denied. Team membership required.', [], 403);
+        }
 
         try {
+            // Find the unit within the current tenant context
+            $unitModel = Unit::findOrFail($unit);
+
             $validatedData = $request->validate([
                 'title' => 'sometimes|required|string|max:255',
                 'description' => 'nullable|string',
@@ -154,9 +177,11 @@ class TeamUnitController extends BaseAPIController
                 'prerequisites' => 'nullable|array',
             ]);
 
-            $updatedUnit = $this->unitService->updateUnit($unit, $validatedData, Auth::user());
+            $updatedUnit = $this->unitService->updateUnit($unitModel, $validatedData, Auth::user());
 
             return $this->sendResponse($updatedUnit, 'Unit updated successfully.');
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return $this->sendError('Unit not found.', [], 404);
         } catch (ValidationException $e) {
             return $this->sendError('Validation failed.', $e->errors(), 422);
         } catch (Exception $e) {
@@ -166,23 +191,32 @@ class TeamUnitController extends BaseAPIController
 
     /**
      * Remove the specified unit.
-     * 
+     *
      * @param Request $request
-     * @param Unit $unit
+     * @param string $tenant
+     * @param string $unit
      * @return JsonResponse
      */
-    public function destroy(Request $request, Unit $unit): JsonResponse
+    public function destroy(Request $request, string $tenant, string $unit): JsonResponse
     {
-        $this->authorize('delete', $unit);
+        // Check if user is team member for team endpoints
+        if (!$request->user()->isTeam()) {
+            return $this->sendError('Access denied. Team membership required.', [], 403);
+        }
 
         try {
-            $deleted = $this->unitService->deleteUnit($unit, Auth::user());
+            // Find the unit within the current tenant context
+            $unitModel = Unit::findOrFail($unit);
+
+            $deleted = $this->unitService->deleteUnit($unitModel, Auth::user());
 
             if (!$deleted) {
                 return $this->sendError('Failed to delete unit. It may have dependent content.');
             }
 
             return $this->sendNoContentResponse();
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return $this->sendError('Unit not found.', [], 404);
         } catch (Exception $e) {
             return $this->sendError('Failed to delete unit.', ['error' => $e->getMessage()]);
         }
@@ -190,32 +224,38 @@ class TeamUnitController extends BaseAPIController
 
     /**
      * Submit unit for review.
-     * 
+     *
      * @param Request $request
-     * @param Unit $unit
+     * @param string $tenant
+     * @param string $unit
      * @return JsonResponse
      */
-    public function submitForReview(Request $request, Unit $unit): JsonResponse
+    public function submitForReview(Request $request, string $tenant, string $unit): JsonResponse
     {
-        $this->authorize('update', $unit);
-
         try {
+            // Find the unit within the current tenant context
+            $unitModel = Unit::findOrFail($unit);
+            $this->authorize('update', $unitModel);
+
             $validatedData = $request->validate([
                 'review_notes' => 'nullable|string|max:1000',
             ]);
 
             // Check if unit has minimum required content
-            if (!$unit->topics()->exists()) {
+            if (!$unitModel->topics()->exists()) {
                 return $this->sendError('Cannot submit for review. Unit must have at least one topic.');
             }
 
-            $updatedUnit = $this->unitService->updateStatus($unit, 'under_review', Auth::user());
+            // Update review status instead of main status
+            $unitModel->review_status = 'pending_review';
+            $unitModel->save();
+            $updatedUnit = $unitModel;
 
             // Create review entry if review notes provided
             if (!empty($validatedData['review_notes'])) {
                 $this->reviewService->createReview([
                     'content_type' => 'unit',
-                    'content_id' => $unit->id,
+                    'content_id' => $unitModel->id,
                     'reviewer_id' => Auth::id(),
                     'status' => 'pending',
                     'comment' => $validatedData['review_notes'],
@@ -223,6 +263,8 @@ class TeamUnitController extends BaseAPIController
             }
 
             return $this->sendResponse($updatedUnit, 'Unit submitted for review successfully.');
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return $this->sendError('Unit not found.', [], 404);
         } catch (ValidationException $e) {
             return $this->sendError('Validation failed.', $e->errors(), 422);
         } catch (Exception $e) {
@@ -232,28 +274,31 @@ class TeamUnitController extends BaseAPIController
 
     /**
      * Update unit status.
-     * 
+     *
      * @param Request $request
-     * @param Unit $unit
+     * @param string $tenant
+     * @param string $unit
      * @return JsonResponse
      */
-    public function updateStatus(Request $request, Unit $unit): JsonResponse
+    public function updateStatus(Request $request, string $tenant, string $unit): JsonResponse
     {
-        $this->authorize('update', $unit);
-
         try {
+            // Find the unit within the current tenant context
+            $unitModel = Unit::findOrFail($unit);
+            $this->authorize('update', $unitModel);
+
             $validatedData = $request->validate([
                 'status' => 'required|string|in:draft,under_review,published,archived',
                 'status_notes' => 'nullable|string|max:1000',
             ]);
 
-            $updatedUnit = $this->unitService->updateStatus($unit, $validatedData['status'], Auth::user());
+            $updatedUnit = $this->unitService->updateStatus($unitModel, $validatedData['status'], Auth::user());
 
             // Log status change with notes if provided
             if (!empty($validatedData['status_notes'])) {
                 $this->reviewService->createReview([
                     'content_type' => 'unit',
-                    'content_id' => $unit->id,
+                    'content_id' => $unitModel->id,
                     'reviewer_id' => Auth::id(),
                     'status' => 'completed',
                     'comment' => $validatedData['status_notes'],
@@ -261,6 +306,8 @@ class TeamUnitController extends BaseAPIController
             }
 
             return $this->sendResponse($updatedUnit, 'Unit status updated successfully.');
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return $this->sendError('Unit not found.', [], 404);
         } catch (ValidationException $e) {
             return $this->sendError('Validation failed.', $e->errors(), 422);
         } catch (Exception $e) {
@@ -270,25 +317,37 @@ class TeamUnitController extends BaseAPIController
 
     /**
      * Reorder topics within unit.
-     * 
+     *
      * @param Request $request
-     * @param Unit $unit
+     * @param string $tenant
+     * @param string $unit
      * @return JsonResponse
      */
-    public function reorderTopics(Request $request, Unit $unit): JsonResponse
+    public function reorderTopics(Request $request, string $tenant, string $unit): JsonResponse
     {
-        $this->authorize('update', $unit);
+        // Check if user is team member for team endpoints
+        if (!$request->user()->isTeam()) {
+            return $this->sendError('Access denied. Team membership required.', [], 403);
+        }
 
         try {
+            // Find the unit within the current tenant context
+            $unitModel = Unit::findOrFail($unit);
+
             $validatedData = $request->validate([
-                'topic_orders' => 'required|array|min:1',
-                'topic_orders.*.id' => 'required|integer|exists:topics,id',
-                'topic_orders.*.order' => 'required|integer|min:1',
+                'topic_ids' => 'required|array|min:1',
+                'topic_ids.*' => 'required|integer|exists:topics,id',
             ]);
 
+            // Convert topic IDs array to associative array with order
+            $topicOrders = [];
+            foreach ($validatedData['topic_ids'] as $index => $topicId) {
+                $topicOrders[$topicId] = $index + 1;
+            }
+
             $success = $this->topicService->reorderTopics(
-                $unit->id,
-                $validatedData['topic_orders'],
+                $unitModel->id,
+                $topicOrders,
                 Auth::user()
             );
 
@@ -296,7 +355,9 @@ class TeamUnitController extends BaseAPIController
                 return $this->sendError('Failed to reorder topics. Please verify all topics belong to this unit.');
             }
 
-            return $this->sendResponse([], 'Topics reordered successfully.');
+            return $this->sendResponse(['reordered_topics' => $validatedData['topic_ids']], 'Topics reordered successfully.');
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return $this->sendError('Unit not found.', [], 404);
         } catch (ValidationException $e) {
             return $this->sendError('Validation failed.', $e->errors(), 422);
         } catch (Exception $e) {

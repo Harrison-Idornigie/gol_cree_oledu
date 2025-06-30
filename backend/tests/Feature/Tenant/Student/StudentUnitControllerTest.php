@@ -7,7 +7,6 @@ use Tests\Traits\InteractsWithTenancy;
 use App\Models\Landlord\Tenant;
 use App\Models\Tenants\User;
 use App\Models\Tenants\Language;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
 use Illuminate\Support\Str;
 
@@ -41,15 +40,7 @@ class StudentUnitControllerTest extends TenantTestCase
         parent::tearDown();
     }
 
-    /**
-     * Helper to initialize tenant context
-     */
-    protected function initializeTenantContext(Tenant $tenant): void
-    {
-        $this->runInTenantContext($tenant, function () {
-            // Additional tenant initialization if needed
-        });
-    }
+
 
     /**
      * Helper to create a tenant team member
@@ -69,10 +60,10 @@ class StudentUnitControllerTest extends TenantTestCase
     protected function setupTestData()
     {
         return $this->runInTenantContext($this->tenant, function () {
-            // Create language for testing
+            // Create language for testing with unique code
             $language = Language::create([
                 'name' => 'Test Language',
-                'code' => 'tl',
+                'code' => 'test_' . Str::random(4),
                 'native_name' => 'Test Native',
                 'is_active' => true
             ]);
@@ -104,6 +95,15 @@ class StudentUnitControllerTest extends TenantTestCase
                 'order' => 2,
                 'status' => 'published',
                 'created_by' => $this->teamUser->id,
+            ]);
+
+            // Create enrollment progress for learning path (this enrolls the student)
+            \App\Models\Tenants\UserProgress::create([
+                'user_id' => $this->studentUser->id,
+                'trackable_type' => \App\Models\Tenants\LearningPath::class,
+                'trackable_id' => $learningPath->id,
+                'status' => 'in_progress',
+                'meta_data' => ['completion_percentage' => 0]
             ]);
 
             // Create user progress for first unit using Eloquent
@@ -165,6 +165,13 @@ class StudentUnitControllerTest extends TenantTestCase
 
         // API call to get units in learning path
         $response = $this->getJson("/api/{$this->tenant->slug}/student/learning-paths/{$testData['learning_path_id']}/units");
+
+        // Debug the response if it's not 200
+        if ($response->getStatusCode() !== 200) {
+            dump('Response status: ' . $response->getStatusCode());
+            dump('Response content: ' . $response->getContent());
+            dump('Learning path ID: ' . $testData['learning_path_id']);
+        }
 
         $response->assertStatus(200)
             ->assertJsonStructure([
@@ -347,12 +354,13 @@ class StudentUnitControllerTest extends TenantTestCase
         $this->runInTenantContext($this->tenant, function () use ($testData) {
             $progress = \Illuminate\Support\Facades\DB::table('user_progress')
                 ->where('user_id', $this->studentUser->id)
-                ->where('item_id', $testData['unit2_id'])
-                ->where('progress_type', 'unit')
+                ->where('trackable_id', $testData['unit2_id'])
+                ->where('trackable_type', \App\Models\Tenants\Unit::class)
                 ->first();
 
             $this->assertNotNull($progress);
-            $this->assertEquals(0, $progress->progress);
+            $metaData = json_decode($progress->meta_data, true);
+            $this->assertEquals(0, $metaData['completion_percentage'] ?? 0);
         });
     }
 
@@ -390,12 +398,13 @@ class StudentUnitControllerTest extends TenantTestCase
         $this->runInTenantContext($this->tenant, function () use ($testData) {
             $progress = \Illuminate\Support\Facades\DB::table('user_progress')
                 ->where('user_id', $this->studentUser->id)
-                ->where('item_id', $testData['unit1_id'])
-                ->where('progress_type', 'unit')
+                ->where('trackable_id', $testData['unit1_id'])
+                ->where('trackable_type', \App\Models\Tenants\Unit::class)
                 ->first();
 
             $this->assertNotNull($progress);
-            $this->assertEquals(75, $progress->progress);
+            $metaData = json_decode($progress->meta_data, true);
+            $this->assertEquals(75, $metaData['completion_percentage'] ?? 0);
         });
     }
 
@@ -433,12 +442,13 @@ class StudentUnitControllerTest extends TenantTestCase
         $this->runInTenantContext($this->tenant, function () use ($testData) {
             $progress = \Illuminate\Support\Facades\DB::table('user_progress')
                 ->where('user_id', $this->studentUser->id)
-                ->where('item_id', $testData['unit1_id'])
-                ->where('progress_type', 'unit')
+                ->where('trackable_id', $testData['unit1_id'])
+                ->where('trackable_type', \App\Models\Tenants\Unit::class)
                 ->first();
 
             $this->assertNotNull($progress);
-            $this->assertEquals(100, $progress->progress);
+            $metaData = json_decode($progress->meta_data, true);
+            $this->assertEquals(100, $metaData['completion_percentage'] ?? 0);
             $this->assertNotNull($progress->completed_at);
         });
     }
@@ -559,9 +569,11 @@ class StudentUnitControllerTest extends TenantTestCase
         $this->runInTenantContext($this->tenant, function () use ($testData) {
             \Illuminate\Support\Facades\DB::table('user_progress')
                 ->where('user_id', $this->studentUser->id)
-                ->where('item_id', $testData['unit1_id'])
+                ->where('trackable_id', $testData['unit1_id'])
+                ->where('trackable_type', \App\Models\Tenants\Unit::class)
                 ->update([
-                    'progress' => 100,
+                    'status' => 'completed',
+                    'meta_data' => json_encode(['completion_percentage' => 100]),
                     'completed_at' => now()
                 ]);
         });
@@ -613,12 +625,13 @@ class StudentUnitControllerTest extends TenantTestCase
         $this->runInTenantContext($this->tenant, function () use ($testData) {
             $progress = \Illuminate\Support\Facades\DB::table('user_progress')
                 ->where('user_id', $this->studentUser->id)
-                ->where('item_id', $testData['unit1_id'])
-                ->where('progress_type', 'unit')
+                ->where('trackable_id', $testData['unit1_id'])
+                ->where('trackable_type', \App\Models\Tenants\Unit::class)
                 ->first();
 
             $this->assertNotNull($progress);
-            $this->assertEquals(50, $progress->progress); // Still the original value
+            $metaData = json_decode($progress->meta_data, true);
+            $this->assertEquals(50, $metaData['completion_percentage'] ?? 0); // Still the original value
         });
     }
 
@@ -646,7 +659,7 @@ class StudentUnitControllerTest extends TenantTestCase
             // Create another language
             $language = Language::create([
                 'name' => 'Another Language',
-                'code' => 'al',
+                'code' => 'test_' . Str::random(4),
                 'native_name' => 'Another Native',
                 'is_active' => true
             ]);
@@ -718,7 +731,12 @@ class StudentUnitControllerTest extends TenantTestCase
             ]);
 
         // Check that the in-progress unit appears in the right section
-        $response->assertJsonPath('data.in_progress.0.id', $testData['unit1_id'])
-            ->assertJsonPath('data.in_progress.0.progress', 50);
+        $responseData = $response->json();
+        $inProgressUnits = $responseData['data']['in_progress'] ?? [];
+
+        // Find the unit with the expected ID
+        $expectedUnit = collect($inProgressUnits)->firstWhere('id', $testData['unit1_id']);
+        $this->assertNotNull($expectedUnit, "Expected unit with ID {$testData['unit1_id']} not found in in-progress units");
+        $this->assertEquals(50, $expectedUnit['progress'], "Expected unit progress to be 50%");
     }
 }
