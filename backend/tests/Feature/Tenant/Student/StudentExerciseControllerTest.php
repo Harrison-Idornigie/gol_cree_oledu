@@ -9,13 +9,12 @@ use App\Models\Tenants\User;
 use App\Models\Tenants\Language;
 use App\Models\Tenants\Exercise;
 use App\Models\Tenants\Lesson;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
 use Illuminate\Support\Str;
 
 class StudentExerciseControllerTest extends TenantTestCase
 {
-    use RefreshDatabase, InteractsWithTenancy;
+    use InteractsWithTenancy;
 
     protected Tenant $tenant;
     protected User $studentUser;
@@ -69,7 +68,7 @@ class StudentExerciseControllerTest extends TenantTestCase
      */
     protected function createLesson()
     {
-        return $this->runInTenantContext($this->tenant, function () use ($attributes) {
+        return $this->runInTenantContext($this->tenant, function () {
             return Lesson::create([
                 'title' => 'Test Lesson',
                 'slug' => 'test-lesson-' . Str::random(8),

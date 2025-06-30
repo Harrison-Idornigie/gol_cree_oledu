@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models\Tenants;
 
 use App\Models\Tenants\Review;
@@ -28,6 +27,7 @@ class Topic extends Model
         'color',
         'order',
         'status',
+        'review_status',
         'xp_reward',
         'max_level',
         'is_bonus',

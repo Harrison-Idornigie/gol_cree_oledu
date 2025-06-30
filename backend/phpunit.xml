@@ -34,13 +34,13 @@
         <env name="CACHE_DRIVER" value="redis"/>
         <env name="CACHE_STORE" value="redis"/>
         <env name="DB_CONNECTION" value="sqlite"/>
-        <env name="DB_DATABASE" value="database/testing.sqlite"/>
+        <env name="DB_DATABASE" value="database/testing/central.sqlite"/>
         <env name="MAIL_MAILER" value="array"/>
         <env name="QUEUE_CONNECTION" value="sync"/>
         <env name="SESSION_DRIVER" value="array"/>
         <env name="TELESCOPE_ENABLED" value="false"/>
         <env name="TENANCY_DATABASE_AUTO_DELETE" value="true"/>
         <env name="TENANCY_DATABASE_TEMPLATE_TENANT_CONNECTION" value="sqlite"/>
-        <env name="TENANCY_DATABASE_TEMPLATE_TENANT_DATABASE" value="database/testing.sqlite"/>
+        <env name="TENANCY_DATABASE_TEMPLATE_TENANT_DATABASE" value="database/testing/tenant_template.sqlite"/>
     </php>
 </phpunit>

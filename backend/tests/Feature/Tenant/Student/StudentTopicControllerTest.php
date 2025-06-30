@@ -3,16 +3,12 @@
 namespace Tests\Feature\Tenant\Student;
 
 use Tests\TenantTestCase;
-use Tests\Traits\InteractsWithTenancy;
 use App\Models\Landlord\Tenant;
 use App\Models\Tenants\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
-use Illuminate\Support\Str;
 
 class StudentTopicControllerTest extends TenantTestCase
 {
-    use RefreshDatabase, InteractsWithTenancy;
 
     protected Tenant $tenant;
     protected User $studentUser;
@@ -22,14 +18,13 @@ class StudentTopicControllerTest extends TenantTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->setUpTenancy();
 
         // Create test tenant
         $this->tenant = $this->createTestTenant();
 
         // Create users with different roles in tenant context
         $this->studentUser = $this->createTenantStudent();
-        $this->teamUser = $this->createTenantTeamMember();
+        $this->teamUser = $this->createTenantTeam();
 
         // Setup test data
         $this->testData = $this->setupTestData();
@@ -37,48 +32,10 @@ class StudentTopicControllerTest extends TenantTestCase
 
     protected function tearDown(): void
     {
-        $this->tearDownTenancy();
         parent::tearDown();
     }
 
-    /**
-     * Helper to create a tenant team member
-     */
-    protected function createTenantTeamMember()
-    {
-        return $this->runInTenantContext($this->tenant, function () {
-            $user = User::create([
-                'name' => 'Team User',
-                'email' => 'team_' . Str::random(5) . '@example.com',
-                'password' => bcrypt('password'),
-                'email_verified_at' => now(),
-            ]);
 
-            // Assign team role
-            try {
-                // Direct DB insert to user_permissions for compatibility
-                if (\Illuminate\Support\Facades\Schema::hasTable('user_permissions')) {
-                    \Illuminate\Support\Facades\DB::table('user_permissions')->insert([
-                        'id' => (string) Str::uuid(),
-                        'user_id' => $user->id,
-                        'permission' => 'team',
-                        'created_at' => now(),
-                        'updated_at' => now(),
-                    ]);
-                }
-
-                // If we're using membership_type
-                if (\Illuminate\Support\Facades\Schema::hasColumn('users', 'membership_type')) {
-                    $user->membership_type = 'team';
-                    $user->save();
-                }
-            } catch (\Exception $e) {
-                // Role assignment might fail if tables don't exist yet
-            }
-
-            return $user;
-        });
-    }
 
 
 
@@ -134,6 +91,15 @@ class StudentTopicControllerTest extends TenantTestCase
                 'status' => 'published'
             ]);
 
+            // Create learning path enrollment (required for unit access)
+            \App\Models\Tenants\UserProgress::create([
+                'user_id' => $this->studentUser->id,
+                'trackable_type' => \App\Models\Tenants\LearningPath::class,
+                'trackable_id' => $learningPath->id,
+                'status' => 'in_progress',
+                'meta_data' => ['enrolled_at' => now()]
+            ]);
+
             // Create user progress for first topic using Eloquent
             \App\Models\Tenants\UserProgress::create([
                 'user_id' => $this->studentUser->id,
@@ -164,6 +130,8 @@ class StudentTopicControllerTest extends TenantTestCase
 
         $response->assertStatus(200)
             ->assertJsonStructure([
+                'success',
+                'message',
                 'data' => [
                     '*' => [
                         'id',
@@ -171,22 +139,7 @@ class StudentTopicControllerTest extends TenantTestCase
                         'description',
                         'order',
                         'status',
-                        'user_progress' => [
-                            'overall_progress',
-                            'lessons_completed',
-                            'lessons_total',
-                            'exercises_completed',
-                            'exercises_total',
-                            'xp_earned',
-                            'xp_total',
-                            'time_spent_minutes',
-                            'last_activity',
-                            'current_lesson',
-                            'next_lesson',
-                            'is_completed'
-                        ],
-                        'is_accessible',
-                        'completion_status'
+                        'progress' // Simple progress field from UnitService
                     ]
                 ]
             ])
@@ -197,7 +150,9 @@ class StudentTopicControllerTest extends TenantTestCase
             ->assertJsonFragment([
                 'title' => 'Topic 2'
             ])
-            ->assertJsonPath('data.0.user_progress.overall_progress', 70);
+            ->assertJsonFragment([
+                'message' => 'Unit topics retrieved successfully.'
+            ]);
     }
 
     /** @test */

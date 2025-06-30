@@ -4,7 +4,6 @@ namespace App\Services\Tenants\Course;
 
 use App\Models\Tenants\Review;
 use App\Models\Tenants\User;
-use App\Models\Tenants\AuditLog;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -98,31 +97,26 @@ class ReviewService
             // Validate user hasn't already reviewed this content
             $existingReview = Review::where('content_type', $data['content_type'])
                 ->where('content_id', $data['content_id'])
-                ->where('user_id', $user->id)
+                ->where('submitted_by', $user->id)
                 ->first();
 
             if ($existingReview) {
                 throw new Exception('You have already reviewed this content. Please update your existing review instead.');
             }
 
-            // Set defaults
-            $data['user_id'] = $user->id;
+            // Set defaults if not provided
+            if (!isset($data['submitted_by'])) {
+                $data['submitted_by'] = $user->id;
+            }
             $data['tenant_id'] = tenant('id');
-            $data['status'] = 'pending'; // Reviews need moderation
-            $data['helpful_count'] = 0;
-            $data['reported_count'] = 0;
+            if (!isset($data['status'])) {
+                $data['status'] = 'pending'; // Reviews need moderation
+            }
+            if (!isset($data['submitted_at'])) {
+                $data['submitted_at'] = now();
+            }
 
             $review = Review::create($data);
-
-            // Log the creation for audit trail
-            AuditLog::log(
-                'create',
-                'reviews',
-                $review,
-                [],
-                $data,
-                $user->id
-            );
 
             Log::info('Review created via service', [
                 'review_id' => $review->id,
@@ -133,7 +127,7 @@ class ReviewService
                 'tenant_id' => tenant('id')
             ]);
 
-            return $review->load(['user']);
+            return $review->load(['submitter']);
         });
     }
 
@@ -144,7 +138,7 @@ class ReviewService
     {
         return DB::transaction(function () use ($review, $data, $user) {
             // Verify user owns the review
-            if ($review->user_id !== $user->id) {
+            if ($review->submitted_by !== $user->id) {
                 throw new Exception('You can only update your own reviews.');
             }
 
@@ -156,16 +150,6 @@ class ReviewService
             }
 
             $review->update($data);
-
-            // Log the update for audit trail
-            AuditLog::log(
-                'update',
-                'reviews',
-                $review,
-                $originalData,
-                $data,
-                $user->id
-            );
 
             Log::info('Review updated via service', [
                 'review_id' => $review->id,
@@ -224,7 +208,7 @@ class ReviewService
         return DB::transaction(function () use ($review, $user) {
             // Check if user already marked this review as helpful
             // This would require a review_votes table in a full implementation
-            
+
             $review->increment('helpful_count');
 
             Log::info('Review marked as helpful', [
@@ -245,7 +229,7 @@ class ReviewService
     {
         return DB::transaction(function () use ($review, $user, $reason) {
             $review->increment('reported_count');
-            
+
             // Auto-hide if too many reports
             if ($review->reported_count >= 5) {
                 $review->update(['status' => 'hidden']);
@@ -269,7 +253,7 @@ class ReviewService
     public function moderateReview(Review $review, string $status, User $moderator): Review
     {
         $validStatuses = ['approved', 'rejected', 'hidden'];
-        
+
         if (!in_array($status, $validStatuses)) {
             throw new Exception("Invalid status. Must be one of: " . implode(', ', $validStatuses));
         }
@@ -309,7 +293,7 @@ class ReviewService
         }
 
         $ratingDistribution = $reviews->groupBy('rating')->map->count()->toArray();
-        
+
         // Fill missing ratings with 0
         for ($i = 1; $i <= 5; $i++) {
             if (!isset($ratingDistribution[$i])) {
@@ -333,7 +317,7 @@ class ReviewService
     {
         return Review::where('content_type', $contentType)
             ->where('content_id', $contentId)
-            ->where('user_id', $user->id)
+            ->where('submitted_by', $user->id)
             ->first();
     }
 

@@ -247,7 +247,7 @@ class TeamUnitController extends BaseAPIController
             }
 
             // Update review status instead of main status
-            $unitModel->review_status = 'pending_review';
+            $unitModel->review_status = 'pending';
             $unitModel->save();
             $updatedUnit = $unitModel;
 

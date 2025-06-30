@@ -328,12 +328,12 @@ class TeamUnitControllerTest extends TenantTestCase
         ]);
 
         $response->assertStatus(200)
-            ->assertJsonPath('data.review_status', 'pending_review');
+            ->assertJsonPath('data.review_status', 'pending');
 
         $this->runInTenantContext($this->tenant, function () use ($unit) {
             $this->assertDatabaseHas('units', [
                 'id' => $unit->id,
-                'review_status' => 'pending_review',
+                'review_status' => 'pending',
             ]);
         });
     }

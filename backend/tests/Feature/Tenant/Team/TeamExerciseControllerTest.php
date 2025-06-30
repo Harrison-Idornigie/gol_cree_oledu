@@ -12,13 +12,12 @@ use App\Models\Tenants\Unit;
 use App\Models\Tenants\Topic;
 use App\Models\Tenants\Lesson;
 use App\Models\Tenants\Exercise;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\Sanctum;
 
 class TeamExerciseControllerTest extends TenantTestCase
 {
-    use RefreshDatabase, InteractsWithTenancy;
+    use InteractsWithTenancy;
 
     protected Tenant $tenant;
     protected User $teamMember;

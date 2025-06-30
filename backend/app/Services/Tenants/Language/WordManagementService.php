@@ -14,7 +14,7 @@ use Exception;
 
 /**
  * Word Management Service
- * 
+ *
  * Handles all word and translation management operations including
  * creation, updates, audio processing, and bulk operations.
  */

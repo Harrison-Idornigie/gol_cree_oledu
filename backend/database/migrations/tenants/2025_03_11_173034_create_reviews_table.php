@@ -46,6 +46,10 @@ return new class extends Migration
             $table->enum('review_status', ['none', 'pending', 'approved', 'rejected'])->default('none')->after('status');
         });
 
+        Schema::table('topics', function (Blueprint $table) {
+            $table->enum('review_status', ['none', 'pending', 'approved', 'rejected'])->default('none')->after('status');
+        });
+
         // Removed sections table reference as sections have been removed from the data model
 
         Schema::table('exercises', function (Blueprint $table) {
@@ -69,6 +73,10 @@ return new class extends Migration
         });
 
         Schema::table('lessons', function (Blueprint $table) {
+            $table->dropColumn('review_status');
+        });
+
+        Schema::table('topics', function (Blueprint $table) {
             $table->dropColumn('review_status');
         });
 

@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\API\Tenant\Team\TeamContentController;
 use App\Http\Controllers\API\Tenant\Team\TeamContentScaffoldingController;
 use App\Http\Controllers\API\Tenant\Team\TeamContentTemplateController;
 use App\Http\Controllers\API\Tenant\Team\TeamCurriculumTemplateController;
@@ -28,7 +27,7 @@ use Illuminate\Support\Facades\Route;
  * URL Pattern: api/{tenant-slug}/team/*
  */
 
-Route::prefix('team')->middleware(['auth:tenant', 'verified-grace'])->group(function () {
+Route::prefix('team')->middleware(['auth:tenant', 'verified-grace', 'role_permission:team'])->group(function () {
 
     // Language Management
     Route::prefix('languages')->group(function () {
