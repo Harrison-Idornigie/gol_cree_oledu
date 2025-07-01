@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Volume2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { WordData } from '@/types/tenant/vocabulary';
+import { WordData } from '@/types/tenant/guidebook';
 
 interface WordTooltipProps {
   word: WordData;

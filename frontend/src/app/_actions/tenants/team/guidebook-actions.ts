@@ -3,7 +3,7 @@
 import axiosInstance from '@/lib/axios';
 import { ApiResponse } from '@/lib/axios';
 
-interface VocabularyItem {
+interface GuidebookItem {
   id: number;
   word: string;
   definition: string;
@@ -26,9 +26,9 @@ function isAxiosError(error: unknown): error is { response?: { data?: ApiError }
   return error != null && typeof error === 'object' && 'isAxiosError' in error;
 }
 
-export async function getVocabularyItems() {
+export async function getGuidebookItems() {
   try {
-    const response = await axiosInstance.get<ApiResponse<VocabularyItem[]>>('/admin/vocabulary');
+    const response = await axiosInstance.get<ApiResponse<GuidebookItem[]>>('/admin/guidebook');
     return {
       data: response.data.data,
       error: null
@@ -37,7 +37,7 @@ export async function getVocabularyItems() {
     if (isAxiosError(error)) {
       return {
         data: null,
-        error: error.response?.data?.message || 'Failed to fetch vocabulary items'
+        error: error.response?.data?.message || 'Failed to fetch guidebook items'
       };
     }
     return {
@@ -47,9 +47,9 @@ export async function getVocabularyItems() {
   }
 }
 
-export async function getVocabularyItem(id: number) {
+export async function getGuidebookItem(id: number) {
   try {
-    const response = await axiosInstance.get<ApiResponse<VocabularyItem>>(`/admin/vocabulary/${id}`);
+    const response = await axiosInstance.get<ApiResponse<GuidebookItem>>(`/admin/guidebook/${id}`);
     return {
       data: response.data.data,
       error: null
@@ -58,7 +58,7 @@ export async function getVocabularyItem(id: number) {
     if (isAxiosError(error)) {
       return {
         data: null,
-        error: error.response?.data?.message || 'Failed to fetch vocabulary item'
+        error: error.response?.data?.message || 'Failed to fetch guidebook item'
       };
     }
     return {
@@ -68,9 +68,9 @@ export async function getVocabularyItem(id: number) {
   }
 }
 
-export async function createVocabularyItem(formData: FormData) {
+export async function createGuidebookItem(formData: FormData) {
   try {
-    const response = await axiosInstance.post<ApiResponse<VocabularyItem>>('/admin/vocabulary', {
+    const response = await axiosInstance.post<ApiResponse<GuidebookItem>>('/admin/guidebook', {
       word: formData.get('word'),
       definition: formData.get('definition'),
       pronunciation: formData.get('pronunciation'),
@@ -89,7 +89,7 @@ export async function createVocabularyItem(formData: FormData) {
     if (isAxiosError(error)) {
       return {
         data: null,
-        error: error.response?.data?.message || 'Failed to create vocabulary item'
+        error: error.response?.data?.message || 'Failed to create guidebook item'
       };
     }
     return {
@@ -99,9 +99,9 @@ export async function createVocabularyItem(formData: FormData) {
   }
 }
 
-export async function updateVocabularyItem(id: number, formData: FormData) {
+export async function updateGuidebookItem(id: number, formData: FormData) {
   try {
-    const response = await axiosInstance.put<ApiResponse<VocabularyItem>>(`/admin/vocabulary/${id}`, {
+    const response = await axiosInstance.put<ApiResponse<GuidebookItem>>(`/admin/guidebook/${id}`, {
       word: formData.get('word'),
       definition: formData.get('definition'),
       pronunciation: formData.get('pronunciation'),
@@ -120,7 +120,7 @@ export async function updateVocabularyItem(id: number, formData: FormData) {
     if (isAxiosError(error)) {
       return {
         data: null,
-        error: error.response?.data?.message || 'Failed to update vocabulary item'
+        error: error.response?.data?.message || 'Failed to update guidebook item'
       };
     }
     return {
@@ -130,14 +130,14 @@ export async function updateVocabularyItem(id: number, formData: FormData) {
   }
 }
 
-export async function deleteVocabularyItem(id: number) {
+export async function deleteGuidebookItem(id: number) {
   try {
-    await axiosInstance.delete<ApiResponse<void>>(`/admin/vocabulary/${id}`);
+    await axiosInstance.delete<ApiResponse<void>>(`/admin/guidebook/${id}`);
     return { error: null };
   } catch (error) {
     if (isAxiosError(error)) {
       return {
-        error: error.response?.data?.message || 'Failed to delete vocabulary item'
+        error: error.response?.data?.message || 'Failed to delete guidebook item'
       };
     }
     return {
@@ -146,9 +146,9 @@ export async function deleteVocabularyItem(id: number) {
   }
 }
 
-export async function toggleVocabularyItemStatus(id: number) {
+export async function toggleGuidebookItemStatus(id: number) {
   try {
-    const response = await axiosInstance.post<ApiResponse<{ is_published: boolean }>>(`/admin/vocabulary/${id}/toggle-status`);
+    const response = await axiosInstance.post<ApiResponse<{ is_published: boolean }>>(`/admin/guidebook/${id}/toggle-status`);
     return {
       data: response.data.data,
       error: null
@@ -157,7 +157,7 @@ export async function toggleVocabularyItemStatus(id: number) {
     if (isAxiosError(error)) {
       return {
         data: null,
-        error: error.response?.data?.message || 'Failed to toggle vocabulary item status'
+        error: error.response?.data?.message || 'Failed to toggle guidebook item status'
       };
     }
     return {
@@ -167,9 +167,9 @@ export async function toggleVocabularyItemStatus(id: number) {
   }
 }
 
-export async function getVocabularyByCategory(category: string) {
+export async function getGuidebookByCategory(category: string) {
   try {
-    const response = await axiosInstance.get<ApiResponse<VocabularyItem[]>>(`/admin/vocabulary/category/${category}`);
+    const response = await axiosInstance.get<ApiResponse<GuidebookItem[]>>(`/admin/guidebook/category/${category}`);
     return {
       data: response.data.data,
       error: null
@@ -178,7 +178,7 @@ export async function getVocabularyByCategory(category: string) {
     if (isAxiosError(error)) {
       return {
         data: null,
-        error: error.response?.data?.message || 'Failed to fetch vocabulary items by category'
+        error: error.response?.data?.message || 'Failed to fetch guidebook items by category'
       };
     }
     return {
@@ -188,9 +188,9 @@ export async function getVocabularyByCategory(category: string) {
   }
 }
 
-export async function getVocabularyByDifficulty(level: string) {
+export async function getGuidebookByDifficulty(level: string) {
   try {
-    const response = await axiosInstance.get<ApiResponse<VocabularyItem[]>>(`/admin/vocabulary/difficulty/${level}`);
+    const response = await axiosInstance.get<ApiResponse<GuidebookItem[]>>(`/admin/guidebook/difficulty/${level}`);
     return {
       data: response.data.data,
       error: null
@@ -199,7 +199,7 @@ export async function getVocabularyByDifficulty(level: string) {
     if (isAxiosError(error)) {
       return {
         data: null,
-        error: error.response?.data?.message || 'Failed to fetch vocabulary items by difficulty'
+        error: error.response?.data?.message || 'Failed to fetch guidebook items by difficulty'
       };
     }
     return {
@@ -209,13 +209,13 @@ export async function getVocabularyByDifficulty(level: string) {
   }
 }
 
-export async function bulkImportVocabulary(formData: FormData) {
+export async function bulkImportGuidebook(formData: FormData) {
   try {
     const response = await axiosInstance.post<ApiResponse<{ 
       success: boolean;
       imported_count: number;
       errors?: Array<{ row: number; message: string }>;
-    }>>('/admin/vocabulary/import', formData);
+    }>>('/admin/guidebook/import', formData);
 
     return {
       data: response.data.data,
@@ -225,7 +225,7 @@ export async function bulkImportVocabulary(formData: FormData) {
     if (isAxiosError(error)) {
       return {
         data: null,
-        error: error.response?.data?.message || 'Failed to import vocabulary items'
+        error: error.response?.data?.message || 'Failed to import guidebook items'
       };
     }
     return {
@@ -235,9 +235,9 @@ export async function bulkImportVocabulary(formData: FormData) {
   }
 }
 
-export async function exportVocabulary(format: 'csv' | 'json' = 'csv') {
+export async function exportGuidebook(format: 'csv' | 'json' = 'csv') {
   try {
-    const response = await axiosInstance.get(`/admin/vocabulary/export?format=${format}`, {
+    const response = await axiosInstance.get(`/admin/guidebook/export?format=${format}`, {
       responseType: 'blob'
     });
     
@@ -249,7 +249,7 @@ export async function exportVocabulary(format: 'csv' | 'json' = 'csv') {
     if (isAxiosError(error)) {
       return {
         data: null,
-        error: error.response?.data?.message || 'Failed to export vocabulary items'
+        error: error.response?.data?.message || 'Failed to export guidebook items'
       };
     }
     return {

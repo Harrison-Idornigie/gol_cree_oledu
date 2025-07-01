@@ -2,7 +2,7 @@
 
 import axiosInstance from "@/lib/axios";
 import { ApiResponse } from "@/lib/axios";
-import { WordData } from "@/types/tenant/vocabulary";
+import { WordData } from "@/types/tenant/guidebook";
 
 interface ApiError {
   message: string;

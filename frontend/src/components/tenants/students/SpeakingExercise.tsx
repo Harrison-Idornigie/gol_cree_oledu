@@ -5,7 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Mic, Square, Play, Volume2, CheckCircle, Loader2 } from "lucide-react";
-import { WordData } from "@/types/tenant/vocabulary";
+import { WordData } from "@/types/tenant/guidebook";
 import ClickableText from "./ClickableText";
 import { audioService } from "@/lib/services/audioService";
 import { toast } from "sonner";

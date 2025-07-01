@@ -18,12 +18,12 @@ abstract class BaseExerciseSeeder extends Seeder
      * The exercise type this seeder creates
      */
     protected string $exerciseType;
-    
+
     /**
      * The number of exercises to create per language
      */
     protected int $exercisesPerLanguage = 5;
-    
+
     /**
      * The number of words to use per exercise
      */
@@ -99,9 +99,9 @@ abstract class BaseExerciseSeeder extends Seeder
         if (!$lesson) {
             $this->command->info("Creating new lesson for {$language->name}");
             $lesson = Lesson::create([
-                'title' => "{$language->name} Vocabulary Practice",
-                'description' => "Practice your {$language->name} vocabulary with these exercises",
-                'slug' => Str::slug("{$language->name} vocabulary practice"),
+                'title' => "{$language->name} Guidebook Practice",
+                'description' => "Practice your {$language->name} guidebook with these exercises",
+                'slug' => Str::slug("{$language->name} guidebook practice"),
                 'order' => 1,
                 'status' => 'published',
                 'unit_id' => 1, // Assuming unit 1 exists
@@ -120,8 +120,8 @@ abstract class BaseExerciseSeeder extends Seeder
             'lesson_id' => $lesson->id,
             'title' => $title,
             'slug' => Str::slug($title),
-            'description' => "Practice your {$language->name} vocabulary with {$this->getExerciseTypeName()} exercises",
-            'content' => "Complete these {$this->getExerciseTypeName()} exercises to improve your {$language->name} vocabulary",
+            'description' => "Practice your {$language->name} guidebook with {$this->getExerciseTypeName()} exercises",
+            'content' => "Complete these {$this->getExerciseTypeName()} exercises to improve your {$language->name} guidebook",
             'type' => 'practice',
             'order' => 1,
             'requires_previous' => false,

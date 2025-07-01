@@ -760,7 +760,7 @@ class TenantAnalyticsService
                 'languages' => Language::count(),
                 'active_languages' => Language::where('is_active', true)->count(),
                 'words' => $this->getWordCount(),
-                'vocabulary_coverage' => $this->getVocabularyCoverage()
+                'guidebook_coverage' => $this->getGuidebookCoverage()
             ],
             'engagement' => [
                 'total_enrollments' => $this->getTotalEnrollments(),
@@ -918,7 +918,7 @@ class TenantAnalyticsService
     }
 
     // Additional placeholder methods for consolidated functionality
-    private function getVocabularyCoverage(): array
+    private function getGuidebookCoverage(): array
     {
         return [];
     }

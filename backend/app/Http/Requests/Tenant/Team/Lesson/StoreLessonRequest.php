@@ -35,10 +35,10 @@ class StoreLessonRequest extends FormRequest
                 Rule::unique('lessons')
                     ->where('unit_id', $this->unit_id)
             ],
-            'vocabulary_items' => ['sometimes', 'array'],
-            'vocabulary_items.*.word' => ['required_with:vocabulary_items', 'string', 'max:255'],
-            'vocabulary_items.*.translation' => ['required_with:vocabulary_items', 'string', 'max:255'],
-            'vocabulary_items.*.example' => ['sometimes', 'string'],
+            'guidebook_items' => ['sometimes', 'array'],
+            'guidebook_items.*.word' => ['required_with:guidebook_items', 'string', 'max:255'],
+            'guidebook_items.*.translation' => ['required_with:guidebook_items', 'string', 'max:255'],
+            'guidebook_items.*.example' => ['sometimes', 'string'],
         ];
     }
 
@@ -56,8 +56,8 @@ class StoreLessonRequest extends FormRequest
             'order.required' => 'The lesson order is required.',
             'order.unique' => 'This order number is already taken in this unit.',
             'order.min' => 'The order must be at least 1.',
-            'vocabulary_items.*.word.required_with' => 'Each vocabulary item must have a word.',
-            'vocabulary_items.*.translation.required_with' => 'Each vocabulary item must have a translation.',
+            'guidebook_items.*.word.required_with' => 'Each guidebook item must have a word.',
+            'guidebook_items.*.translation.required_with' => 'Each guidebook item must have a translation.',
         ];
     }
 

@@ -89,7 +89,7 @@ class SeedTenantRoles
             ['name' => 'Content View', 'slug' => 'content.view', 'group' => 'content', 'description' => 'View content'],
             
             // Language permissions
-            ['name' => 'Word Management', 'slug' => 'words.manage', 'group' => 'language', 'description' => 'Manage words and vocabulary'],
+            ['name' => 'Word Management', 'slug' => 'words.manage', 'group' => 'language', 'description' => 'Manage words and Guidebook'],
             ['name' => 'Lesson Management', 'slug' => 'lessons.manage', 'group' => 'language', 'description' => 'Manage lessons'],
             
             // Student permissions

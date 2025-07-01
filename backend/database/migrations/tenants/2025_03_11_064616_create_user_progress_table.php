@@ -15,8 +15,12 @@ return new class extends Migration
                 ->constrained()
                 ->onDelete('cascade');
             $table->morphs('trackable');
-            $table->enum('status', ['not_started', 'in_progress', 'completed'])
+            $table->enum('status', ['not_started', 'learning', 'practicing', 'mastered'])
                 ->default('not_started');
+            $table->integer('strength')->default(0)->comment('Word strength 0-5 (Duolingo-style)');
+            $table->integer('streak')->default(0)->comment('Consecutive correct answers');
+            $table->integer('mistake_count')->default(0)->comment('Number of mistakes made');
+            $table->timestamp('last_practiced_at')->nullable()->comment('When word was last practiced');
             $table->json('meta_data')
                 ->nullable()
                 ->comment('Additional progress data like scores, exercise results');
@@ -25,7 +29,9 @@ return new class extends Migration
 
             // Add indexes for common queries
             $table->index(['user_id', 'trackable_type', 'trackable_id']);
-            $table->index('status');
+            $table->index(['user_id', 'status']);
+            $table->index(['user_id', 'strength']);
+            $table->index('last_practiced_at');
         });
     }
 

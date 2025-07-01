@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { ArrowLeft, CheckCircle } from "lucide-react";
 import Link from "next/link";
-import { WordData } from "@/types/tenant/vocabulary";
+import { WordData } from "@/types/tenant/guidebook";
 import FillInBlankExercise from "./FillInBlankExercise";
 import MultipleChoiceExercise from "./MultipleChoiceExercise";
 import MatchingExercise from "./MatchingExercise";

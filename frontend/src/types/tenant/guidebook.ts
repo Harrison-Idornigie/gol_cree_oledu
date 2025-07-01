@@ -1,7 +1,7 @@
 /**
- * Represents a vocabulary item with its associated data
+ * Represents a guidebook item with its associated data
  */
-export interface VocabularyItem {
+export interface GuidebookItem {
   id: number;
   word: string;
   translation: string;
@@ -16,7 +16,7 @@ export interface VocabularyItem {
 }
 
 /**
- * Simplified vocabulary word data for use in components
+ * Simplified guidebook word data for use in components
  */
 export interface WordData {
   id?: number;
@@ -34,9 +34,9 @@ export interface WordData {
 export type WordDictionary = Record<string, WordData>;
 
 /**
- * Response from the vocabulary API
+ * Response from the guidebook API
  */
-export interface VocabularyResponse {
+export interface GuidebookResponse {
   id: number;
   word: string;
   translation: string;
@@ -46,13 +46,13 @@ export interface VocabularyResponse {
   pronunciation_url?: string;
   illustration_url?: string;
   difficulty_level?: number;
-  similar_words?: VocabularyItem[];
+  similar_words?: GuidebookItem[];
 }
 
 /**
- * Vocabulary progress statistics
+ * Guidebook progress statistics
  */
-export interface VocabularyStats {
+export interface GuidebookStats {
   total_words_learned: number;
   words_in_progress: number;
   mastery_levels: {
@@ -64,7 +64,7 @@ export interface VocabularyStats {
     date: string;
     count: number;
   }>;
-  recent_vocabulary: Array<{
+  recent_guidebook: Array<{
     id: number;
     word: string;
     translation: string;

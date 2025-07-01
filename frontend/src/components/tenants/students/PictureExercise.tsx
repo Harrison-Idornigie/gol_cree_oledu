@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { CheckCircle, XCircle, Loader2 } from 'lucide-react';
-import { WordData } from '@/types/tenant/vocabulary';
+import { WordData } from '@/types/tenant/guidebook';
 import { submitPictureAnswer } from '@/app/_actions/tenants/student/picture-actions';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';

@@ -108,7 +108,7 @@ class TeamCurriculumTemplateController extends BaseAPIController
                 'customizations' => 'nullable|array',
                 'customizations.units' => 'nullable|array',
                 'customizations.difficulty_adjustments' => 'nullable|array',
-                'customizations.vocabulary_focus' => 'nullable|array',
+                'customizations.guidebook_focus' => 'nullable|array',
                 'customizations.exercise_preferences' => 'nullable|array',
             ]);
 

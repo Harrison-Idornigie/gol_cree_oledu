@@ -145,7 +145,7 @@ class ContentTemplatePolicy
     {
         // Validate skill focus options
         $allowedSkills = [
-            'vocabulary',
+            'guidebook',
             'grammar',
             'listening',
             'speaking',
@@ -164,11 +164,11 @@ class ContentTemplatePolicy
     }
 
     /**
-     * Determine whether the user can set vocabulary requirements.
+     * Determine whether the user can set guidebook requirements.
      */
-    public function setVocabularyRequirements(User $user, array $requirements): bool
+    public function setGuidebookRequirements(User $user, array $requirements): bool
     {
-        // Team members can set vocabulary requirements
+        // Team members can set guidebook requirements
         return $user->isTeam() || $user->isTenantAdmin();
     }
 

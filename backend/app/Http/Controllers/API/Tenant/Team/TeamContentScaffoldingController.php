@@ -23,7 +23,7 @@ use Illuminate\Support\Facades\Auth;
  * Scope: Tenant-specific
  * 
  * This controller provides Duolingo-style automated content generation:
- * - Generate exercises from vocabulary words
+ * - Generate exercises from guidebook words
  * - Create lessons from predefined word banks
  * - Scaffold content using templates
  * - Bulk generate content with language pair context
@@ -56,7 +56,7 @@ class TeamContentScaffoldingController extends BaseAPIController
     }
 
     /**
-     * Generate exercises from vocabulary words.
+     * Generate exercises from guidebook words.
      * Core Duolingo-style functionality for creating interactive exercises.
      */
     public function generateExercises(Request $request): JsonResponse
@@ -82,7 +82,7 @@ class TeamContentScaffoldingController extends BaseAPIController
                 'difficulty_level' => $validated['difficulty_level'] ?? 'intermediate',
             ];
 
-            $exercises = $this->scaffoldingService->generateExercisesFromVocabulary(
+            $exercises = $this->scaffoldingService->generateExercisesFromGuidebook(
                 $validated['word_ids'],
                 $validated['exercise_types'],
                 $options
@@ -165,8 +165,8 @@ class TeamContentScaffoldingController extends BaseAPIController
             $validated = $request->validate([
                 'template_id' => 'required|exists:content_templates,id',
                 'topic_id' => 'required|exists:topics,id',
-                'vocabulary_ids' => 'required|array|min:1',
-                'vocabulary_ids.*' => 'exists:words,id',
+                'guidebook_ids' => 'required|array|min:1',
+                'guidebook_ids.*' => 'exists:words,id',
                 'title' => 'nullable|string|max:255',
                 'description' => 'nullable|string',
                 'source_language_id' => 'required|exists:languages,id',
@@ -186,7 +186,7 @@ class TeamContentScaffoldingController extends BaseAPIController
 
             $lesson = $this->scaffoldingService->generateLessonFromTemplate(
                 $template,
-                $validated['vocabulary_ids'],
+                $validated['guidebook_ids'],
                 $options
             );
 
@@ -232,7 +232,7 @@ class TeamContentScaffoldingController extends BaseAPIController
                 'difficulty_level' => $validated['difficulty_level'] ?? 'intermediate',
             ];
 
-            $exercises = $this->scaffoldingService->generateExercisesFromVocabulary(
+            $exercises = $this->scaffoldingService->generateExercisesFromGuidebook(
                 $validated['word_ids'],
                 $validated['exercise_types'],
                 $options
@@ -258,8 +258,8 @@ class TeamContentScaffoldingController extends BaseAPIController
                 'lessons' => 'required|array|min:1|max:10',
                 'lessons.*.topic_id' => 'required|exists:topics,id',
                 'lessons.*.template_id' => 'nullable|exists:content_templates,id',
-                'lessons.*.vocabulary_ids' => 'required|array|min:3',
-                'lessons.*.vocabulary_ids.*' => 'exists:words,id',
+                'lessons.*.guidebook_ids' => 'required|array|min:3',
+                'lessons.*.guidebook_ids.*' => 'exists:words,id',
                 'lessons.*.title' => 'required|string|max:255',
                 'lessons.*.exercise_types' => 'required|array|min:1',
                 'source_language_id' => 'required|exists:languages,id',
@@ -281,13 +281,13 @@ class TeamContentScaffoldingController extends BaseAPIController
                         $template = ContentTemplate::findOrFail($lessonData['template_id']);
                         $lesson = $this->scaffoldingService->generateLessonFromTemplate(
                             $template,
-                            $lessonData['vocabulary_ids'],
+                            $lessonData['guidebook_ids'],
                             $options
                         );
                     } else {
                         // Generate exercises directly
-                        $exercises = $this->scaffoldingService->generateExercisesFromVocabulary(
-                            $lessonData['vocabulary_ids'],
+                        $exercises = $this->scaffoldingService->generateExercisesFromGuidebook(
+                            $lessonData['guidebook_ids'],
                             $lessonData['exercise_types'],
                             $options
                         );

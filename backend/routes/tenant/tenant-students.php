@@ -36,7 +36,7 @@ Route::prefix('student')->middleware(['auth:tenant'])->group(function () {
 });
 
 // Routes that require both authentication and email verification
-Route::prefix('student')->middleware(['auth:tenant', \App\Http\Middleware\Tenant\EnsureEmailIsVerifiedWithGracePeriod::class])->group(function () {
+Route::prefix('student')->middleware(['auth:tenant', 'tenant-access', \App\Http\Middleware\Tenant\EnsureEmailIsVerifiedWithGracePeriod::class])->group(function () {
     // Enforce integer IDs for lessons and topics
     Route::pattern('lesson', '[0-9]+');
     Route::pattern('topic', '[0-9]+');
@@ -68,6 +68,10 @@ Route::prefix('student')->middleware(['auth:tenant', \App\Http\Middleware\Tenant
         Route::get('/languages', [StudentUserSettingsController::class, 'getAvailableLanguages']);
         Route::patch('/interface-language', [StudentUserSettingsController::class, 'updateInterfaceLanguage']);
     });
+
+    // General Settings Routes (for backward compatibility with tests)
+    Route::get('settings', [StudentUserSettingsController::class, 'getSettings']);
+    Route::put('settings', [StudentUserSettingsController::class, 'updateSettings']);
 
     // Learning Paths
     Route::get('learning-paths', [StudentLearningPathController::class, 'index']);

@@ -179,7 +179,7 @@ class StudentUserSettingsControllerTest extends TenantTestCase
     /** @test */
     public function student_settings_are_tenant_isolated()
     {
-        $otherTenant = $this->createTestTenant(['slug' => 'other-tenant']);
+        $otherTenant = $this->createTestTenant('other-tenant');
 
         Sanctum::actingAs($this->studentUser, ['*'], 'tenant');
 

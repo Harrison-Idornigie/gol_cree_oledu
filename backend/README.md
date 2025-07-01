@@ -8,8 +8,7 @@ A comprehensive API for a language learning platform built with Laravel.
 - Units, lessons, and sections organization
 - Various exercise types (multiple choice, fill in blanks, matching, etc.)
 - Progress tracking system
-- Vocabulary management
-- Guide book entries for additional resources
+- Guide book entries as cheatsheet
 
 ## API Endpoints
 
@@ -102,7 +101,7 @@ A comprehensive API for a language learning platform built with Laravel.
 - answers (JSON)
 - order
 
-### VocabularyItem
+### GuidebookItem
 - id
 - lesson_id
 - word

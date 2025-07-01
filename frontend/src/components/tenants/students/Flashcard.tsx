@@ -6,11 +6,11 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Progress } from '@/components/ui/progress';
 import { Volume2, ArrowRight, CheckCircle, XCircle, RefreshCw } from 'lucide-react';
-import { VocabularyItem } from '@/types/tenant/vocabulary';
+import { GuidebookItem } from '@/types/tenant/guidebook';
 import { audioService } from '@/lib/services/audioService';
 
 interface FlashcardProps {
-  item: VocabularyItem;
+  item: GuidebookItem;
   onAnswer: (isCorrect: boolean) => void;
   onNext: () => void;
   showAnswer?: boolean;

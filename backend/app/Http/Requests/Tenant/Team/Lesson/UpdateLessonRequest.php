@@ -37,12 +37,12 @@ class UpdateLessonRequest extends FormRequest
                     ->where('unit_id', $this->unit_id ?? $this->lesson->unit_id)
                     ->ignore($this->lesson->id)
             ],
-            'vocabulary_items' => ['sometimes', 'array'],
-            'vocabulary_items.*.id' => ['sometimes', 'integer', 'exists:vocabulary_items,id'],
-            'vocabulary_items.*.word' => ['required_with:vocabulary_items', 'string', 'max:255'],
-            'vocabulary_items.*.translation' => ['required_with:vocabulary_items', 'string', 'max:255'],
-            'vocabulary_items.*.example' => ['sometimes', 'string'],
-            'vocabulary_items.*._remove' => ['sometimes', 'boolean'],
+            'guidebook_items' => ['sometimes', 'array'],
+            'guidebook_items.*.id' => ['sometimes', 'integer', 'exists:guidebook_items,id'],
+            'guidebook_items.*.word' => ['required_with:guidebook_items', 'string', 'max:255'],
+            'guidebook_items.*.translation' => ['required_with:guidebook_items', 'string', 'max:255'],
+            'guidebook_items.*.example' => ['sometimes', 'string'],
+            'guidebook_items.*._remove' => ['sometimes', 'boolean'],
         ];
     }
 
@@ -58,9 +58,9 @@ class UpdateLessonRequest extends FormRequest
             'description.required' => 'A description of the lesson is required.',
             'order.unique' => 'This order number is already taken in this unit.',
             'order.min' => 'The order must be at least 1.',
-            'vocabulary_items.*.word.required_with' => 'Each vocabulary item must have a word.',
-            'vocabulary_items.*.translation.required_with' => 'Each vocabulary item must have a translation.',
-            'vocabulary_items.*.id.exists' => 'One or more vocabulary items do not exist.',
+            'guidebook_items.*.word.required_with' => 'Each guidebook item must have a word.',
+            'guidebook_items.*.translation.required_with' => 'Each guidebook item must have a translation.',
+            'guidebook_items.*.id.exists' => 'One or more guidebook items do not exist.',
         ];
     }
 
@@ -73,9 +73,9 @@ class UpdateLessonRequest extends FormRequest
             $this->reorderLessons();
         }
 
-        // Handle vocabulary items updates
-        if ($this->has('vocabulary_items')) {
-            $this->prepareVocabularyItems();
+        // Handle guidebook items updates
+        if ($this->has('guidebook_items')) {
+            $this->prepareGuidebookItems();
         }
     }
 
@@ -101,21 +101,6 @@ class UpdateLessonRequest extends FormRequest
         }
     }
 
-    /**
-     * Prepare vocabulary items for updating
-     */
-    private function prepareVocabularyItems(): void
-    {
-        $this->merge([
-            'vocabulary_items' => collect($this->vocabulary_items)
-                ->map(function ($item) {
-                    // Mark items for removal if _remove is true
-                    if (isset($item['_remove']) && $item['_remove']) {
-                        return ['id' => $item['id'], '_remove' => true];
-                    }
-                    return $item;
-                })
-                ->toArray()
-        ]);
-    }
+   
+   
 }

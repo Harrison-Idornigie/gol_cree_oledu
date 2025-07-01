@@ -83,9 +83,9 @@ class TeamContentTemplateController extends BaseAPIController
                 'description' => 'required|string',
                 'template_data' => 'required|array',
                 'difficulty_level' => 'required|integer|min:1|max:10',
-                'skill_focus' => 'required|string|in:vocabulary,grammar,listening,speaking,reading,writing,conversation',
+                'skill_focus' => 'required|string|in:guidebook,grammar,listening,speaking,reading,writing,conversation',
                 'exercise_types' => 'nullable|array',
-                'vocabulary_requirements' => 'nullable|array',
+                'guidebook_requirements' => 'nullable|array',
             ]);
 
             $template = $this->templateService->createTemplate($validated, Auth::user());
@@ -131,9 +131,9 @@ class TeamContentTemplateController extends BaseAPIController
                 'description' => 'sometimes|string',
                 'template_data' => 'sometimes|array',
                 'difficulty_level' => 'sometimes|integer|min:1|max:10',
-                'skill_focus' => 'sometimes|string|in:vocabulary,grammar,listening,speaking,reading,writing,conversation',
+                'skill_focus' => 'sometimes|string|in:guidebook,grammar,listening,speaking,reading,writing,conversation',
                 'exercise_types' => 'sometimes|array',
-                'vocabulary_requirements' => 'sometimes|array',
+                'guidebook_requirements' => 'sometimes|array',
             ]);
 
             $updatedTemplate = $this->templateService->updateTemplate($template, $validated, Auth::user());
@@ -271,15 +271,15 @@ class TeamContentTemplateController extends BaseAPIController
             $validated = $request->validate([
                 'parent_id' => 'required|integer', // lesson_id, topic_id, etc.
                 'customizations' => 'nullable|array',
-                'vocabulary_ids' => 'nullable|array',
-                'vocabulary_ids.*' => 'exists:words,id',
+                'guidebook_ids' => 'nullable|array',
+                'guidebook_ids.*' => 'exists:words,id',
             ]);
 
             $instantiated = $this->templateService->instantiateTemplate(
                 $template,
                 $validated['parent_id'],
                 $validated['customizations'] ?? [],
-                $validated['vocabulary_ids'] ?? [],
+                $validated['guidebook_ids'] ?? [],
                 Auth::user()
             );
 

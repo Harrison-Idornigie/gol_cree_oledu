@@ -5,7 +5,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { CheckCircle, XCircle, Volume2, Loader2 } from 'lucide-react';
-import { WordData } from '@/types/tenant/vocabulary';
+import { WordData } from '@/types/tenant/guidebook';
 import { submitListeningTranscript } from '@/app/_actions/tenants/student/listening-actions';
 
 interface ListeningExerciseProps {

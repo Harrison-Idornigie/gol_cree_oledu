@@ -5,6 +5,7 @@ use App\Http\Middleware\Tenant\EnsureEmailIsVerified;
 use App\Http\Middleware\Tenant\EnsureEmailIsVerifiedWithGracePeriod;
 use App\Http\Middleware\Tenant\CheckSequentialAccess;
 use App\Http\Middleware\Tenant\RolePermissionMiddleware;
+use App\Http\Middleware\Tenant\EnsureUserBelongsToTenant;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -43,7 +44,8 @@ return Application::configure(basePath: dirname(__DIR__))
             'verified-grace' => EnsureEmailIsVerifiedWithGracePeriod::class,
             'sequential-learning' => CheckSequentialAccess::class,
             'permission' => RolePermissionMiddleware::class,
-            'role_permission' => RolePermissionMiddleware::class
+            'role_permission' => RolePermissionMiddleware::class,
+            'tenant-access' => EnsureUserBelongsToTenant::class
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

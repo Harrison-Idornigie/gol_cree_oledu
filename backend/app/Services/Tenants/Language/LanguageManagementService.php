@@ -447,7 +447,7 @@ class LanguageManagementService
             'total_lessons' => $language->lessons()
                 ->where('status', 'published')
                 ->count(),
-            'vocabulary_words' => $language->vocabularyWords()
+            'guidebook_words' => $language->guidebookWords()
                 ->where('status', 'published')
                 ->count(),
             'exercises' => $language->exercises()
@@ -472,7 +472,7 @@ class LanguageManagementService
             'proficiency_level' => 'beginner',
             'lessons_completed' => 0,
             'exercises_completed' => 0,
-            'vocabulary_learned' => 0,
+            'guidebook_learned' => 0,
             'current_streak' => 0,
             'total_time_minutes' => 0,
             'achievements_earned' => 0,
@@ -557,7 +557,7 @@ class LanguageManagementService
         return [
             'next_lesson' => null,
             'recommended_exercises' => [],
-            'suggested_vocabulary' => []
+            'suggested_guidebook' => []
         ];
     }
 

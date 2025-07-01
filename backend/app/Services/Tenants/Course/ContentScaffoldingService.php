@@ -19,7 +19,7 @@ use Exception;
  * Content Scaffolding Service
  * 
  * Handles automated content generation and scaffolding operations including:
- * - Exercise generation from vocabulary and sentences
+ * - Exercise generation from guidebook and sentences
  * - Lesson scaffolding from templates
  * - Content validation and quality control
  * - Bulk content generation workflows
@@ -44,9 +44,9 @@ class ContentScaffoldingService
     }
 
     /**
-     * Generate exercises from vocabulary words.
+     * Generate exercises from guidebook words.
      */
-    public function generateExercisesFromVocabulary(array $wordIds, array $exerciseTypes, array $options = []): Collection
+    public function generateExercisesFromGuidebook(array $wordIds, array $exerciseTypes, array $options = []): Collection
     {
         return DB::transaction(function () use ($wordIds, $exerciseTypes, $options) {
             $words = Word::with(['translations', 'language'])->whereIn('id', $wordIds)->get();
@@ -80,7 +80,7 @@ class ContentScaffoldingService
                 $exercises = $exercises->merge($typeExercises);
             }
 
-            Log::info('Exercises generated from vocabulary', [
+            Log::info('Exercises generated from guidebook', [
                 'word_count' => $words->count(),
                 'exercise_types' => $exerciseTypes,
                 'exercises_generated' => $exercises->count(),
@@ -128,9 +128,9 @@ class ContentScaffoldingService
     /**
      * Generate a lesson from a content template.
      */
-    public function generateLessonFromTemplate(ContentTemplate $template, array $vocabulary, array $options = []): Lesson
+    public function generateLessonFromTemplate(ContentTemplate $template, array $guidebook, array $options = []): Lesson
     {
-        return DB::transaction(function () use ($template, $vocabulary, $options) {
+        return DB::transaction(function () use ($template, $guidebook, $options) {
             // Validate template
             if ($template->template_type !== 'lesson') {
                 throw new Exception('Template must be of type "lesson"');
@@ -146,13 +146,13 @@ class ContentScaffoldingService
                 'tenant_id' => tenant('id')
             ]);
 
-            // Generate exercises based on template and vocabulary
-            $exercises = $this->generateExercisesFromTemplate($templateData, $vocabulary, $options);
+            // Generate exercises based on template and guidebook
+            $exercises = $this->generateExercisesFromTemplate($templateData, $guidebook, $options);
 
             // Set lesson metadata
             $lesson->generation_metadata = [
                 'template_id' => $template->id,
-                'vocabulary_count' => count($vocabulary),
+                'guidebook_count' => count($guidebook),
                 'exercises_generated' => $exercises->count(),
                 'generated_at' => now()->toISOString(),
                 'difficulty_level' => $options['difficulty_level'] ?? 'intermediate'
@@ -256,7 +256,7 @@ class ContentScaffoldingService
                 'difficulty_level' => $difficulty,
                 'generated_from_template' => true,
                 'generation_source' => [
-                    'type' => 'vocabulary',
+                    'type' => 'guidebook',
                     'word_id' => $targetWord->id,
                     'method' => 'multiple_choice_translation'
                 ],
@@ -309,7 +309,7 @@ class ContentScaffoldingService
                 'difficulty_level' => $difficulty,
                 'generated_from_template' => true,
                 'generation_source' => [
-                    'type' => 'vocabulary',
+                    'type' => 'guidebook',
                     'word_id' => $targetWord->id,
                     'sentence_id' => $sentence->id,
                     'method' => 'fill_blank_context'
@@ -364,7 +364,7 @@ class ContentScaffoldingService
                     'difficulty_level' => $difficulty,
                     'generated_from_template' => true,
                     'generation_source' => [
-                        'type' => 'vocabulary',
+                        'type' => 'guidebook',
                         'word_ids' => $wordGroup->pluck('id')->toArray(),
                         'method' => 'matching_translation'
                     ],
@@ -410,7 +410,7 @@ class ContentScaffoldingService
                 'difficulty_level' => $difficulty,
                 'generated_from_template' => true,
                 'generation_source' => [
-                    'type' => 'vocabulary',
+                    'type' => 'guidebook',
                     'word_ids' => $targetWords->pluck('id')->toArray(),
                     'method' => 'writing_prompt'
                 ],
@@ -798,12 +798,12 @@ class ContentScaffoldingService
     /**
      * Generate exercises from template data.
      */
-    private function generateExercisesFromTemplate(array $templateData, array $vocabulary, array $options): Collection
+    private function generateExercisesFromTemplate(array $templateData, array $guidebook, array $options): Collection
     {
         $exercises = collect();
 
         foreach ($templateData['exercise_patterns'] ?? [] as $pattern) {
-            $patternExercises = $this->generateExercisesFromPattern($pattern, $vocabulary, $options);
+            $patternExercises = $this->generateExercisesFromPattern($pattern, $guidebook, $options);
             $exercises = $exercises->merge($patternExercises);
         }
 
@@ -813,14 +813,14 @@ class ContentScaffoldingService
     /**
      * Generate exercises from a specific pattern.
      */
-    private function generateExercisesFromPattern(array $pattern, array $vocabulary, array $options): Collection
+    private function generateExercisesFromPattern(array $pattern, array $guidebook, array $options): Collection
     {
         $exercises = collect();
         $exerciseType = $pattern['type'];
         $count = $pattern['count'] ?? 1;
 
         // Get words for this pattern
-        $words = Word::whereIn('id', $vocabulary)->get();
+        $words = Word::whereIn('id', $guidebook)->get();
 
         if ($words->isNotEmpty()) {
             $patternExercises = $this->generateExercisesByType($words, $exerciseType, $count, $options['difficulty_level'] ?? 'intermediate');

@@ -29,7 +29,6 @@ class ContentTemplate extends Model
     ];
 
     // Skill focus areas
-    public const SKILL_VOCABULARY = 'vocabulary';
     public const SKILL_GRAMMAR = 'grammar';
     public const SKILL_LISTENING = 'listening';
     public const SKILL_SPEAKING = 'speaking';
@@ -38,7 +37,6 @@ class ContentTemplate extends Model
     public const SKILL_CONVERSATION = 'conversation';
 
     public const SKILL_AREAS = [
-        self::SKILL_VOCABULARY => 'Vocabulary',
         self::SKILL_GRAMMAR => 'Grammar',
         self::SKILL_LISTENING => 'Listening',
         self::SKILL_SPEAKING => 'Speaking',
@@ -55,7 +53,7 @@ class ContentTemplate extends Model
         'difficulty_level',
         'skill_focus',
         'exercise_types',
-        'vocabulary_requirements',
+        'guidebook_requirements',
         'created_by',
         'usage_count',
         'tenant_id',
@@ -64,7 +62,7 @@ class ContentTemplate extends Model
     protected $casts = [
         'template_data' => 'array',
         'exercise_types' => 'array',
-        'vocabulary_requirements' => 'array',
+        'guidebook_requirements' => 'array',
         'difficulty_level' => 'integer',
         'usage_count' => 'integer',
     ];
@@ -79,7 +77,7 @@ class ContentTemplate extends Model
         'difficulty_level',
         'skill_focus',
         'exercise_types',
-        'vocabulary_requirements',
+        'guidebook_requirements',
     ];
 
     /**
@@ -178,19 +176,19 @@ class ContentTemplate extends Model
     }
 
     /**
-     * Get required vocabulary count.
+     * Get required guidebook count.
      */
-    public function getRequiredVocabularyCount(): int
+    public function getRequiredGuidebookCount(): int
     {
-        return $this->vocabulary_requirements['min_words'] ?? 0;
+        return $this->guidebook_requirements['min_words'] ?? 0;
     }
 
     /**
-     * Get vocabulary difficulty requirements.
+     * Get guidebook difficulty requirements.
      */
-    public function getVocabularyDifficultyRequirements(): array
+    public function getGuidebookDifficultyRequirements(): array
     {
-        return $this->vocabulary_requirements['difficulty_distribution'] ?? [];
+        return $this->guidebook_requirements['difficulty_distribution'] ?? [];
     }
 
     /**
@@ -320,8 +318,8 @@ class ContentTemplate extends Model
             $score += count($exercisePatterns) * 5;
         }
 
-        // Add complexity based on vocabulary requirements
-        $vocabRequirements = $this->vocabulary_requirements ?? [];
+        // Add complexity based on guidebook requirements
+        $vocabRequirements = $this->guidebook_requirements ?? [];
         $score += ($vocabRequirements['min_words'] ?? 0) * 0.5;
 
         return min(100, $score);
@@ -397,7 +395,7 @@ class ContentTemplate extends Model
             'skill_focus' => $this->skill_focus,
             'skill_focus_display' => $this->skill_focus_display,
             'exercise_types' => $this->exercise_types,
-            'vocabulary_requirements' => $this->vocabulary_requirements,
+            'guidebook_requirements' => $this->guidebook_requirements,
             'complexity_score' => $this->getComplexityScore(),
             'usage_count' => $this->usage_count,
             'created_at' => $this->created_at,

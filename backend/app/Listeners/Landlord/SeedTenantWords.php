@@ -16,8 +16,8 @@ use Illuminate\Support\Facades\Log;
 /**
  * Seed Tenant Words Listener
  * 
- * Handles seeding of vocabulary words for new tenants.
- * This listener automatically seeds Plains Cree, English, and Spanish vocabulary
+ * Handles seeding of guidebook words for new tenants.
+ * This listener automatically seeds Plains Cree, English, and Spanish guidebook
  * with cross-language translations during tenant provisioning.
  */
 class SeedTenantWords
@@ -37,7 +37,7 @@ class SeedTenantWords
         try {
             // Switch to tenant context for all database operations
             $tenant->run(function () use ($tenant, $event) {
-                // Seed vocabulary words
+                // Seed guidebook words
                 $this->seedWords($tenant, $event->adminUser);
             });
 
@@ -58,7 +58,7 @@ class SeedTenantWords
     }
 
     /**
-     * Seed vocabulary words for the tenant
+     * Seed guidebook words for the tenant
      */
     private function seedWords($tenant, User $adminUser): void
     {
@@ -90,7 +90,7 @@ class SeedTenantWords
             return;
         }
 
-        Log::info('Starting vocabulary seeding', [
+        Log::info('Starting guidebook seeding', [
             'tenant_id' => $tenant->id,
             'languages' => [
                 'english_id' => $english->id,
@@ -113,7 +113,7 @@ class SeedTenantWords
         Log::info('Creating cross-language translations');
         $this->createTranslations($english->id, $spanish->id, $plainsCree->id);
 
-        Log::info('Vocabulary seeding completed successfully', [
+        Log::info('Guidebook seeding completed successfully', [
             'tenant_id' => $tenant->id,
             'english_words' => count($englishWords),
             'spanish_words' => count($spanishWords),

@@ -488,7 +488,7 @@ class ContentTemplateService
             ],
             'structure_preview' => $this->generateStructurePreview($template),
             'estimated_content' => $this->estimateGeneratedContent($template),
-            'requirements' => $template->vocabulary_requirements,
+            'requirements' => $template->guidebook_requirements,
             'exercise_types' => $template->exercise_types,
         ];
     }
@@ -500,19 +500,19 @@ class ContentTemplateService
         ContentTemplate $template,
         int $parentId,
         array $customizations = [],
-        array $vocabularyIds = [],
+        array $guidebookIds = [],
         User $user
     ): array {
-        return DB::transaction(function () use ($template, $parentId, $customizations, $vocabularyIds, $user) {
+        return DB::transaction(function () use ($template, $parentId, $customizations, $guidebookIds, $user) {
             // Increment usage count
             $this->incrementUsage($template);
 
             // Generate content based on template type
             $instantiated = match ($template->template_type) {
-                ContentTemplate::TYPE_EXERCISE => $this->instantiateExerciseTemplate($template, $parentId, $customizations, $vocabularyIds, $user),
-                ContentTemplate::TYPE_LESSON => $this->instantiateLessonTemplate($template, $parentId, $customizations, $vocabularyIds, $user),
-                ContentTemplate::TYPE_TOPIC => $this->instantiateTopicTemplate($template, $parentId, $customizations, $vocabularyIds, $user),
-                ContentTemplate::TYPE_UNIT => $this->instantiateUnitTemplate($template, $parentId, $customizations, $vocabularyIds, $user),
+                ContentTemplate::TYPE_EXERCISE => $this->instantiateExerciseTemplate($template, $parentId, $customizations, $guidebookIds, $user),
+                ContentTemplate::TYPE_LESSON => $this->instantiateLessonTemplate($template, $parentId, $customizations, $guidebookIds, $user),
+                ContentTemplate::TYPE_TOPIC => $this->instantiateTopicTemplate($template, $parentId, $customizations, $guidebookIds, $user),
+                ContentTemplate::TYPE_UNIT => $this->instantiateUnitTemplate($template, $parentId, $customizations, $guidebookIds, $user),
                 default => throw new Exception("Unsupported template type: {$template->template_type}")
             };
 
@@ -659,7 +659,7 @@ class ContentTemplateService
             'estimated_exercises' => $this->estimateExerciseCount($template),
             'estimated_duration' => $this->estimateDuration($template),
             'content_complexity' => $template->difficulty_level,
-            'vocabulary_needed' => $template->vocabulary_requirements['min_words'] ?? 0,
+            'guidebook_needed' => $template->guidebook_requirements['min_words'] ?? 0,
         ];
     }
 
@@ -701,7 +701,7 @@ class ContentTemplateService
         ContentTemplate $template,
         int $lessonId,
         array $customizations,
-        array $vocabularyIds,
+        array $guidebookIds,
         User $user
     ): array {
         // This would integrate with ExerciseService to create actual exercises
@@ -721,7 +721,7 @@ class ContentTemplateService
         ContentTemplate $template,
         int $topicId,
         array $customizations,
-        array $vocabularyIds,
+        array $guidebookIds,
         User $user
     ): array {
         // This would integrate with LessonService to create actual lessons
@@ -741,7 +741,7 @@ class ContentTemplateService
         ContentTemplate $template,
         int $unitId,
         array $customizations,
-        array $vocabularyIds,
+        array $guidebookIds,
         User $user
     ): array {
         // This would integrate with TopicService to create actual topics
@@ -761,7 +761,7 @@ class ContentTemplateService
         ContentTemplate $template,
         int $learningPathId,
         array $customizations,
-        array $vocabularyIds,
+        array $guidebookIds,
         User $user
     ): array {
         // This would integrate with UnitService to create actual units

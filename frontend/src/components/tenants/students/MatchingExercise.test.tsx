@@ -1,7 +1,7 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import MatchingExercise from "./MatchingExercise";
-import { WordData } from "@/types/tenant/vocabulary";
+import { WordData } from "@/types/tenant/guidebook";
 
 // Mock the ClickableText component
 vi.mock("./ClickableText", () => ({

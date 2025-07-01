@@ -16,15 +16,19 @@ class UserProgress extends Model
     public const AUDIT_AREA = 'user_progress';
 
     public const STATUS_NOT_STARTED = 'not_started';
-    public const STATUS_IN_PROGRESS = 'in_progress';
-    public const STATUS_COMPLETED   = 'completed';
-    public const STATUS_FAILED      = 'failed';
+    public const STATUS_LEARNING = 'learning';
+    public const STATUS_PRACTICING = 'practicing';
+    public const STATUS_MASTERED = 'mastered';
 
     protected $fillable = [
         'user_id',
         'trackable_type',
         'trackable_id',
         'status',
+        'strength',
+        'streak',
+        'mistake_count',
+        'last_practiced_at',
         'meta_data',
         'completed_at',
     ];
@@ -57,7 +61,7 @@ class UserProgress extends Model
     {
         $this->status = $status;
 
-        if ($status === self::STATUS_COMPLETED && ! $this->completed_at) {
+        if ($status === self::STATUS_MASTERED && ! $this->completed_at) {
             $this->completed_at = now();
         }
 
@@ -73,7 +77,7 @@ class UserProgress extends Model
      */
     public function complete(array $metadata = []): bool
     {
-        return $this->updateStatus(self::STATUS_COMPLETED, $metadata);
+        return $this->updateStatus(self::STATUS_MASTERED, $metadata);
     }
 
     /**
@@ -81,7 +85,7 @@ class UserProgress extends Model
      */
     public function fail(array $metadata = []): bool
     {
-        return $this->updateStatus(self::STATUS_FAILED, $metadata);
+        return $this->updateStatus(self::STATUS_LEARNING, $metadata);
     }
 
     /**
@@ -89,7 +93,7 @@ class UserProgress extends Model
      */
     public function startProgress(array $metadata = []): bool
     {
-        return $this->updateStatus(self::STATUS_IN_PROGRESS, $metadata);
+        return $this->updateStatus(self::STATUS_PRACTICING, $metadata);
     }
 
     /**
@@ -105,7 +109,7 @@ class UserProgress extends Model
      */
     public function isCompleted(): bool
     {
-        return $this->status === self::STATUS_COMPLETED;
+        return $this->status === self::STATUS_MASTERED;
     }
 
     /**
@@ -113,7 +117,7 @@ class UserProgress extends Model
      */
     public function isFailed(): bool
     {
-        return $this->status === self::STATUS_FAILED;
+        return $this->status === self::STATUS_LEARNING;
     }
 
     /**
@@ -121,7 +125,7 @@ class UserProgress extends Model
      */
     public function isInProgress(): bool
     {
-        return $this->status === self::STATUS_IN_PROGRESS;
+        return $this->status === self::STATUS_PRACTICING;
     }
 
     /**
@@ -191,27 +195,27 @@ class UserProgress extends Model
     }
 
     /**
-     * Scope a query to only include completed progress.
+     * Scope a query to only include mastered words.
      */
-    public function scopeCompleted($query)
+    public function scopeMastered($query)
     {
-        return $query->where('status', self::STATUS_COMPLETED);
+        return $query->where('status', self::STATUS_MASTERED);
     }
 
     /**
-     * Scope a query to only include failed progress.
+     * Scope a query to only include learning words.
      */
-    public function scopeFailed($query)
+    public function scopeLearning($query)
     {
-        return $query->where('status', self::STATUS_FAILED);
+        return $query->where('status', self::STATUS_LEARNING);
     }
 
     /**
-     * Scope a query to only include in progress items.
+     * Scope a query to only include practicing words.
      */
-    public function scopeInProgress($query)
+    public function scopePracticing($query)
     {
-        return $query->where('status', self::STATUS_IN_PROGRESS);
+        return $query->where('status', self::STATUS_PRACTICING);
     }
 
     /**

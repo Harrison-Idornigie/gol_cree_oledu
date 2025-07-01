@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 
@@ -96,11 +97,11 @@ class Lesson extends Model
     }
 
     /**
-     * Get the vocabulary items for the lesson.
+     * Get the guide book entry for the lesson (lesson cheat sheet).
      */
-    public function vocabularyItems(): HasMany
+    public function guideBookEntry(): HasOne
     {
-        return $this->hasMany(VocabularyItem::class);
+        return $this->hasOne(GuideBookEntry::class);
     }
 
     /**
@@ -150,7 +151,7 @@ class Lesson extends Model
             'description'      => $this->description,
             'order'            => $this->order,
             'exercises_count'  => $this->exercises()->count(),
-            'vocabulary_count' => $this->vocabularyItems()->count(),
+            'words_count'      => $this->guideBookEntry?->word_count ?? 0,
             'thumbnail'        => collect($this->getMedia('thumbnail'))->first()?->getUrl(),
             'topic'            => [
                 'id'    => $this->topic->id,
@@ -179,7 +180,7 @@ class Lesson extends Model
             'description'      => $this->description,
             'order'            => $this->order,
             'exercises'        => $this->exercises->map->getExportData()->toArray(),
-            'vocabulary_items' => $this->vocabularyItems->map->getExportData()->toArray(),
+            'guide_book'       => $this->guideBookEntry?->getExportData(),
             'media'            => $this->media->groupBy('collection_name')->toArray(),
         ];
     }
@@ -200,12 +201,14 @@ class Lesson extends Model
             Exercise::importData($exerciseData, $lesson);
         }
 
-        foreach ($data['vocabulary_items'] ?? [] as $itemData) {
-            VocabularyItem::create([
-                'lesson_id'   => $lesson->id,
-                'word'        => $itemData['word'],
-                'translation' => $itemData['translation'],
-                'example'     => $itemData['example'] ?? null,
+        // Import guide book data if available
+        if (!empty($data['guide_book'])) {
+            GuideBookEntry::create([
+                'lesson_id' => $lesson->id,
+                'title' => $data['guide_book']['title'] ?? $lesson->title . ' Guide',
+                'content' => $data['guide_book']['content'] ?? '',
+                'words_introduced' => $data['guide_book']['words_introduced'] ?? [],
+                'words_reused' => $data['guide_book']['words_reused'] ?? [],
             ]);
         }
 

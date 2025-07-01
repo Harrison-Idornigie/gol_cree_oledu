@@ -47,7 +47,7 @@ class StudentLanguageControllerTest extends TenantTestCase
      */
     public function test_with_learning_paths_success()
     {
-        Sanctum::actingAs($this->studentUser, ['*']);
+        Sanctum::actingAs($this->studentUser, ['*'], 'tenant');
 
         $response = $this->getJson("/api/{$this->tenant->slug}/student/languages/with-learning-paths");
 
@@ -68,7 +68,7 @@ class StudentLanguageControllerTest extends TenantTestCase
      */
     public function test_show_success()
     {
-        Sanctum::actingAs($this->studentUser, ['*']);
+        Sanctum::actingAs($this->studentUser, ['*'], 'tenant');
 
         // Create a language first
         $language = $this->createTestLanguage();
@@ -92,7 +92,7 @@ class StudentLanguageControllerTest extends TenantTestCase
      */
     public function test_learning_paths_success()
     {
-        Sanctum::actingAs($this->studentUser, ['*']);
+        Sanctum::actingAs($this->studentUser, ['*'], 'tenant');
         $language = $this->createTestLanguage();
 
         $response = $this->getJson("/api/{$this->tenant->slug}/student/languages/{$language->id}/learning-paths");
@@ -114,7 +114,7 @@ class StudentLanguageControllerTest extends TenantTestCase
      */
     public function test_proficiency_levels_success()
     {
-        Sanctum::actingAs($this->studentUser, ['*']);
+        Sanctum::actingAs($this->studentUser, ['*'], 'tenant');
         $language = $this->createTestLanguage();
 
         $response = $this->getJson("/api/{$this->tenant->slug}/student/languages/{$language->id}/proficiency-levels");
@@ -136,7 +136,7 @@ class StudentLanguageControllerTest extends TenantTestCase
      */
     public function test_user_progress_success()
     {
-        Sanctum::actingAs($this->studentUser, ['*']);
+        Sanctum::actingAs($this->studentUser, ['*'], 'tenant');
         $language = $this->createTestLanguage();
 
         $response = $this->getJson("/api/{$this->tenant->slug}/student/languages/{$language->id}/progress");
@@ -158,7 +158,7 @@ class StudentLanguageControllerTest extends TenantTestCase
      */
     public function test_dashboard_success()
     {
-        Sanctum::actingAs($this->studentUser, ['*']);
+        Sanctum::actingAs($this->studentUser, ['*'], 'tenant');
         $language = $this->createTestLanguage();
 
         $response = $this->getJson("/api/{$this->tenant->slug}/student/languages/{$language->id}/dashboard");
@@ -189,7 +189,7 @@ class StudentLanguageControllerTest extends TenantTestCase
      */
     public function test_invalid_language_id()
     {
-        Sanctum::actingAs($this->studentUser, ['*']);
+        Sanctum::actingAs($this->studentUser, ['*'], 'tenant');
 
         $response = $this->getJson("/api/{$this->tenant->slug}/student/languages/invalid-id");
         $response->assertStatus(404);
@@ -210,7 +210,7 @@ class StudentLanguageControllerTest extends TenantTestCase
      */
     public function test_expected_language_response_structure()
     {
-        Sanctum::actingAs($this->studentUser, ['*']);
+        Sanctum::actingAs($this->studentUser, ['*'], 'tenant');
 
         $response = $this->getJson("/api/{$this->tenant->slug}/student/languages");
 

@@ -70,8 +70,8 @@ class TeamLessonControllerTest extends TenantTestCase
                 'title' => 'Spanish for Beginners',
                 'description' => 'Learn Spanish from scratch',
                 'language_id' => $this->language->id,
-                'level' => 'beginner',
-                'status' => 'active',
+                'target_level' => 'beginner',
+                'status' => 'published',
                 'created_by' => $this->teamMember->id,
             ]);
         });
@@ -81,20 +81,19 @@ class TeamLessonControllerTest extends TenantTestCase
                 'title' => 'Unit 1: Basics',
                 'description' => 'Basic Spanish vocabulary and phrases',
                 'learning_path_id' => $this->learningPath->id,
-                'order_index' => 1,
-                'status' => 'active',
-                'created_by' => $this->teamMember->id,
+                'order' => 1,
+                'status' => 'published',
             ]);
         });
 
         $this->topic = $this->runInTenantContext($this->tenant, function () {
             return Topic::create([
                 'title' => 'Greetings',
+                'slug' => 'greetings',
                 'description' => 'Basic Spanish greetings',
                 'unit_id' => $this->unit->id,
-                'order_index' => 1,
-                'status' => 'active',
-                'created_by' => $this->teamMember->id,
+                'order' => 1,
+                'status' => 'published',
             ]);
         });
     }
@@ -112,10 +111,8 @@ class TeamLessonControllerTest extends TenantTestCase
                 'title' => 'Lesson 1: Basic Greetings',
                 'description' => 'Learn basic Spanish greetings',
                 'topic_id' => $this->topic->id,
-                'order_index' => 1,
-                'lesson_type' => 'interactive',
-                'status' => 'draft',
-                'content' => json_encode(['introduction' => 'Welcome to the lesson']),
+                'order' => 1,
+                'status' => 'published',
                 'created_by' => $this->teamMember->id,
             ], $attributes));
         });
@@ -128,10 +125,10 @@ class TeamLessonControllerTest extends TenantTestCase
      */
     public function test_team_member_can_list_lessons()
     {
-        Sanctum::actingAs($this->teamMember, ['tenant']);
+        Sanctum::actingAs($this->teamMember, ['*'], 'tenant');
 
         $lesson1 = $this->createTestLesson(['title' => 'Lesson 1']);
-        $lesson2 = $this->createTestLesson(['title' => 'Lesson 2', 'order_index' => 2]);
+        $lesson2 = $this->createTestLesson(['title' => 'Lesson 2', 'order' => 2]);
 
         $response = $this->getJson("/api/{$this->tenant->slug}/team/lessons");
 
@@ -164,7 +161,7 @@ class TeamLessonControllerTest extends TenantTestCase
      */
     public function test_team_member_can_create_lesson()
     {
-        Sanctum::actingAs($this->teamMember, ['tenant']);
+        Sanctum::actingAs($this->teamMember, ['*'], 'tenant');
 
         $lessonData = [
             'title' => 'New Lesson',
@@ -202,7 +199,7 @@ class TeamLessonControllerTest extends TenantTestCase
      */
     public function test_lesson_creation_validation()
     {
-        Sanctum::actingAs($this->teamMember, ['tenant']);
+        Sanctum::actingAs($this->teamMember, ['*'], 'tenant');
 
         // Missing required fields
         $response = $this->postJson("/api/{$this->tenant->slug}/team/lessons", []);
@@ -237,7 +234,7 @@ class TeamLessonControllerTest extends TenantTestCase
      */
     public function test_team_member_can_show_lesson()
     {
-        Sanctum::actingAs($this->teamMember, ['tenant']);
+        Sanctum::actingAs($this->teamMember, ['*'], 'tenant');
 
         $lesson = $this->createTestLesson();
 
@@ -272,7 +269,7 @@ class TeamLessonControllerTest extends TenantTestCase
      */
     public function test_team_member_can_update_lesson()
     {
-        Sanctum::actingAs($this->teamMember, ['tenant']);
+        Sanctum::actingAs($this->teamMember, ['*'], 'tenant');
 
         $lesson = $this->createTestLesson();
 

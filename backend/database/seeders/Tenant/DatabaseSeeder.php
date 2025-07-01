@@ -27,7 +27,7 @@ class DatabaseSeeder extends Seeder
             // Core language setup
             LanguageSeeder::class,
             LanguagePairSeeder::class, // Create language pairs for templates
-            WordSeeder::class, // Add vocabulary words
+            WordSeeder::class, // Add guidebook words
             LearningPathSeeder::class,
             UserLanguageSeeder::class,
 

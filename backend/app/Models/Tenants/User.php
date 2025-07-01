@@ -42,6 +42,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'total_points',
         'tenant_id',
         'central_user_id',
+        'metadata',
     ];
 
     protected $hidden = [
@@ -54,6 +55,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
         'password'          => 'hashed',
         'total_points'      => 'integer',
+        'metadata'          => 'array',
     ];
 
     protected $attributes = [
@@ -183,22 +185,20 @@ class User extends Authenticatable implements MustVerifyEmail
             ->where('status', UserProgress::STATUS_COMPLETED)
             ->count();
 
-        $vocabularyMastered = $progress
-            ->where('trackable_type', VocabularyItem::class)
-            ->where('status', UserProgress::STATUS_COMPLETED)
-            ->count();
-
         $exercisesCompleted = $progress
             ->where('trackable_type', Exercise::class)
             ->where('status', UserProgress::STATUS_COMPLETED)
             ->count();
+
+        
+        $wordsLearned = 0; // TODO: Implement GuideBook word tracking
 
         return [
             'completed_lessons'   => $completedLessons,
             'total_points'        => $this->total_points,
             'completed_units'     => $completedUnits,
             'total_units'         => $totalUnits,
-            'vocabulary_mastered' => $vocabularyMastered,
+            'words_learned'       => $wordsLearned,
             'exercises_completed' => $exercisesCompleted,
         ];
     }

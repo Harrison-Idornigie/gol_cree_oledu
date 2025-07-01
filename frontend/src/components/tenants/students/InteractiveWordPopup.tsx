@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Volume2, X, BookOpen, MessageCircle } from 'lucide-react';
-import { WordData } from '@/types/tenant/vocabulary';
+import { WordData } from '@/types/tenant/guidebook';
 
 interface InteractiveWordPopupProps {
   word: WordData;

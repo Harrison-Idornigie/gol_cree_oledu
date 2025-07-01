@@ -159,9 +159,9 @@ class CurriculumTemplateService
      */
     private function applyCustomizations(array $templateData, array $customizations): array
     {
-        // Apply vocabulary customizations
-        if (isset($customizations['vocabulary_replacements'])) {
-            $templateData = $this->applyVocabularyCustomizations($templateData, $customizations['vocabulary_replacements']);
+        // Apply guidebook customizations
+        if (isset($customizations['guidebook_replacements'])) {
+            $templateData = $this->applyGuidebookCustomizations($templateData, $customizations['guidebook_replacements']);
         }
 
         // Apply difficulty adjustments
@@ -189,10 +189,10 @@ class CurriculumTemplateService
         $score = 0;
         $maxScore = 0;
 
-        // Vocabulary replacements (0-30 points)
+        // Guidebook replacements (0-30 points)
         $maxScore += 30;
-        if (isset($customizations['vocabulary_replacements'])) {
-            $replacementCount = count($customizations['vocabulary_replacements']);
+        if (isset($customizations['guidebook_replacements'])) {
+            $replacementCount = count($customizations['guidebook_replacements']);
             $score += min(30, $replacementCount * 2);
         }
 
@@ -360,14 +360,14 @@ class CurriculumTemplateService
     }
 
     /**
-     * Apply vocabulary customizations to template data.
+     * Apply guidebook customizations to template data.
      */
-    private function applyVocabularyCustomizations(array $templateData, array $replacements): array
+    private function applyGuidebookCustomizations(array $templateData, array $replacements): array
     {
-        // This would recursively search through the template data and replace vocabulary
-        // Implementation would depend on how vocabulary is stored in templates
+        // This would recursively search through the template data and replace guidebook
+        // Implementation would depend on how guidebook is stored in templates
         foreach ($replacements as $original => $replacement) {
-            $templateData = $this->replaceVocabularyInData($templateData, $original, $replacement);
+            $templateData = $this->replaceGuidebookInData($templateData, $original, $replacement);
         }
 
         return $templateData;
@@ -403,13 +403,13 @@ class CurriculumTemplateService
     }
 
     /**
-     * Replace vocabulary in template data recursively.
+     * Replace guidebook in template data recursively.
      */
-    private function replaceVocabularyInData(array $data, string $original, string $replacement): array
+    private function replaceGuidebookInData(array $data, string $original, string $replacement): array
     {
         foreach ($data as $key => $value) {
             if (is_array($value)) {
-                $data[$key] = $this->replaceVocabularyInData($value, $original, $replacement);
+                $data[$key] = $this->replaceGuidebookInData($value, $original, $replacement);
             } elseif (is_string($value)) {
                 $data[$key] = str_replace($original, $replacement, $value);
             }

@@ -12,7 +12,7 @@ This project implements a comprehensive curriculum template and content scaffold
 - **Quality Consistency**: Standardized curriculum structures aligned with CEFR levels (A1-C2)
 - **Scalability**: Enable rapid course creation across multiple languages and tenants
 - **Collaboration**: Real-time team-based content development and review
-- **Automation**: Intelligent exercise generation from vocabulary and sentence banks
+- **Automation**: Intelligent exercise generation from guidebook and sentence banks
 
 ### Expected Outcomes
 
@@ -30,7 +30,7 @@ This project implements a comprehensive curriculum template and content scaffold
 - `LearningPath`, `Unit`, `Topic`, `Lesson`, `Exercise` hierarchy
 - `Word`, `WordTranslation`, `Sentence` with sophisticated mapping
 - `SentenceWord` pivot with position/timing data
-- `VocabularyItem` with media support
+- `GuidebookItem` with media support
 - `Language` with translation pairs
 
 #### ✅ **Comprehensive Exercise System**
@@ -56,7 +56,7 @@ This project implements a comprehensive curriculum template and content scaffold
 
 #### ✅ **Advanced Services**
 
-- `WordManagementService` for vocabulary operations
+- `WordManagementService` for guidebook operations
 - `SentenceWordMappingService` for intelligent word mapping
 - Exercise type handlers for content validation
 - Authentication and authorization systems
@@ -96,18 +96,18 @@ This project implements a comprehensive curriculum template and content scaffold
 
 - [ ] ⏳ Teachers can select from 5+ pre-built curriculum templates
 - [ ] ⏳ Template instantiation creates complete learning path structure
-- [ ] ⏳ Basic customization of vocabulary lists works
+- [ ] ⏳ Basic customization of guidebook lists works
 - [ ] ⏳ All existing functionality remains intact
 
 ### Phase 2: Exercise Scaffolding (Weeks 5-8)
 
-**Goal**: Automated exercise generation from vocabulary and sentence banks
+**Goal**: Automated exercise generation from guidebook and sentence banks
 
 #### Week 5-6: Scaffolding Infrastructure
 
 - [ ] ⏳ Implement `ContentScaffoldingService`
 - [ ] ⏳ Create `TeamContentScaffoldingController`
-- [ ] ⏳ Build vocabulary-driven exercise generation
+- [ ] ⏳ Build guidebook-driven exercise generation
 - [ ] ⏳ Implement sentence-based exercise creation
 - [ ] ⏳ Add `DifficultyAnalysisService`
 
@@ -121,7 +121,7 @@ This project implements a comprehensive curriculum template and content scaffold
 
 #### Success Criteria Phase 2
 
-- [ ] ⏳ Generate 50+ exercises from 10-word vocabulary list
+- [ ] ⏳ Generate 50+ exercises from 10-word guidebook list
 - [ ] ⏳ Automatic difficulty progression within lessons
 - [ ] ⏳ 95% generated content passes quality validation
 - [ ] ⏳ Bulk operations handle 1000+ exercises efficiently
@@ -221,7 +221,7 @@ CREATE TABLE content_templates (
     difficulty_level INTEGER,
     skill_focus VARCHAR(100),
     exercise_types JSON,
-    vocabulary_requirements JSON,
+    guidebook_requirements JSON,
     tenant_id VARCHAR(255),
     created_at TIMESTAMP,
     updated_at TIMESTAMP,
@@ -240,7 +240,7 @@ CREATE TABLE exercise_templates (
     template_name VARCHAR(255) NOT NULL,
     generation_rules JSON NOT NULL,
     difficulty_range VARCHAR(20),
-    vocabulary_constraints JSON,
+    guidebook_constraints JSON,
     grammar_focus VARCHAR(100),
     success_rate DECIMAL(5,2),
     tenant_id VARCHAR(255),
@@ -379,7 +379,7 @@ POST   /api/{tenant}/team/scaffolding/validate-content
 
 // Lesson Scaffolding
 POST   /api/{tenant}/team/scaffolding/generate-lesson
-POST   /api/{tenant}/team/scaffolding/lesson-from-vocabulary
+POST   /api/{tenant}/team/scaffolding/lesson-from-guidebook
 POST   /api/{tenant}/team/scaffolding/lesson-from-grammar
 ```
 
@@ -387,7 +387,7 @@ POST   /api/{tenant}/team/scaffolding/lesson-from-grammar
 
 ```php
 // Automated Content Creation
-POST   /api/{tenant}/team/generation/vocabulary-exercises
+POST   /api/{tenant}/team/generation/guidebook-exercises
 POST   /api/{tenant}/team/generation/sentence-exercises
 POST   /api/{tenant}/team/generation/grammar-exercises
 POST   /api/{tenant}/team/generation/assessment-exercises
@@ -446,9 +446,9 @@ class CurriculumTemplateService
 class ContentScaffoldingService
 {
     // Exercise generation
-    public function generateExercisesFromVocabulary(array $wordIds, array $exerciseTypes): Collection
+    public function generateExercisesFromGuidebook(array $wordIds, array $exerciseTypes): Collection
     public function generateExercisesFromSentences(array $sentenceIds, array $exerciseTypes): Collection
-    public function generateLessonFromTemplate(ContentTemplate $template, array $vocabulary): Lesson
+    public function generateLessonFromTemplate(ContentTemplate $template, array $guidebook): Lesson
 
     // Quality control
     public function validateGeneratedContent(array $content): array
@@ -464,7 +464,7 @@ class DifficultyAnalysisService
 {
     // Difficulty calculation
     public function calculateTextDifficulty(string $text, string $languageCode): float
-    public function calculateVocabularyDifficulty(array $wordIds): float
+    public function calculateGuidebookDifficulty(array $wordIds): float
     public function calculateExerciseDifficulty(Exercise $exercise): float
 
     // Progression analysis
@@ -515,17 +515,17 @@ class ContentValidationService
 
 ### Exercise Scaffolding Framework (3-Layer Approach)
 
-#### **Layer 1: Vocabulary-Driven Generation**
+#### **Layer 1: Guidebook-Driven Generation**
 
 - **Decision**: Use existing Word/WordTranslation models as primary content source
 - **Rationale**: Leverages sophisticated word mapping and translation system
-- **Implementation**: Generate multiple exercise types from single vocabulary set
+- **Implementation**: Generate multiple exercise types from single guidebook set
 
 #### **Layer 2: Sentence-Driven Generation**
 
 - **Decision**: Utilize SentenceWordMapping for contextual exercises
 - **Rationale**: Provides realistic language usage patterns and context
-- **Implementation**: Extract grammar patterns and vocabulary from sentence structures
+- **Implementation**: Extract grammar patterns and guidebook from sentence structures
 
 #### **Layer 3: Grammar-Driven Generation**
 
@@ -614,7 +614,7 @@ class ContentValidationService
 
 - [ ] ⏳ Implement ContentScaffoldingService with generation algorithms
 - [ ] ⏳ Create TeamContentScaffoldingController with bulk operations
-- [ ] ⏳ Build vocabulary-driven exercise generation engine
+- [ ] ⏳ Build guidebook-driven exercise generation engine
 - [ ] ⏳ Implement sentence-based exercise creation system
 - [ ] ⏳ Add DifficultyAnalysisService with scoring algorithms
 - [ ] ⏳ Create exercise variation generation system
@@ -661,7 +661,7 @@ class ContentValidationService
 - [ ] ⏳ Build shared lesson planning interface
 - [ ] ⏳ Implement group review workflows with approval chains
 - [ ] ⏳ Add collaborative template customization
-- [ ] ⏳ Create shared vocabulary list building
+- [ ] ⏳ Create shared guidebook list building
 - [ ] ⏳ Implement collaborative exercise review and editing
 - [ ] ⏳ Add group decision-making tools for content approval
 
@@ -769,7 +769,7 @@ class ContentValidationService
 ### Quantitative Metrics
 
 - **Content Creation Speed**: 10x improvement in lesson creation time
-- **Exercise Generation**: 5x more exercise variations per vocabulary set
+- **Exercise Generation**: 5x more exercise variations per guidebook set
 - **Quality Scores**: 95% generated content passes automated quality checks
 - **User Adoption**: 90% of teachers actively use template system within 3 months
 - **Collaboration Usage**: 70% of content created through collaborative sessions

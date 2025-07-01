@@ -23,11 +23,11 @@ return new class extends Migration
             // Template structure and content
             $table->json('template_data')->comment('Template structure and patterns');
             $table->integer('difficulty_level')->default(1)->comment('Difficulty level 1-10');
-            $table->string('skill_focus')->nullable()->comment('Primary skill focus: vocabulary, grammar, listening, etc.');
+            $table->string('skill_focus')->nullable()->comment('Primary skill focus: grammar, listening, etc.');
 
             // Exercise and content requirements
             $table->json('exercise_types')->nullable()->comment('Supported exercise types for this template');
-            $table->json('vocabulary_requirements')->nullable()->comment('Vocabulary requirements and constraints');
+            $table->json('guidebook_requirements')->nullable()->comment('Guidebook requirements and constraints');
 
             // Template metadata
             $table->foreignId('created_by')->constrained('users')->comment('Template creator');

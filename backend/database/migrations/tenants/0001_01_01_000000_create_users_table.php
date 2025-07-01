@@ -27,6 +27,7 @@ return new class extends Migration
             $table->integer('points')->default(0);
             $table->string('avatar_url')->nullable();
             $table->string('interface_language', 5)->default('en');
+            $table->json('metadata')->nullable();
             $table->timestamps();
 
             $table->index(['tenant_id', 'email']);

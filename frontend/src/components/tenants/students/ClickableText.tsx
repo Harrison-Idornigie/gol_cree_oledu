@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { WordData } from '@/types/tenant/vocabulary';
+import { WordData } from '@/types/tenant/guidebook';
 import WordTooltip from './WordTooltip';
 import InteractiveWordPopup from './InteractiveWordPopup';
 

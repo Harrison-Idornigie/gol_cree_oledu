@@ -39,11 +39,11 @@ class ContentTemplateSeeder extends Seeder
             [
                 'template_type' => ContentTemplate::TYPE_EXERCISE,
                 'name' => 'Basic Multiple Choice',
-                'description' => 'Standard multiple choice exercise with 4 options for vocabulary and grammar practice.',
+                'description' => 'Standard multiple choice exercise with 4 options for guidebook and grammar practice.',
                 'difficulty_level' => 1,
                 'skill_focus' => ContentTemplate::SKILL_VOCABULARY,
                 'exercise_types' => ['multiple_choice'],
-                'vocabulary_requirements' => [
+                'guidebook_requirements' => [
                     'min_words' => 5,
                     'max_words' => 10,
                     'difficulty_level' => 'beginner'
@@ -72,7 +72,7 @@ class ContentTemplateSeeder extends Seeder
                 'difficulty_level' => 4,
                 'skill_focus' => ContentTemplate::SKILL_GRAMMAR,
                 'exercise_types' => ['multiple_choice'],
-                'vocabulary_requirements' => [
+                'guidebook_requirements' => [
                     'min_words' => 10,
                     'max_words' => 20,
                     'difficulty_level' => 'advanced'
@@ -94,11 +94,11 @@ class ContentTemplateSeeder extends Seeder
             [
                 'template_type' => ContentTemplate::TYPE_EXERCISE,
                 'name' => 'Basic Fill-in-the-Blank',
-                'description' => 'Simple fill-in-the-blank exercise for vocabulary practice.',
+                'description' => 'Simple fill-in-the-blank exercise for guidebook practice.',
                 'difficulty_level' => 2,
                 'skill_focus' => ContentTemplate::SKILL_VOCABULARY,
                 'exercise_types' => ['fill_in_blank'],
-                'vocabulary_requirements' => [
+                'guidebook_requirements' => [
                     'min_words' => 3,
                     'max_words' => 8,
                     'difficulty_level' => 'beginner'
@@ -121,7 +121,7 @@ class ContentTemplateSeeder extends Seeder
                 'difficulty_level' => 3,
                 'skill_focus' => ContentTemplate::SKILL_GRAMMAR,
                 'exercise_types' => ['fill_in_blank'],
-                'vocabulary_requirements' => [
+                'guidebook_requirements' => [
                     'min_words' => 5,
                     'max_words' => 12,
                     'difficulty_level' => 'intermediate'
@@ -142,11 +142,11 @@ class ContentTemplateSeeder extends Seeder
             [
                 'template_type' => ContentTemplate::TYPE_EXERCISE,
                 'name' => 'Word-Image Matching',
-                'description' => 'Match words with corresponding images for vocabulary building.',
+                'description' => 'Match words with corresponding images for guidebook building.',
                 'difficulty_level' => 1,
                 'skill_focus' => ContentTemplate::SKILL_VOCABULARY,
                 'exercise_types' => ['matching'],
-                'vocabulary_requirements' => [
+                'guidebook_requirements' => [
                     'min_words' => 4,
                     'max_words' => 8,
                     'difficulty_level' => 'beginner'
@@ -169,7 +169,7 @@ class ContentTemplateSeeder extends Seeder
                 'difficulty_level' => 2,
                 'skill_focus' => ContentTemplate::SKILL_VOCABULARY,
                 'exercise_types' => ['matching'],
-                'vocabulary_requirements' => [
+                'guidebook_requirements' => [
                     'min_words' => 6,
                     'max_words' => 12,
                     'difficulty_level' => 'intermediate'
@@ -194,7 +194,7 @@ class ContentTemplateSeeder extends Seeder
                 'difficulty_level' => 2,
                 'skill_focus' => ContentTemplate::SKILL_LISTENING,
                 'exercise_types' => ['listening'],
-                'vocabulary_requirements' => [
+                'guidebook_requirements' => [
                     'min_words' => 8,
                     'max_words' => 15,
                     'difficulty_level' => 'beginner'
@@ -219,7 +219,7 @@ class ContentTemplateSeeder extends Seeder
                 'difficulty_level' => 3,
                 'skill_focus' => ContentTemplate::SKILL_SPEAKING,
                 'exercise_types' => ['conversation'],
-                'vocabulary_requirements' => [
+                'guidebook_requirements' => [
                     'min_words' => 10,
                     'max_words' => 20,
                     'difficulty_level' => 'intermediate'
@@ -259,22 +259,22 @@ class ContentTemplateSeeder extends Seeder
         $lessonTemplates = [
             [
                 'template_type' => ContentTemplate::TYPE_LESSON,
-                'name' => 'Vocabulary Introduction Lesson',
-                'description' => 'Standard lesson template for introducing new vocabulary with multiple exercise types.',
+                'name' => 'Guidebook Introduction Lesson',
+                'description' => 'Standard lesson template for introducing new guidebook with multiple exercise types.',
                 'difficulty_level' => 1,
                 'skill_focus' => ContentTemplate::SKILL_VOCABULARY,
                 'exercise_types' => ['multiple_choice', 'matching', 'fill_in_blank'],
-                'vocabulary_requirements' => [
+                'guidebook_requirements' => [
                     'min_words' => 8,
                     'max_words' => 12,
                     'difficulty_level' => 'beginner'
                 ],
                 'template_data' => [
-                    'title' => 'New Vocabulary',
+                    'title' => 'New Guidebook',
                     'lesson_structure' => [
                         'introduction' => [
                             'duration_minutes' => 5,
-                            'content_type' => 'vocabulary_presentation',
+                            'content_type' => 'guidebook_presentation',
                             'includes_audio' => true,
                             'includes_images' => true
                         ],
@@ -301,7 +301,7 @@ class ContentTemplateSeeder extends Seeder
                 'difficulty_level' => 3,
                 'skill_focus' => ContentTemplate::SKILL_GRAMMAR,
                 'exercise_types' => ['fill_in_blank', 'multiple_choice', 'conversation'],
-                'vocabulary_requirements' => [
+                'guidebook_requirements' => [
                     'min_words' => 10,
                     'max_words' => 15,
                     'difficulty_level' => 'intermediate'
@@ -337,7 +337,7 @@ class ContentTemplateSeeder extends Seeder
                 'difficulty_level' => 2,
                 'skill_focus' => ContentTemplate::SKILL_CONVERSATION,
                 'exercise_types' => ['conversation', 'listening', 'multiple_choice'],
-                'vocabulary_requirements' => [
+                'guidebook_requirements' => [
                     'min_words' => 12,
                     'max_words' => 18,
                     'difficulty_level' => 'intermediate'
@@ -387,37 +387,37 @@ class ContentTemplateSeeder extends Seeder
         $topicTemplates = [
             [
                 'template_type' => ContentTemplate::TYPE_TOPIC,
-                'name' => 'Vocabulary Topic',
-                'description' => 'Topic template for organizing vocabulary-focused lessons around themes.',
+                'name' => 'Guidebook Topic',
+                'description' => 'Topic template for organizing guidebook-focused lessons around themes.',
                 'difficulty_level' => 1,
                 'skill_focus' => ContentTemplate::SKILL_VOCABULARY,
                 'exercise_types' => ['multiple_choice', 'matching', 'fill_in_blank', 'listening'],
-                'vocabulary_requirements' => [
+                'guidebook_requirements' => [
                     'min_words' => 20,
                     'max_words' => 30,
                     'difficulty_level' => 'beginner'
                 ],
                 'template_data' => [
-                    'title' => 'Thematic Vocabulary',
+                    'title' => 'Thematic Guidebook',
                     'topic_structure' => [
                         'introduction_lesson' => [
-                            'type' => 'vocabulary_introduction',
+                            'type' => 'guidebook_introduction',
                             'estimated_duration' => 30
                         ],
                         'practice_lessons' => [
                             'count' => 3,
-                            'type' => 'vocabulary_practice',
+                            'type' => 'guidebook_practice',
                             'estimated_duration' => 25
                         ],
                         'assessment_lesson' => [
-                            'type' => 'vocabulary_assessment',
+                            'type' => 'guidebook_assessment',
                             'estimated_duration' => 20
                         ]
                     ],
                     'lesson_patterns' => [
-                        ['type' => 'vocabulary_introduction', 'count' => 1],
-                        ['type' => 'vocabulary_practice', 'count' => 3],
-                        ['type' => 'vocabulary_assessment', 'count' => 1]
+                        ['type' => 'guidebook_introduction', 'count' => 1],
+                        ['type' => 'guidebook_practice', 'count' => 3],
+                        ['type' => 'guidebook_assessment', 'count' => 1]
                     ]
                 ]
             ],
@@ -428,7 +428,7 @@ class ContentTemplateSeeder extends Seeder
                 'difficulty_level' => 3,
                 'skill_focus' => ContentTemplate::SKILL_GRAMMAR,
                 'exercise_types' => ['fill_in_blank', 'multiple_choice', 'conversation'],
-                'vocabulary_requirements' => [
+                'guidebook_requirements' => [
                     'min_words' => 15,
                     'max_words' => 25,
                     'difficulty_level' => 'intermediate'
@@ -481,7 +481,7 @@ class ContentTemplateSeeder extends Seeder
                 'difficulty_level' => 1,
                 'skill_focus' => ContentTemplate::SKILL_VOCABULARY,
                 'exercise_types' => ['multiple_choice', 'matching', 'fill_in_blank', 'listening'],
-                'vocabulary_requirements' => [
+                'guidebook_requirements' => [
                     'min_words' => 40,
                     'max_words' => 60,
                     'difficulty_level' => 'beginner'
@@ -490,7 +490,7 @@ class ContentTemplateSeeder extends Seeder
                     'title' => 'Foundation Unit',
                     'unit_structure' => [
                         'introduction_topic' => [
-                            'type' => 'vocabulary_introduction',
+                            'type' => 'guidebook_introduction',
                             'estimated_duration' => 120,
                             'lesson_count' => 4
                         ],
@@ -507,7 +507,7 @@ class ContentTemplateSeeder extends Seeder
                         ]
                     ],
                     'topic_patterns' => [
-                        ['type' => 'vocabulary_introduction', 'count' => 1],
+                        ['type' => 'guidebook_introduction', 'count' => 1],
                         ['type' => 'mixed_practice', 'count' => 2],
                         ['type' => 'unit_assessment', 'count' => 1]
                     ]
@@ -520,7 +520,7 @@ class ContentTemplateSeeder extends Seeder
                 'difficulty_level' => 3,
                 'skill_focus' => ContentTemplate::SKILL_CONVERSATION,
                 'exercise_types' => ['conversation', 'listening', 'fill_in_blank', 'multiple_choice'],
-                'vocabulary_requirements' => [
+                'guidebook_requirements' => [
                     'min_words' => 60,
                     'max_words' => 80,
                     'difficulty_level' => 'intermediate'
@@ -553,7 +553,7 @@ class ContentTemplateSeeder extends Seeder
                 'difficulty_level' => 2,
                 'skill_focus' => ContentTemplate::SKILL_READING,
                 'exercise_types' => ['listening', 'conversation', 'reading', 'multiple_choice'],
-                'vocabulary_requirements' => [
+                'guidebook_requirements' => [
                     'min_words' => 50,
                     'max_words' => 70,
                     'difficulty_level' => 'intermediate'

@@ -18,16 +18,30 @@ class GuideBookEntry extends Model
     const AUDIT_AREA = 'guide_book';
 
     protected $fillable = [
-        'unit_id',
-        'topic',
+        'title',
+        'slug',
         'content',
+        'description',
+        'lesson_id',
+        'unit_id',
+        'language_id',
+        'words_introduced',
+        'words_reused',
+        'word_count',
         'difficulty_level',
         'tags',
         'references',
-        'order'
+        'order',
+        'category',
+        'status',
+        'created_by',
+        'updated_by'
     ];
 
     protected $casts = [
+        'words_introduced' => 'array',
+        'words_reused' => 'array', 
+        'word_count' => 'integer',
         'difficulty_level' => 'integer',
         'tags' => 'array',
         'references' => 'array',
@@ -38,19 +52,29 @@ class GuideBookEntry extends Model
      * The attributes that should be version controlled.
      */
     protected array $versionedAttributes = [
-        'topic',
-        'content',
+        'title',
+        'content', 
+        'words_introduced',
+        'words_reused',
         'difficulty_level',
         'tags',
         'references'
     ];
 
     /**
-     * Get the unit that owns the guide book entry.
+     * Get the lesson that owns the guide book entry.
      */
-    public function unit(): BelongsTo
+    public function lesson(): BelongsTo
     {
-        return $this->belongsTo(Unit::class);
+        return $this->belongsTo(Lesson::class);
+    }
+
+    /**
+     * Get the language that owns the guide book entry.
+     */
+    public function language(): BelongsTo
+    {
+        return $this->belongsTo(Language::class);
     }
 
     /**
@@ -61,39 +85,98 @@ class GuideBookEntry extends Model
         parent::boot();
 
         static::saving(function ($entry) {
-            $entry->slug = Str::slug($entry->topic);
+            if (empty($entry->slug)) {
+                $entry->slug = Str::slug($entry->title);
+            }
+            
+            // Auto-calculate word count
+            $entry->word_count = count($entry->words_introduced ?? []) + count($entry->words_reused ?? []);
         });
     }
 
     /**
-     * Get the entry's full content with all related materials
+     * Get all words in this lesson (new + reused)
      */
-    public function getFullContent(): array
+    public function getAllWords(): array
     {
-        return [
-            'id' => $this->id,
-            'topic' => $this->topic,
-            'slug' => $this->slug,
-            'content' => $this->content,
-            'difficulty_level' => $this->difficulty_level,
-            'tags' => $this->tags,
-            'references' => $this->references,
-            'images' => $this->getMedia('content_images')->map->getUrl(),
-            'diagrams' => $this->getMedia('diagrams')->map->getUrl(),
-            'attachments' => $this->getMedia('attachments')->map(function ($media) {
-                return [
-                    'name' => $media->file_name,
-                    'url' => $media->getUrl(),
-                    'size' => $media->getHumanReadableSize(),
-                    'type' => $media->mime_type
-                ];
-            }),
-            'related_entries' => $this->getRelatedEntries(),
-            'unit' => [
-                'id' => $this->unit->id,
-                'title' => $this->unit->title
-            ]
-        ];
+        return array_merge(
+            $this->words_introduced ?? [],
+            $this->words_reused ?? []
+        );
+    }
+
+    /**
+     * Get word by ID from predefined words table
+     */
+    public function getWordDetails(int $wordId): ?Word
+    {
+        return Word::find($wordId);
+    }
+
+    /**
+     * Get detailed word information for this lesson
+     */
+    public function getWordsWithDetails(): array
+    {
+        $newWords = collect($this->words_introduced ?? [])
+            ->map(fn($wordId) => $this->getWordDetails($wordId))
+            ->filter()
+            ->map(fn($word) => array_merge($word->toArray(), ['is_new' => true]));
+
+        $reusedWords = collect($this->words_reused ?? [])
+            ->map(fn($wordId) => $this->getWordDetails($wordId))
+            ->filter()
+            ->map(fn($word) => array_merge($word->toArray(), ['is_new' => false]));
+
+        return $newWords->concat($reusedWords)->toArray();
+    }
+
+    /**
+     * Check if student has learned all words in this lesson
+     */
+    public function isCompletedByStudent(User $student): bool
+    {
+        $allWordIds = $this->getAllWords();
+        
+        // Check if student has progress records for all words
+        $learnedWordIds = UserProgress::where('user_id', $student->id)
+            ->where('trackable_type', Word::class)
+            ->whereIn('trackable_id', $allWordIds)
+            ->where('status', '>=', UserProgress::STATUS_PRACTICING)
+            ->pluck('trackable_id')
+            ->toArray();
+
+        return count($learnedWordIds) === count($allWordIds);
+    }
+
+    /**
+     * Get student's word progress for this lesson
+     */
+    public function getStudentWordProgress(User $student): array
+    {
+        $allWordIds = $this->getAllWords();
+        
+        $progress = UserProgress::where('user_id', $student->id)
+            ->where('trackable_type', Word::class)
+            ->whereIn('trackable_id', $allWordIds)
+            ->get()
+            ->keyBy('trackable_id');
+
+        return collect($allWordIds)->map(function ($wordId) use ($progress) {
+            $wordProgress = $progress->get($wordId);
+            $word = $this->getWordDetails($wordId);
+            
+            return [
+                'word_id' => $wordId,
+                'word' => $word?->word,
+                'translation' => $word?->translation,
+                'status' => $wordProgress?->status ?? 'not_started',
+                'strength' => $wordProgress?->strength ?? 0,
+                'last_practiced' => $wordProgress?->updated_at,
+                'mistakes' => $wordProgress?->mistake_count ?? 0,
+                'streak' => $wordProgress?->streak ?? 0,
+            ];
+        })->toArray();
     }
 
     /**

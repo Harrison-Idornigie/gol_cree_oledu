@@ -18,7 +18,7 @@ class ContentScaffoldingPolicy
     use HandlesAuthorization;
 
     /**
-     * Determine whether the user can generate exercises from vocabulary.
+     * Determine whether the user can generate exercises from guidebook.
      */
     public function generateExercises(User $user): bool
     {
