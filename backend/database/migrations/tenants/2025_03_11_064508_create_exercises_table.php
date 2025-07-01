@@ -47,6 +47,10 @@ return new class extends Migration
             $table->enum('status', ['draft', 'published', 'archived'])->default('draft');
             $table->boolean('is_published')->default(false);
 
+            // Audit fields
+            $table->foreignId('created_by')->nullable()->constrained('users')->onDelete('set null');
+            $table->foreignId('updated_by')->nullable()->constrained('users')->onDelete('set null');
+
             $table->timestamps();
 
             $table->index(['tenant_id', 'status']);

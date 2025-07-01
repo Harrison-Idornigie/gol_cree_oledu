@@ -83,6 +83,7 @@ class TeamExerciseController extends BaseAPIController
             $validated = $request->validate([
                 'lesson_id' => 'required|exists:lessons,id',
                 'title' => 'required|string|max:255',
+                'description' => 'nullable|string',
                 'type' => 'required|string|in:multiple_choice,fill_blank,matching,writing,speaking,conversation,listening,picture',
                 'content' => 'required|array',
                 'answers' => 'nullable|array',
@@ -111,18 +112,22 @@ class TeamExerciseController extends BaseAPIController
      * Display the specified exercise.
      *
      * @param Request $request
-     * @param Exercise $exercise
+     * @param string $exercise
      * @return JsonResponse
      */
-    public function show(Request $request, Exercise $exercise): JsonResponse
+    public function show(Request $request, string $tenant, string $exercise): JsonResponse
     {
-        $this->authorize('view', $exercise);
-
         try {
-            // Load relationships
-            $exercise->load(['lesson.topic.unit', 'template', 'attempts']);
+            // Manually resolve the exercise in tenant context
+            $exerciseModel = Exercise::findOrFail($exercise);
+            $this->authorize('view', $exerciseModel);
 
-            return $this->sendResponse($exercise, 'Exercise retrieved successfully.');
+            // Load relationships
+            $exerciseModel->load(['lesson.topic.unit', 'template', 'attempts']);
+
+            return $this->sendResponse($exerciseModel, 'Exercise retrieved successfully.');
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return $this->sendError('Exercise not found.', [], 404);
         } catch (\Exception $e) {
             return $this->sendError('Failed to retrieve exercise.', ['error' => $e->getMessage()]);
         }
@@ -132,16 +137,19 @@ class TeamExerciseController extends BaseAPIController
      * Update the specified exercise.
      *
      * @param Request $request
-     * @param Exercise $exercise
+     * @param string $exercise
      * @return JsonResponse
      */
-    public function update(Request $request, Exercise $exercise): JsonResponse
+    public function update(Request $request, string $tenant, string $exercise): JsonResponse
     {
-        $this->authorize('update', $exercise);
-
         try {
+            // Manually resolve the exercise in tenant context
+            $exerciseModel = Exercise::findOrFail($exercise);
+            $this->authorize('update', $exerciseModel);
+
             $validated = $request->validate([
                 'title' => 'sometimes|string|max:255',
+                'description' => 'sometimes|string',
                 'type' => 'sometimes|string|in:multiple_choice,fill_blank,matching,writing,speaking,conversation,listening,picture',
                 'content' => 'sometimes|array',
                 'answers' => 'nullable|array',
@@ -157,9 +165,11 @@ class TeamExerciseController extends BaseAPIController
                 'status' => 'nullable|string|in:draft,published,archived',
             ]);
 
-            $updatedExercise = $this->exerciseService->updateExercise($exercise, $validated, Auth::user());
+            $updatedExercise = $this->exerciseService->updateExercise($exerciseModel, $validated, Auth::user());
 
             return $this->sendResponse($updatedExercise, 'Exercise updated successfully.');
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return $this->sendError('Exercise not found.', [], 404);
         } catch (\Illuminate\Validation\ValidationException $e) {
             return $this->sendError('Validation failed.', $e->errors(), 422);
         } catch (\Exception $e) {
@@ -171,17 +181,21 @@ class TeamExerciseController extends BaseAPIController
      * Remove the specified exercise.
      *
      * @param Request $request
-     * @param Exercise $exercise
+     * @param string $exercise
      * @return JsonResponse
      */
-    public function destroy(Request $request, Exercise $exercise): JsonResponse
+    public function destroy(Request $request, string $tenant, string $exercise): JsonResponse
     {
-        $this->authorize('delete', $exercise);
-
         try {
-            $this->exerciseService->deleteExercise($exercise, Auth::user());
+            // Manually resolve the exercise in tenant context
+            $exerciseModel = Exercise::findOrFail($exercise);
+            $this->authorize('delete', $exerciseModel);
+
+            $this->exerciseService->deleteExercise($exerciseModel, Auth::user());
 
             return $this->sendNoContentResponse();
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return $this->sendError('Exercise not found.', [], 404);
         } catch (\Exception $e) {
             return $this->sendError('Failed to delete exercise.', ['error' => $e->getMessage()]);
         }

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Providers;
 
 use Illuminate\Cache\RateLimiting\Limit;
@@ -29,5 +30,8 @@ class RouteServiceProvider extends ServiceProvider
 
         // Route registration is now handled in bootstrap/app.php
         // This keeps the RouteServiceProvider clean and focused on configuration
+
+        // Note: Route model binding for tenant models is handled manually in controllers
+        // after tenant context is initialized by middleware, not here.
     }
 }

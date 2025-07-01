@@ -26,7 +26,7 @@ class StudentLanguageControllerTest extends TenantTestCase
      */
     public function test_index_success()
     {
-        Sanctum::actingAs($this->studentUser, ['*']);
+        Sanctum::actingAs($this->studentUser, ['*'], 'tenant');
 
         $response = $this->getJson("/api/{$this->tenant->slug}/student/languages");
 

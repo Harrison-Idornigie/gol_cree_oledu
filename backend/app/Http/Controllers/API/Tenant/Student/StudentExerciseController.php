@@ -34,7 +34,6 @@ class StudentExerciseController extends BaseAPIController
     {
         $this->exerciseService = $exerciseService;
         // Apply policies - students can only view and complete exercises
-        $this->authorizeResource(Exercise::class, 'exercise');
     }
 
     /**
@@ -63,19 +62,22 @@ class StudentExerciseController extends BaseAPIController
 
     /**
      * Display the specified exercise.
-     * 
+     *
      * @param Request $request
-     * @param Exercise $exercise
+     * @param string $tenant
+     * @param string $exercise
      * @return JsonResponse
      */
-    public function show(Request $request, Exercise $exercise): JsonResponse
+    public function show(Request $request, string $tenant, string $exercise): JsonResponse
     {
-        $this->authorize('view', $exercise);
-
         try {
+            // Manually resolve the exercise in tenant context
+            $exerciseModel = Exercise::findOrFail($exercise);
+            $this->authorize('view', $exerciseModel);
+
             // Use service to get exercise with proper relationships
             $exerciseData = $this->exerciseService->getExercise(
-                $exercise->id,
+                $exerciseModel->id,
                 ['attempts' => function ($query) use ($request) {
                     $query->where('user_id', $request->user()->id);
                 }]
@@ -93,15 +95,18 @@ class StudentExerciseController extends BaseAPIController
 
     /**
      * Check student's answer for an exercise.
-     * 
+     *
      * @param Request $request
-     * @param Exercise $exercise
+     * @param string $tenant
+     * @param string $exercise
      * @return JsonResponse
      */
-    public function checkAnswer(Request $request, Exercise $exercise): JsonResponse
+    public function checkAnswer(Request $request, string $tenant, string $exercise): JsonResponse
     {
         try {
-            $this->authorize('view', $exercise);
+            // Manually resolve the exercise in tenant context
+            $exerciseModel = Exercise::findOrFail($exercise);
+            $this->authorize('view', $exerciseModel);
 
             $validated = $request->validate([
                 'answer' => 'required',
@@ -109,7 +114,7 @@ class StudentExerciseController extends BaseAPIController
             ]);
 
             $user = Auth::user();
-            $result = $this->exerciseService->checkStudentAnswer($exercise, $user, $validated);
+            $result = $this->exerciseService->checkStudentAnswer($exerciseModel, $user, $validated);
 
             return $this->sendResponse($result, 'Answer checked successfully.');
         } catch (ValidationException $e) {
@@ -121,25 +126,28 @@ class StudentExerciseController extends BaseAPIController
 
     /**
      * Get exercise statistics for student.
-     * 
+     *
      * @param Request $request
-     * @param Exercise $exercise
+     * @param string $tenant
+     * @param string $exercise
      * @return JsonResponse
      */
-    public function statistics(Request $request, Exercise $exercise): JsonResponse
+    public function statistics(Request $request, string $tenant, string $exercise): JsonResponse
     {
         try {
-            $this->authorize('view', $exercise);
+            // Manually resolve the exercise in tenant context
+            $exerciseModel = Exercise::findOrFail($exercise);
+            $this->authorize('view', $exerciseModel);
 
             $user = Auth::user();
-            $statistics = $this->exerciseService->getStudentStatistics($exercise, $user);
+            $statistics = $this->exerciseService->getStudentStatistics($exerciseModel, $user);
 
             return $this->sendResponse([
                 'exercise' => [
-                    'id' => $exercise->id,
-                    'title' => $exercise->title,
-                    'type' => $exercise->type,
-                    'difficulty_level' => $exercise->difficulty_level
+                    'id' => $exerciseModel->id,
+                    'title' => $exerciseModel->title,
+                    'type' => $exerciseModel->type,
+                    'difficulty_level' => $exerciseModel->difficulty_level
                 ],
                 'statistics' => $statistics
             ], 'Exercise statistics retrieved successfully.');

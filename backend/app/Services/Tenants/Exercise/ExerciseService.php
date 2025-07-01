@@ -151,6 +151,10 @@ class ExerciseService
             $data['show_hints'] = $data['show_hints'] ?? true;
             $data['xp_reward'] = $data['xp_reward'] ?? 10;
 
+            // Add audit fields
+            $data['created_by'] = $user->id;
+            $data['updated_by'] = $user->id;
+
             $exercise = Exercise::create($data);
 
             // Log the creation for audit trail
@@ -160,7 +164,7 @@ class ExerciseService
                 $exercise,
                 [],
                 $data,
-                $user->id
+                ['user_id' => $user->id]
             );
 
             Log::info('Exercise created via service', [
@@ -196,6 +200,9 @@ class ExerciseService
                 $this->validateExerciseContent($exercise->type, $data['content']);
             }
 
+            // Add audit field
+            $data['updated_by'] = $user->id;
+
             $exercise->update($data);
 
             // Log the update for audit trail
@@ -205,7 +212,7 @@ class ExerciseService
                 $exercise,
                 $originalData,
                 $data,
-                $user->id
+                ['user_id' => $user->id]
             );
 
             Log::info('Exercise updated via service', [
@@ -230,19 +237,19 @@ class ExerciseService
             // Reorder remaining exercises
             $this->reorderExercisesAfterDeletion($exercise->lesson_id, $exercise->order);
 
+            // Log the deletion for audit trail before deleting
+            AuditLog::log(
+                'delete',
+                'exercises',
+                $exercise,
+                $exerciseData,
+                [],
+                ['user_id' => $user->id]
+            );
+
             $deleted = $exercise->delete();
 
             if ($deleted) {
-                // Log the deletion for audit trail
-                AuditLog::log(
-                    'delete',
-                    'exercises',
-                    null,
-                    $exerciseData,
-                    [],
-                    $user->id
-                );
-
                 Log::info('Exercise deleted via service', [
                     'exercise_id' => $exercise->id,
                     'title' => $exercise->title,
@@ -556,19 +563,28 @@ class ExerciseService
      */
     private function validateAnswer(Exercise $exercise, array $answerData): array
     {
-        // Basic validation - this should be enhanced with type-specific logic
-        $userAnswer = $answerData['answer'] ?? '';
-        $correctAnswer = $exercise->correct_answer ?? '';
+        // Get the appropriate handler for the exercise type
+        $handler = $this->exerciseTypeService->getHandler($exercise->type);
 
-        // Simple comparison for now - should be enhanced per exercise type
-        $isCorrect = strtolower(trim($userAnswer)) === strtolower(trim($correctAnswer));
+        // Extract user answer
+        $userAnswer = $answerData['answer'] ?? '';
+
+        // Use the type-specific handler to check the answer
+        $isCorrect = $handler->checkAnswer($exercise, $userAnswer);
         $score = $isCorrect ? 100 : 0;
+
+        // Get type-specific feedback
+        $feedback = $handler->getFeedback($exercise, $isCorrect);
 
         return [
             'is_correct' => $isCorrect,
             'score' => $score,
-            'passed' => $score >= 70, // 70% passing grade
-            'feedback' => $this->generateFeedback($isCorrect, $exercise)
+            'passed' => $score >= ($exercise->passing_score ?? 70),
+            'feedback' => [
+                'type' => $isCorrect ? 'success' : 'error',
+                'message' => $feedback,
+                'explanation' => $isCorrect ? null : ($exercise->explanation ?? 'Review the lesson material and try again.')
+            ]
         ];
     }
 

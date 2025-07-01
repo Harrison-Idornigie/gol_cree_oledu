@@ -236,9 +236,29 @@ trait InteractsWithTenancy
      */
     protected function createTenantDatabase(Tenant $tenant): void
     {
+        // Ensure the testing directory exists
+        $testingDir = database_path('testing');
+        if (!File::exists($testingDir)) {
+            File::makeDirectory($testingDir, 0755, true);
+        }
+
+        // Override the tenant database configuration for testing to ensure consistency
+        config([
+            'tenancy.database.prefix' => 'tenant_',
+            'tenancy.database.suffix' => '',
+        ]);
+
         // Use Stancl's database manager to create the database
         $manager = app(\Stancl\Tenancy\TenantDatabaseManagers\SQLiteDatabaseManager::class);
         $manager->createDatabase($tenant);
+
+        // Log the database path for debugging
+        $databaseName = config('tenancy.database.prefix') . $tenant->getKey() . config('tenancy.database.suffix');
+        \Log::info("Created tenant database: {$databaseName} for tenant: {$tenant->slug}");
+
+        // Store the database path for cleanup
+        $databasePath = $this->getTenantDatabasePath($tenant);
+        $this->tempDbFiles[] = $databasePath;
     }
 
     /**
@@ -448,7 +468,12 @@ trait InteractsWithTenancy
      */
     protected function getTenantDatabasePath(Tenant $tenant): string
     {
-        return storage_path("framework/testing/tenant_{$tenant->id}.sqlite");
+        // Use the same naming convention as Stancl
+        $prefix = config('tenancy.database.prefix', 'tenant_');
+        $suffix = config('tenancy.database.suffix', '');
+        $databaseName = $prefix . $tenant->getKey() . $suffix;
+
+        return database_path("testing/{$databaseName}.sqlite");
     }
 
     /**
@@ -473,8 +498,14 @@ trait InteractsWithTenancy
      */
     protected function initializeTenantContext(Tenant $tenant): void
     {
-        // This method is used to set up tenant context for API calls
-        // The actual tenant switching happens in runInTenantContext
+        // Initialize tenancy for HTTP requests in tests
+        // This ensures that when we make HTTP requests, the middleware can properly identify the tenant
+        tenancy()->initialize($tenant);
+
+        // Store the tenant for cleanup
+        if (!in_array($tenant, $this->createdTenants)) {
+            $this->createdTenants[] = $tenant;
+        }
     }
 
     /**
@@ -590,7 +621,7 @@ trait InteractsWithTenancy
         return $this->runInTenantContext($this->tenant ?? $this->createTestTenant(), function () use ($attributes) {
             return \App\Models\Tenants\Language::create(array_merge([
                 'id' => \Illuminate\Support\Str::uuid(),
-                'code' => 'crk',
+                'code' => 'crk-' . \Illuminate\Support\Str::random(4),
                 'name' => 'Plains Cree',
                 'native_name' => 'nēhiyawēwin',
                 'is_active' => true,
@@ -645,7 +676,7 @@ trait InteractsWithTenancy
                 'id' => \Illuminate\Support\Str::uuid(),
                 'title' => 'Test Learning Path',
                 'description' => 'A test learning path for automated testing',
-                'target_level' => 'beginner',
+                'target_level' => 'A1',
                 'status' => 'published',
                 'review_status' => 'approved',
                 'created_at' => now(),

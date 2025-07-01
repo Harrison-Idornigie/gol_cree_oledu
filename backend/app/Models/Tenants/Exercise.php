@@ -40,6 +40,7 @@ class Exercise extends Model
         'template_id',
         'title',
         'slug',
+        'description',
         'type',
         'content',
         'answers',
@@ -60,6 +61,8 @@ class Exercise extends Model
         'min_correct_required',
         'metadata',
         'tenant_id',
+        'created_by',
+        'updated_by',
     ];
 
     protected $casts = [

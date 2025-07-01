@@ -83,7 +83,7 @@ class DifficultyAnalysisService
         }
 
         $words = Word::with(['translations', 'sentences'])->whereIn('id', $wordIds)->get();
-        
+
         if ($words->isEmpty()) {
             return 0;
         }
@@ -115,7 +115,7 @@ class DifficultyAnalysisService
     {
         $baseScore = $this->getExerciseTypeBaseScore($exercise->type);
         $contentScore = $this->analyzeExerciseContent($exercise);
-        
+
         // Combine scores with weights
         $finalScore = ($baseScore * 0.4) + ($contentScore * 0.6);
 
@@ -162,14 +162,14 @@ class DifficultyAnalysisService
         for ($i = 1; $i < count($difficulties); $i++) {
             $current = $difficulties[$i];
             $previous = $difficulties[$i - 1];
-            
+
             // Check for sudden difficulty spikes
             $difficultyJump = $current['difficulty'] - $previous['difficulty'];
             if ($difficultyJump > 25) {
                 $issues[] = [
                     'type' => 'difficulty_spike',
                     'severity' => 'high',
-                    'message' => "Large difficulty jump ({$difficultyJump:.1f} points) between items {$previous['item_id']} and {$current['item_id']}",
+                    'message' => "Large difficulty jump (" . number_format($difficultyJump, 1) . " points) between items {$previous['item_id']} and {$current['item_id']}",
                     'items' => [$previous, $current]
                 ];
             }
@@ -179,7 +179,7 @@ class DifficultyAnalysisService
                 $issues[] = [
                     'type' => 'difficulty_regression',
                     'severity' => 'medium',
-                    'message' => "Difficulty regression ({$difficultyJump:.1f} points) between items {$previous['item_id']} and {$current['item_id']}",
+                    'message' => "Difficulty regression (" . number_format($difficultyJump, 1) . " points) between items {$previous['item_id']} and {$current['item_id']}",
                     'items' => [$previous, $current]
                 ];
             }
@@ -236,7 +236,7 @@ class DifficultyAnalysisService
     public function optimizeLearningCurve(LearningPath $learningPath): array
     {
         $allContent = collect();
-        
+
         // Collect all exercises from the learning path
         foreach ($learningPath->units as $unit) {
             foreach ($unit->topics as $topic) {
@@ -415,7 +415,7 @@ class DifficultyAnalysisService
      */
     private function getPartOfSpeechComplexity(?string $partOfSpeech): float
     {
-        return match($partOfSpeech) {
+        return match ($partOfSpeech) {
             'noun', 'verb' => 0.1,
             'adjective', 'adverb' => 0.2,
             'preposition', 'conjunction' => 0.3,
@@ -429,7 +429,7 @@ class DifficultyAnalysisService
      */
     private function getExerciseTypeBaseScore(string $exerciseType): float
     {
-        return match($exerciseType) {
+        return match ($exerciseType) {
             Exercise::TYPE_MULTIPLE_CHOICE => 20,
             Exercise::TYPE_MATCHING => 30,
             Exercise::TYPE_FILL_BLANK => 40,
@@ -660,7 +660,7 @@ class DifficultyAnalysisService
      */
     private function estimateEffortForIssue(array $issue): string
     {
-        return match($issue['severity']) {
+        return match ($issue['severity']) {
             'high' => 'high',
             'medium' => 'medium',
             default => 'low'
@@ -672,7 +672,7 @@ class DifficultyAnalysisService
      */
     private function estimateImpactForIssue(array $issue): string
     {
-        return match($issue['type']) {
+        return match ($issue['type']) {
             'difficulty_spike' => 'high',
             'difficulty_regression' => 'medium',
             default => 'low'
@@ -688,7 +688,7 @@ class DifficultyAnalysisService
         $potentialImprovement = 0;
 
         foreach ($optimizations as $optimization) {
-            $impact = match($optimization['impact']) {
+            $impact = match ($optimization['impact']) {
                 'high' => 15,
                 'medium' => 10,
                 'low' => 5,

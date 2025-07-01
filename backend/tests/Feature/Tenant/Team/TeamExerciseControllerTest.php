@@ -12,12 +12,13 @@ use App\Models\Tenants\Unit;
 use App\Models\Tenants\Topic;
 use App\Models\Tenants\Lesson;
 use App\Models\Tenants\Exercise;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\Sanctum;
 
 class TeamExerciseControllerTest extends TenantTestCase
 {
-    use InteractsWithTenancy;
+    use RefreshDatabase, InteractsWithTenancy;
 
     protected Tenant $tenant;
     protected User $teamMember;
@@ -43,6 +44,8 @@ class TeamExerciseControllerTest extends TenantTestCase
                 'email' => 'team@example.com',
                 'password' => Hash::make('password'),
                 'email_verified_at' => now(),
+                'membership' => 'team',
+                'tenant_id' => $this->tenant->id,
             ]);
         });
 
@@ -52,6 +55,8 @@ class TeamExerciseControllerTest extends TenantTestCase
                 'email' => 'student@example.com',
                 'password' => Hash::make('password'),
                 'email_verified_at' => now(),
+                'membership' => 'student',
+                'tenant_id' => $this->tenant->id,
             ]);
         });
 
@@ -71,8 +76,8 @@ class TeamExerciseControllerTest extends TenantTestCase
                 'title' => 'Spanish for Beginners',
                 'description' => 'Learn Spanish from scratch',
                 'language_id' => $this->language->id,
-                'level' => 'beginner',
-                'status' => 'active',
+                'target_level' => 'beginner',
+                'status' => 'published',
                 'created_by' => $this->teamMember->id,
             ]);
         });
@@ -82,20 +87,19 @@ class TeamExerciseControllerTest extends TenantTestCase
                 'title' => 'Unit 1: Basics',
                 'description' => 'Basic Spanish vocabulary and phrases',
                 'learning_path_id' => $this->learningPath->id,
-                'order_index' => 1,
-                'status' => 'active',
-                'created_by' => $this->teamMember->id,
+                'order' => 1,
+                'status' => 'published',
             ]);
         });
 
         $this->topic = $this->runInTenantContext($this->tenant, function () {
             return Topic::create([
                 'title' => 'Greetings',
+                'slug' => 'greetings',
                 'description' => 'Basic Spanish greetings',
                 'unit_id' => $this->unit->id,
-                'order_index' => 1,
-                'status' => 'active',
-                'created_by' => $this->teamMember->id,
+                'order' => 1,
+                'status' => 'published',
             ]);
         });
 
@@ -104,10 +108,8 @@ class TeamExerciseControllerTest extends TenantTestCase
                 'title' => 'Lesson 1: Basic Greetings',
                 'description' => 'Learn basic Spanish greetings',
                 'topic_id' => $this->topic->id,
-                'order_index' => 1,
-                'lesson_type' => 'interactive',
-                'status' => 'active',
-                'content' => json_encode(['introduction' => 'Welcome to the lesson']),
+                'order' => 1,
+                'status' => 'published',
                 'created_by' => $this->teamMember->id,
             ]);
         });
@@ -122,57 +124,87 @@ class TeamExerciseControllerTest extends TenantTestCase
     protected function createTestExercise(array $attributes = []): Exercise
     {
         return $this->runInTenantContext($this->tenant, function () use ($attributes) {
-            return Exercise::create(array_merge([
+            $defaults = [
                 'title' => 'Exercise 1: Match Greetings',
+                'slug' => 'exercise-1-match-greetings-' . uniqid(),
                 'description' => 'Match Spanish greetings with their English translations',
                 'lesson_id' => $this->lesson->id,
-                'exercise_type' => 'multiple_choice',
-                'order_index' => 1,
-                'status' => 'draft',
-                'content' => json_encode([
+                'type' => 'multiple_choice',
+                'order' => 1,
+                'status' => 'published',
+                'content' => [
                     'question' => 'What does "Hola" mean?',
                     'options' => ['Hello', 'Goodbye', 'Thank you', 'Please'],
                     'correct_answer' => 0
-                ]),
-                'created_by' => $this->teamMember->id,
-            ], $attributes));
+                ],
+            ];
+
+            // If a custom slug is provided, use it, otherwise generate unique one
+            if (isset($attributes['slug'])) {
+                $defaults['slug'] = $attributes['slug'];
+            }
+
+            return Exercise::create(array_merge($defaults, $attributes));
         });
     }
 
     /**
      * Test team member can list exercises
-     * 
+     *
      * @test
      */
     public function test_team_member_can_list_exercises()
     {
-        Sanctum::actingAs($this->teamMember, ['tenant']);
+        Sanctum::actingAs($this->teamMember, ['*'], 'tenant');
 
-        $exercise1 = $this->createTestExercise(['title' => 'Exercise 1']);
-        $exercise2 = $this->createTestExercise(['title' => 'Exercise 2', 'order_index' => 2]);
+        // Create test exercises with unique identifiers
+        $uniqueId = uniqid();
+        $exercise1 = $this->createTestExercise([
+            'title' => "Test Exercise 1 - {$uniqueId}",
+            'slug' => "test-exercise-1-{$uniqueId}",
+            'order' => 1
+        ]);
+        $exercise2 = $this->createTestExercise([
+            'title' => "Test Exercise 2 - {$uniqueId}",
+            'slug' => "test-exercise-2-{$uniqueId}",
+            'order' => 2
+        ]);
 
         $response = $this->getJson("/api/{$this->tenant->slug}/team/exercises");
 
-        $response->assertStatus(200)
-            ->assertJsonCount(2, 'data')
-            ->assertJsonPath('data.0.title', 'Exercise 1')
-            ->assertJsonPath('data.1.title', 'Exercise 2')
-            ->assertJsonStructure([
+        $response->assertStatus(200);
+
+        // Verify our specific exercises are in the response
+        // The response is paginated, so exercises are at data.data
+        $exercisesData = $response->json('data.data');
+        $this->assertIsArray($exercisesData, 'Exercises data should be an array');
+
+        $exerciseTitles = collect($exercisesData)->pluck('title')->toArray();
+
+        $this->assertContains("Test Exercise 1 - {$uniqueId}", $exerciseTitles);
+        $this->assertContains("Test Exercise 2 - {$uniqueId}", $exerciseTitles);
+
+        // Verify the response structure
+        $response->assertJsonStructure([
+            'success',
+            'data' => [
                 'data' => [
                     '*' => [
                         'id',
                         'title',
                         'description',
                         'lesson_id',
-                        'exercise_type',
-                        'order_index',
+                        'type',
+                        'order',
                         'status',
                         'created_by',
                         'created_at',
                         'updated_at'
                     ]
                 ]
-            ]);
+            ],
+            'message'
+        ]);
     }
 
     /**
@@ -182,18 +214,18 @@ class TeamExerciseControllerTest extends TenantTestCase
      */
     public function test_team_member_can_create_exercise()
     {
-        Sanctum::actingAs($this->teamMember, ['tenant']);
+        Sanctum::actingAs($this->teamMember, ['*'], 'tenant');
 
         $exerciseData = [
             'title' => 'New Exercise',
             'description' => 'A new exercise for testing',
             'lesson_id' => $this->lesson->id,
-            'exercise_type' => 'fill_in_blanks',
-            'order_index' => 1,
-            'content' => json_encode([
+            'type' => 'fill_blank',
+            'order' => 1,
+            'content' => [
                 'text' => 'Hello means ____ in Spanish',
                 'answer' => 'Hola'
-            ]),
+            ],
         ];
 
         $response = $this->postJson("/api/{$this->tenant->slug}/team/exercises", $exerciseData);
@@ -202,8 +234,8 @@ class TeamExerciseControllerTest extends TenantTestCase
             ->assertJsonPath('data.title', 'New Exercise')
             ->assertJsonPath('data.description', 'A new exercise for testing')
             ->assertJsonPath('data.lesson_id', $this->lesson->id)
-            ->assertJsonPath('data.exercise_type', 'fill_in_blanks')
-            ->assertJsonPath('data.order_index', 1)
+            ->assertJsonPath('data.type', 'fill_blank')
+            ->assertJsonPath('data.order', 1)
             ->assertJsonPath('data.status', 'draft')
             ->assertJsonPath('data.created_by', $this->teamMember->id);
 
@@ -223,19 +255,20 @@ class TeamExerciseControllerTest extends TenantTestCase
      */
     public function test_exercise_creation_validation()
     {
-        Sanctum::actingAs($this->teamMember, ['tenant']);
+        Sanctum::actingAs($this->teamMember, ['*'], 'tenant');
 
         // Missing required fields
         $response = $this->postJson("/api/{$this->tenant->slug}/team/exercises", []);
 
         $response->assertStatus(422)
-            ->assertJsonValidationErrors(['title', 'lesson_id', 'exercise_type']);
+            ->assertJsonValidationErrors(['title', 'lesson_id', 'type', 'content']);
 
         // Invalid lesson
         $response = $this->postJson("/api/{$this->tenant->slug}/team/exercises", [
             'title' => 'Test Exercise',
             'lesson_id' => 99999,
-            'exercise_type' => 'multiple_choice',
+            'type' => 'multiple_choice',
+            'content' => ['question' => 'Test question'],
         ]);
 
         $response->assertStatus(422)
@@ -245,11 +278,12 @@ class TeamExerciseControllerTest extends TenantTestCase
         $response = $this->postJson("/api/{$this->tenant->slug}/team/exercises", [
             'title' => 'Test Exercise',
             'lesson_id' => $this->lesson->id,
-            'exercise_type' => 'invalid_type',
+            'type' => 'invalid_type',
+            'content' => ['question' => 'Test question'],
         ]);
 
         $response->assertStatus(422)
-            ->assertJsonValidationErrors(['exercise_type']);
+            ->assertJsonValidationErrors(['type']);
     }
 
     /**
@@ -259,7 +293,7 @@ class TeamExerciseControllerTest extends TenantTestCase
      */
     public function test_team_member_can_show_exercise()
     {
-        Sanctum::actingAs($this->teamMember, ['tenant']);
+        Sanctum::actingAs($this->teamMember, ['*'], 'tenant');
 
         $exercise = $this->createTestExercise();
 
@@ -275,8 +309,8 @@ class TeamExerciseControllerTest extends TenantTestCase
                     'title',
                     'description',
                     'lesson_id',
-                    'exercise_type',
-                    'order_index',
+                    'type',
+                    'order',
                     'status',
                     'content',
                     'created_by',
@@ -293,15 +327,15 @@ class TeamExerciseControllerTest extends TenantTestCase
      */
     public function test_team_member_can_update_exercise()
     {
-        Sanctum::actingAs($this->teamMember, ['tenant']);
+        Sanctum::actingAs($this->teamMember, ['*'], 'tenant');
 
         $exercise = $this->createTestExercise();
 
         $updateData = [
             'title' => 'Updated Exercise Title',
             'description' => 'Updated description',
-            'order_index' => 5,
-            'exercise_type' => 'drag_and_drop',
+            'order' => 5,
+            'type' => 'multiple_choice',
         ];
 
         $response = $this->putJson("/api/{$this->tenant->slug}/team/exercises/{$exercise->id}", $updateData);
@@ -309,16 +343,16 @@ class TeamExerciseControllerTest extends TenantTestCase
         $response->assertStatus(200)
             ->assertJsonPath('data.title', 'Updated Exercise Title')
             ->assertJsonPath('data.description', 'Updated description')
-            ->assertJsonPath('data.order_index', 5)
-            ->assertJsonPath('data.exercise_type', 'drag_and_drop');
+            ->assertJsonPath('data.order', 5)
+            ->assertJsonPath('data.type', 'multiple_choice');
 
         $this->runInTenantContext($this->tenant, function () use ($exercise) {
             $this->assertDatabaseHas('exercises', [
                 'id' => $exercise->id,
                 'title' => 'Updated Exercise Title',
                 'description' => 'Updated description',
-                'order_index' => 5,
-                'exercise_type' => 'drag_and_drop',
+                'order' => 5,
+                'type' => 'multiple_choice',
             ]);
         });
     }
@@ -330,7 +364,7 @@ class TeamExerciseControllerTest extends TenantTestCase
      */
     public function test_team_member_can_delete_exercise()
     {
-        Sanctum::actingAs($this->teamMember, ['tenant']);
+        Sanctum::actingAs($this->teamMember, ['*'], 'tenant');
 
         $exercise = $this->createTestExercise();
 
@@ -352,7 +386,7 @@ class TeamExerciseControllerTest extends TenantTestCase
      */
     public function test_students_cannot_access_team_exercise_endpoints()
     {
-        Sanctum::actingAs($this->studentUser, ['tenant']);
+        Sanctum::actingAs($this->studentUser, ['*'], 'tenant');
 
         $exercise = $this->createTestExercise();
 
@@ -363,7 +397,8 @@ class TeamExerciseControllerTest extends TenantTestCase
         $response = $this->postJson("/api/{$this->tenant->slug}/team/exercises", [
             'title' => 'Test Exercise',
             'lesson_id' => $this->lesson->id,
-            'exercise_type' => 'multiple_choice',
+            'type' => 'multiple_choice',
+            'content' => ['question' => 'Test question'],
         ]);
         $response->assertStatus(403);
 
@@ -401,7 +436,7 @@ class TeamExerciseControllerTest extends TenantTestCase
      */
     public function test_nonexistent_exercise_returns_404()
     {
-        Sanctum::actingAs($this->teamMember, ['tenant']);
+        Sanctum::actingAs($this->teamMember, ['*'], 'tenant');
 
         $response = $this->getJson("/api/{$this->tenant->slug}/team/exercises/99999");
         $response->assertStatus(404);
@@ -422,12 +457,12 @@ class TeamExerciseControllerTest extends TenantTestCase
      */
     public function test_exercise_with_invalid_content_format_is_rejected()
     {
-        Sanctum::actingAs($this->teamMember, ['tenant']);
+        Sanctum::actingAs($this->teamMember, ['*'], 'tenant');
 
         $exerciseData = [
             'title' => 'Test Exercise',
             'lesson_id' => $this->lesson->id,
-            'exercise_type' => 'multiple_choice',
+            'type' => 'multiple_choice',
             'content' => 'invalid json content',
         ];
 
@@ -444,20 +479,20 @@ class TeamExerciseControllerTest extends TenantTestCase
      */
     public function test_exercise_types_are_properly_validated()
     {
-        Sanctum::actingAs($this->teamMember, ['tenant']);
+        Sanctum::actingAs($this->teamMember, ['*'], 'tenant');
 
-        $validTypes = ['multiple_choice', 'fill_in_blanks', 'drag_and_drop', 'matching', 'listening', 'speaking'];
+        $validTypes = ['multiple_choice', 'fill_blank', 'matching', 'writing', 'speaking', 'conversation', 'listening', 'picture'];
 
         foreach ($validTypes as $type) {
             $exerciseData = [
                 'title' => "Test {$type} Exercise",
                 'lesson_id' => $this->lesson->id,
-                'exercise_type' => $type,
-                'content' => json_encode(['test' => 'content']),
+                'type' => $type,
+                'content' => ['test' => 'content'],
             ];
 
             $response = $this->postJson("/api/{$this->tenant->slug}/team/exercises", $exerciseData);
-            $response->assertStatus(201, "Exercise type {$type} should be valid");
+            $response->assertStatus(201);
         }
     }
 }
