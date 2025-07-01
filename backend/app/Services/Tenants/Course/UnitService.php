@@ -237,6 +237,16 @@ class UnitService
             throw new \InvalidArgumentException('Invalid status provided.');
         }
 
+        // Prevent publishing content that's under review
+        if ($status === 'published' && $unit->review_status === 'pending') {
+            throw new \InvalidArgumentException('Cannot publish content while it is under review. Please wait for review approval.');
+        }
+
+        // Require review approval for publishing (except for drafts being published by admins)
+        if ($status === 'published' && $unit->review_status === 'none' && !$user->isTenantAdmin()) {
+            throw new \InvalidArgumentException('Content must be reviewed before publishing.');
+        }
+
         return DB::transaction(function () use ($unit, $status, $user) {
             $oldStatus = $unit->status;
             $unit->status = $status;

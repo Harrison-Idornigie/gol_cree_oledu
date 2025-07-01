@@ -15,7 +15,7 @@ use Exception;
  * 
  * Handles difficulty calculation and analysis operations including:
  * - Text difficulty calculation based on various metrics
- * - Vocabulary difficulty assessment
+ * - Word difficulty assessment through vocabulary analysis
  * - Exercise difficulty scoring
  * - Learning progression validation
  * - Difficulty optimization recommendations

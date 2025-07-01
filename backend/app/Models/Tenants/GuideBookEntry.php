@@ -70,6 +70,14 @@ class GuideBookEntry extends Model
     }
 
     /**
+     * Get the unit that owns the guide book entry.
+     */
+    public function unit(): BelongsTo
+    {
+        return $this->belongsTo(Unit::class);
+    }
+
+    /**
      * Get the language that owns the guide book entry.
      */
     public function language(): BelongsTo

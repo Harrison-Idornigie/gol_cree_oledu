@@ -10,7 +10,7 @@ use App\Http\Controllers\API\Tenant\Student\StudentUnitController;
 use App\Http\Controllers\API\Tenant\Student\StudentUserLanguageController;
 use App\Http\Controllers\API\Tenant\Student\StudentUserProgressController;
 use App\Http\Controllers\API\Tenant\Student\StudentUserSettingsController;
-use App\Http\Controllers\API\Tenant\Student\StudentVocabularyController;
+
 use App\Http\Controllers\API\Tenant\Student\StudentWordController;
 
 use Illuminate\Support\Facades\Route;
@@ -112,17 +112,6 @@ Route::prefix('student')->middleware(['auth:tenant', 'tenant-access', \App\Http\
     Route::post('exercises/{exercise}/submit-answer', [StudentExerciseController::class, 'submitAnswer']);
     Route::get('exercises/by-type/{type}', [StudentExerciseController::class, 'getByType']);
     Route::get('exercises/by-language/{languageCode}', [StudentExerciseController::class, 'getByLanguage']);
-
-    // Vocabulary
-    Route::prefix('vocabulary')->group(function () {
-        Route::get('/', [StudentVocabularyController::class, 'index']);
-        Route::get('/review', [StudentVocabularyController::class, 'reviewItems']);
-        Route::get('/mistakes', [StudentVocabularyController::class, 'mistakeItems']);
-        Route::get('/unit/{unitId}', [StudentVocabularyController::class, 'unitVocabulary']);
-        Route::post('/{vocabulary}/check', [StudentVocabularyController::class, 'checkTranslation']);
-        Route::get('/statistics', [StudentVocabularyController::class, 'statistics']);
-        Route::get('/{vocabulary}', [StudentVocabularyController::class, 'show']);
-    });
 
     // Words
     Route::prefix('words')->group(function () {

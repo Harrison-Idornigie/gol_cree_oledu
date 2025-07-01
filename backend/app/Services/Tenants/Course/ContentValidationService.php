@@ -31,7 +31,7 @@ class ContentValidationService
 
     // Validation categories
     public const CATEGORY_GRAMMAR = 'grammar';
-    public const CATEGORY_VOCABULARY = 'vocabulary';
+    public const CATEGORY_GUIDEBOOK = 'guidebook';
     public const CATEGORY_CULTURAL = 'cultural';
     public const CATEGORY_PEDAGOGICAL = 'pedagogical';
     public const CATEGORY_TECHNICAL = 'technical';
@@ -58,7 +58,7 @@ class ContentValidationService
 
         // Validate different aspects
         $grammarValidation = $this->validateGrammarQuality($content);
-        $vocabularyValidation = $this->validateVocabularyQuality($content);
+        $guidebookValidation = $this->validateGuidebookQuality($content);
         $culturalValidation = $this->validateCulturalContent($content);
         $pedagogicalValidation = $this->validatePedagogicalStructure($content);
         $technicalValidation = $this->validateTechnicalAspects($content);
@@ -66,7 +66,7 @@ class ContentValidationService
         // Compile results
         $results['category_scores'] = [
             self::CATEGORY_GRAMMAR => $grammarValidation['score'],
-            self::CATEGORY_VOCABULARY => $vocabularyValidation['score'],
+            self::CATEGORY_GUIDEBOOK => $guidebookValidation['score'],
             self::CATEGORY_CULTURAL => $culturalValidation['score'],
             self::CATEGORY_PEDAGOGICAL => $pedagogicalValidation['score'],
             self::CATEGORY_TECHNICAL => $technicalValidation['score']
@@ -75,7 +75,7 @@ class ContentValidationService
         // Calculate overall score (weighted average)
         $weights = [
             self::CATEGORY_GRAMMAR => 0.25,
-            self::CATEGORY_VOCABULARY => 0.25,
+            self::CATEGORY_GUIDEBOOK => 0.25,
             self::CATEGORY_CULTURAL => 0.15,
             self::CATEGORY_PEDAGOGICAL => 0.25,
             self::CATEGORY_TECHNICAL => 0.10
@@ -88,7 +88,7 @@ class ContentValidationService
         $results['overall_score'] = round($weightedScore, 2);
 
         // Compile issues and recommendations
-        $allValidations = [$grammarValidation, $vocabularyValidation, $culturalValidation, $pedagogicalValidation, $technicalValidation];
+        $allValidations = [$grammarValidation, $guidebookValidation, $culturalValidation, $pedagogicalValidation, $technicalValidation];
         foreach ($allValidations as $validation) {
             $results['issues'] = array_merge($results['issues'], $validation['issues']);
             $results['recommendations'] = array_merge($results['recommendations'], $validation['recommendations']);
@@ -235,14 +235,14 @@ class ContentValidationService
             ];
         }
 
-        // Analyze vocabulary distribution
-        $vocabularyAnalysis = $this->analyzeVocabularyDistribution($content);
-        if ($vocabularyAnalysis['score'] < self::QUALITY_GOOD) {
+        // Analyze guidebook content structure
+        $guidebookAnalysis = $this->analyzeGuidebookDistribution($content);
+        if ($guidebookAnalysis['score'] < self::QUALITY_GOOD) {
             $suggestions[] = [
-                'category' => 'vocabulary',
+                'category' => 'guidebook',
                 'priority' => 'medium',
-                'description' => 'Balance vocabulary difficulty and distribution',
-                'specific_actions' => $vocabularyAnalysis['suggestions']
+                'description' => 'Improve guidebook structure and word integration',
+                'specific_actions' => $guidebookAnalysis['suggestions']
             ];
         }
 
@@ -391,36 +391,36 @@ class ContentValidationService
     }
 
     /**
-     * Validate vocabulary quality.
+     * Validate guidebook quality.
      */
-    private function validateVocabularyQuality(array $content): array
+    private function validateGuidebookQuality(array $content): array
     {
         $score = 100;
         $issues = [];
         $recommendations = [];
 
-        $vocabularyStats = $this->analyzeVocabularyStats($content);
+        $guidebookStats = $this->analyzeGuidebookStats($content);
 
-        // Check vocabulary diversity
-        if ($vocabularyStats['diversity_score'] < 0.6) {
+        // Check guidebook completeness and structure
+        if ($guidebookStats['completeness_score'] < 0.7) {
             $issues[] = [
-                'type' => 'low_vocabulary_diversity',
+                'type' => 'incomplete_guidebook',
                 'severity' => 'medium',
-                'message' => 'Content has low vocabulary diversity'
+                'message' => 'Guidebook content appears incomplete or lacks proper structure'
             ];
             $score -= 15;
-            $recommendations[] = 'Increase vocabulary variety in content';
+            $recommendations[] = 'Improve guidebook completeness and organization';
         }
 
-        // Check difficulty progression
-        if ($vocabularyStats['progression_score'] < 0.7) {
+        // Check word tracking and vocabulary integration
+        if ($guidebookStats['word_integration_score'] < 0.6) {
             $issues[] = [
-                'type' => 'poor_vocabulary_progression',
+                'type' => 'poor_word_integration',
                 'severity' => 'medium',
-                'message' => 'Vocabulary difficulty progression needs improvement'
+                'message' => 'Word tracking and vocabulary integration needs improvement'
             ];
             $score -= 10;
-            $recommendations[] = 'Improve vocabulary difficulty progression';
+            $recommendations[] = 'Better integrate word tracking with lesson content';
         }
 
         return [
@@ -706,34 +706,46 @@ class ContentValidationService
     }
 
     /**
-     * Analyze vocabulary statistics.
+     * Analyze guidebook statistics.
      */
-    private function analyzeVocabularyStats(array $content): array
+    private function analyzeGuidebookStats(array $content): array
     {
-        $allWords = [];
-        $wordFrequency = [];
+        $hasIntroduction = false;
+        $hasExamples = false;
+        $hasWordTracking = false;
+        $contentSections = 0;
 
         foreach ($content as $item) {
-            if (isset($item['text'])) {
-                $words = str_word_count(strtolower($item['text']), 1);
-                $allWords = array_merge($allWords, $words);
-
-                foreach ($words as $word) {
-                    $wordFrequency[$word] = ($wordFrequency[$word] ?? 0) + 1;
+            if (isset($item['category'])) {
+                switch ($item['category']) {
+                    case 'introduction':
+                        $hasIntroduction = true;
+                        break;
+                    case 'examples':
+                        $hasExamples = true;
+                        break;
+                    case 'vocabulary':
+                        $hasWordTracking = true;
+                        break;
                 }
+                $contentSections++;
             }
         }
 
-        $uniqueWords = count(array_unique($allWords));
-        $totalWords = count($allWords);
-        $diversityScore = $totalWords > 0 ? $uniqueWords / $totalWords : 0;
+        // Calculate completeness score
+        $completenessFactors = [$hasIntroduction, $hasExamples, $contentSections >= 3];
+        $completenessScore = count(array_filter($completenessFactors)) / count($completenessFactors);
+
+        // Calculate word integration score
+        $wordIntegrationScore = $hasWordTracking ? 0.8 : 0.4;
 
         return [
-            'diversity_score' => $diversityScore,
-            'progression_score' => 0.8, // Simplified
-            'unique_words' => $uniqueWords,
-            'total_words' => $totalWords,
-            'word_frequency' => $wordFrequency
+            'completeness_score' => $completenessScore,
+            'word_integration_score' => $wordIntegrationScore,
+            'has_introduction' => $hasIntroduction,
+            'has_examples' => $hasExamples,
+            'has_word_tracking' => $hasWordTracking,
+            'content_sections' => $contentSections
         ];
     }
 
@@ -876,17 +888,18 @@ class ContentValidationService
     }
 
     /**
-     * Analyze vocabulary distribution.
+     * Analyze guidebook distribution.
      */
-    private function analyzeVocabularyDistribution(array $content): array
+    private function analyzeGuidebookDistribution(array $content): array
     {
-        $stats = $this->analyzeVocabularyStats($content);
-        $score = $stats['diversity_score'] * 100;
+        $stats = $this->analyzeGuidebookStats($content);
+        $score = ($stats['completeness_score'] + $stats['word_integration_score']) / 2 * 100;
         $suggestions = [];
 
         if ($score < 70) {
-            $suggestions[] = 'Increase vocabulary variety';
-            $suggestions[] = 'Avoid repetitive word usage';
+            $suggestions[] = 'Improve guidebook structure and organization';
+            $suggestions[] = 'Better integrate word tracking with content';
+            $suggestions[] = 'Add more comprehensive examples and explanations';
         }
 
         return [
@@ -1117,7 +1130,7 @@ class ContentValidationService
         return match ($recommendation['category']) {
             'quality_improvement' => 'Improved content quality and user experience',
             'structure' => 'Better content organization and flow',
-            'vocabulary' => 'Enhanced vocabulary learning effectiveness',
+            'guidebook' => 'Enhanced guidebook structure and word tracking',
             'exercises' => 'More engaging and varied learning activities',
             default => 'Overall content improvement'
         };

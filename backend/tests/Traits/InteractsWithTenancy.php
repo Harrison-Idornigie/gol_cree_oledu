@@ -562,10 +562,11 @@ trait InteractsWithTenancy
     protected function createTenantTeam(array $attributes = []): \App\Models\Tenants\User
     {
         return $this->runInTenantContext($this->tenant ?? $this->createTestTenant(), function () use ($attributes) {
+            $uniqueId = \Illuminate\Support\Str::random(8);
             return \App\Models\Tenants\User::create(array_merge([
                 'id' => \Illuminate\Support\Str::uuid(),
                 'name' => 'Team User',
-                'email' => 'team@test.com',
+                'email' => "team-{$uniqueId}@test.com",
                 'password' => bcrypt('password'),
                 'membership' => 'team',
                 'email_verified_at' => now(),
@@ -581,10 +582,11 @@ trait InteractsWithTenancy
     protected function createTenantStudent(array $attributes = []): \App\Models\Tenants\User
     {
         return $this->runInTenantContext($this->tenant ?? $this->createTestTenant(), function () use ($attributes) {
+            $uniqueId = \Illuminate\Support\Str::random(8);
             return \App\Models\Tenants\User::create(array_merge([
                 'id' => \Illuminate\Support\Str::uuid(),
                 'name' => 'Student User',
-                'email' => 'student@test.com',
+                'email' => "student-{$uniqueId}@test.com",
                 'password' => bcrypt('password'),
                 'membership' => 'student',
                 'email_verified_at' => now(),
@@ -600,10 +602,11 @@ trait InteractsWithTenancy
     protected function createTenantAdmin(array $attributes = []): \App\Models\Tenants\User
     {
         return $this->runInTenantContext($this->tenant ?? $this->createTestTenant(), function () use ($attributes) {
+            $uniqueId = \Illuminate\Support\Str::random(8);
             return \App\Models\Tenants\User::create(array_merge([
                 'id' => \Illuminate\Support\Str::uuid(),
                 'name' => 'Admin User',
-                'email' => 'admin@test.com',
+                'email' => "admin-{$uniqueId}@test.com",
                 'password' => bcrypt('password'),
                 'membership' => 'admin',
                 'email_verified_at' => now(),

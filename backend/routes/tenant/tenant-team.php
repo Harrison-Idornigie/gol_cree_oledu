@@ -14,7 +14,7 @@ use App\Http\Controllers\API\Tenant\Team\TeamProgressController;
 use App\Http\Controllers\API\Tenant\Team\TeamSentenceController;
 use App\Http\Controllers\API\Tenant\Team\TeamTopicController;
 use App\Http\Controllers\API\Tenant\Team\TeamUnitController;
-use App\Http\Controllers\API\Tenant\Team\TeamVocabularyController;
+
 use App\Http\Controllers\API\Tenant\Team\TeamWordController;
 use Illuminate\Support\Facades\Route;
 
@@ -110,7 +110,6 @@ Route::prefix('team')->middleware(['auth:tenant', 'verified-grace', 'role_permis
     Route::apiResource('topics', TeamTopicController::class);
     Route::apiResource('lessons', TeamLessonController::class);
     Route::apiResource('exercises', TeamExerciseController::class);
-    Route::apiResource('vocabulary', TeamVocabularyController::class);
     Route::apiResource('guide-entries', TeamGuideBookEntryController::class);
 
     // Review Workflow for Learning Paths

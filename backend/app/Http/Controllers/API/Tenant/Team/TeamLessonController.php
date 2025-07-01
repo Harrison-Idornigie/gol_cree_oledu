@@ -183,35 +183,40 @@ class TeamLessonController extends BaseAPIController
 
     /**
      * Submit lesson for review.
-     * 
+     *
      * @param Request $request
-     * @param Lesson $lesson
+     * @param string $tenant
+     * @param string $lesson
      * @return JsonResponse
      */
-    public function submitForReview(Request $request, Lesson $lesson): JsonResponse
+    public function submitForReview(Request $request, string $tenant, string $lesson): JsonResponse
     {
-        $this->authorize('submitForReview', $lesson);
-
         try {
+            // Find the lesson within tenant context
+            $lessonModel = Lesson::findOrFail((int) $lesson);
+            $this->authorize('submitForReview', $lessonModel);
+
             $validatedData = $request->validate([
                 'review_notes' => 'nullable|string|max:1000',
             ]);
 
             // Check if lesson has minimum required content
-            if (!$lesson->exercises()->exists()) {
+            if (!$lessonModel->exercises()->exists()) {
                 return $this->sendError('Cannot submit for review. Lesson must have at least one exercise.');
             }
 
-            $updatedLesson = $this->lessonService->updateLessonStatus($lesson, 'under_review', Auth::user());
+            // Update review status instead of main status
+            $updatedLesson = $this->lessonService->updateLesson($lessonModel, ['review_status' => 'pending'], Auth::user());
 
             // Create review entry if review notes provided
             if (!empty($validatedData['review_notes'])) {
                 $this->reviewService->createReview([
                     'content_type' => 'lesson',
-                    'content_id' => $lesson->id,
-                    'reviewer_id' => Auth::id(),
+                    'content_id' => $lessonModel->id,
+                    'submitted_by' => Auth::id(),
                     'status' => 'pending',
-                    'comment' => $validatedData['review_notes'],
+                    'review_comment' => $validatedData['review_notes'],
+                    'submitted_at' => now(),
                 ], Auth::user());
             }
 
@@ -225,23 +230,26 @@ class TeamLessonController extends BaseAPIController
 
     /**
      * Update lesson status.
-     * 
+     *
      * @param Request $request
-     * @param Lesson $lesson
+     * @param string $tenant
+     * @param string $lesson
      * @return JsonResponse
      */
-    public function updateStatus(Request $request, Lesson $lesson): JsonResponse
+    public function updateStatus(Request $request, string $tenant, string $lesson): JsonResponse
     {
-        $this->authorize('update', $lesson);
-
         try {
+            // Find the lesson within tenant context
+            $lessonModel = Lesson::findOrFail((int) $lesson);
+            $this->authorize('update', $lessonModel);
+
             $validatedData = $request->validate([
                 'status' => 'required|string|in:draft,under_review,published,archived',
                 'status_notes' => 'nullable|string|max:1000',
             ]);
 
             $updatedLesson = $this->lessonService->updateLessonStatus(
-                $lesson,
+                $lessonModel,
                 $validatedData['status'],
                 Auth::user()
             );
@@ -250,7 +258,7 @@ class TeamLessonController extends BaseAPIController
             if (!empty($validatedData['status_notes'])) {
                 $this->reviewService->createReview([
                     'content_type' => 'lesson',
-                    'content_id' => $lesson->id,
+                    'content_id' => $lessonModel->id,
                     'reviewer_id' => Auth::id(),
                     'status' => 'completed',
                     'comment' => $validatedData['status_notes'],
@@ -260,6 +268,8 @@ class TeamLessonController extends BaseAPIController
             return $this->sendResponse($updatedLesson, 'Lesson status updated successfully.');
         } catch (ValidationException $e) {
             return $this->sendError('Validation failed.', $e->errors(), 422);
+        } catch (\InvalidArgumentException $e) {
+            return $this->sendError('Validation failed.', ['status' => [$e->getMessage()]], 422);
         } catch (Exception $e) {
             return $this->sendError('Failed to update status.', ['error' => $e->getMessage()]);
         }

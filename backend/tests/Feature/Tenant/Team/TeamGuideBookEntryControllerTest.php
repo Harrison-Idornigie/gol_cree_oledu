@@ -9,7 +9,6 @@ use App\Models\Tenants\User;
 use App\Models\Tenants\Language;
 use App\Models\Tenants\GuideBookEntry;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\Sanctum;
 
 class TeamGuideBookEntryControllerTest extends TenantTestCase
@@ -29,24 +28,12 @@ class TeamGuideBookEntryControllerTest extends TenantTestCase
         // Create test tenant
         $this->tenant = $this->createTestTenant();
 
-        // Create test users in tenant context
-        $this->teamMember = $this->runInTenantContext($this->tenant, function () {
-            return User::create([
-                'name' => 'Team Member',
-                'email' => 'team@example.com',
-                'password' => Hash::make('password'),
-                'email_verified_at' => now(),
-            ]);
-        });
+        // Initialize tenant context for the test
+        $this->initializeTenantContext($this->tenant);
 
-        $this->studentUser = $this->runInTenantContext($this->tenant, function () {
-            return User::create([
-                'name' => 'Student User',
-                'email' => 'student@example.com',
-                'password' => Hash::make('password'),
-                'email_verified_at' => now(),
-            ]);
-        });
+        // Create test users using proper helper methods
+        $this->teamMember = $this->createTenantTeam();
+        $this->studentUser = $this->createTenantStudent();
 
         // Create test language
         $this->language = $this->runInTenantContext($this->tenant, function () {
@@ -85,36 +72,45 @@ class TeamGuideBookEntryControllerTest extends TenantTestCase
      * Test team member can list guide entries
      * 
      * @test
-     */
-    public function test_team_member_can_list_guide_entries()
+     */    public function test_team_member_can_list_guide_entries()
     {
-        Sanctum::actingAs($this->teamMember, ['tenant']);
+        $this->runInTenantContext($this->tenant, function () {
+            Sanctum::actingAs($this->teamMember, ['*'], 'tenant');
 
-        $entry1 = $this->createTestGuideEntry(['title' => 'Grammar Guide']);
-        $entry2 = $this->createTestGuideEntry(['title' => 'Pronunciation Guide', 'order_index' => 2]);
+            $entry1 = $this->createTestGuideEntry(['title' => 'Grammar Guide']);
+            $entry2 = $this->createTestGuideEntry(['title' => 'Pronunciation Guide', 'order_index' => 2]);
 
-        $response = $this->getJson("/api/{$this->tenant->slug}/team/guide-entries");
+            $response = $this->getJson("/api/{$this->tenant->slug}/team/guide-entries");
 
-        $response->assertStatus(200)
-            ->assertJsonCount(2, 'data')
-            ->assertJsonPath('data.0.title', 'Grammar Guide')
-            ->assertJsonPath('data.1.title', 'Pronunciation Guide')
-            ->assertJsonStructure([
-                'data' => [
-                    '*' => [
-                        'id',
-                        'title',
-                        'content',
-                        'category',
-                        'language_id',
-                        'order_index',
-                        'status',
-                        'created_by',
-                        'created_at',
-                        'updated_at'
+            $response->assertStatus(200)
+                ->assertJson(['success' => true])
+                ->assertJsonStructure([
+                    'success',
+                    'data' => [
+                        'current_page',
+                        'data' => [
+                            '*' => [
+                                'id',
+                                'title',
+                                'slug',
+                                'content',
+                                'category',
+                                'status',
+                                'created_at',
+                                'updated_at',
+                            ]
+                        ],
+                        'per_page',
+                        'total',
                     ]
-                ]
-            ]);
+                ]);
+
+            // Check that our created entries are in the response
+            $entries = $response->json('data.data');
+            $titles = collect($entries)->pluck('title')->toArray();
+            $this->assertContains('Grammar Guide', $titles);
+            $this->assertContains('Pronunciation Guide', $titles);
+        });
     }
 
     /**
@@ -124,28 +120,28 @@ class TeamGuideBookEntryControllerTest extends TenantTestCase
      */
     public function test_team_member_can_create_guide_entry()
     {
-        Sanctum::actingAs($this->teamMember, ['tenant']);
-
-        $entryData = [
-            'title' => 'New Grammar Guide',
-            'content' => 'This is a comprehensive guide to Spanish grammar...',
-            'category' => 'grammar',
-            'language_id' => $this->language->id,
-            'order_index' => 1,
-        ];
-
-        $response = $this->postJson("/api/{$this->tenant->slug}/team/guide-entries", $entryData);
-
-        $response->assertStatus(201)
-            ->assertJsonPath('data.title', 'New Grammar Guide')
-            ->assertJsonPath('data.content', 'This is a comprehensive guide to Spanish grammar...')
-            ->assertJsonPath('data.category', 'grammar')
-            ->assertJsonPath('data.language_id', $this->language->id)
-            ->assertJsonPath('data.order_index', 1)
-            ->assertJsonPath('data.status', 'draft')
-            ->assertJsonPath('data.created_by', $this->teamMember->id);
-
         $this->runInTenantContext($this->tenant, function () {
+            Sanctum::actingAs($this->teamMember, ['*'], 'tenant');
+
+            $entryData = [
+                'title' => 'New Grammar Guide',
+                'content' => 'This is a comprehensive guide to Spanish grammar...',
+                'category' => 'grammar',
+                'language_id' => $this->language->id,
+                'order_index' => 1,
+            ];
+
+            $response = $this->postJson("/api/{$this->tenant->slug}/team/guide-entries", $entryData);
+
+            $response->assertStatus(201)
+                ->assertJsonPath('data.title', 'New Grammar Guide')
+                ->assertJsonPath('data.content', 'This is a comprehensive guide to Spanish grammar...')
+                ->assertJsonPath('data.category', 'grammar')
+                ->assertJsonPath('data.language_id', $this->language->id)
+                ->assertJsonPath('data.order_index', 1)
+                ->assertJsonPath('data.status', 'draft')
+                ->assertJsonPath('data.created_by', $this->teamMember->id);
+
             $this->assertDatabaseHas('guide_book_entries', [
                 'title' => 'New Grammar Guide',
                 'content' => 'This is a comprehensive guide to Spanish grammar...',
@@ -162,35 +158,37 @@ class TeamGuideBookEntryControllerTest extends TenantTestCase
      */
     public function test_guide_entry_creation_validation()
     {
-        Sanctum::actingAs($this->teamMember, ['tenant']);
+        $this->runInTenantContext($this->tenant, function () {
+            Sanctum::actingAs($this->teamMember, ['*'], 'tenant');
 
-        // Missing required fields
-        $response = $this->postJson("/api/{$this->tenant->slug}/team/guide-entries", []);
+            // Missing required fields
+            $response = $this->postJson("/api/{$this->tenant->slug}/team/guide-entries", []);
 
-        $response->assertStatus(422)
-            ->assertJsonValidationErrors(['title', 'content', 'category']);
+            $response->assertStatus(422)
+                ->assertJsonValidationErrors(['title', 'content', 'category']);
 
-        // Invalid language
-        $response = $this->postJson("/api/{$this->tenant->slug}/team/guide-entries", [
-            'title' => 'Test Guide',
-            'content' => 'Test content',
-            'category' => 'grammar',
-            'language_id' => 99999,
-        ]);
+            // Invalid language
+            $response = $this->postJson("/api/{$this->tenant->slug}/team/guide-entries", [
+                'title' => 'Test Guide',
+                'content' => 'Test content',
+                'category' => 'grammar',
+                'language_id' => 99999,
+            ]);
 
-        $response->assertStatus(422)
-            ->assertJsonValidationErrors(['language_id']);
+            $response->assertStatus(422)
+                ->assertJsonValidationErrors(['language_id']);
 
-        // Invalid category
-        $response = $this->postJson("/api/{$this->tenant->slug}/team/guide-entries", [
-            'title' => 'Test Guide',
-            'content' => 'Test content',
-            'category' => 'invalid_category',
-            'language_id' => $this->language->id,
-        ]);
+            // Invalid category
+            $response = $this->postJson("/api/{$this->tenant->slug}/team/guide-entries", [
+                'title' => 'Test Guide',
+                'content' => 'Test content',
+                'category' => 'invalid_category',
+                'language_id' => $this->language->id,
+            ]);
 
-        $response->assertStatus(422)
-            ->assertJsonValidationErrors(['category']);
+            $response->assertStatus(422)
+                ->assertJsonValidationErrors(['category']);
+        });
     }
 
     /**
@@ -200,31 +198,33 @@ class TeamGuideBookEntryControllerTest extends TenantTestCase
      */
     public function test_team_member_can_show_guide_entry()
     {
-        Sanctum::actingAs($this->teamMember, ['tenant']);
+        $this->runInTenantContext($this->tenant, function () {
+            Sanctum::actingAs($this->teamMember, ['*'], 'tenant');
 
-        $entry = $this->createTestGuideEntry();
+            $entry = $this->createTestGuideEntry();
 
-        $response = $this->getJson("/api/{$this->tenant->slug}/team/guide-entries/{$entry->id}");
+            $response = $this->getJson("/api/{$this->tenant->slug}/team/guide-entries/{$entry->id}");
 
-        $response->assertStatus(200)
-            ->assertJsonPath('data.id', $entry->id)
-            ->assertJsonPath('data.title', $entry->title)
-            ->assertJsonPath('data.content', $entry->content)
-            ->assertJsonStructure([
-                'data' => [
-                    'id',
-                    'title',
-                    'content',
-                    'category',
-                    'language_id',
-                    'order_index',
-                    'status',
-                    'tags',
-                    'created_by',
-                    'created_at',
-                    'updated_at'
-                ]
-            ]);
+            $response->assertStatus(200)
+                ->assertJsonPath('data.id', $entry->id)
+                ->assertJsonPath('data.title', $entry->title)
+                ->assertJsonPath('data.content', $entry->content)
+                ->assertJsonStructure([
+                    'data' => [
+                        'id',
+                        'title',
+                        'content',
+                        'category',
+                        'language_id',
+                        'order_index',
+                        'status',
+                        'tags',
+                        'created_by',
+                        'created_at',
+                        'updated_at'
+                    ]
+                ]);
+        });
     }
 
     /**

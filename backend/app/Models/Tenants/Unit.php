@@ -38,6 +38,7 @@ class Unit extends Model
 
     protected $attributes = [
         'status' => 'draft',
+        'review_status' => 'none',
     ];
 
     /**

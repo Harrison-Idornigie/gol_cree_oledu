@@ -310,6 +310,8 @@ class TeamUnitController extends BaseAPIController
             return $this->sendError('Unit not found.', [], 404);
         } catch (ValidationException $e) {
             return $this->sendError('Validation failed.', $e->errors(), 422);
+        } catch (\InvalidArgumentException $e) {
+            return $this->sendError('Validation failed.', ['status' => [$e->getMessage()]], 422);
         } catch (Exception $e) {
             return $this->sendError('Failed to update status.', ['error' => $e->getMessage()]);
         }

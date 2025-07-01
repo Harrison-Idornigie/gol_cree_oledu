@@ -65,15 +65,15 @@ class StarterPackService
                 'levels' => ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'],
                 'age_groups' => ['kids', 'teen_adult'],
                 'features' => [
-                    'Duolingo-style clickable vocabulary',
+                    'Duolingo-style word tracking',
                     'Audio pronunciation support',
                     'Syllabics writing system',
                     'Cultural context integration',
                     'Elder teachings and traditional knowledge',
                     'Age-appropriate learning paths',
-                    'Vocabulary progression constraints',
+                    'Word progression through guidebooks',
                 ],
-                'total_vocabulary' => 500,
+                'total_words' => 500,
                 'estimated_lessons' => 200,
                 'is_official' => true,
             ],
@@ -188,7 +188,7 @@ class StarterPackService
             ]);
 
             // Note: We don't clone the actual content (units, topics, lessons, exercises)
-            // as that would require language-specific vocabulary and translations
+            // as that would require language-specific words and translations
             // Teachers will use the scaffolding system to populate content
 
             $clonedPaths[] = $cloned;
@@ -211,7 +211,7 @@ class StarterPackService
         $templateData['pronunciation_focus'] = true;
         $templateData['cultural_components'] = $options['include_cultural_components'] ?? true;
         $templateData['audio_support'] = true;
-        $templateData['vocabulary_progression'] = true;
+        $templateData['word_progression'] = true;
 
         // Adapt unit titles and descriptions
         if (isset($templateData['units'])) {

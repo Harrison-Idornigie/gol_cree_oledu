@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services\Tenants\Course;
 
 use App\Models\Tenants\AuditLog;
@@ -223,6 +224,16 @@ class TopicService
 
         if (! in_array($status, $validStatuses)) {
             throw new Exception("Invalid status. Must be one of: " . implode(', ', $validStatuses));
+        }
+
+        // Prevent publishing content that's under review
+        if ($status === 'published' && $topic->review_status === 'pending') {
+            throw new \InvalidArgumentException('Cannot publish content while it is under review. Please wait for review approval.');
+        }
+
+        // Require review approval for publishing (except for drafts being published by admins)
+        if ($status === 'published' && $topic->review_status === 'none' && !$user->isTenantAdmin()) {
+            throw new \InvalidArgumentException('Content must be reviewed before publishing.');
         }
 
         return $this->updateTopic($topic, ['status' => $status], $user);

@@ -119,7 +119,7 @@ class LessonService
                 $lesson,
                 [],
                 $data,
-                $user->id
+                ['user_id' => $user->id]
             );
 
             Log::info('Lesson created via service', [
@@ -151,7 +151,7 @@ class LessonService
                 $lesson,
                 $originalData,
                 $data,
-                $user->id
+                ['user_id' => $user->id]
             );
 
             Log::info('Lesson updated via service', [
@@ -191,7 +191,7 @@ class LessonService
                     null,
                     $lessonData,
                     [],
-                    $user->id
+                    ['user_id' => $user->id]
                 );
 
                 Log::info('Lesson deleted via service', [
@@ -238,6 +238,16 @@ class LessonService
 
         if (!in_array($status, $validStatuses)) {
             throw new Exception("Invalid status. Must be one of: " . implode(', ', $validStatuses));
+        }
+
+        // Prevent publishing content that's under review
+        if ($status === 'published' && $lesson->review_status === 'pending') {
+            throw new \InvalidArgumentException('Cannot publish content while it is under review. Please wait for review approval.');
+        }
+
+        // Require review approval for publishing (except for drafts being published by admins)
+        if ($status === 'published' && $lesson->review_status === 'none' && !$user->isTenantAdmin()) {
+            throw new \InvalidArgumentException('Content must be reviewed before publishing.');
         }
 
         return $this->updateLesson($lesson, ['status' => $status], $user);

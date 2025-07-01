@@ -297,6 +297,8 @@ class TeamTopicController extends BaseAPIController
             return $this->sendResponse($updatedTopic, 'Topic status updated successfully.');
         } catch (ValidationException $e) {
             return $this->sendError('Validation failed.', $e->errors(), 422);
+        } catch (\InvalidArgumentException $e) {
+            return $this->sendError('Validation failed.', ['status' => [$e->getMessage()]], 422);
         } catch (Exception $e) {
             return $this->sendError('Failed to update status.', ['error' => $e->getMessage()]);
         }
