@@ -13,7 +13,8 @@
             "syllabics": "ᒪᒪ",
             "translation": "mother, mom",
             "cultural_context": "Term of endearment for mother, used by children",
-            "example": "Mama kîya cî? (Are you my mother?)"
+            "example": "Mama kîya cî? (Are you my mother?)",
+            "proficiency_level": "A1"
         }
     },
     {
@@ -30,7 +31,8 @@
             "syllabics": "ᐸᐸ",
             "translation": "father, dad",
             "cultural_context": "Term of endearment for father, used by children",
-            "example": "Papa ayâw cî? (Is dad there?)"
+            "example": "Papa ayâw cî? (Is dad there?)",
+            "proficiency_level": "A1"
         }
     },
     {
@@ -47,7 +49,8 @@
             "syllabics": "ᓅᐦᑯᒼ",
             "translation": "my grandmother",
             "cultural_context": "Important family relationship in Cree culture, grandmothers are knowledge keepers",
-            "example": "Nôhkom âcimow. (My grandmother is telling a story.)"
+            "example": "Nôhkom âcimow. (My grandmother is telling a story.)",
+            "proficiency_level": "A1"
         }
     },
     {
@@ -64,7 +67,8 @@
             "syllabics": "ᒧᐦᓱᒼ",
             "translation": "my grandfather",
             "cultural_context": "Important family relationship in Cree culture, grandfathers are wisdom keepers",
-            "example": "Moshom kîkway kiskêyihtam. (My grandfather knows things.)"
+            "example": "Moshom kîkway kiskêyihtam. (My grandfather knows things.)",
+            "proficiency_level": "A1"
         }
     },
     {
@@ -81,7 +85,8 @@
             "syllabics": "ᓂᐢᑌᐢ",
             "translation": "my older brother",
             "cultural_context": "Specific kinship term showing respect for older siblings",
-            "example": "Nistês wîcihêw. (My older brother helps.)"
+            "example": "Nistês wîcihêw. (My older brother helps.)",
+            "proficiency_level": "A1"
         }
     },
     {
@@ -98,7 +103,8 @@
             "syllabics": "ᓂᒥᐢ",
             "translation": "my older sister",
             "cultural_context": "Specific kinship term showing respect for older siblings",
-            "example": "Nimis kîkway pêhtam. (My older sister hears something.)"
+            "example": "Nimis kîkway pêhtam. (My older sister hears something.)",
+            "proficiency_level": "A1"
         }
     },
     {
@@ -115,7 +121,8 @@
             "syllabics": "ᐚᐸᐢ",
             "translation": "rabbit",
             "cultural_context": "Important animal in Cree stories and traditional food source",
-            "example": "Wâpos wâpiskâw. (The rabbit is white.)"
+            "example": "Wâpos wâpiskâw. (The rabbit is white.)",
+            "proficiency_level": "A1"
         }
     },
     {
@@ -132,7 +139,8 @@
             "syllabics": "ᐱᓯᐢᑭᐤ",
             "translation": "bird",
             "cultural_context": "Birds are important in Cree culture for their songs and as messengers",
-            "example": "Pisiskiw nikamow. (The bird is singing.)"
+            "example": "Pisiskiw nikamow. (The bird is singing.)",
+            "proficiency_level": "A1"
         }
     },
     {
@@ -149,7 +157,8 @@
             "syllabics": "ᐚᐱᐢᑳᐤ",
             "translation": "it is white",
             "cultural_context": "White is significant in ceremonies and represents purity",
-            "example": "Kona wâpiskâw. (The snow is white.)"
+            "example": "Kona wâpiskâw. (The snow is white.)",
+            "proficiency_level": "A1"
         }
     },
     {
@@ -166,7 +175,8 @@
             "syllabics": "ᑲᐢᑭᑌᐚᐤ",
             "translation": "it is black",
             "cultural_context": "Black represents the west direction in the medicine wheel",
-            "example": "Maskwa kaskitêwâw. (The bear is black.)"
+            "example": "Maskwa kaskitêwâw. (The bear is black.)",
+            "proficiency_level": "A1"
         }
     },
     {
@@ -183,7 +193,8 @@
             "syllabics": "ᒥᐦᑳᐤ",
             "translation": "it is red",
             "cultural_context": "Red represents the south direction in the medicine wheel",
-            "example": "Opwâgan mihkwâw. (The pipe is red.)"
+            "example": "Opwâgan mihkwâw. (The pipe is red.)",
+            "proficiency_level": "A1"
         }
     },
     {
@@ -200,7 +211,8 @@
             "syllabics": "ᐅᓵᐚᐤ",
             "translation": "it is yellow",
             "cultural_context": "Yellow represents the east direction in the medicine wheel",
-            "example": "Pîsim osâwâw. (The sun is yellow.)"
+            "example": "Pîsim osâwâw. (The sun is yellow.)",
+            "proficiency_level": "A1"
         }
     },
     {
@@ -216,7 +228,9 @@
             "pronunciation_notes": "Stress is on the first syllable. The 'ê' is a long 'e' sound like in 'they'.",
             "syllabics": "ᐯᔭᐠ",
             "translation": "one",
-            "example": "Pêyak maskwa (One bear)."
+            "cultural_context": "Numbers are fundamental for counting and understanding quantities",
+            "example": "Pêyak maskwa (One bear).",
+            "proficiency_level": "A1"
         }
     },
     {
@@ -232,7 +246,9 @@
             "pronunciation_notes": "Stress is on the first syllable. The 'î' is a long 'i' sound like in 'machine'.",
             "syllabics": "ᓃᓱ",
             "translation": "two",
-            "example": "Nîso atimwak (Two dogs)."
+            "cultural_context": "Two represents balance and partnership in traditional teachings",
+            "example": "Nîso atimwak (Two dogs).",
+            "proficiency_level": "A1"
         }
     },
     {
@@ -248,7 +264,9 @@
             "pronunciation_notes": "Stress is on the first syllable.",
             "syllabics": "ᓂᐢᑐ",
             "translation": "three",
-            "example": "Nisto masinahikana (Three books)."
+            "cultural_context": "Three represents mind, body, and spirit in traditional teachings",
+            "example": "Nisto masinahikana (Three books).",
+            "proficiency_level": "A1"
         }
     },
     {
@@ -264,7 +282,9 @@
             "pronunciation_notes": "Stress is on the first syllable. The 'ê' is a long 'e' sound like in 'they'.",
             "syllabics": "ᓀᐓ",
             "translation": "four",
-            "example": "Nêwo sîpîhkwak (Four rivers)."
+            "cultural_context": "Four represents the four directions and sacred medicine wheel",
+            "example": "Nêwo sîpîhkwak (Four rivers).",
+            "proficiency_level": "A1"
         }
     },
     {
@@ -280,7 +300,9 @@
             "pronunciation_notes": "Stress is on the second syllable. The 'â' is a long 'a' sound like in 'father'.",
             "syllabics": "ᓂᔮᓇᐣ",
             "translation": "five",
-            "example": "Niyânan wâpamâwak (I see five of them)."
+            "cultural_context": "Five represents the human being with four limbs and head",
+            "example": "Niyânan wâpamâwak (I see five of them).",
+            "proficiency_level": "A1"
         }
     },
     {
@@ -297,7 +319,8 @@
             "syllabics": "ᒥᐢᑎᑳᐣ",
             "translation": "head",
             "cultural_context": "The head is considered sacred as it houses thoughts and spirit",
-            "example": "Nimistikwân nanâtohk. (My head hurts.)"
+            "example": "Nimistikwân nanâtohk. (My head hurts.)",
+            "proficiency_level": "A1"
         }
     },
     {
@@ -314,7 +337,8 @@
             "syllabics": "ᐅᐢᑭᓯᑯᐦᐠ",
             "translation": "eye",
             "cultural_context": "Eyes are important for seeing the world and understanding",
-            "example": "Noskisikohk wâpamêw. (My eye sees.)"
+            "example": "Noskisikohk wâpamêw. (My eye sees.)",
+            "proficiency_level": "A1"
         }
     },
     {
@@ -331,7 +355,8 @@
             "syllabics": "ᐅᑕᐚᑲᐩ",
             "translation": "ear",
             "cultural_context": "Ears are important for listening to teachings and nature",
-            "example": "Notawakay pêhtam. (My ear hears.)"
+            "example": "Notawakay pêhtam. (My ear hears.)",
+            "proficiency_level": "A1"
         }
     },
     {
@@ -348,7 +373,8 @@
             "syllabics": "ᑮᓯᑳᐤ",
             "translation": "day, sky",
             "cultural_context": "The sky is sacred and connects earth to the spirit world",
-            "example": "Miywâsin kîsikâw. (It is a good day.)"
+            "example": "Miywâsin kîsikâw. (It is a good day.)",
+            "proficiency_level": "A1"
         }
     },
     {
@@ -365,7 +391,8 @@
             "syllabics": "ᐊᐢᑭᐩ",
             "translation": "earth, land",
             "cultural_context": "Mother Earth is sacred and provides for all life",
-            "example": "Askiy kîhtwâm pîkiskwêw. (The earth speaks again.)"
+            "example": "Askiy kîhtwâm pîkiskwêw. (The earth speaks again.)",
+            "proficiency_level": "A1"
         }
     },
     {
@@ -382,7 +409,8 @@
             "syllabics": "ᐲᓯᒼ",
             "translation": "sun",
             "cultural_context": "The sun is a sacred source of life and energy",
-            "example": "Pîsim wâpiskâw. (The sun is bright.)"
+            "example": "Pîsim wâpiskâw. (The sun is bright.)",
+            "proficiency_level": "A1"
         }
     },
     {
@@ -399,7 +427,8 @@
             "syllabics": "ᑮᐱᐢᑳᐤ",
             "translation": "night",
             "cultural_context": "Night is a time for rest and spiritual connection",
-            "example": "Tîpiskâw kaskitêwâw. (The night is dark.)"
+            "example": "Tîpiskâw kaskitêwâw. (The night is dark.)",
+            "proficiency_level": "A1"
         }
     },
     {
@@ -416,7 +445,8 @@
             "syllabics": "ᑕᓂᓯ",
             "translation": "hello, how are you",
             "cultural_context": "Common greeting used throughout the day",
-            "example": "Tanisi, nitôtem. (Hello, my friend.)"
+            "example": "Tanisi, nitôtem. (Hello, my friend.)",
+            "proficiency_level": "A1"
         }
     },
     {
@@ -432,7 +462,9 @@
             "pronunciation_notes": "The \"î\" (long \"i\") sounds like \"ee\" in \"see,\" and \"kway\" rhymes with \"why.\" The stress is on the first syllable.",
             "syllabics": "ᑮᑿᐩ",
             "translation": "what",
-            "example": "Kîkway ôma? (What is this?)"
+            "cultural_context": "Essential question word for learning and understanding",
+            "example": "Kîkway ôma? (What is this?)",
+            "proficiency_level": "A1"
         }
     },
     {
@@ -449,7 +481,8 @@
             "syllabics": "ᒪᐢᑿ",
             "translation": "bear",
             "cultural_context": "Bears are sacred animals in Cree culture, representing strength and medicine",
-            "example": "Maskwa mîcisow. (The bear is eating.)"
+            "example": "Maskwa mîcisow. (The bear is eating.)",
+            "proficiency_level": "A1"
         }
     },
     {
@@ -466,7 +499,8 @@
             "syllabics": "ᐊᑎᒼ",
             "translation": "dog",
             "cultural_context": "Dogs were important companions and working animals in traditional Cree life",
-            "example": "Atim pimohtêw. (The dog is walking.)"
+            "example": "Atim pimohtêw. (The dog is walking.)",
+            "proficiency_level": "A1"
         }
     },
     {
@@ -483,7 +517,8 @@
             "syllabics": "ᓃᐱᐩ",
             "translation": "water",
             "cultural_context": "Water is sacred and essential for all life",
-            "example": "Nîpiy minihkwê. (Drink water.)"
+            "example": "Nîpiy minihkwê. (Drink water.)",
+            "proficiency_level": "A1"
         }
     },
     {
@@ -500,7 +535,8 @@
             "syllabics": "ᒦᒋᓱᐏᐣ",
             "translation": "food",
             "cultural_context": "Food is shared in community and blessed before eating",
-            "example": "Mîcisowin mitoni mîwâsin. (The food is very good.)"
+            "example": "Mîcisowin mitoni mîwâsin. (The food is very good.)",
+            "proficiency_level": "A1"
         }
     },
     {
@@ -516,7 +552,9 @@
             "pronunciation_notes": "Stress is on the first syllable. The \"â\" is a long \"a\" sound like in \"father\".",
             "syllabics": "ᐚᐸᒣᐤ",
             "translation": "he/she sees him/her",
-            "example": "Niwâpamâw atim. (I see the dog.)"
+            "cultural_context": "Seeing involves understanding and recognition",
+            "example": "Niwâpamâw atim. (I see the dog.)",
+            "proficiency_level": "A1"
         }
     },
     {
@@ -533,7 +571,8 @@
             "syllabics": "ᒦᑭᐚᐦᑊ",
             "translation": "teepee, lodge",
             "cultural_context": "Traditional dwelling representing the sacred circle and connection to earth",
-            "example": "Mîkiwâhpihk niwîkin. (I live in a teepee.)"
+            "example": "Mîkiwâhpihk niwîkin. (I live in a teepee.)",
+            "proficiency_level": "A2"
         }
     },
     {
@@ -549,7 +588,9 @@
             "pronunciation_notes": "Stress is on the first syllable. The \"â\" is a long \"a\" sound like in \"father\".",
             "syllabics": "ᐋᐢᑕᒼ",
             "translation": "come here",
-            "example": "Âstam, nitôtem. (Come here, my friend.)"
+            "cultural_context": "Invitation to join and participate in community",
+            "example": "Âstam, nitôtem. (Come here, my friend.)",
+            "proficiency_level": "A1"
         }
     },
     {
@@ -565,7 +606,9 @@
             "pronunciation_notes": "Stress is on the second syllable. The \"â\" is a long \"a\" sound like in \"father\".",
             "syllabics": "ᒥᔼᓯᐣ",
             "translation": "it is good, it is beautiful",
-            "example": "Miywâsin kîsikâw. (It is a good day.)"
+            "cultural_context": "Expressing appreciation for the goodness in all things",
+            "example": "Miywâsin kîsikâw. (It is a good day.)",
+            "proficiency_level": "A1"
         }
     },
     {
@@ -582,7 +625,8 @@
             "syllabics": "ᐃᐢᑫᐤ",
             "translation": "woman",
             "cultural_context": "Women are honored as life-givers and knowledge keepers",
-            "example": "Iskwêw nikamow. (The woman is singing.)"
+            "example": "Iskwêw nikamow. (The woman is singing.)",
+            "proficiency_level": "A1"
         }
     },
     {
@@ -599,7 +643,8 @@
             "syllabics": "ᓈᐯᐤ",
             "translation": "man",
             "cultural_context": "Men are protectors and providers in traditional roles",
-            "example": "Nâpêw pimohtêw. (The man is walking.)"
+            "example": "Nâpêw pimohtêw. (The man is walking.)",
+            "proficiency_level": "A1"
         }
     },
     {
@@ -616,7 +661,4112 @@
             "syllabics": "ᐊᐚᓯᐢ",
             "translation": "child",
             "cultural_context": "Children are considered sacred gifts and the future of the people",
-            "example": "Awâsis metawêw. (The child is playing.)"
+            "example": "Awâsis metawêw. (The child is playing.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "nitânis",
+        "language_id": null,
+        "part_of_speech": "NA",
+        "pronunciation_key": "nee-TAH-nis",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["family", "common"],
+            "grade_levels": ["K", "1", "2", "3"],
+            "ipa": "/niˈtaːnis/",
+            "pronunciation_notes": "Stress on second syllable, long 'a' sound",
+            "syllabics": "ᓂᑖᓂᐢ",
+            "translation": "my daughter",
+            "cultural_context": "Daughters are cherished and taught traditional women's roles",
+            "example": "Nitânis mîcisow. (My daughter is eating.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "nikosis",
+        "language_id": null,
+        "part_of_speech": "NA",
+        "pronunciation_key": "nee-KOH-sis",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["family", "common"],
+            "grade_levels": ["K", "1", "2", "3"],
+            "ipa": "/niˈkosis/",
+            "pronunciation_notes": "Stress on second syllable",
+            "syllabics": "ᓂᑯᓯᐢ",
+            "translation": "my son",
+            "cultural_context": "Sons are taught traditional men's roles and responsibilities",
+            "example": "Nikosis pimohtêw. (My son is walking.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "nindawêmâkan",
+        "language_id": null,
+        "part_of_speech": "NA",
+        "pronunciation_key": "nin-dah-WAY-mah-kan",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["family", "common"],
+            "grade_levels": ["K", "1", "2", "3"],
+            "ipa": "/nindaˈweːmaːkan/",
+            "pronunciation_notes": "Stress on third syllable, long vowels",
+            "syllabics": "ᓂᐣᑕᐁᒫᑲᐣ",
+            "translation": "my relative, my family member",
+            "cultural_context": "Extended family relationships are very important in Cree culture",
+            "example": "Nindawêmâkan wîcihêw. (My relative helps.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "nitôtem",
+        "language_id": null,
+        "part_of_speech": "NA",
+        "pronunciation_key": "nee-TOH-tem",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["social", "common"],
+            "grade_levels": ["K", "1", "2", "3"],
+            "ipa": "/niˈtoːtem/",
+            "pronunciation_notes": "Stress on second syllable, long 'o' sound",
+            "syllabics": "ᓂᑑᑌᒼ",
+            "translation": "my friend",
+            "cultural_context": "Friendship is valued and involves mutual support and respect",
+            "example": "Nitôtem kîya cî? (Are you my friend?)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "okimâw",
+        "language_id": null,
+        "part_of_speech": "NA",
+        "pronunciation_key": "oh-kee-MAW",
+        "metadata": {
+            "difficulty": "intermediate",
+            "tags": ["leadership", "cultural"],
+            "grade_levels": ["3", "4", "5"],
+            "ipa": "/okiˈmaːw/",
+            "pronunciation_notes": "Stress on third syllable, long 'a' sound",
+            "syllabics": "ᐅᑭᒫᐤ",
+            "translation": "chief, leader",
+            "cultural_context": "Traditional leadership role with responsibility for community welfare",
+            "example": "Okimâw pîkiskwêw. (The chief is speaking.)",
+            "proficiency_level": "A2"
+        }
+    },
+    {
+        "text": "kîhciy",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "KEEH-chiy",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["body", "common"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈkiːhtʃij/",
+            "pronunciation_notes": "Long 'i' sound, stress on first syllable",
+            "syllabics": "ᑮᐦᒋᐩ",
+            "translation": "hand",
+            "cultural_context": "Hands are used for creating, healing, and blessing",
+            "example": "Nikîhciy nanâtohk. (My hand hurts.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "misit",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "MEE-sit",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["body", "common"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈmisit/",
+            "pronunciation_notes": "Stress on first syllable",
+            "syllabics": "ᒥᓯᐟ",
+            "translation": "foot",
+            "cultural_context": "Feet connect us to Mother Earth and carry us on our journey",
+            "example": "Nimisit nanâtohk. (My foot hurts.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "otêh",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "oh-TAYH",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["body", "common"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/oˈteːh/",
+            "pronunciation_notes": "Stress on second syllable, long 'e' sound",
+            "syllabics": "ᐅᑌᐦ",
+            "translation": "heart",
+            "cultural_context": "The heart is the center of emotions and spiritual connection",
+            "example": "Notêh miyomahciho. (My heart feels good.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "mitôn",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "mee-TOHN",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["body", "common"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/miˈtoːn/",
+            "pronunciation_notes": "Stress on second syllable, long 'o' sound",
+            "syllabics": "ᒥᑑᐣ",
+            "translation": "mouth",
+            "cultural_context": "The mouth speaks truth and shares teachings",
+            "example": "Nimitôn kîsikaw. (My mouth is dry.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "okâwiy",
+        "language_id": null,
+        "part_of_speech": "NA",
+        "pronunciation_key": "oh-KAH-wiy",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["family", "common"],
+            "grade_levels": ["K", "1", "2", "3"],
+            "ipa": "/oˈkaːwij/",
+            "pronunciation_notes": "Stress on second syllable, long 'a' sound",
+            "syllabics": "ᐅᑳᐏᐩ",
+            "translation": "his/her mother",
+            "cultural_context": "Mothers are honored as life-givers and first teachers",
+            "example": "Okâwiy âcimow. (His mother is telling a story.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "otâwiy",
+        "language_id": null,
+        "part_of_speech": "NA",
+        "pronunciation_key": "oh-TAH-wiy",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["family", "common"],
+            "grade_levels": ["K", "1", "2", "3"],
+            "ipa": "/oˈtaːwij/",
+            "pronunciation_notes": "Stress on second syllable, long 'a' sound",
+            "syllabics": "ᐅᑖᐏᐩ",
+            "translation": "his/her father",
+            "cultural_context": "Fathers are protectors and teachers of traditional ways",
+            "example": "Otâwiy wîcihêw. (His father helps.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "oskinîkiw",
+        "language_id": null,
+        "part_of_speech": "NA",
+        "pronunciation_key": "os-kee-NEE-kiw",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["people", "age"],
+            "grade_levels": ["K", "1", "2", "3"],
+            "ipa": "/oskiˈniːkiw/",
+            "pronunciation_notes": "Stress on third syllable, long 'i' sound",
+            "syllabics": "ᐅᐢᑭᓃᑭᐤ",
+            "translation": "young man",
+            "cultural_context": "Young men are learning their roles and responsibilities",
+            "example": "Oskinîkiw kîkway kiskêyihtam. (The young man knows something.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "oskiskwêw",
+        "language_id": null,
+        "part_of_speech": "NA",
+        "pronunciation_key": "os-kis-KWAY",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["people", "age"],
+            "grade_levels": ["K", "1", "2", "3"],
+            "ipa": "/oskisˈkweːw/",
+            "pronunciation_notes": "Stress on third syllable, long 'e' sound",
+            "syllabics": "ᐅᐢᑭᐢᑫᐤ",
+            "translation": "young woman",
+            "cultural_context": "Young women are learning traditional skills and knowledge",
+            "example": "Oskiskwêw nikamow. (The young woman is singing.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "wâwâskêsiw",
+        "language_id": null,
+        "part_of_speech": "NA",
+        "pronunciation_key": "wah-WAHS-kay-siw",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["animals", "common"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/waːˈwaːskeːsiw/",
+            "pronunciation_notes": "Stress on second syllable, long vowels",
+            "syllabics": "ᐚᐚᐢᑫᓯᐤ",
+            "translation": "deer",
+            "cultural_context": "Deer provide food, clothing, and tools in traditional life",
+            "example": "Wâwâskêsiw pimipayiw. (The deer is running.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "môswa",
+        "language_id": null,
+        "part_of_speech": "NA",
+        "pronunciation_key": "MOH-swa",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["animals", "common"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈmoːswa/",
+            "pronunciation_notes": "Stress on first syllable, long 'o' sound",
+            "syllabics": "ᒨᐢᐚ",
+            "translation": "moose",
+            "cultural_context": "Moose are important for food and materials in traditional life",
+            "example": "Môswa mispon. (The moose is big.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "wâpiti",
+        "language_id": null,
+        "part_of_speech": "NA",
+        "pronunciation_key": "WAH-pee-tee",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["animals", "common"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈwaːpiti/",
+            "pronunciation_notes": "Stress on first syllable, long 'a' sound",
+            "syllabics": "ᐚᐱᑎ",
+            "translation": "elk",
+            "cultural_context": "Elk are respected animals providing food and materials",
+            "example": "Wâpiti kîkway pêhtam. (The elk hears something.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "mahihkan",
+        "language_id": null,
+        "part_of_speech": "NA",
+        "pronunciation_key": "mah-HEEH-kan",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["animals", "common"],
+            "grade_levels": ["K", "1", "2", "3"],
+            "ipa": "/mahiˈhkan/",
+            "pronunciation_notes": "Stress on second syllable",
+            "syllabics": "ᒪᐦᐃᐦᑲᐣ",
+            "translation": "wolf",
+            "cultural_context": "Wolves are respected as teachers and family-oriented animals",
+            "example": "Mahihkan howlêw. (The wolf is howling.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "mistanask",
+        "language_id": null,
+        "part_of_speech": "NA",
+        "pronunciation_key": "mis-TAH-nask",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["animals", "common"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/misˈtanask/",
+            "pronunciation_notes": "Stress on second syllable",
+            "syllabics": "ᒥᐢᑕᓇᐢᐠ",
+            "translation": "buffalo, bison",
+            "cultural_context": "Buffalo were central to Plains Cree life providing everything needed",
+            "example": "Mistanask pimipayiw. (The buffalo is running.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "amisk",
+        "language_id": null,
+        "part_of_speech": "NA",
+        "pronunciation_key": "AH-misk",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["animals", "common"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈamisk/",
+            "pronunciation_notes": "Stress on first syllable",
+            "syllabics": "ᐊᒥᐢᐠ",
+            "translation": "beaver",
+            "cultural_context": "Beavers are respected for their building skills and family cooperation",
+            "example": "Amisk mîkiwâhp osîhêw. (The beaver builds a lodge.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "sîkâk",
+        "language_id": null,
+        "part_of_speech": "NA",
+        "pronunciation_key": "SEE-kahk",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["animals", "common"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈsiːkaːk/",
+            "pronunciation_notes": "Long 'i' and 'a' sounds, stress on first syllable",
+            "syllabics": "ᓃᑳᐠ",
+            "translation": "skunk",
+            "cultural_context": "Skunks teach about boundaries and self-protection",
+            "example": "Sîkâk mâh-mîhkwâw. (The skunk is very red.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "kâkâkiw",
+        "language_id": null,
+        "part_of_speech": "NA",
+        "pronunciation_key": "KAH-kah-kiw",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["animals", "birds"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈkaːkaːkiw/",
+            "pronunciation_notes": "Long 'a' sounds, stress on first syllable",
+            "syllabics": "ᑳᑳᑭᐤ",
+            "translation": "raven, crow",
+            "cultural_context": "Ravens are messengers and tricksters in traditional stories",
+            "example": "Kâkâkiw pîkiskwêw. (The raven is talking.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "mikisîw",
+        "language_id": null,
+        "part_of_speech": "NA",
+        "pronunciation_key": "mee-kee-SEEW",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["animals", "birds"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/mikiˈsiːw/",
+            "pronunciation_notes": "Stress on third syllable, long 'i' sound",
+            "syllabics": "ᒥᑭᓃᐤ",
+            "translation": "eagle",
+            "cultural_context": "Eagles are sacred messengers carrying prayers to the Creator",
+            "example": "Mikisîw ispimihk pimipayiw. (The eagle flies in the sky.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "ôhow",
+        "language_id": null,
+        "part_of_speech": "NA",
+        "pronunciation_key": "OH-how",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["animals", "birds"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈoːhow/",
+            "pronunciation_notes": "Long 'o' sound, stress on first syllable",
+            "syllabics": "ᐆᐦᐅᐤ",
+            "translation": "owl",
+            "cultural_context": "Owls are associated with wisdom and night teachings",
+            "example": "Ôhow tîpiskâw nikamow. (The owl sings at night.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "kinosêw",
+        "language_id": null,
+        "part_of_speech": "NA",
+        "pronunciation_key": "kee-noh-SAYH",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["animals", "water"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/kinoˈseːw/",
+            "pronunciation_notes": "Stress on third syllable, long 'e' sound",
+            "syllabics": "ᑭᓄᓭᐤ",
+            "translation": "fish",
+            "cultural_context": "Fish provide important food and are respected water beings",
+            "example": "Kinosêw nîpîhk pimohtêw. (The fish swims in the water.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "kinêpik",
+        "language_id": null,
+        "part_of_speech": "NA",
+        "pronunciation_key": "kee-NAY-pik",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["animals", "insects"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/kiˈneːpik/",
+            "pronunciation_notes": "Stress on second syllable, long 'e' sound",
+            "syllabics": "ᑭᓀᐱᐠ",
+            "translation": "snake",
+            "cultural_context": "Snakes represent transformation and healing medicine",
+            "example": "Kinêpik askîhk pimohtêw. (The snake moves on the ground.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "pimohtêw",
+        "language_id": null,
+        "part_of_speech": "VAI",
+        "pronunciation_key": "pee-moh-TAYH",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["verbs", "movement"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/pimoˈhteːw/",
+            "pronunciation_notes": "Stress on third syllable, long 'e' sound",
+            "syllabics": "ᐱᒧᐦᑌᐤ",
+            "translation": "he/she walks",
+            "cultural_context": "Walking connects us to the land and our journey",
+            "example": "Nâpêw pimohtêw. (The man is walking.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "pimipayiw",
+        "language_id": null,
+        "part_of_speech": "VAI",
+        "pronunciation_key": "pee-mee-PAH-yiw",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["verbs", "movement"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/pimiˈpajiv/",
+            "pronunciation_notes": "Stress on third syllable",
+            "syllabics": "ᐱᒥᐸᔨᐤ",
+            "translation": "he/she runs",
+            "cultural_context": "Running represents urgency and energy in life",
+            "example": "Awâsis pimipayiw. (The child is running.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "mîcisow",
+        "language_id": null,
+        "part_of_speech": "VAI",
+        "pronunciation_key": "MEE-chee-sow",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["verbs", "daily"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈmiːtʃisow/",
+            "pronunciation_notes": "Stress on first syllable, long 'i' sound",
+            "syllabics": "ᒦᒋᓱᐤ",
+            "translation": "he/she eats",
+            "cultural_context": "Eating is done with gratitude and sharing",
+            "example": "Maskwa mîcisow. (The bear is eating.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "minihkwêw",
+        "language_id": null,
+        "part_of_speech": "VAI",
+        "pronunciation_key": "mee-neeh-KWAY",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["verbs", "daily"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/miniˈhkweːw/",
+            "pronunciation_notes": "Stress on third syllable, long 'e' sound",
+            "syllabics": "ᒥᓂᐦᑫᐤ",
+            "translation": "he/she drinks",
+            "cultural_context": "Drinking water is essential and sacred",
+            "example": "Atim nîpiy minihkwêw. (The dog drinks water.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "nipâw",
+        "language_id": null,
+        "part_of_speech": "VAI",
+        "pronunciation_key": "nee-PAW",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["verbs", "daily"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/niˈpaːw/",
+            "pronunciation_notes": "Stress on second syllable, long 'a' sound",
+            "syllabics": "ᓂᐹᐤ",
+            "translation": "he/she sleeps",
+            "cultural_context": "Sleep is important for health and spiritual renewal",
+            "example": "Awâsis nipâw. (The child is sleeping.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "waniskâw",
+        "language_id": null,
+        "part_of_speech": "VAI",
+        "pronunciation_key": "wah-nis-KAW",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["verbs", "daily"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/wanisˈkaːw/",
+            "pronunciation_notes": "Stress on third syllable, long 'a' sound",
+            "syllabics": "ᐚᓂᐢᑳᐤ",
+            "translation": "he/she gets up, wakes up",
+            "cultural_context": "Waking up is greeting a new day with gratitude",
+            "example": "Kîkisêpâ waniskâw. (He/she gets up in the morning.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "nikamow",
+        "language_id": null,
+        "part_of_speech": "VAI",
+        "pronunciation_key": "nee-KAH-mow",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["verbs", "cultural"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/niˈkamow/",
+            "pronunciation_notes": "Stress on second syllable",
+            "syllabics": "ᓂᑲᒧᐤ",
+            "translation": "he/she sings",
+            "cultural_context": "Singing connects us to spirit and community",
+            "example": "Iskwêw nikamow. (The woman is singing.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "nîmihtow",
+        "language_id": null,
+        "part_of_speech": "VAI",
+        "pronunciation_key": "NEE-mee-tow",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["verbs", "cultural"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈniːmihtow/",
+            "pronunciation_notes": "Long 'i' sound, stress on first syllable",
+            "syllabics": "ᓃᒥᐦᑐᐤ",
+            "translation": "he/she dances",
+            "cultural_context": "Dancing is prayer in motion and cultural expression",
+            "example": "Oskinîkiw nîmihtow. (The young man is dancing.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "pêhtam",
+        "language_id": null,
+        "part_of_speech": "VTI",
+        "pronunciation_key": "PAY-tam",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["verbs", "senses"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈpeːhtam/",
+            "pronunciation_notes": "Long 'e' sound, stress on first syllable",
+            "syllabics": "ᐯᐦᑕᒼ",
+            "translation": "he/she hears it",
+            "cultural_context": "Listening is important for learning and understanding",
+            "example": "Nimis kîkway pêhtam. (My sister hears something.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "wâpamêw",
+        "language_id": null,
+        "part_of_speech": "VTA",
+        "pronunciation_key": "WAH-pah-mayh",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["verbs", "senses"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈwaːpameːw/",
+            "pronunciation_notes": "Long 'a' and 'e' sounds, stress on first syllable",
+            "syllabics": "ᐚᐸᒣᐤ",
+            "translation": "he/she sees him/her",
+            "cultural_context": "Seeing involves understanding and recognition",
+            "example": "Niwâpamâw nôhkom. (I see my grandmother.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "kiskêyihtam",
+        "language_id": null,
+        "part_of_speech": "VTI",
+        "pronunciation_key": "kis-KAY-yih-tam",
+        "metadata": {
+            "difficulty": "intermediate",
+            "tags": ["verbs", "mental"],
+            "grade_levels": ["2", "3", "4"],
+            "ipa": "/kisˈkeːjihtam/",
+            "pronunciation_notes": "Stress on second syllable, long 'e' sound",
+            "syllabics": "ᑭᐢᑫᔨᐦᑕᒼ",
+            "translation": "he/she knows it",
+            "cultural_context": "Knowledge comes from experience and teachings",
+            "example": "Moshom kîkway kiskêyihtam. (Grandfather knows something.)",
+            "proficiency_level": "A2"
+        }
+    },
+    {
+        "text": "âcimow",
+        "language_id": null,
+        "part_of_speech": "VAI",
+        "pronunciation_key": "AH-chee-mow",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["verbs", "communication"],
+            "grade_levels": ["K", "1", "2", "3"],
+            "ipa": "/ˈaːtʃimow/",
+            "pronunciation_notes": "Long 'a' sound, stress on first syllable",
+            "syllabics": "ᐋᒋᒧᐤ",
+            "translation": "he/she tells a story",
+            "cultural_context": "Storytelling preserves culture and teaches lessons",
+            "example": "Nôhkom âcimow. (My grandmother tells a story.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "pîkiskwêw",
+        "language_id": null,
+        "part_of_speech": "VAI",
+        "pronunciation_key": "PEE-kis-kway",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["verbs", "communication"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈpiːkiskweːw/",
+            "pronunciation_notes": "Long 'i' and 'e' sounds, stress on first syllable",
+            "syllabics": "ᐲᑭᐢᑫᐤ",
+            "translation": "he/she speaks, talks",
+            "cultural_context": "Speaking carries responsibility to share truth",
+            "example": "Okimâw pîkiskwêw. (The chief is speaking.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "masinahikan",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "mah-see-nah-HEE-kan",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["objects", "education"],
+            "grade_levels": ["K", "1", "2", "3"],
+            "ipa": "/masinaˈhiːkan/",
+            "pronunciation_notes": "Stress on fourth syllable, long 'i' sound",
+            "syllabics": "ᒪᓯᓇᐦᐃᑲᐣ",
+            "translation": "book, paper",
+            "cultural_context": "Books preserve knowledge and teachings",
+            "example": "Masinahikan ayamihêw. (He/she reads a book.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "osihcikêwin",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "oh-see-chee-KAY-win",
+        "metadata": {
+            "difficulty": "intermediate",
+            "tags": ["objects", "tools"],
+            "grade_levels": ["3", "4", "5"],
+            "ipa": "/osihtʃiˈkeːwin/",
+            "pronunciation_notes": "Stress on fourth syllable, long 'e' sound",
+            "syllabics": "ᐅᓯᐦᒋᑫᐏᐣ",
+            "translation": "tool, instrument",
+            "cultural_context": "Tools help us work with and respect the natural world",
+            "example": "Osihcikêwin nitayân. (I have a tool.)",
+            "proficiency_level": "A2"
+        }
+    },
+    {
+        "text": "môhkomân",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "MOH-ko-mahn",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["objects", "tools"],
+            "grade_levels": ["2", "3", "4"],
+            "ipa": "/ˈmoːhkomaːn/",
+            "pronunciation_notes": "Long 'o' and 'a' sounds, stress on first syllable",
+            "syllabics": "ᒨᐦᑯᒫᐣ",
+            "translation": "knife",
+            "cultural_context": "Knives are important tools for preparing food and materials",
+            "example": "Môhkomân kîsikaw. (The knife is sharp.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "mitâs",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "mee-TAHS",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["objects", "tools"],
+            "grade_levels": ["2", "3", "4"],
+            "ipa": "/miˈtaːs/",
+            "pronunciation_notes": "Stress on second syllable, long 'a' sound",
+            "syllabics": "ᒥᑖᐢ",
+            "translation": "stick, wood",
+            "cultural_context": "Wood provides materials for tools, shelter, and fire",
+            "example": "Mitâs osîhêw. (He/she makes a stick.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "askihk",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "AH-skihk",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["objects", "containers"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈaskihk/",
+            "pronunciation_notes": "Stress on first syllable",
+            "syllabics": "ᐊᐢᑭᐦᐠ",
+            "translation": "pail, bucket",
+            "cultural_context": "Containers are essential for gathering and storing",
+            "example": "Askihk nîpiy ohci. (A bucket for water.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "opwâgan",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "oh-PWAH-gan",
+        "metadata": {
+            "difficulty": "intermediate",
+            "tags": ["objects", "sacred"],
+            "grade_levels": ["4", "5", "6"],
+            "ipa": "/opˈwaːgan/",
+            "pronunciation_notes": "Stress on second syllable, long 'a' sound",
+            "syllabics": "ᐅᐸᐚᑲᐣ",
+            "translation": "pipe (sacred)",
+            "cultural_context": "Sacred pipes are used in ceremonies and prayers",
+            "example": "Opwâgan mihkwâw. (The pipe is red.)",
+            "proficiency_level": "B1"
+        }
+    },
+    {
+        "text": "mistik",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "MIS-tik",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["nature", "plants"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈmistik/",
+            "pronunciation_notes": "Stress on first syllable",
+            "syllabics": "ᒥᐢᑎᐠ",
+            "translation": "tree, wood",
+            "cultural_context": "Trees are relatives that provide shelter, tools, and medicine",
+            "example": "Mistik mispon. (The tree is big.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "maskosiy",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "mas-KOH-siy",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["nature", "plants"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/masˈkosij/",
+            "pronunciation_notes": "Stress on second syllable",
+            "syllabics": "ᒪᐢᑯᓯᐩ",
+            "translation": "grass",
+            "cultural_context": "Grass feeds animals and has many traditional uses",
+            "example": "Maskosiy osâwâw. (The grass is yellow.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "wâskway",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "WAHS-kway",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["nature", "plants"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈwaːskwaj/",
+            "pronunciation_notes": "Long 'a' sound, stress on first syllable",
+            "syllabics": "ᐚᐢᑿᐩ",
+            "translation": "flower",
+            "cultural_context": "Flowers represent beauty and the renewal of life",
+            "example": "Wâskway miywâsin. (The flower is beautiful.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "kona",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "KOH-na",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["nature", "weather"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈkona/",
+            "pronunciation_notes": "Stress on first syllable",
+            "syllabics": "ᑯᓇ",
+            "translation": "snow",
+            "cultural_context": "Snow brings winter teachings and covers the earth",
+            "example": "Kona wâpiskâw. (The snow is white.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "kimiwon",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "kee-MEE-won",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["nature", "weather"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/kiˈmiːwon/",
+            "pronunciation_notes": "Stress on second syllable, long 'i' sound",
+            "syllabics": "ᑭᒦᐓᐣ",
+            "translation": "rain",
+            "cultural_context": "Rain brings life and cleanses the earth",
+            "example": "Kimiwon kîpahâw. (It is raining.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "yôtin",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "YOH-tin",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["nature", "weather"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈjoːtin/",
+            "pronunciation_notes": "Long 'o' sound, stress on first syllable",
+            "syllabics": "ᔫᑎᐣ",
+            "translation": "wind",
+            "cultural_context": "Wind carries messages and brings change",
+            "example": "Yôtin sôhkâtêw. (The wind is strong.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "sîpiy",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "SEE-piy",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["nature", "water"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈsiːpij/",
+            "pronunciation_notes": "Long 'i' sound, stress on first syllable",
+            "syllabics": "ᓃᐱᐩ",
+            "translation": "river",
+            "cultural_context": "Rivers are highways and sources of life",
+            "example": "Sîpiy kinosêwa ayâwêw. (The river has fish.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "pimî",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "pee-MEE",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["food", "traditional"],
+            "grade_levels": ["K", "1", "2", "3"],
+            "ipa": "/piˈmiː/",
+            "pronunciation_notes": "Stress on second syllable, long 'i' sound",
+            "syllabics": "ᐱᒦ",
+            "translation": "grease, fat",
+            "cultural_context": "Traditional food source providing energy and nutrition",
+            "example": "Pimî mîcisow. (He/she eats fat.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "wiyâs",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "wee-YAHS",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["food", "traditional"],
+            "grade_levels": ["K", "1", "2", "3"],
+            "ipa": "/wiˈjaːs/",
+            "pronunciation_notes": "Stress on second syllable, long 'a' sound",
+            "syllabics": "ᐏᔮᐢ",
+            "translation": "meat",
+            "cultural_context": "Meat is honored and shared in community",
+            "example": "Wiyâs mîcisow. (He/she eats meat.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "okâwîmînisa",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "oh-kah-WEE-mee-nee-sa",
+        "metadata": {
+            "difficulty": "intermediate",
+            "tags": ["food", "plants"],
+            "grade_levels": ["2", "3", "4"],
+            "ipa": "/okaːˈwiːmiːnisa/",
+            "pronunciation_notes": "Stress on third syllable, long vowels",
+            "syllabics": "ᐅᑳᐄᒦᓂᓴ",
+            "translation": "berries",
+            "cultural_context": "Berries are gathered seasonally and preserved for winter",
+            "example": "Okâwîmînisa mîcisow. (He/she eats berries.)",
+            "proficiency_level": "A2"
+        }
+    },
+    {
+        "text": "askipwâwa",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "as-kee-PWAH-wa",
+        "metadata": {
+            "difficulty": "intermediate",
+            "tags": ["food", "plants"],
+            "grade_levels": ["3", "4", "5"],
+            "ipa": "/askiˈpwaːwa/",
+            "pronunciation_notes": "Stress on third syllable, long 'a' sound",
+            "syllabics": "ᐊᐢᑭᐸᐚᐚ",
+            "translation": "potatoes",
+            "cultural_context": "Root vegetables that grow in the earth",
+            "example": "Askipwâwa mîcisow. (He/she eats potatoes.)",
+            "proficiency_level": "A2"
+        }
+    },
+    {
+        "text": "pahkwêsikan",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "pah-KWAY-see-kan",
+        "metadata": {
+            "difficulty": "intermediate",
+            "tags": ["food", "modern"],
+            "grade_levels": ["2", "3", "4"],
+            "ipa": "/pahˈkweːsikan/",
+            "pronunciation_notes": "Stress on second syllable, long 'e' sound",
+            "syllabics": "ᐸᐦᑫᓯᑲᐣ",
+            "translation": "bread",
+            "cultural_context": "Bread represents sustenance and sharing",
+            "example": "Pahkwêsikan mîcisow. (He/she eats bread.)",
+            "proficiency_level": "A2"
+        }
+    },
+    {
+        "text": "ayôskana",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "ah-YOH-ska-na",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["clothing", "traditional"],
+            "grade_levels": ["K", "1", "2", "3"],
+            "ipa": "/aˈjoːskana/",
+            "pronunciation_notes": "Stress on second syllable, long 'o' sound",
+            "syllabics": "ᐊᔫᐢᑲᓇ",
+            "translation": "clothing, dress",
+            "cultural_context": "Traditional clothing reflects cultural identity",
+            "example": "Ayôskana miywâsin. (The clothing is beautiful.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "maskisina",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "mas-kee-SEE-na",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["clothing", "traditional"],
+            "grade_levels": ["K", "1", "2", "3"],
+            "ipa": "/maskiˈsiːna/",
+            "pronunciation_notes": "Stress on third syllable, long 'i' sound",
+            "syllabics": "ᒪᐢᑭᓯᓇ",
+            "translation": "moccasins, shoes",
+            "cultural_context": "Traditional footwear connecting us to the earth",
+            "example": "Maskisina nitayân. (I have moccasins.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "astotin",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "as-TOH-tin",
+        "metadata": {
+            "difficulty": "intermediate",
+            "tags": ["clothing", "traditional"],
+            "grade_levels": ["3", "4", "5"],
+            "ipa": "/asˈtoːtin/",
+            "pronunciation_notes": "Stress on second syllable, long 'o' sound",
+            "syllabics": "ᐊᐢᑐᑎᐣ",
+            "translation": "hat, cap",
+            "cultural_context": "Head coverings for protection and ceremony",
+            "example": "Astotin nitayân. (I have a hat.)",
+            "proficiency_level": "A2"
+        }
+    },
+    {
+        "text": "mispon",
+        "language_id": null,
+        "part_of_speech": "VII",
+        "pronunciation_key": "MIS-pon",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["description", "size"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈmispon/",
+            "pronunciation_notes": "Stress on first syllable",
+            "syllabics": "ᒥᐢᐳᐣ",
+            "translation": "it is big",
+            "cultural_context": "Size descriptions help identify and compare things",
+            "example": "Mistik mispon. (The tree is big.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "âpihtaw",
+        "language_id": null,
+        "part_of_speech": "VII",
+        "pronunciation_key": "AH-pee-taw",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["description", "size"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈaːpihtaw/",
+            "pronunciation_notes": "Long 'a' sound, stress on first syllable",
+            "syllabics": "ᐋᐱᐦᑕᐤ",
+            "translation": "it is small",
+            "cultural_context": "Small things are often precious and important",
+            "example": "Awâsis âpihtaw. (The child is small.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "kinwês",
+        "language_id": null,
+        "part_of_speech": "VII",
+        "pronunciation_key": "kin-WAYS",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["description", "size"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/kinˈweːs/",
+            "pronunciation_notes": "Stress on second syllable, long 'e' sound",
+            "syllabics": "ᑭᐣᐁᐢ",
+            "translation": "it is long",
+            "cultural_context": "Length describes distance and time",
+            "example": "Sîpiy kinwês. (The river is long.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "kîsikaw",
+        "language_id": null,
+        "part_of_speech": "VII",
+        "pronunciation_key": "KEE-see-kaw",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["description", "condition"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈkiːsikaw/",
+            "pronunciation_notes": "Long 'i' sound, stress on first syllable",
+            "syllabics": "ᑮᓯᑲᐤ",
+            "translation": "it is sharp, it is fast",
+            "cultural_context": "Sharpness is important for tools and quick thinking",
+            "example": "Môhkomân kîsikaw. (The knife is sharp.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "sôhkâtêw",
+        "language_id": null,
+        "part_of_speech": "VII",
+        "pronunciation_key": "SOH-kah-tayh",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["description", "condition"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈsoːhkaːteːw/",
+            "pronunciation_notes": "Long vowels, stress on first syllable",
+            "syllabics": "ᓲᐦᑳᑌᐤ",
+            "translation": "it is strong, it is hard",
+            "cultural_context": "Strength is valued in people, animals, and materials",
+            "example": "Yôtin sôhkâtêw. (The wind is strong.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "kîkisêpâ",
+        "language_id": null,
+        "part_of_speech": "IPC",
+        "pronunciation_key": "KEE-kee-say-pah",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["time", "daily"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈkiːkiseːpaː/",
+            "pronunciation_notes": "Long vowels, stress on first syllable",
+            "syllabics": "ᑮᑭᓭᐹ",
+            "translation": "morning",
+            "cultural_context": "Morning is a time for prayers and new beginnings",
+            "example": "Kîkisêpâ waniskâw. (He/she gets up in the morning.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "âpihtâ-kîsikâw",
+        "language_id": null,
+        "part_of_speech": "IPC",
+        "pronunciation_key": "AH-pee-tah KEE-see-kaw",
+        "metadata": {
+            "difficulty": "intermediate",
+            "tags": ["time", "daily"],
+            "grade_levels": ["2", "3", "4"],
+            "ipa": "/ˈaːpihtaː ˈkiːsikaːw/",
+            "pronunciation_notes": "Two words combined, long vowels",
+            "syllabics": "ᐋᐱᐦᑖ ᑮᓯᑳᐤ",
+            "translation": "noon, midday",
+            "cultural_context": "Midday when the sun is highest and strongest",
+            "example": "Âpihtâ-kîsikâw mîcisow. (He/she eats at noon.)",
+            "proficiency_level": "A2"
+        }
+    },
+    {
+        "text": "otâkosîn",
+        "language_id": null,
+        "part_of_speech": "IPC",
+        "pronunciation_key": "oh-TAH-koh-seen",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["time", "daily"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/oˈtaːkosiːn/",
+            "pronunciation_notes": "Stress on second syllable, long vowels",
+            "syllabics": "ᐅᑖᑯᓃᐣ",
+            "translation": "evening",
+            "cultural_context": "Evening is time for family gathering and reflection",
+            "example": "Otâkosîn âcimow. (He/she tells stories in the evening.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "anohc",
+        "language_id": null,
+        "part_of_speech": "IPC",
+        "pronunciation_key": "ah-NOHCH",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["time", "common"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/aˈnohtʃ/",
+            "pronunciation_notes": "Stress on second syllable",
+            "syllabics": "ᐊᓄᐦᐨ",
+            "translation": "today",
+            "cultural_context": "Today is a gift to be appreciated",
+            "example": "Anohc miywâsin. (Today is good.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "otâkosak",
+        "language_id": null,
+        "part_of_speech": "IPC",
+        "pronunciation_key": "oh-TAH-koh-sak",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["time", "common"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/oˈtaːkosak/",
+            "pronunciation_notes": "Stress on second syllable, long 'a' sound",
+            "syllabics": "ᐅᑖᑯᓴᐠ",
+            "translation": "yesterday",
+            "cultural_context": "Yesterday holds lessons and memories",
+            "example": "Otâkosak wâpamêw. (He/she saw him/her yesterday.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "wâpahki",
+        "language_id": null,
+        "part_of_speech": "IPC",
+        "pronunciation_key": "WAH-pah-kee",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["time", "common"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈwaːpahki/",
+            "pronunciation_notes": "Long 'a' sound, stress on first syllable",
+            "syllabics": "ᐚᐸᐦᑭ",
+            "translation": "tomorrow",
+            "cultural_context": "Tomorrow brings new possibilities and hope",
+            "example": "Wâpahki pimohtêw. (He/she will walk tomorrow.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "kîhtwâm",
+        "language_id": null,
+        "part_of_speech": "IPC",
+        "pronunciation_key": "KEEH-twahm",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["time", "common"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈkiːhtwaːm/",
+            "pronunciation_notes": "Long vowels, stress on first syllable",
+            "syllabics": "ᑮᐦᑖᒼ",
+            "translation": "again",
+            "cultural_context": "Repetition is important in learning and ceremony",
+            "example": "Kîhtwâm âstam. (Come again.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "kêyâpic",
+        "language_id": null,
+        "part_of_speech": "IPC",
+        "pronunciation_key": "KAY-yah-pic",
+        "metadata": {
+            "difficulty": "intermediate",
+            "tags": ["time", "common"],
+            "grade_levels": ["2", "3", "4"],
+            "ipa": "/ˈkeːjaːpitʃ/",
+            "pronunciation_notes": "Long 'e' and 'a' sounds, stress on first syllable",
+            "syllabics": "ᑫᔮᐱᐨ",
+            "translation": "still, yet",
+            "cultural_context": "Continuity and persistence in actions",
+            "example": "Kêyâpic nipâw. (He/she is still sleeping.)",
+            "proficiency_level": "A2"
+        }
+    },
+    {
+        "text": "kîkâc",
+        "language_id": null,
+        "part_of_speech": "IPC",
+        "pronunciation_key": "KEE-kahch",
+        "metadata": {
+            "difficulty": "intermediate",
+            "tags": ["time", "common"],
+            "grade_levels": ["2", "3", "4"],
+            "ipa": "/ˈkiːkaːtʃ/",
+            "pronunciation_notes": "Long vowels, stress on first syllable",
+            "syllabics": "ᑮᑳᐨ",
+            "translation": "almost, nearly",
+            "cultural_context": "Approaching completion or achievement",
+            "example": "Kîkâc otisahwêw. (He/she almost reaches it.)",
+            "proficiency_level": "A2"
+        }
+    },
+    {
+        "text": "kîkêhê",
+        "language_id": null,
+        "part_of_speech": "IPC",
+        "pronunciation_key": "KEE-kay-hay",
+        "metadata": {
+            "difficulty": "intermediate",
+            "tags": ["direction", "location"],
+            "grade_levels": ["2", "3", "4"],
+            "ipa": "/ˈkiːkeːheː/",
+            "pronunciation_notes": "Long vowels, stress on first syllable",
+            "syllabics": "ᑮᑫᐦᐁ",
+            "translation": "over there",
+            "cultural_context": "Pointing to distant places and directions",
+            "example": "Kîkêhê mîkiwâhp. (The teepee is over there.)",
+            "proficiency_level": "A2"
+        }
+    },
+    {
+        "text": "ôta",
+        "language_id": null,
+        "part_of_speech": "IPC",
+        "pronunciation_key": "OH-ta",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["direction", "location"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈoːta/",
+            "pronunciation_notes": "Long 'o' sound, stress on first syllable",
+            "syllabics": "ᐆᑕ",
+            "translation": "here",
+            "cultural_context": "Indicating present location and being grounded",
+            "example": "Ôta âstam. (Come here.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "kîtê",
+        "language_id": null,
+        "part_of_speech": "IPC",
+        "pronunciation_key": "KEE-tay",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["direction", "location"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈkiːteː/",
+            "pronunciation_notes": "Long vowels, stress on first syllable",
+            "syllabics": "ᑮᑌ",
+            "translation": "there",
+            "cultural_context": "Pointing to nearby places",
+            "example": "Kîtê ayâw. (It is there.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "kîwehtahikê",
+        "language_id": null,
+        "part_of_speech": "IPC",
+        "pronunciation_key": "KEE-way-tah-hee-kay",
+        "metadata": {
+            "difficulty": "intermediate",
+            "tags": ["direction", "movement"],
+            "grade_levels": ["3", "4", "5"],
+            "ipa": "/ˈkiːwehtahikeː/",
+            "pronunciation_notes": "Long vowels, stress on first syllable",
+            "syllabics": "ᑮᐁᐦᑕᐦᐃᑫ",
+            "translation": "going home",
+            "cultural_context": "Returning to family and community",
+            "example": "Kîwehtahikê pimohtêw. (He/she walks going home.)",
+            "proficiency_level": "A2"
+        }
+    },
+    {
+        "text": "nikotwâsik",
+        "language_id": null,
+        "part_of_speech": "number",
+        "pronunciation_key": "nee-koh-TWAH-sik",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["number", "counting"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/nikoˈtwaːsik/",
+            "pronunciation_notes": "Stress on third syllable, long 'a' sound",
+            "syllabics": "ᓂᑯᑖᓯᐠ",
+            "translation": "six",
+            "cultural_context": "Six represents balance and harmony",
+            "example": "Nikotwâsik pisiskiwak. (Six birds.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "têpakohp",
+        "language_id": null,
+        "part_of_speech": "number",
+        "pronunciation_key": "TAY-pah-kohp",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["number", "counting"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈteːpakohp/",
+            "pronunciation_notes": "Long 'e' sound, stress on first syllable",
+            "syllabics": "ᑌᐸᑯᐦᑊ",
+            "translation": "seven",
+            "cultural_context": "Seven is a sacred number in many teachings",
+            "example": "Têpakohp kîsikâwa. (Seven days.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "ayênânêw",
+        "language_id": null,
+        "part_of_speech": "number",
+        "pronunciation_key": "ah-YAY-nah-nayh",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["number", "counting"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/aˈjeːnaːneːw/",
+            "pronunciation_notes": "Stress on second syllable, long vowels",
+            "syllabics": "ᐊᔦᓈᓀᐤ",
+            "translation": "eight",
+            "cultural_context": "Eight represents renewal and new beginnings",
+            "example": "Ayênânêw atimwak. (Eight dogs.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "kêkâ-mitâtaht",
+        "language_id": null,
+        "part_of_speech": "number",
+        "pronunciation_key": "KAY-kah mee-TAH-taht",
+        "metadata": {
+            "difficulty": "intermediate",
+            "tags": ["number", "counting"],
+            "grade_levels": ["1", "2", "3"],
+            "ipa": "/ˈkeːkaː miˈtaːtaht/",
+            "pronunciation_notes": "Two words, stress on first syllable of each",
+            "syllabics": "ᑫᑳ ᒥᑖᑕᐦᐟ",
+            "translation": "nine",
+            "cultural_context": "Nine approaches completion of the first cycle",
+            "example": "Kêkâ-mitâtaht wâposak. (Nine rabbits.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "mitâtaht",
+        "language_id": null,
+        "part_of_speech": "number",
+        "pronunciation_key": "mee-TAH-taht",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["number", "counting"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/miˈtaːtaht/",
+            "pronunciation_notes": "Stress on second syllable, long 'a' sound",
+            "syllabics": "ᒥᑖᑕᐦᐟ",
+            "translation": "ten",
+            "cultural_context": "Ten completes the first counting cycle",
+            "example": "Mitâtaht kîhciya. (Ten hands.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "tânisi",
+        "language_id": null,
+        "part_of_speech": "PrI",
+        "pronunciation_key": "TAH-nee-see",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["question", "common"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈtaːnisi/",
+            "pronunciation_notes": "Long 'a' sound, stress on first syllable",
+            "syllabics": "ᑖᓂᓯ",
+            "translation": "how",
+            "cultural_context": "Asking about manner or method",
+            "example": "Tânisi kî-isîhcikêyan? (How did you do it?)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "tânispîhk",
+        "language_id": null,
+        "part_of_speech": "PrI",
+        "pronunciation_key": "TAH-nis-peehk",
+        "metadata": {
+            "difficulty": "intermediate",
+            "tags": ["question", "time"],
+            "grade_levels": ["2", "3", "4"],
+            "ipa": "/ˈtaːnispiːhk/",
+            "pronunciation_notes": "Long vowels, stress on first syllable",
+            "syllabics": "ᑖᓂᐢᐲᐦᐠ",
+            "translation": "when",
+            "cultural_context": "Asking about time and timing",
+            "example": "Tânispîhk kîwêyan? (When are you going home?)",
+            "proficiency_level": "A2"
+        }
+    },
+    {
+        "text": "tântê",
+        "language_id": null,
+        "part_of_speech": "PrI",
+        "pronunciation_key": "TAHN-tay",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["question", "location"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈtaːnteː/",
+            "pronunciation_notes": "Long 'a' and 'e' sounds, stress on first syllable",
+            "syllabics": "ᑖᓐᑌ",
+            "translation": "where",
+            "cultural_context": "Asking about location and place",
+            "example": "Tântê ayâw? (Where is he/she?)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "awîna",
+        "language_id": null,
+        "part_of_speech": "PrA",
+        "pronunciation_key": "ah-WEE-na",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["question", "people"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/aˈwiːna/",
+            "pronunciation_notes": "Stress on second syllable, long 'i' sound",
+            "syllabics": "ᐊᐄᓇ",
+            "translation": "who",
+            "cultural_context": "Asking about identity and relationships",
+            "example": "Awîna awa? (Who is this?)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "tânitahto",
+        "language_id": null,
+        "part_of_speech": "PrI",
+        "pronunciation_key": "TAH-nee-tah-toh",
+        "metadata": {
+            "difficulty": "intermediate",
+            "tags": ["question", "quantity"],
+            "grade_levels": ["2", "3", "4"],
+            "ipa": "/ˈtaːnitahto/",
+            "pronunciation_notes": "Long 'a' sound, stress on first syllable",
+            "syllabics": "ᑖᓂᑕᐦᑐ",
+            "translation": "how many",
+            "cultural_context": "Asking about numbers and quantities",
+            "example": "Tânitahto atimwak? (How many dogs?)",
+            "proficiency_level": "A2"
+        }
+    },
+    {
+        "text": "âha",
+        "language_id": null,
+        "part_of_speech": "IPC",
+        "pronunciation_key": "AH-ha",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["response", "common"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈaːha/",
+            "pronunciation_notes": "Long 'a' sounds, stress on first syllable",
+            "syllabics": "ᐋᐦᐊ",
+            "translation": "yes",
+            "cultural_context": "Affirmative response showing agreement",
+            "example": "Âha, nitôtem. (Yes, my friend.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "namôya",
+        "language_id": null,
+        "part_of_speech": "IPC",
+        "pronunciation_key": "nah-MOH-ya",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["response", "common"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/naˈmoːja/",
+            "pronunciation_notes": "Stress on second syllable, long 'o' sound",
+            "syllabics": "ᓇᒧᔭ",
+            "translation": "no",
+            "cultural_context": "Negative response, used respectfully",
+            "example": "Namôya, ekosi. (No, that's it.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "miyomahciho",
+        "language_id": null,
+        "part_of_speech": "VAI",
+        "pronunciation_key": "mee-yoh-MAH-chee-ho",
+        "metadata": {
+            "difficulty": "intermediate",
+            "tags": ["emotions", "feelings"],
+            "grade_levels": ["2", "3", "4"],
+            "ipa": "/mijoˈmahtʃiho/",
+            "pronunciation_notes": "Stress on third syllable",
+            "syllabics": "ᒥᔪᒪᐦᒋᐦᐅ",
+            "translation": "he/she feels good",
+            "cultural_context": "Emotional and spiritual well-being",
+            "example": "Anohc miyomahciho. (Today he/she feels good.)",
+            "proficiency_level": "A2"
+        }
+    },
+    {
+        "text": "kîsâkihêw",
+        "language_id": null,
+        "part_of_speech": "VTA",
+        "pronunciation_key": "kee-SAH-kee-hayh",
+        "metadata": {
+            "difficulty": "intermediate",
+            "tags": ["emotions", "relationships"],
+            "grade_levels": ["3", "4", "5"],
+            "ipa": "/kiˈsaːkiheːw/",
+            "pronunciation_notes": "Stress on second syllable, long vowels",
+            "syllabics": "ᑮᓵᑭᐦᐁᐤ",
+            "translation": "he/she loves him/her",
+            "cultural_context": "Deep affection and care for others",
+            "example": "Okâwiy kîsâkihêw. (He/she loves his/her mother.)",
+            "proficiency_level": "A2"
+        }
+    },
+    {
+        "text": "nanâtohk",
+        "language_id": null,
+        "part_of_speech": "VII",
+        "pronunciation_key": "nah-NAH-tohk",
+        "metadata": {
+            "difficulty": "intermediate",
+            "tags": ["emotions", "physical"],
+            "grade_levels": ["2", "3", "4"],
+            "ipa": "/naˈnaːtohk/",
+            "pronunciation_notes": "Stress on second syllable, long 'a' sound",
+            "syllabics": "ᓇᓈᑐᐦᐠ",
+            "translation": "it hurts, it is sore",
+            "cultural_context": "Physical and emotional pain",
+            "example": "Nimistikwân nanâtohk. (My head hurts.)",
+            "proficiency_level": "A2"
+        }
+    },
+    {
+        "text": "kîsêwâtisiw",
+        "language_id": null,
+        "part_of_speech": "VAI",
+        "pronunciation_key": "kee-SAY-wah-tee-siw",
+        "metadata": {
+            "difficulty": "intermediate",
+            "tags": ["emotions", "feelings"],
+            "grade_levels": ["3", "4", "5"],
+            "ipa": "/kiˈseːwaːtisiw/",
+            "pronunciation_notes": "Stress on second syllable, long vowels",
+            "syllabics": "ᑮᓭᐚᑎᓯᐤ",
+            "translation": "he/she is kind, gentle",
+            "cultural_context": "Kindness is a valued trait in community",
+            "example": "Nôhkom kîsêwâtisiw. (My grandmother is kind.)",
+            "proficiency_level": "A2"
+        }
+    },
+    {
+        "text": "kîsikâtêw",
+        "language_id": null,
+        "part_of_speech": "VAI",
+        "pronunciation_key": "kee-see-KAH-tayh",
+        "metadata": {
+            "difficulty": "intermediate",
+            "tags": ["emotions", "feelings"],
+            "grade_levels": ["3", "4", "5"],
+            "ipa": "/kiˈsikaːteːw/",
+            "pronunciation_notes": "Stress on second syllable, long vowels",
+            "syllabics": "ᑮᓯᑳᑌᐤ",
+            "translation": "he/she is angry",
+            "cultural_context": "Anger should be understood and managed wisely",
+            "example": "Namôya kîsikâtêw. (He/she is not angry.)",
+            "proficiency_level": "A2"
+        }
+    },
+    {
+        "text": "wîcihêw",
+        "language_id": null,
+        "part_of_speech": "VTA",
+        "pronunciation_key": "WEE-chee-hayh",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["actions", "helping"],
+            "grade_levels": ["K", "1", "2", "3"],
+            "ipa": "/ˈwiːtʃiheːw/",
+            "pronunciation_notes": "Long 'i' and 'e' sounds, stress on first syllable",
+            "syllabics": "ᐄᒋᐦᐁᐤ",
+            "translation": "he/she helps him/her",
+            "cultural_context": "Helping others is a fundamental value",
+            "example": "Nistês wîcihêw. (My older brother helps.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "kîmôc",
+        "language_id": null,
+        "part_of_speech": "IPC",
+        "pronunciation_key": "KEE-mohch",
+        "metadata": {
+            "difficulty": "intermediate",
+            "tags": ["actions", "secrecy"],
+            "grade_levels": ["3", "4", "5"],
+            "ipa": "/ˈkiːmoːtʃ/",
+            "pronunciation_notes": "Long 'i' and 'o' sounds, stress on first syllable",
+            "syllabics": "ᑮᒧᐨ",
+            "translation": "secretly, quietly",
+            "cultural_context": "Sometimes actions must be done with discretion",
+            "example": "Kîmôc pimohtêw. (He/she walks quietly.)",
+            "proficiency_level": "A2"
+        }
+    },
+    {
+        "text": "osîhêw",
+        "language_id": null,
+        "part_of_speech": "VTA",
+        "pronunciation_key": "oh-SEE-hayh",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["actions", "creating"],
+            "grade_levels": ["K", "1", "2", "3"],
+            "ipa": "/oˈsiːheːw/",
+            "pronunciation_notes": "Stress on second syllable, long 'i' and 'e' sounds",
+            "syllabics": "ᐅᓃᐦᐁᐤ",
+            "translation": "he/she makes it",
+            "cultural_context": "Creating and making things with skill",
+            "example": "Mîkiwâhp osîhêw. (He/she makes a teepee.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "kîspin",
+        "language_id": null,
+        "part_of_speech": "IPC",
+        "pronunciation_key": "KEE-spin",
+        "metadata": {
+            "difficulty": "intermediate",
+            "tags": ["conditional", "grammar"],
+            "grade_levels": ["3", "4", "5"],
+            "ipa": "/ˈkiːspin/",
+            "pronunciation_notes": "Long 'i' sound, stress on first syllable",
+            "syllabics": "ᑮᐢᐱᐣ",
+            "translation": "if",
+            "cultural_context": "Conditional thinking and planning",
+            "example": "Kîspin kimiwon, nipâw. (If it rains, he/she sleeps.)",
+            "proficiency_level": "A2"
+        }
+    },
+    {
+        "text": "mâka",
+        "language_id": null,
+        "part_of_speech": "IPC",
+        "pronunciation_key": "MAH-ka",
+        "metadata": {
+            "difficulty": "intermediate",
+            "tags": ["conjunction", "grammar"],
+            "grade_levels": ["2", "3", "4"],
+            "ipa": "/ˈmaːka/",
+            "pronunciation_notes": "Long 'a' sound, stress on first syllable",
+            "syllabics": "ᒫᑲ",
+            "translation": "but, however",
+            "cultural_context": "Contrasting ideas and perspectives",
+            "example": "Miywâsin, mâka kinwês. (It's good, but it's long.)",
+            "proficiency_level": "A2"
+        }
+    },
+    {
+        "text": "êkwa",
+        "language_id": null,
+        "part_of_speech": "IPC",
+        "pronunciation_key": "AY-kwa",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["conjunction", "sequence"],
+            "grade_levels": ["K", "1", "2", "3"],
+            "ipa": "/ˈeːkwa/",
+            "pronunciation_notes": "Long 'e' sound, stress on first syllable",
+            "syllabics": "ᐁᑿ",
+            "translation": "and, then",
+            "cultural_context": "Connecting events and ideas in sequence",
+            "example": "Mîcisow êkwa minihkwêw. (He/she eats and then drinks.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "mitoni",
+        "language_id": null,
+        "part_of_speech": "IPC",
+        "pronunciation_key": "mee-TOH-nee",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["emphasis", "degree"],
+            "grade_levels": ["K", "1", "2", "3"],
+            "ipa": "/miˈtoːni/",
+            "pronunciation_notes": "Stress on second syllable, long 'o' sound",
+            "syllabics": "ᒥᑐᓂ",
+            "translation": "very, really",
+            "cultural_context": "Emphasizing the degree or intensity",
+            "example": "Mitoni miywâsin. (It is very good.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "piko",
+        "language_id": null,
+        "part_of_speech": "IPC",
+        "pronunciation_key": "PEE-ko",
+        "metadata": {
+            "difficulty": "intermediate",
+            "tags": ["emphasis", "degree"],
+            "grade_levels": ["2", "3", "4"],
+            "ipa": "/ˈpiːko/",
+            "pronunciation_notes": "Long 'i' sound, stress on first syllable",
+            "syllabics": "ᐱᑯ",
+            "translation": "only, just",
+            "cultural_context": "Limiting or specifying something specific",
+            "example": "Pêyak piko. (Only one.)",
+            "proficiency_level": "A2"
+        }
+    },
+    {
+        "text": "sîsîp",
+        "language_id": null,
+        "part_of_speech": "NA",
+        "pronunciation_key": "SEE-seep",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["animals", "water"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈsiːsiːp/",
+            "pronunciation_notes": "Long 'i' sounds, stress on first syllable",
+            "syllabics": "ᓃᓃᑊ",
+            "translation": "duck",
+            "cultural_context": "Ducks are water birds that provide food and feathers",
+            "example": "Sîsîp nîpîhk ayâw. (The duck is in the water.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "wâpiskisiw",
+        "language_id": null,
+        "part_of_speech": "NA",
+        "pronunciation_key": "WAH-pis-kee-siw",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["animals", "water"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈwaːpiskisiw/",
+            "pronunciation_notes": "Long 'a' sound, stress on first syllable",
+            "syllabics": "ᐚᐱᐢᑭᓯᐤ",
+            "translation": "swan",
+            "cultural_context": "Swans are beautiful water birds representing grace",
+            "example": "Wâpiskisiw wâpiskâw. (The swan is white.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "kîhew",
+        "language_id": null,
+        "part_of_speech": "NA",
+        "pronunciation_key": "KEE-hew",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["animals", "birds"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈkiːhew/",
+            "pronunciation_notes": "Long 'i' sound, stress on first syllable",
+            "syllabics": "ᑮᐦᐁᐤ",
+            "translation": "chicken",
+            "cultural_context": "Chickens provide eggs and meat in modern times",
+            "example": "Kîhew wâwi ayâw. (The chicken has an egg.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "wâwi",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "WAH-wee",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["food", "animals"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈwaːwi/",
+            "pronunciation_notes": "Long 'a' sound, stress on first syllable",
+            "syllabics": "ᐚᐏ",
+            "translation": "egg",
+            "cultural_context": "Eggs are nutritious food from birds",
+            "example": "Wâwi mîcisow. (He/she eats an egg.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "ocêpihk",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "oh-CHAY-pihk",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["body", "common"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/oˈtʃeːpihk/",
+            "pronunciation_notes": "Stress on second syllable, long 'e' sound",
+            "syllabics": "ᐅᒉᐱᐦᐠ",
+            "translation": "tooth",
+            "cultural_context": "Teeth are important for eating and speaking",
+            "example": "Nocêpihk wâpiskâw. (My tooth is white.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "ospitôn",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "os-pee-TOHN",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["body", "common"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ospiˈtoːn/",
+            "pronunciation_notes": "Stress on third syllable, long 'o' sound",
+            "syllabics": "ᐅᐢᐱᑑᐣ",
+            "translation": "arm",
+            "cultural_context": "Arms help us work and embrace others",
+            "example": "Nospitôn sôhkâtêw. (My arm is strong.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "oskât",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "os-KAHT",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["body", "common"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/osˈkaːt/",
+            "pronunciation_notes": "Stress on second syllable, long 'a' sound",
+            "syllabics": "ᐅᐢᑳᐟ",
+            "translation": "leg",
+            "cultural_context": "Legs carry us on our life journey",
+            "example": "Noskât kinwês. (My leg is long.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "opikwan",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "oh-PEEK-wan",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["body", "common"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/oˈpiːkwan/",
+            "pronunciation_notes": "Stress on second syllable, long 'i' sound",
+            "syllabics": "ᐅᐲᑿᐣ",
+            "translation": "back",
+            "cultural_context": "The back supports us and carries burdens",
+            "example": "Nopikwan nanâtohk. (My back hurts.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "osâm",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "oh-SAHM",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["body", "common"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/oˈsaːm/",
+            "pronunciation_notes": "Stress on second syllable, long 'a' sound",
+            "syllabics": "ᐅᓵᒼ",
+            "translation": "belly, stomach",
+            "cultural_context": "The stomach processes food and holds emotions",
+            "example": "Nosâm kîtimâkisiw. (My stomach is empty.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "opistikwân",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "oh-pis-tee-KWAHN",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["body", "common"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/opistiˈkwaːn/",
+            "pronunciation_notes": "Stress on fourth syllable, long 'a' sound",
+            "syllabics": "ᐅᐱᐢᑎᑳᐣ",
+            "translation": "neck",
+            "cultural_context": "The neck connects head and body",
+            "example": "Nopistikwân kinwês. (My neck is long.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "sâkahikan",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "SAH-kah-hee-kan",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["nature", "water"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈsaːkahiːkan/",
+            "pronunciation_notes": "Long 'a' and 'i' sounds, stress on first syllable",
+            "syllabics": "ᓵᑲᐦᐃᑲᐣ",
+            "translation": "lake",
+            "cultural_context": "Lakes provide water, fish, and transportation",
+            "example": "Sâkahikan mispon. (The lake is big.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "wâciye",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "WAH-chee-yeh",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["nature", "landforms"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈwaːtʃije/",
+            "pronunciation_notes": "Long 'a' sound, stress on first syllable",
+            "syllabics": "ᐚᒋᔦ",
+            "translation": "mountain, hill",
+            "cultural_context": "Mountains are sacred places of power and vision",
+            "example": "Wâciye mispon. (The mountain is big.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "muskêg",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "mus-KAYG",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["nature", "landforms"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/musˈkeːg/",
+            "pronunciation_notes": "Stress on second syllable, long 'e' sound",
+            "syllabics": "ᒪᐢᑫᐠ",
+            "translation": "swamp, muskeg",
+            "cultural_context": "Wetlands are important ecosystems with medicines",
+            "example": "Muskêg nîpiy ayâwêw. (The swamp has water.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "ayamihêw",
+        "language_id": null,
+        "part_of_speech": "VTA",
+        "pronunciation_key": "ah-yah-mee-HAYH",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["verbs", "education"],
+            "grade_levels": ["K", "1", "2", "3"],
+            "ipa": "/ajamiˈheːw/",
+            "pronunciation_notes": "Stress on fourth syllable, long 'e' sound",
+            "syllabics": "ᐊᔭᒥᐦᐁᐤ",
+            "translation": "he/she reads it",
+            "cultural_context": "Reading preserves and shares knowledge",
+            "example": "Masinahikan ayamihêw. (He/she reads a book.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "masinahikêw",
+        "language_id": null,
+        "part_of_speech": "VAI",
+        "pronunciation_key": "mah-see-nah-hee-KAYH",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["verbs", "education"],
+            "grade_levels": ["K", "1", "2", "3"],
+            "ipa": "/masinahiˈkeːw/",
+            "pronunciation_notes": "Stress on fifth syllable, long 'e' sound",
+            "syllabics": "ᒪᓯᓇᐦᐃᑫᐤ",
+            "translation": "he/she writes",
+            "cultural_context": "Writing records important information",
+            "example": "Awâsis masinahikêw. (The child writes.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "kiskisinâm",
+        "language_id": null,
+        "part_of_speech": "VTI",
+        "pronunciation_key": "kis-kee-see-NAHM",
+        "metadata": {
+            "difficulty": "intermediate",
+            "tags": ["verbs", "mental"],
+            "grade_levels": ["2", "3", "4"],
+            "ipa": "/kiskisiˈnaːm/",
+            "pronunciation_notes": "Stress on fourth syllable, long 'a' sound",
+            "syllabics": "ᑭᐢᑭᓯᓈᒼ",
+            "translation": "he/she remembers it",
+            "cultural_context": "Memory preserves teachings and experiences",
+            "example": "Âcimowina kiskisinâm. (He/she remembers the stories.)",
+            "proficiency_level": "A2"
+        }
+    },
+    {
+        "text": "wanihkêw",
+        "language_id": null,
+        "part_of_speech": "VTA",
+        "pronunciation_key": "wah-neeh-KAYH",
+        "metadata": {
+            "difficulty": "intermediate",
+            "tags": ["verbs", "mental"],
+            "grade_levels": ["3", "4", "5"],
+            "ipa": "/waniˈhkeːw/",
+            "pronunciation_notes": "Stress on third syllable, long 'e' sound",
+            "syllabics": "ᐚᓂᐦᑫᐤ",
+            "translation": "he/she forgets him/her",
+            "cultural_context": "Forgetting can be both loss and healing",
+            "example": "Namôya wanihkêw. (He/she doesn't forget.)",
+            "proficiency_level": "A2"
+        }
+    },
+    {
+        "text": "pîpon",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "PEE-pon",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["seasons", "time"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈpiːpon/",
+            "pronunciation_notes": "Long 'i' sound, stress on first syllable",
+            "syllabics": "ᐲᐳᐣ",
+            "translation": "winter",
+            "cultural_context": "Winter is a time for storytelling and reflection",
+            "example": "Pîpon kona ayâwêw. (Winter has snow.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "nîpin",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "NEE-pin",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["seasons", "time"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈniːpin/",
+            "pronunciation_notes": "Long 'i' sound, stress on first syllable",
+            "syllabics": "ᓃᐱᐣ",
+            "translation": "summer",
+            "cultural_context": "Summer is a time for gathering and ceremonies",
+            "example": "Nîpin kîsâstêw. (Summer is hot.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "sikwan",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "SEE-kwan",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["seasons", "time"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈsiːkwan/",
+            "pronunciation_notes": "Long 'i' sound, stress on first syllable",
+            "syllabics": "ᓃᑿᐣ",
+            "translation": "spring",
+            "cultural_context": "Spring brings renewal and new life",
+            "example": "Sikwan wâskway pêhtakwan. (Spring flowers bloom.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "takwâkin",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "tak-WAH-kin",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["seasons", "time"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/takˈwaːkin/",
+            "pronunciation_notes": "Stress on second syllable, long 'a' sound",
+            "syllabics": "ᑕᑳᑭᐣ",
+            "translation": "autumn, fall",
+            "cultural_context": "Autumn is harvest time and preparation for winter",
+            "example": "Takwâkin okâwîmînisa mîcisow. (In autumn, he/she eats berries.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "kîsâstêw",
+        "language_id": null,
+        "part_of_speech": "VII",
+        "pronunciation_key": "kee-SAHS-tayh",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["weather", "temperature"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/kiˈsaːsteːw/",
+            "pronunciation_notes": "Stress on second syllable, long vowels",
+            "syllabics": "ᑮᓵᐢᑌᐤ",
+            "translation": "it is hot",
+            "cultural_context": "Heat from the sun gives life and energy",
+            "example": "Nîpin kîsâstêw. (Summer is hot.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "kîsinâw",
+        "language_id": null,
+        "part_of_speech": "VII",
+        "pronunciation_key": "kee-see-NAHW",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["weather", "temperature"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/kiˈsinaːw/",
+            "pronunciation_notes": "Stress on second syllable, long 'a' sound",
+            "syllabics": "ᑮᓯᓈᐤ",
+            "translation": "it is cold",
+            "cultural_context": "Cold teaches endurance and preparation",
+            "example": "Pîpon kîsinâw. (Winter is cold.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "mîcim",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "MEE-chim",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["food", "traditional"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈmiːtʃim/",
+            "pronunciation_notes": "Long 'i' sound, stress on first syllable",
+            "syllabics": "ᒦᒋᒼ",
+            "translation": "food",
+            "cultural_context": "General term for food, sustenance from the land",
+            "example": "Mîcim nitayân. (I have food.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "sîsîkwan",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "SEE-see-kwan",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["food", "traditional"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈsiːsiːkwan/",
+            "pronunciation_notes": "Long 'i' sounds, stress on first syllable",
+            "syllabics": "ᓃᓃᑿᐣ",
+            "translation": "sugar, sweet",
+            "cultural_context": "Traditional sweetener from maple trees",
+            "example": "Sîsîkwan miywâsin. (Sugar is good.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "maskêkwa",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "mas-KAY-kwa",
+        "metadata": {
+            "difficulty": "intermediate",
+            "tags": ["medicine", "plants"],
+            "grade_levels": ["3", "4", "5"],
+            "ipa": "/masˈkeːkwa/",
+            "pronunciation_notes": "Stress on second syllable, long 'e' sound",
+            "syllabics": "ᒪᐢᑫᑿ",
+            "translation": "medicine, herb",
+            "cultural_context": "Traditional plant medicines from the land",
+            "example": "Maskêkwa ayamihêw. (He/she gathers medicine.)",
+            "proficiency_level": "B1"
+        }
+    },
+    {
+        "text": "paskwâw",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "pas-KWAW",
+        "metadata": {
+            "difficulty": "intermediate",
+            "tags": ["food", "plants"],
+            "grade_levels": ["2", "3", "4"],
+            "ipa": "/pasˈkwaːw/",
+            "pronunciation_notes": "Stress on second syllable, long 'a' sound",
+            "syllabics": "ᐸᐢᑳᐤ",
+            "translation": "prairie turnip",
+            "cultural_context": "Important traditional root vegetable, dried for winter",
+            "example": "Paskwâw mîcisow. (He/she eats prairie turnip.)",
+            "proficiency_level": "A2"
+        }
+    },
+    {
+        "text": "wîhkask",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "WEEH-kask",
+        "metadata": {
+            "difficulty": "intermediate",
+            "tags": ["food", "traditional"],
+            "grade_levels": ["3", "4", "5"],
+            "ipa": "/ˈwiːhkask/",
+            "pronunciation_notes": "Long 'i' sound, stress on first syllable",
+            "syllabics": "ᐄᐦᑲᐢᐠ",
+            "translation": "sweet grass",
+            "cultural_context": "Sacred plant used in ceremonies and medicine",
+            "example": "Wîhkask pîkwahêw. (He/she burns sweet grass.)",
+            "proficiency_level": "B1"
+        }
+    },
+    {
+        "text": "sênâpan",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "SAY-nah-pan",
+        "metadata": {
+            "difficulty": "intermediate",
+            "tags": ["food", "traditional"],
+            "grade_levels": ["3", "4", "5"],
+            "ipa": "/ˈseːnaːpan/",
+            "pronunciation_notes": "Long 'e' and 'a' sounds, stress on first syllable",
+            "syllabics": "ᓭᓈᐸᐣ",
+            "translation": "ribbon, tape",
+            "cultural_context": "Used in traditional clothing and ceremonies",
+            "example": "Sênâpan mihkwâw. (The ribbon is red.)",
+            "proficiency_level": "A2"
+        }
+    },
+    {
+        "text": "kayâs",
+        "language_id": null,
+        "part_of_speech": "IPC",
+        "pronunciation_key": "kah-YAHS",
+        "metadata": {
+            "difficulty": "intermediate",
+            "tags": ["time", "history"],
+            "grade_levels": ["3", "4", "5"],
+            "ipa": "/kaˈjaːs/",
+            "pronunciation_notes": "Stress on second syllable, long 'a' sound",
+            "syllabics": "ᑲᔮᐢ",
+            "translation": "long ago, in the past",
+            "cultural_context": "Refers to traditional times and ancestral knowledge",
+            "example": "Kayâs âcimowina. (Stories from long ago.)",
+            "proficiency_level": "A2"
+        }
+    },
+    {
+        "text": "kîkisêpâyâk",
+        "language_id": null,
+        "part_of_speech": "IPC",
+        "pronunciation_key": "KEE-kee-say-pah-yahk",
+        "metadata": {
+            "difficulty": "intermediate",
+            "tags": ["time", "daily"],
+            "grade_levels": ["2", "3", "4"],
+            "ipa": "/ˈkiːkiseːpaːjaːk/",
+            "pronunciation_notes": "Long vowels, stress on first syllable",
+            "syllabics": "ᑮᑭᓭᐹᔭᐠ",
+            "translation": "early morning",
+            "cultural_context": "Sacred time for prayers and ceremonies",
+            "example": "Kîkisêpâyâk waniskâw. (He/she gets up early morning.)",
+            "proficiency_level": "A2"
+        }
+    },
+    {
+        "text": "âpihtâ-tîpiskâw",
+        "language_id": null,
+        "part_of_speech": "IPC",
+        "pronunciation_key": "AH-pee-tah TEE-pis-kaw",
+        "metadata": {
+            "difficulty": "intermediate",
+            "tags": ["time", "night"],
+            "grade_levels": ["3", "4", "5"],
+            "ipa": "/ˈaːpihtaː ˈtiːpiskaːw/",
+            "pronunciation_notes": "Two words, long vowels, stress on first syllables",
+            "syllabics": "ᐋᐱᐦᑖ ᑮᐱᐢᑳᐤ",
+            "translation": "midnight",
+            "cultural_context": "Deep night time for spiritual connection",
+            "example": "Âpihtâ-tîpiskâw âcimow. (He/she tells stories at midnight.)",
+            "proficiency_level": "A2"
+        }
+    },
+    {
+        "text": "ispimihk",
+        "language_id": null,
+        "part_of_speech": "IPC",
+        "pronunciation_key": "is-pee-MEEHK",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["direction", "location"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ispiˈmiːhk/",
+            "pronunciation_notes": "Stress on third syllable, long 'i' sound",
+            "syllabics": "ᐃᐢᐱᒦᐦᐠ",
+            "translation": "above, in the sky",
+            "cultural_context": "Direction toward the spirit world",
+            "example": "Mikisîw ispimihk pimipayiw. (The eagle flies above.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "atâmihk",
+        "language_id": null,
+        "part_of_speech": "IPC",
+        "pronunciation_key": "ah-TAH-meehk",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["direction", "location"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/aˈtaːmiːhk/",
+            "pronunciation_notes": "Stress on second syllable, long vowels",
+            "syllabics": "ᐊᑖᒦᐦᐠ",
+            "translation": "below, underneath",
+            "cultural_context": "Direction toward the earth and roots",
+            "example": "Kinêpik atâmihk pimohtêw. (The snake moves below.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "kêhtê-aya",
+        "language_id": null,
+        "part_of_speech": "NA",
+        "pronunciation_key": "KAY-tay AH-ya",
+        "metadata": {
+            "difficulty": "intermediate",
+            "tags": ["people", "age", "respect"],
+            "grade_levels": ["3", "4", "5"],
+            "ipa": "/ˈkeːhteː ˈaja/",
+            "pronunciation_notes": "Two words, long 'e' sound, stress on first syllables",
+            "syllabics": "ᑫᐦᑌ ᐊᔭ",
+            "translation": "elder, old person",
+            "cultural_context": "Elders are respected knowledge keepers and teachers",
+            "example": "Kêhtê-aya kiskêyihtam. (The elder knows.)",
+            "proficiency_level": "A2"
+        }
+    },
+    {
+        "text": "okiskinwahamâkêw",
+        "language_id": null,
+        "part_of_speech": "NA",
+        "pronunciation_key": "oh-kis-kin-wah-hah-MAH-kayh",
+        "metadata": {
+            "difficulty": "advanced",
+            "tags": ["education", "roles"],
+            "grade_levels": ["5", "6", "7"],
+            "ipa": "/okiskinwahamaːˈkeːw/",
+            "pronunciation_notes": "Long word, stress on sixth syllable",
+            "syllabics": "ᐅᑭᐢᑭᐣᐚᐦᐊᒫᑫᐤ",
+            "translation": "teacher",
+            "cultural_context": "One who shares knowledge and guides learning",
+            "example": "Okiskinwahamâkêw kiskêyihtam. (The teacher knows.)",
+            "proficiency_level": "B1"
+        }
+    },
+    {
+        "text": "okiskinwahamâsowin",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "oh-kis-kin-wah-hah-MAH-so-win",
+        "metadata": {
+            "difficulty": "advanced",
+            "tags": ["education", "abstract"],
+            "grade_levels": ["5", "6", "7"],
+            "ipa": "/okiskinwahamaːˈsowin/",
+            "pronunciation_notes": "Long word, stress on sixth syllable",
+            "syllabics": "ᐅᑭᐢᑭᐣᐚᐦᐊᒫᓱᐏᐣ",
+            "translation": "school, education",
+            "cultural_context": "Place and process of learning",
+            "example": "Okiskinwahamâsowin miywâsin. (School is good.)",
+            "proficiency_level": "B1"
+        }
+    },
+    {
+        "text": "kiskêyihtamowin",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "kis-KAY-yih-tah-mo-win",
+        "metadata": {
+            "difficulty": "advanced",
+            "tags": ["knowledge", "abstract"],
+            "grade_levels": ["5", "6", "7"],
+            "ipa": "/kiskeːjihtaˈmowin/",
+            "pronunciation_notes": "Long word, stress on fifth syllable",
+            "syllabics": "ᑭᐢᑫᔨᐦᑕᒧᐏᐣ",
+            "translation": "knowledge, understanding",
+            "cultural_context": "Wisdom gained through experience and teaching",
+            "example": "Kiskêyihtamowin sôhkâtêw. (Knowledge is powerful.)",
+            "proficiency_level": "B2"
+        }
+    },
+    {
+        "text": "âcimowina",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "AH-chee-mo-wee-na",
+        "metadata": {
+            "difficulty": "intermediate",
+            "tags": ["stories", "cultural"],
+            "grade_levels": ["3", "4", "5"],
+            "ipa": "/ˈaːtʃimoˌwiːna/",
+            "pronunciation_notes": "Long 'a' sound, stress on first syllable",
+            "syllabics": "ᐋᒋᒧᐏᓇ",
+            "translation": "stories, legends",
+            "cultural_context": "Traditional stories that teach and preserve culture",
+            "example": "Âcimowina pêhtam. (He/she listens to stories.)",
+            "proficiency_level": "A2"
+        }
+    },
+    {
+        "text": "atayôhkêwina",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "ah-tah-YOH-kay-wee-na",
+        "metadata": {
+            "difficulty": "advanced",
+            "tags": ["stories", "sacred"],
+            "grade_levels": ["6", "7", "8"],
+            "ipa": "/ataˈjoːhkeːˌwiːna/",
+            "pronunciation_notes": "Stress on third syllable, long vowels",
+            "syllabics": "ᐊᑕᔫᐦᑫᐏᓇ",
+            "translation": "sacred stories, legends",
+            "cultural_context": "Sacred traditional stories told in winter",
+            "example": "Atayôhkêwina pîpon âcimow. (He/she tells sacred stories in winter.)",
+            "proficiency_level": "B2"
+        }
+    },
+    {
+        "text": "pîkiskwêwin",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "PEE-kis-kway-win",
+        "metadata": {
+            "difficulty": "intermediate",
+            "tags": ["language", "communication"],
+            "grade_levels": ["3", "4", "5"],
+            "ipa": "/ˈpiːkiskweːwin/",
+            "pronunciation_notes": "Long 'i' and 'e' sounds, stress on first syllable",
+            "syllabics": "ᐲᑭᐢᑫᐏᐣ",
+            "translation": "language, speech",
+            "cultural_context": "The gift of language and communication",
+            "example": "Nêhiyawêwin pîkiskwêwin. (Cree is a language.)",
+            "proficiency_level": "A2"
+        }
+    },
+    {
+        "text": "nêhiyawêwin",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "NAY-hee-yah-way-win",
+        "metadata": {
+            "difficulty": "intermediate",
+            "tags": ["language", "identity"],
+            "grade_levels": ["3", "4", "5"],
+            "ipa": "/ˈneːhijaweːwin/",
+            "pronunciation_notes": "Long vowels, stress on first syllable",
+            "syllabics": "ᓀᐦᐃᔭᐁᐏᐣ",
+            "translation": "Cree language",
+            "cultural_context": "The Plains Cree language, our way of speaking",
+            "example": "Nêhiyawêwin kiskêyihtam. (He/she knows Cree.)",
+            "proficiency_level": "A2"
+        }
+    },
+    {
+        "text": "nêhiyaw",
+        "language_id": null,
+        "part_of_speech": "NA",
+        "pronunciation_key": "NAY-hee-yaw",
+        "metadata": {
+            "difficulty": "intermediate",
+            "tags": ["identity", "people"],
+            "grade_levels": ["3", "4", "5"],
+            "ipa": "/ˈneːhijaw/",
+            "pronunciation_notes": "Long 'e' sound, stress on first syllable",
+            "syllabics": "ᓀᐦᐃᔭᐤ",
+            "translation": "Cree person",
+            "cultural_context": "A person of Plains Cree heritage",
+            "example": "Nêhiyaw niya. (I am Cree.)",
+            "proficiency_level": "A2"
+        }
+    },
+    {
+        "text": "ayisiyinîw",
+        "language_id": null,
+        "part_of_speech": "NA",
+        "pronunciation_key": "ah-yee-see-yee-NEEW",
+        "metadata": {
+            "difficulty": "intermediate",
+            "tags": ["people", "humanity"],
+            "grade_levels": ["4", "5", "6"],
+            "ipa": "/ajisijiˈniːw/",
+            "pronunciation_notes": "Stress on fifth syllable, long 'i' sound",
+            "syllabics": "ᐊᔨᓯᔨᓃᐤ",
+            "translation": "person, human being",
+            "cultural_context": "General term for human beings",
+            "example": "Ayisiyinîw miywâsin. (The person is good.)",
+            "proficiency_level": "A2"
+        }
+    },
+    {
+        "text": "wîcêwâkan",
+        "language_id": null,
+        "part_of_speech": "NA",
+        "pronunciation_key": "WEE-chay-wah-kan",
+        "metadata": {
+            "difficulty": "intermediate",
+            "tags": ["relationships", "social"],
+            "grade_levels": ["3", "4", "5"],
+            "ipa": "/ˈwiːtʃeːwaːkan/",
+            "pronunciation_notes": "Long vowels, stress on first syllable",
+            "syllabics": "ᐄᒉᐚᑲᐣ",
+            "translation": "companion, partner",
+            "cultural_context": "Someone who travels or works with you",
+            "example": "Niwîcêwâkan wîcihêw. (My companion helps.)",
+            "proficiency_level": "A2"
+        }
+    },
+    {
+        "text": "wîcihitowin",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "WEE-chee-hee-to-win",
+        "metadata": {
+            "difficulty": "intermediate",
+            "tags": ["cooperation", "values"],
+            "grade_levels": ["4", "5", "6"],
+            "ipa": "/ˈwiːtʃihitowin/",
+            "pronunciation_notes": "Long 'i' sounds, stress on first syllable",
+            "syllabics": "ᐄᒋᐦᐃᑐᐏᐣ",
+            "translation": "helping, cooperation",
+            "cultural_context": "The value of helping and working together",
+            "example": "Wîcihitowin miywâsin. (Helping is good.)",
+            "proficiency_level": "B1"
+        }
+    },
+    {
+        "text": "kîyâm",
+        "language_id": null,
+        "part_of_speech": "IPC",
+        "pronunciation_key": "KEE-yahm",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["response", "acceptance"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈkiːjaːm/",
+            "pronunciation_notes": "Long vowels, stress on first syllable",
+            "syllabics": "ᑮᔮᒼ",
+            "translation": "okay, never mind",
+            "cultural_context": "Accepting response, letting things be",
+            "example": "Kîyâm, ekosi. (Okay, that's it.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "ekosi",
+        "language_id": null,
+        "part_of_speech": "IPC",
+        "pronunciation_key": "eh-KOH-see",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["conclusion", "common"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/eˈkoːsi/",
+            "pronunciation_notes": "Stress on second syllable, long 'o' sound",
+            "syllabics": "ᐁᑯᓯ",
+            "translation": "that's it, finished",
+            "cultural_context": "Common way to end conversations or activities",
+            "example": "Ekosi mâka. (That's it then.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "hây",
+        "language_id": null,
+        "part_of_speech": "IPC",
+        "pronunciation_key": "HAHY",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["greeting", "common"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/haːj/",
+            "pronunciation_notes": "Long 'a' sound, rising tone",
+            "syllabics": "ᐦᐋᐩ",
+            "translation": "hi, hello",
+            "cultural_context": "Casual greeting, borrowed from English",
+            "example": "Hây, tanisi? (Hi, how are you?)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "kinanâskomitin",
+        "language_id": null,
+        "part_of_speech": "VTA",
+        "pronunciation_key": "kee-nah-NAHS-ko-mee-tin",
+        "metadata": {
+            "difficulty": "intermediate",
+            "tags": ["gratitude", "social"],
+            "grade_levels": ["3", "4", "5"],
+            "ipa": "/kinaˈnaːskomitin/",
+            "pronunciation_notes": "Stress on third syllable, long 'a' sound",
+            "syllabics": "ᑭᓇᓈᐢᑯᒥᑎᐣ",
+            "translation": "thank you",
+            "cultural_context": "Expressing gratitude and appreciation",
+            "example": "Kinanâskomitin, nitôtem. (Thank you, my friend.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "mâmawi",
+        "language_id": null,
+        "part_of_speech": "IPC",
+        "pronunciation_key": "MAH-mah-wee",
+        "metadata": {
+            "difficulty": "intermediate",
+            "tags": ["togetherness", "social"],
+            "grade_levels": ["2", "3", "4"],
+            "ipa": "/ˈmaːmawi/",
+            "pronunciation_notes": "Long 'a' sounds, stress on first syllable",
+            "syllabics": "ᒫᒪᐏ",
+            "translation": "together, all together",
+            "cultural_context": "Unity and working together as community",
+            "example": "Mâmawi mîcisowak. (They eat together.)",
+            "proficiency_level": "A2"
+        }
+    },
+    {
+        "text": "wahkôhtowin",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "wah-KOOH-to-win",
+        "metadata": {
+            "difficulty": "advanced",
+            "tags": ["relationships", "kinship"],
+            "grade_levels": ["6", "7", "8"],
+            "ipa": "/wahˈkoːhtowin/",
+            "pronunciation_notes": "Stress on second syllable, long 'o' sound",
+            "syllabics": "ᐚᐦᑰᐦᑐᐏᐣ",
+            "translation": "kinship, relationship",
+            "cultural_context": "Complex system of family and social relationships",
+            "example": "Wahkôhtowin sôhkâtêw. (Kinship is strong.)",
+            "proficiency_level": "B2"
+        }
+    },
+    {
+        "text": "miyowîcêhtowin",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "mee-yo-WEE-chay-to-win",
+        "metadata": {
+            "difficulty": "advanced",
+            "tags": ["relationships", "values"],
+            "grade_levels": ["6", "7", "8"],
+            "ipa": "/mijoˈwiːtʃeːhtowin/",
+            "pronunciation_notes": "Stress on third syllable, long vowels",
+            "syllabics": "ᒥᔪᐄᒉᐦᑐᐏᐣ",
+            "translation": "good relations, harmony",
+            "cultural_context": "Maintaining good relationships with all beings",
+            "example": "Miyowîcêhtowin nitayân. (I have good relations.)",
+            "proficiency_level": "B2"
+        }
+    },
+    {
+        "text": "kîsikâw-pîsim",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "KEE-see-kaw PEE-sim",
+        "metadata": {
+            "difficulty": "intermediate",
+            "tags": ["time", "celestial"],
+            "grade_levels": ["3", "4", "5"],
+            "ipa": "/ˈkiːsikaːw ˈpiːsim/",
+            "pronunciation_notes": "Two words, long vowels, stress on first syllables",
+            "syllabics": "ᑮᓯᑳᐤ ᐲᓯᒼ",
+            "translation": "sun (day sun)",
+            "cultural_context": "The sun during daytime, source of light and warmth",
+            "example": "Kîsikâw-pîsim wâpiskâw. (The sun is bright.)",
+            "proficiency_level": "A2"
+        }
+    },
+    {
+        "text": "tîpiskâw-pîsim",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "TEE-pis-kaw PEE-sim",
+        "metadata": {
+            "difficulty": "intermediate",
+            "tags": ["time", "celestial"],
+            "grade_levels": ["3", "4", "5"],
+            "ipa": "/ˈtiːpiskaːw ˈpiːsim/",
+            "pronunciation_notes": "Two words, long vowels, stress on first syllables",
+            "syllabics": "ᑮᐱᐢᑳᐤ ᐲᓯᒼ",
+            "translation": "moon (night sun)",
+            "cultural_context": "The moon, grandmother moon in the night sky",
+            "example": "Tîpiskâw-pîsim miywâsin. (The moon is beautiful.)",
+            "proficiency_level": "A2"
+        }
+    },
+    {
+        "text": "acâhkosa",
+        "language_id": null,
+        "part_of_speech": "NA",
+        "pronunciation_key": "ah-CHAHK-ko-sa",
+        "metadata": {
+            "difficulty": "intermediate",
+            "tags": ["celestial", "nature"],
+            "grade_levels": ["3", "4", "5"],
+            "ipa": "/aˈtʃaːhkosa/",
+            "pronunciation_notes": "Stress on second syllable, long 'a' sound",
+            "syllabics": "ᐊᒑᐦᑯᓴ",
+            "translation": "star",
+            "cultural_context": "Stars are ancestors watching over us",
+            "example": "Acâhkosa wâpamêw. (He/she sees a star.)",
+            "proficiency_level": "A2"
+        }
+    },
+    {
+        "text": "acâhkosak",
+        "language_id": null,
+        "part_of_speech": "NA",
+        "pronunciation_key": "ah-CHAHK-ko-sak",
+        "metadata": {
+            "difficulty": "intermediate",
+            "tags": ["celestial", "nature"],
+            "grade_levels": ["3", "4", "5"],
+            "ipa": "/aˈtʃaːhkosak/",
+            "pronunciation_notes": "Stress on second syllable, long 'a' sound",
+            "syllabics": "ᐊᒑᐦᑯᓴᐠ",
+            "translation": "stars (plural)",
+            "cultural_context": "Many stars in the night sky, our ancestors",
+            "example": "Acâhkosak wâpamêw. (He/she sees stars.)",
+            "proficiency_level": "A2"
+        }
+    },
+    {
+        "text": "wâpan",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "WAH-pan",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["time", "nature"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈwaːpan/",
+            "pronunciation_notes": "Long 'a' sound, stress on first syllable",
+            "syllabics": "ᐚᐸᐣ",
+            "translation": "dawn, daybreak",
+            "cultural_context": "Sacred time when day begins, time for prayers",
+            "example": "Wâpan miywâsin. (Dawn is beautiful.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "ayâw",
+        "language_id": null,
+        "part_of_speech": "VAI",
+        "pronunciation_key": "ah-YAHW",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["existence", "common"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/aˈjaːw/",
+            "pronunciation_notes": "Stress on second syllable, long 'a' sound",
+            "syllabics": "ᐊᔮᐤ",
+            "translation": "he/she is there, exists",
+            "cultural_context": "Basic verb of existence and presence",
+            "example": "Kîtê ayâw. (He/she is there.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "ayâwêw",
+        "language_id": null,
+        "part_of_speech": "VTA",
+        "pronunciation_key": "ah-YAH-wayh",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["possession", "common"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/aˈjaːweːw/",
+            "pronunciation_notes": "Stress on second syllable, long vowels",
+            "syllabics": "ᐊᔮᐁᐤ",
+            "translation": "he/she has it",
+            "cultural_context": "Having or possessing something",
+            "example": "Atim ayâwêw. (He/she has a dog.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "nitayân",
+        "language_id": null,
+        "part_of_speech": "VTI",
+        "pronunciation_key": "nee-tah-YAHN",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["possession", "first person"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/nitaˈjaːn/",
+            "pronunciation_notes": "Stress on third syllable, long 'a' sound",
+            "syllabics": "ᓂᑕᔮᐣ",
+            "translation": "I have it",
+            "cultural_context": "First person possession",
+            "example": "Masinahikan nitayân. (I have a book.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "kitayân",
+        "language_id": null,
+        "part_of_speech": "VTI",
+        "pronunciation_key": "kee-tah-YAHN",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["possession", "second person"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/kitaˈjaːn/",
+            "pronunciation_notes": "Stress on third syllable, long 'a' sound",
+            "syllabics": "ᑭᑕᔮᐣ",
+            "translation": "you have it",
+            "cultural_context": "Second person possession",
+            "example": "Kîkway kitayân? (What do you have?)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "kiya",
+        "language_id": null,
+        "part_of_speech": "PrA",
+        "pronunciation_key": "KEE-ya",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["pronouns", "common"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈkiːja/",
+            "pronunciation_notes": "Long 'i' sound, stress on first syllable",
+            "syllabics": "ᑭᔭ",
+            "translation": "you",
+            "cultural_context": "Second person pronoun",
+            "example": "Kiya cî? (Is it you?)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "niya",
+        "language_id": null,
+        "part_of_speech": "PrA",
+        "pronunciation_key": "NEE-ya",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["pronouns", "common"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈniːja/",
+            "pronunciation_notes": "Long 'i' sound, stress on first syllable",
+            "syllabics": "ᓂᔭ",
+            "translation": "I, me",
+            "cultural_context": "First person pronoun",
+            "example": "Niya nêhiyaw. (I am Cree.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "wiya",
+        "language_id": null,
+        "part_of_speech": "PrA",
+        "pronunciation_key": "WEE-ya",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["pronouns", "common"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈwiːja/",
+            "pronunciation_notes": "Long 'i' sound, stress on first syllable",
+            "syllabics": "ᐏᔭ",
+            "translation": "he, she",
+            "cultural_context": "Third person pronoun",
+            "example": "Wiya nâpêw. (He is a man.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "awa",
+        "language_id": null,
+        "part_of_speech": "PrA",
+        "pronunciation_key": "AH-wa",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["pronouns", "demonstrative"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈawa/",
+            "pronunciation_notes": "Stress on first syllable",
+            "syllabics": "ᐊᐚ",
+            "translation": "this one (animate)",
+            "cultural_context": "Pointing to nearby animate being",
+            "example": "Awa awâsis. (This is a child.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "ôma",
+        "language_id": null,
+        "part_of_speech": "PrI",
+        "pronunciation_key": "OH-ma",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["pronouns", "demonstrative"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈoːma/",
+            "pronunciation_notes": "Long 'o' sound, stress on first syllable",
+            "syllabics": "ᐆᒪ",
+            "translation": "this (inanimate)",
+            "cultural_context": "Pointing to nearby inanimate object",
+            "example": "Ôma masinahikan. (This is a book.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "ana",
+        "language_id": null,
+        "part_of_speech": "PrA",
+        "pronunciation_key": "AH-na",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["pronouns", "demonstrative"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈana/",
+            "pronunciation_notes": "Stress on first syllable",
+            "syllabics": "ᐊᓇ",
+            "translation": "that one (animate)",
+            "cultural_context": "Pointing to distant animate being",
+            "example": "Ana nâpêw. (That is a man.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "anima",
+        "language_id": null,
+        "part_of_speech": "PrI",
+        "pronunciation_key": "AH-nee-ma",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["pronouns", "demonstrative"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈaniːma/",
+            "pronunciation_notes": "Long 'i' sound, stress on first syllable",
+            "syllabics": "ᐊᓂᒪ",
+            "translation": "that (inanimate)",
+            "cultural_context": "Pointing to distant inanimate object",
+            "example": "Anima mistik. (That is a tree.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "nîcimos",
+        "language_id": null,
+        "part_of_speech": "NA",
+        "pronunciation_key": "NEE-chee-mos",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["family", "kinship"],
+            "grade_levels": ["K", "1", "2", "3"],
+            "ipa": "/ˈniːtʃimos/",
+            "pronunciation_notes": "Long 'i' sound, stress on first syllable",
+            "syllabics": "ᓃᒋᒧᐢ",
+            "translation": "my younger sibling",
+            "cultural_context": "Younger siblings are protected and taught by older ones",
+            "example": "Nîcimos metawêw. (My younger sibling is playing.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "nindawêm",
+        "language_id": null,
+        "part_of_speech": "NA",
+        "pronunciation_key": "nin-DAH-waym",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["family", "kinship"],
+            "grade_levels": ["K", "1", "2", "3"],
+            "ipa": "/ninˈdaːweːm/",
+            "pronunciation_notes": "Stress on second syllable, long vowels",
+            "syllabics": "ᓂᐣᑕᐁᒼ",
+            "translation": "my relative",
+            "cultural_context": "Extended family relationships are very important",
+            "example": "Nindawêm wîcihêw. (My relative helps.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "nîcânis",
+        "language_id": null,
+        "part_of_speech": "NA",
+        "pronunciation_key": "NEE-chah-nis",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["family", "kinship"],
+            "grade_levels": ["K", "1", "2", "3"],
+            "ipa": "/ˈniːtʃaːnis/",
+            "pronunciation_notes": "Long 'i' and 'a' sounds, stress on first syllable",
+            "syllabics": "ᓃᒑᓂᐢ",
+            "translation": "my child (general)",
+            "cultural_context": "Children are gifts and the future of the people",
+            "example": "Nîcânis mîcisow. (My child is eating.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "nîsim",
+        "language_id": null,
+        "part_of_speech": "NA",
+        "pronunciation_key": "NEE-sim",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["family", "kinship"],
+            "grade_levels": ["K", "1", "2", "3"],
+            "ipa": "/ˈniːsim/",
+            "pronunciation_notes": "Long 'i' sound, stress on first syllable",
+            "syllabics": "ᓃᓯᒼ",
+            "translation": "my younger brother",
+            "cultural_context": "Younger brothers are guided and protected",
+            "example": "Nîsim metawêw. (My younger brother is playing.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "nîstos",
+        "language_id": null,
+        "part_of_speech": "NA",
+        "pronunciation_key": "NEE-stos",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["family", "kinship"],
+            "grade_levels": ["K", "1", "2", "3"],
+            "ipa": "/ˈniːstos/",
+            "pronunciation_notes": "Long 'i' sound, stress on first syllable",
+            "syllabics": "ᓃᐢᑐᐢ",
+            "translation": "my younger sister",
+            "cultural_context": "Younger sisters are taught and protected by older siblings",
+            "example": "Nîstos nikamow. (My younger sister is singing.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "nîcihkos",
+        "language_id": null,
+        "part_of_speech": "NA",
+        "pronunciation_key": "NEE-chih-kos",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["family", "kinship"],
+            "grade_levels": ["K", "1", "2", "3"],
+            "ipa": "/ˈniːtʃihkos/",
+            "pronunciation_notes": "Long 'i' sound, stress on first syllable",
+            "syllabics": "ᓃᒋᐦᑯᐢ",
+            "translation": "my uncle",
+            "cultural_context": "Uncles play important teaching and guidance roles",
+            "example": "Nîcihkos âcimow. (My uncle tells stories.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "nisikos",
+        "language_id": null,
+        "part_of_speech": "NA",
+        "pronunciation_key": "nee-SEE-kos",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["family", "kinship"],
+            "grade_levels": ["K", "1", "2", "3"],
+            "ipa": "/niˈsiːkos/",
+            "pronunciation_notes": "Stress on second syllable, long 'i' sound",
+            "syllabics": "ᓂᓃᑯᐢ",
+            "translation": "my aunt",
+            "cultural_context": "Aunts are important teachers and caregivers",
+            "example": "Nisikos kiskêyihtam. (My aunt knows things.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "nôsisim",
+        "language_id": null,
+        "part_of_speech": "NA",
+        "pronunciation_key": "NOH-see-sim",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["family", "kinship"],
+            "grade_levels": ["K", "1", "2", "3"],
+            "ipa": "/ˈnoːsisim/",
+            "pronunciation_notes": "Long 'o' sound, stress on first syllable",
+            "syllabics": "ᓅᓯᓯᒼ",
+            "translation": "my grandchild",
+            "cultural_context": "Grandchildren are precious and carry on traditions",
+            "example": "Nôsisim âcimow. (My grandchild tells stories.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "nîcâhkosisân",
+        "language_id": null,
+        "part_of_speech": "NA",
+        "pronunciation_key": "NEE-chahk-oh-see-sahn",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["family", "common"],
+            "grade_levels": ["K", "1", "2", "3"],
+            "ipa": "/ˈniːtʃaːhkosisaːn/",
+            "pronunciation_notes": "Stress on first syllable, long vowels",
+            "syllabics": "ᓃᒑᐦᑯᓯᓵᐣ",
+            "translation": "my little nephew",
+            "cultural_context": "Diminutive form showing affection for young nephew",
+            "example": "Nîcâhkosisân âstam. (My little nephew, come here.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "nîcânisîs",
+        "language_id": null,
+        "part_of_speech": "NA",
+        "pronunciation_key": "NEE-chah-nee-sees",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["family", "common"],
+            "grade_levels": ["K", "1", "2", "3"],
+            "ipa": "/ˈniːtʃaːnisiːs/",
+            "pronunciation_notes": "Long vowels, stress on first syllable",
+            "syllabics": "ᓃᒑᓂᓰᐢ",
+            "translation": "my little niece",
+            "cultural_context": "Diminutive form showing affection for young niece",
+            "example": "Nîcânisîs nikamow. (My little niece is singing.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "nîciwâmiskwêw",
+        "language_id": null,
+        "part_of_speech": "NA",
+        "pronunciation_key": "NEE-chee-wahm-is-kway",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["family", "common"],
+            "grade_levels": ["K", "1", "2", "3"],
+            "ipa": "/ˈniːtʃiwaːmiskweːw/",
+            "pronunciation_notes": "Long vowels, stress on first syllable",
+            "syllabics": "ᓃᒋᐚᒥᐢᑫᐤ",
+            "translation": "my sister-in-law (brother's wife)",
+            "cultural_context": "Specific relationship through marriage bonds",
+            "example": "Nîciwâmiskwêw âcimow. (My sister-in-law is telling a story.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "nôsisimiskwêw",
+        "language_id": null,
+        "part_of_speech": "NA",
+        "pronunciation_key": "NOH-see-sim-is-kway",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["family", "common"],
+            "grade_levels": ["K", "1", "2", "3"],
+            "ipa": "/ˈnoːsisimiskweːw/",
+            "pronunciation_notes": "Long 'o' and 'e' sounds, stress on first syllable",
+            "syllabics": "ᓅᓯᓯᒥᐢᑫᐤ",
+            "translation": "my granddaughter",
+            "cultural_context": "Granddaughters carry forward women's knowledge and traditions",
+            "example": "Nôsisimiskwêw nikamow. (My granddaughter is singing.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "nindêhêw",
+        "language_id": null,
+        "part_of_speech": "NA",
+        "pronunciation_key": "nin-DAY-hayh",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["family", "common"],
+            "grade_levels": ["K", "1", "2", "3"],
+            "ipa": "/ninˈdeːheːw/",
+            "pronunciation_notes": "Stress on second syllable, long 'e' sounds",
+            "syllabics": "ᓂᐣᑌᐦᐁᐤ",
+            "translation": "my husband",
+            "cultural_context": "Marriage partnership is sacred in Cree culture",
+            "example": "Nindêhêw wîcihêw. (My husband helps.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "niwîkimâkan",
+        "language_id": null,
+        "part_of_speech": "NA",
+        "pronunciation_key": "nee-WEE-kee-mah-kan",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["family", "common"],
+            "grade_levels": ["K", "1", "2", "3"],
+            "ipa": "/niˈwiːkimaːkan/",
+            "pronunciation_notes": "Stress on second syllable, long vowels",
+            "syllabics": "ᓂᐑᑭᒫᑲᐣ",
+            "translation": "my wife",
+            "cultural_context": "Marriage partnership is sacred in Cree culture",
+            "example": "Niwîkimâkan mîcisowin osîhêw. (My wife makes food.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "nôsisimnâpêw",
+        "language_id": null,
+        "part_of_speech": "NA",
+        "pronunciation_key": "NOH-see-sim-nah-pay",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["family", "common"],
+            "grade_levels": ["K", "1", "2", "3"],
+            "ipa": "/ˈnoːsisimnaːpeːw/",
+            "pronunciation_notes": "Long vowels, stress on first syllable",
+            "syllabics": "ᓅᓯᓯᒼᓈᐯᐤ",
+            "translation": "my grandson",
+            "cultural_context": "Grandsons carry forward men's knowledge and traditions",
+            "example": "Nôsisimnâpêw pimohtêw. (My grandson is walking.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "nîcâhkwêw",
+        "language_id": null,
+        "part_of_speech": "NA",
+        "pronunciation_key": "NEE-chahk-way",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["family", "common"],
+            "grade_levels": ["K", "1", "2", "3"],
+            "ipa": "/ˈniːtʃaːhkweːw/",
+            "pronunciation_notes": "Long vowels, stress on first syllable",
+            "syllabics": "ᓃᒑᐦᑫᐤ",
+            "translation": "my female cousin",
+            "cultural_context": "Cousin relationships are important in extended family",
+            "example": "Nîcâhkwêw nikamow. (My female cousin is singing.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "nîcâhkosînâpêw",
+        "language_id": null,
+        "part_of_speech": "NA",
+        "pronunciation_key": "NEE-chahk-oh-see-nah-pay",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["family", "common"],
+            "grade_levels": ["K", "1", "2", "3"],
+            "ipa": "/ˈniːtʃaːhkosiːnaːpeːw/",
+            "pronunciation_notes": "Long vowels, stress on first syllable",
+            "syllabics": "ᓃᒑᐦᑯᓰᓈᐯᐤ",
+            "translation": "my male cousin",
+            "cultural_context": "Male cousin relationships in extended family structure",
+            "example": "Nîcâhkosînâpêw kîkway osîhêw. (My male cousin is making something.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "nîstamiskwêw",
+        "language_id": null,
+        "part_of_speech": "NA",
+        "pronunciation_key": "NEES-tam-is-kway",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["family", "common"],
+            "grade_levels": ["K", "1", "2", "3"],
+            "ipa": "/ˈniːstamiskweːw/",
+            "pronunciation_notes": "Long vowels, stress on first syllable",
+            "syllabics": "ᓃᐢᑕᒥᐢᑫᐤ",
+            "translation": "my older sister (formal)",
+            "cultural_context": "Formal term showing respect for older sister",
+            "example": "Nîstamiskwêw âcimow. (My older sister is telling a story.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "kîsêyiniw",
+        "language_id": null,
+        "part_of_speech": "NA",
+        "pronunciation_key": "KEE-say-yee-niw",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["people", "age"],
+            "grade_levels": ["K", "1", "2", "3"],
+            "ipa": "/ˈkiːseːjiniw/",
+            "pronunciation_notes": "Long vowels, stress on first syllable",
+            "syllabics": "ᑮᓭᔨᓂᐤ",
+            "translation": "old man, elder",
+            "cultural_context": "Elders are respected for their wisdom and knowledge",
+            "example": "Kîsêyiniw âcimow. (The elder is telling a story.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "minâhikê",
+        "language_id": null,
+        "part_of_speech": "IPC",
+        "pronunciation_key": "mee-NAH-hee-kay",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["common", "time"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/miˈnaːhikeː/",
+            "pronunciation_notes": "Stress on second syllable, long 'a' and 'e' sounds",
+            "syllabics": "ᒥᓈᐦᐃᑫ",
+            "translation": "wait, hold on",
+            "cultural_context": "Patience is valued in Cree culture",
+            "example": "Minâhikê, nitôtem. (Wait, my friend.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "kispin",
+        "language_id": null,
+        "part_of_speech": "IPC",
+        "pronunciation_key": "KIS-pin",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["common", "conditional"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈkispin/",
+            "pronunciation_notes": "Stress on first syllable",
+            "syllabics": "ᑭᐢᐱᐣ",
+            "translation": "if, when",
+            "cultural_context": "Used to express conditions or possibilities",
+            "example": "Kispin kiya âstam. (If you come.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "mîna",
+        "language_id": null,
+        "part_of_speech": "IPC",
+        "pronunciation_key": "MEE-na",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["common", "conjunction"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈmiːna/",
+            "pronunciation_notes": "Long 'i' sound, stress on first syllable",
+            "syllabics": "ᒦᓇ",
+            "translation": "also, too, as well",
+            "cultural_context": "Used to add information or include others",
+            "example": "Niya mîna niwâpamâw. (I also see him/her.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "kâmwâc",
+        "language_id": null,
+        "part_of_speech": "IPC",
+        "pronunciation_key": "KAHM-wahch",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["common", "negation"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈkaːmwaːtʃ/",
+            "pronunciation_notes": "Long 'a' sounds, stress on first syllable",
+            "syllabics": "ᑳᒼᐚᐨ",
+            "translation": "not at all, never",
+            "cultural_context": "Strong negation or emphasis",
+            "example": "Kâmwâc niwâpamâw. (I never see him/her.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "tapwê",
+        "language_id": null,
+        "part_of_speech": "IPC",
+        "pronunciation_key": "TAP-way",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["common", "affirmation"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈtapweː/",
+            "pronunciation_notes": "Stress on first syllable, long 'e' sound",
+            "syllabics": "ᑕᐻ",
+            "translation": "truly, really, it's true",
+            "cultural_context": "Emphasizes truth and sincerity",
+            "example": "Tapwê miywâsin. (It's really good.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "mahti",
+        "language_id": null,
+        "part_of_speech": "IPC",
+        "pronunciation_key": "MAH-tee",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["common", "encouragement"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈmahti/",
+            "pronunciation_notes": "Stress on first syllable",
+            "syllabics": "ᒪᐦᑎ",
+            "translation": "come on, let's go",
+            "cultural_context": "Encouragement to action or movement",
+            "example": "Mahti, pimohtêtân. (Come on, let's walk.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "otâkosîhk",
+        "language_id": null,
+        "part_of_speech": "IPC",
+        "pronunciation_key": "oh-TAH-koh-seek",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["time", "common"],
+            "grade_levels": ["K", "1", "2", "3"],
+            "ipa": "/otaːˈkosiːhk/",
+            "pronunciation_notes": "Stress on third syllable, long vowels",
+            "syllabics": "ᐅᑖᑯᓰᐦᐠ",
+            "translation": "in the evening, at dusk",
+            "cultural_context": "Evening time when families gather and stories are told",
+            "example": "Otâkosîhk nôhkom âcimow. (In the evening, grandmother tells stories.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "wâpan kâ-kîsikâk",
+        "language_id": null,
+        "part_of_speech": "IPC",
+        "pronunciation_key": "WAH-pan kah-KEE-si-kahk",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["time", "common"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈwaːpan kaː ˈkiːsikaːk/",
+            "pronunciation_notes": "Long 'a' sounds, stress on first syllable of each word",
+            "syllabics": "ᐚᐸᐣ ᑳ ᑮᓯᑳᐠ",
+            "translation": "tomorrow (lit. the day that will dawn)",
+            "cultural_context": "More formal way to refer to tomorrow, literally meaning 'the day that will dawn'",
+            "example": "Wâpan kâ-kîsikâk kiwâpamitinân. (Tomorrow we will see each other.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "nikotwâsik",
+        "language_id": null,
+        "part_of_speech": "number",
+        "pronunciation_key": "nee-kot-WAH-sik",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["number", "counting"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/nikoˈtwaːsik/",
+            "pronunciation_notes": "Stress on third syllable, long 'a' sound",
+            "syllabics": "ᓂᑯᑤᓯᐠ",
+            "translation": "six",
+            "cultural_context": "Six represents completion in some traditional teachings",
+            "example": "Nikotwâsik pisiskiwak. (Six birds.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "têpakohp",
+        "language_id": null,
+        "part_of_speech": "number",
+        "pronunciation_key": "TAY-pa-kohp",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["number", "counting"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈteːpakohp/",
+            "pronunciation_notes": "Long 'e' sound, stress on first syllable",
+            "syllabics": "ᑌᐸᑯᐦᑊ",
+            "translation": "seven",
+            "cultural_context": "Seven is significant in many traditional ceremonies",
+            "example": "Têpakohp kîsikâwa. (Seven days.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "ayênânêw",
+        "language_id": null,
+        "part_of_speech": "number",
+        "pronunciation_key": "ah-YAY-nah-nayh",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["number", "counting"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/aˈjeːnaːneːw/",
+            "pronunciation_notes": "Stress on second syllable, long vowels",
+            "syllabics": "ᐊᔦᓈᓀᐤ",
+            "translation": "eight",
+            "cultural_context": "Eight represents balance and renewal",
+            "example": "Ayênânêw atimwak. (Eight dogs.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "kêkâ-mitâtaht",
+        "language_id": null,
+        "part_of_speech": "number",
+        "pronunciation_key": "KAY-kah mee-TAH-taht",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["number", "counting"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈkeːkaː miˈtaːtaht/",
+            "pronunciation_notes": "Stress on first syllable of each word",
+            "syllabics": "ᑫᑳ ᒥᑖᑕᐦᐟ",
+            "translation": "nine",
+            "cultural_context": "Nine represents near completion",
+            "example": "Kêkâ-mitâtaht wâposak. (Nine rabbits.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "mitâtaht",
+        "language_id": null,
+        "part_of_speech": "number",
+        "pronunciation_key": "mee-TAH-taht",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["number", "counting"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/miˈtaːtaht/",
+            "pronunciation_notes": "Stress on second syllable, long 'a' sounds",
+            "syllabics": "ᒥᑖᑕᐦᐟ",
+            "translation": "ten",
+            "cultural_context": "Ten represents completion of a cycle",
+            "example": "Mitâtaht nikîhciya. (Ten fingers.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "pêyakosâp",
+        "language_id": null,
+        "part_of_speech": "number",
+        "pronunciation_key": "PAY-ya-koh-sahp",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["number", "counting"],
+            "grade_levels": ["1", "2", "3"],
+            "ipa": "/ˈpeːjakosaːp/",
+            "pronunciation_notes": "Stress on first syllable, long vowels",
+            "syllabics": "ᐯᔭᑯᓵᑊ",
+            "translation": "eleven",
+            "cultural_context": "Beginning of the second set of ten",
+            "example": "Pêyakosâp masinahikana. (Eleven books.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "nîsosâp",
+        "language_id": null,
+        "part_of_speech": "number",
+        "pronunciation_key": "NEE-soh-sahp",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["number", "counting"],
+            "grade_levels": ["1", "2", "3"],
+            "ipa": "/ˈniːsosaːp/",
+            "pronunciation_notes": "Long 'i' sound, stress on first syllable",
+            "syllabics": "ᓃᓱᓵᑊ",
+            "translation": "twelve",
+            "cultural_context": "Twelve has significance in seasonal cycles",
+            "example": "Nîsosâp pîsimwa. (Twelve months.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "nistosâp",
+        "language_id": null,
+        "part_of_speech": "number",
+        "pronunciation_key": "NIS-toh-sahp",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["number", "counting"],
+            "grade_levels": ["1", "2", "3"],
+            "ipa": "/ˈnistosaːp/",
+            "pronunciation_notes": "Stress on first syllable",
+            "syllabics": "ᓂᐢᑐᓵᑊ",
+            "translation": "thirteen",
+            "cultural_context": "Continuing the counting sequence",
+            "example": "Nistosâp awâsisak. (Thirteen children.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "nêwosâp",
+        "language_id": null,
+        "part_of_speech": "number",
+        "pronunciation_key": "NAY-woh-sahp",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["number", "counting"],
+            "grade_levels": ["1", "2", "3"],
+            "ipa": "/ˈneːwosaːp/",
+            "pronunciation_notes": "Long 'e' sound, stress on first syllable",
+            "syllabics": "ᓀᐓᓵᑊ",
+            "translation": "fourteen",
+            "cultural_context": "Continuing the counting sequence",
+            "example": "Nêwosâp kîsikâwa. (Fourteen days.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "niyânansâp",
+        "language_id": null,
+        "part_of_speech": "number",
+        "pronunciation_key": "nee-YAH-nan-sahp",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["number", "counting"],
+            "grade_levels": ["1", "2", "3"],
+            "ipa": "/niˈjaːnansaːp/",
+            "pronunciation_notes": "Stress on second syllable, long vowels",
+            "syllabics": "ᓂᔮᓇᐣᓵᑊ",
+            "translation": "fifteen",
+            "cultural_context": "Continuing the counting sequence",
+            "example": "Niyânansâp kinosêwak. (Fifteen fish.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "nikotwâsosâp",
+        "language_id": null,
+        "part_of_speech": "number",
+        "pronunciation_key": "nee-kot-WAH-soh-sahp",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["number", "counting"],
+            "grade_levels": ["1", "2", "3"],
+            "ipa": "/nikoˈtwaːsosaːp/",
+            "pronunciation_notes": "Stress on third syllable, long vowels",
+            "syllabics": "ᓂᑯᑤᓱᓵᑊ",
+            "translation": "sixteen",
+            "cultural_context": "Continuing the counting sequence",
+            "example": "Nikotwâsosâp mistikwak. (Sixteen trees.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "têpakohposâp",
+        "language_id": null,
+        "part_of_speech": "number",
+        "pronunciation_key": "TAY-pa-kohp-oh-sahp",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["number", "counting"],
+            "grade_levels": ["1", "2", "3"],
+            "ipa": "/ˈteːpakohposaːp/",
+            "pronunciation_notes": "Long 'e' sound, stress on first syllable",
+            "syllabics": "ᑌᐸᑯᐦᐸᓵᑊ",
+            "translation": "seventeen",
+            "cultural_context": "Continuing the counting sequence",
+            "example": "Têpakohposâp sîpîhkwak. (Seventeen rivers.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "ayênânêwosâp",
+        "language_id": null,
+        "part_of_speech": "number",
+        "pronunciation_key": "ah-YAY-nah-nayh-oh-sahp",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["number", "counting"],
+            "grade_levels": ["1", "2", "3"],
+            "ipa": "/aˈjeːnaːneːwosaːp/",
+            "pronunciation_notes": "Stress on second syllable, long vowels",
+            "syllabics": "ᐊᔦᓈᓀᐓᓵᑊ",
+            "translation": "eighteen",
+            "cultural_context": "Continuing the counting sequence",
+            "example": "Ayênânêwosâp môswak. (Eighteen moose.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "kêkâ-nîstanaw",
+        "language_id": null,
+        "part_of_speech": "number",
+        "pronunciation_key": "KAY-kah NEES-ta-naw",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["number", "counting"],
+            "grade_levels": ["1", "2", "3"],
+            "ipa": "/ˈkeːkaː ˈniːstanaw/",
+            "pronunciation_notes": "Stress on first syllable of each word",
+            "syllabics": "ᑫᑳ ᓃᐢᑕᓇᐤ",
+            "translation": "nineteen",
+            "cultural_context": "One before twenty, approaching a new cycle",
+            "example": "Kêkâ-nîstanaw maskwak. (Nineteen bears.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "nîstanaw",
+        "language_id": null,
+        "part_of_speech": "number",
+        "pronunciation_key": "NEES-ta-naw",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["number", "counting"],
+            "grade_levels": ["1", "2", "3"],
+            "ipa": "/ˈniːstanaw/",
+            "pronunciation_notes": "Long 'i' sound, stress on first syllable",
+            "syllabics": "ᓃᐢᑕᓇᐤ",
+            "translation": "twenty",
+            "cultural_context": "Completion of two sets of ten, important counting milestone",
+            "example": "Nîstanaw misita. (Twenty feet.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "ayisiyinîw",
+        "language_id": null,
+        "part_of_speech": "NA",
+        "pronunciation_key": "ah-yee-see-yee-NEEW",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["people", "common"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ajisijiˈniːw/",
+            "pronunciation_notes": "Stress on last syllable, long 'i' sound",
+            "syllabics": "ᐊᔨᓯᔨᓃᐤ",
+            "translation": "person, human being",
+            "cultural_context": "Fundamental term for human beings, emphasizing our place in creation",
+            "example": "Ayisiyinîw miywâsin. (The person is good.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "kîhtwâm",
+        "language_id": null,
+        "part_of_speech": "IPC",
+        "pronunciation_key": "KEEH-twahm",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["common", "time"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈkiːhtwaːm/",
+            "pronunciation_notes": "Long 'i' and 'a' sounds, stress on first syllable",
+            "syllabics": "ᑮᐦᑤᒼ",
+            "translation": "again, once more",
+            "cultural_context": "Repetition and cycles are important in traditional teachings",
+            "example": "Kîhtwâm âstam. (Come again.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "mâka",
+        "language_id": null,
+        "part_of_speech": "IPC",
+        "pronunciation_key": "MAH-ka",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["common", "conjunction"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈmaːka/",
+            "pronunciation_notes": "Long 'a' sound, stress on first syllable",
+            "syllabics": "ᒫᑲ",
+            "translation": "but, however",
+            "cultural_context": "Used to show contrast or different perspectives",
+            "example": "Miywâsin mâka kîsikaw. (It's good but it's cold.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "êkwa",
+        "language_id": null,
+        "part_of_speech": "IPC",
+        "pronunciation_key": "AY-kwa",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["common", "conjunction"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈeːkwa/",
+            "pronunciation_notes": "Long 'e' sound, stress on first syllable",
+            "syllabics": "ᐁᑿ",
+            "translation": "and, then, now",
+            "cultural_context": "Connects ideas and shows sequence in storytelling",
+            "example": "Niwâpamâw êkwa nikamow. (I see him and he sings.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "namôya",
+        "language_id": null,
+        "part_of_speech": "IPC",
+        "pronunciation_key": "nah-MOH-ya",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["common", "negation"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/naˈmoːja/",
+            "pronunciation_notes": "Stress on second syllable, long 'o' sound",
+            "syllabics": "ᓇᒧᔭ",
+            "translation": "no, not",
+            "cultural_context": "Basic negation, important for communication",
+            "example": "Namôya niwâpamâw. (I don't see him.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "ayamihêwikîsikâw",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "ah-ya-mee-HAY-wee-KEE-si-kaw",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["time", "week", "common"],
+            "grade_levels": ["K", "1", "2", "3"],
+            "ipa": "/ajamiˈheːwikiːsikaːw/",
+            "pronunciation_notes": "Stress on third syllable, long vowels",
+            "syllabics": "ᐊᔭᒥᐦᐁᐏᑮᓯᑳᐤ",
+            "translation": "Sunday (prayer day)",
+            "cultural_context": "Day of prayer and spiritual reflection",
+            "example": "Ayamihêwikîsikâw ayamihâw. (On Sunday he/she prays.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "nitam kîsikâw",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "NEE-tam KEE-si-kaw",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["time", "week", "common"],
+            "grade_levels": ["K", "1", "2", "3"],
+            "ipa": "/ˈnitam ˈkiːsikaːw/",
+            "pronunciation_notes": "Stress on first syllable of each word",
+            "syllabics": "ᓂᑕᒼ ᑮᓯᑳᐤ",
+            "translation": "Monday (first day)",
+            "cultural_context": "Beginning of the work week",
+            "example": "Nitam kîsikâw atoskêw. (On Monday he/she works.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "nîso kîsikâw",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "NEE-soh KEE-si-kaw",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["time", "week", "common"],
+            "grade_levels": ["K", "1", "2", "3"],
+            "ipa": "/ˈniːso ˈkiːsikaːw/",
+            "pronunciation_notes": "Long 'i' sound, stress on first syllable of each word",
+            "syllabics": "ᓃᓱ ᑮᓯᑳᐤ",
+            "translation": "Tuesday (second day)",
+            "cultural_context": "Second day of the work week",
+            "example": "Nîso kîsikâw kiskêyihtamowin. (On Tuesday there is learning.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "nisto kîsikâw",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "NIS-toh KEE-si-kaw",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["time", "week", "common"],
+            "grade_levels": ["K", "1", "2", "3"],
+            "ipa": "/ˈnisto ˈkiːsikaːw/",
+            "pronunciation_notes": "Stress on first syllable of each word",
+            "syllabics": "ᓂᐢᑐ ᑮᓯᑳᐤ",
+            "translation": "Wednesday (third day)",
+            "cultural_context": "Middle of the work week",
+            "example": "Nisto kîsikâw mâmawi ayamihâwak. (On Wednesday they pray together.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "nêwo kîsikâw",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "NAY-woh KEE-si-kaw",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["time", "week", "common"],
+            "grade_levels": ["K", "1", "2", "3"],
+            "ipa": "/ˈneːwo ˈkiːsikaːw/",
+            "pronunciation_notes": "Long 'e' sound, stress on first syllable of each word",
+            "syllabics": "ᓀᐓ ᑮᓯᑳᐤ",
+            "translation": "Thursday (fourth day)",
+            "cultural_context": "Fourth day of the work week",
+            "example": "Nêwo kîsikâw mâmawi mîcisowak. (On Thursday they eat together.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "niyânan kîsikâw",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "nee-YAH-nan KEE-si-kaw",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["time", "week", "common"],
+            "grade_levels": ["K", "1", "2", "3"],
+            "ipa": "/niˈjaːnan ˈkiːsikaːw/",
+            "pronunciation_notes": "Stress on second syllable of first word, first syllable of second",
+            "syllabics": "ᓂᔮᓇᐣ ᑮᓯᑳᐤ",
+            "translation": "Friday (fifth day)",
+            "cultural_context": "End of the work week",
+            "example": "Niyânan kîsikâw metawêwak. (On Friday they play.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "nikotwâsik kîsikâw",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "nee-kot-WAH-sik KEE-si-kaw",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["time", "week", "common"],
+            "grade_levels": ["K", "1", "2", "3"],
+            "ipa": "/nikoˈtwaːsik ˈkiːsikaːw/",
+            "pronunciation_notes": "Stress on third syllable of first word, first syllable of second",
+            "syllabics": "ᓂᑯᑤᓯᐠ ᑮᓯᑳᐤ",
+            "translation": "Saturday (sixth day)",
+            "cultural_context": "Day of rest and family time",
+            "example": "Nikotwâsik kîsikâw mâmawi wîcihitowak. (On Saturday they help each other.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "kîsikâw",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "KEE-si-kaw",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["time", "common"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈkiːsikaːw/",
+            "pronunciation_notes": "Long 'i' and 'a' sounds, stress on first syllable",
+            "syllabics": "ᑮᓯᑳᐤ",
+            "translation": "day",
+            "cultural_context": "Basic time unit, each day is a gift",
+            "example": "Miywâsin kîsikâw. (It is a good day.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "tîpiskâk",
+        "language_id": null,
+        "part_of_speech": "NI",
+        "pronunciation_key": "TEE-pis-kahk",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["time", "common"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈtiːpiskaːk/",
+            "pronunciation_notes": "Long 'i' and 'a' sounds, stress on first syllable",
+            "syllabics": "ᑮᐱᐢᑳᐠ",
+            "translation": "night",
+            "cultural_context": "Time for rest and spiritual connection",
+            "example": "Tîpiskâk nipâw. (At night he/she sleeps.)",
+            "proficiency_level": "A1"
+        }
+    },
+    {
+        "text": "kîkisêpâ",
+        "language_id": null,
+        "part_of_speech": "IPC",
+        "pronunciation_key": "KEE-kee-say-pah",
+        "metadata": {
+            "difficulty": "beginner",
+            "tags": ["time", "common"],
+            "grade_levels": ["K", "1", "2"],
+            "ipa": "/ˈkiːkiseːpaː/",
+            "pronunciation_notes": "Long vowels, stress on first syllable",
+            "syllabics": "ᑮᑭᓭᐹ",
+            "translation": "in the morning",
+            "cultural_context": "Sacred time for prayers and new beginnings",
+            "example": "Kîkisêpâ waniskâw. (In the morning he/she gets up.)",
+            "proficiency_level": "A1"
         }
     }
 ]
