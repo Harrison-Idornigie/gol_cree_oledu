@@ -40,7 +40,7 @@ class GuideBookEntry extends Model
 
     protected $casts = [
         'words_introduced' => 'array',
-        'words_reused' => 'array', 
+        'words_reused' => 'array',
         'word_count' => 'integer',
         'difficulty_level' => 'integer',
         'tags' => 'array',
@@ -53,7 +53,7 @@ class GuideBookEntry extends Model
      */
     protected array $versionedAttributes = [
         'title',
-        'content', 
+        'content',
         'words_introduced',
         'words_reused',
         'difficulty_level',
@@ -96,7 +96,7 @@ class GuideBookEntry extends Model
             if (empty($entry->slug)) {
                 $entry->slug = Str::slug($entry->title);
             }
-            
+
             // Auto-calculate word count
             $entry->word_count = count($entry->words_introduced ?? []) + count($entry->words_reused ?? []);
         });
@@ -145,7 +145,7 @@ class GuideBookEntry extends Model
     public function isCompletedByStudent(User $student): bool
     {
         $allWordIds = $this->getAllWords();
-        
+
         // Check if student has progress records for all words
         $learnedWordIds = UserProgress::where('user_id', $student->id)
             ->where('trackable_type', Word::class)
@@ -163,7 +163,7 @@ class GuideBookEntry extends Model
     public function getStudentWordProgress(User $student): array
     {
         $allWordIds = $this->getAllWords();
-        
+
         $progress = UserProgress::where('user_id', $student->id)
             ->where('trackable_type', Word::class)
             ->whereIn('trackable_id', $allWordIds)
@@ -173,7 +173,7 @@ class GuideBookEntry extends Model
         return collect($allWordIds)->map(function ($wordId) use ($progress) {
             $wordProgress = $progress->get($wordId);
             $word = $this->getWordDetails($wordId);
-            
+
             return [
                 'word_id' => $wordId,
                 'word' => $word?->word,

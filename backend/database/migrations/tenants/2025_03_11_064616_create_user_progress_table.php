@@ -15,7 +15,7 @@ return new class extends Migration
                 ->constrained()
                 ->onDelete('cascade');
             $table->morphs('trackable');
-            $table->enum('status', ['not_started', 'learning', 'practicing', 'mastered'])
+            $table->enum('status', ['not_started', 'learning', 'practicing', 'mastered', 'completed', 'in_progress'])
                 ->default('not_started');
             $table->integer('strength')->default(0)->comment('Word strength 0-5 (Duolingo-style)');
             $table->integer('streak')->default(0)->comment('Consecutive correct answers');
@@ -38,6 +38,5 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('user_progress');
-       
     }
 };

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('template_id')->nullable()->comment('Reference to content template used to create this unit');
             $table->string('title');
             $table->enum('status', ['draft', 'published', 'archived'])->default('draft');
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->integer('order');
             $table->timestamps();
 

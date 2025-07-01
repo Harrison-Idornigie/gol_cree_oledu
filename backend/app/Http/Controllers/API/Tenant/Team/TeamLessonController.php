@@ -111,22 +111,25 @@ class TeamLessonController extends BaseAPIController
      * Display the specified lesson.
      *
      * @param Request $request
-     * @param Lesson $lesson
+     * @param string $tenant
+     * @param string $lesson
      * @return JsonResponse
      */
-    public function show(Request $request, Lesson $lesson): JsonResponse
+    public function show(Request $request, string $tenant, string $lesson): JsonResponse
     {
-        $this->authorize('view', $lesson);
-
         try {
+            // Find the lesson within tenant context
+            $lessonModel = Lesson::findOrFail((int) $lesson);
+            $this->authorize('view', $lessonModel);
+
             // Load relationships and statistics
-            $lesson->load(['topic.unit.learningPath', 'exercises', 'template']);
+            $lessonModel->load(['topic.unit.learningPath', 'exercises', 'template']);
 
             // Get lesson statistics
-            $stats = $this->lessonService->getLessonStats($lesson);
-            $lesson->stats = $stats;
+            $stats = $this->lessonService->getLessonStats($lessonModel);
+            $lessonModel->stats = $stats;
 
-            return $this->sendResponse($lesson, 'Lesson retrieved successfully.');
+            return $this->sendResponse($lessonModel, 'Lesson retrieved successfully.');
         } catch (\Exception $e) {
             return $this->sendError('Failed to retrieve lesson.', ['error' => $e->getMessage()]);
         }
@@ -136,14 +139,17 @@ class TeamLessonController extends BaseAPIController
      * Update the specified lesson.
      *
      * @param Request $request
-     * @param Lesson $lesson
+     * @param string $tenant
+     * @param string $lesson
      * @return JsonResponse
      */
-    public function update(Request $request, Lesson $lesson): JsonResponse
+    public function update(Request $request, string $tenant, string $lesson): JsonResponse
     {
-        $this->authorize('update', $lesson);
-
         try {
+            // Find the lesson within tenant context
+            $lessonModel = Lesson::findOrFail((int) $lesson);
+            $this->authorize('update', $lessonModel);
+
             $validated = $request->validate([
                 'title' => 'sometimes|string|max:255',
                 'description' => 'sometimes|string',
@@ -151,7 +157,7 @@ class TeamLessonController extends BaseAPIController
                 'status' => 'nullable|string|in:draft,published,archived',
             ]);
 
-            $updatedLesson = $this->lessonService->updateLesson($lesson, $validated, Auth::user());
+            $updatedLesson = $this->lessonService->updateLesson($lessonModel, $validated, Auth::user());
 
             return $this->sendResponse($updatedLesson, 'Lesson updated successfully.');
         } catch (\Illuminate\Validation\ValidationException $e) {
@@ -165,15 +171,18 @@ class TeamLessonController extends BaseAPIController
      * Remove the specified lesson.
      *
      * @param Request $request
-     * @param Lesson $lesson
+     * @param string $tenant
+     * @param string $lesson
      * @return JsonResponse
      */
-    public function destroy(Request $request, Lesson $lesson): JsonResponse
+    public function destroy(Request $request, string $tenant, string $lesson): JsonResponse
     {
-        $this->authorize('delete', $lesson);
-
         try {
-            $this->lessonService->deleteLesson($lesson, Auth::user());
+            // Find the lesson within tenant context
+            $lessonModel = Lesson::findOrFail((int) $lesson);
+            $this->authorize('delete', $lessonModel);
+
+            $this->lessonService->deleteLesson($lessonModel, Auth::user());
 
             return $this->sendNoContentResponse();
         } catch (\Exception $e) {
@@ -277,16 +286,19 @@ class TeamLessonController extends BaseAPIController
 
     /**
      * Reorder exercises within lesson.
-     * 
+     *
      * @param Request $request
-     * @param Lesson $lesson
+     * @param string $tenant
+     * @param string $lesson
      * @return JsonResponse
      */
-    public function reorderExercises(Request $request, Lesson $lesson): JsonResponse
+    public function reorderExercises(Request $request, string $tenant, string $lesson): JsonResponse
     {
-        $this->authorize('manageExercises', $lesson);
-
         try {
+            // Find the lesson within tenant context
+            $lessonModel = Lesson::findOrFail((int) $lesson);
+            $this->authorize('manageExercises', $lessonModel);
+
             $validatedData = $request->validate([
                 'exercise_orders' => 'required|array|min:1',
                 'exercise_orders.*.id' => 'required|integer|exists:exercises,id',
@@ -294,7 +306,7 @@ class TeamLessonController extends BaseAPIController
             ]);
 
             $success = $this->exerciseService->reorderExercises(
-                $lesson->id,
+                $lessonModel->id,
                 $validatedData['exercise_orders'],
                 Auth::user()
             );

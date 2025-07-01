@@ -15,6 +15,14 @@ class Word extends Model implements HasMedia
 {
     use HasFactory, InteractsWithMedia, HasAuditLog, HasVersions, BelongsToTenant;
 
+    /**
+     * Create a new factory instance for the model.
+     */
+    protected static function newFactory()
+    {
+        return \Database\Factories\Tenant\WordFactory::new();
+    }
+
     protected $fillable = [
         'language_id',
         'text',

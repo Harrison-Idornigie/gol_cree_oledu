@@ -50,15 +50,19 @@ Route::prefix('team')->middleware(['auth:tenant', 'verified-grace', 'role_permis
     Route::prefix('words')->group(function () {
         Route::get('/', [TeamWordController::class, 'index']);
         Route::post('/', [TeamWordController::class, 'store']);
-        Route::get('{word}', [TeamWordController::class, 'show']);
-        Route::put('{word}', [TeamWordController::class, 'update']);
-        Route::delete('{word}', [TeamWordController::class, 'destroy']);
+
+        // Specific routes must come before parameterized routes
+        Route::get('export', [TeamWordController::class, 'export']);
 
         // Bulk Operations
         Route::post('bulk', [TeamWordController::class, 'bulkStore']);
         Route::put('bulk', [TeamWordController::class, 'bulkUpdate']);
         Route::post('bulk-delete', [TeamWordController::class, 'bulkDelete']);
-        Route::get('export', [TeamWordController::class, 'export']);
+
+        // Parameterized routes come last
+        Route::get('{word}', [TeamWordController::class, 'show']);
+        Route::put('{word}', [TeamWordController::class, 'update']);
+        Route::delete('{word}', [TeamWordController::class, 'destroy']);
 
         // Word Translations
         Route::post('{word}/translations', [TeamWordController::class, 'addTranslation']);

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models\Tenants;
 
 use App\Models\Tenants\Exercise;
@@ -19,6 +20,8 @@ class UserProgress extends Model
     public const STATUS_LEARNING = 'learning';
     public const STATUS_PRACTICING = 'practicing';
     public const STATUS_MASTERED = 'mastered';
+    public const STATUS_COMPLETED = 'completed';
+    public const STATUS_IN_PROGRESS = 'in_progress';
 
     protected $fillable = [
         'user_id',

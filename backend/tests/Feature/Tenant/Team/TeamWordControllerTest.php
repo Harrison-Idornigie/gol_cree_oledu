@@ -12,7 +12,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Str;
 
 class TeamWordControllerTest extends TenantTestCase
 {
@@ -23,15 +22,15 @@ class TeamWordControllerTest extends TenantTestCase
     protected User $adminUser;
     protected User $studentUser;
     protected Language $language;
+    protected array $testWords;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->setUpTenancy();
 
-        // Create test tenant
+        // Create test tenant and immediately initialize context
         $this->tenant = $this->createTestTenant();
-        $this->initializeTenantContext($this->tenant);
+        tenancy()->initialize($this->tenant);
 
         // Create users with different roles in tenant context
         $this->teamUser = $this->createTenantTeam();
@@ -40,6 +39,12 @@ class TeamWordControllerTest extends TenantTestCase
 
         // Create test language
         $this->language = $this->createLanguage();
+
+        // Create some test words for index tests
+        $this->testWords = [];
+        for ($i = 0; $i < 3; $i++) {
+            $this->testWords[] = $this->createWord();
+        }
     }
 
     protected function tearDown(): void
@@ -57,14 +62,11 @@ class TeamWordControllerTest extends TenantTestCase
      */
     public function test_index_success()
     {
-        // Create some test words
-        $words = [];
-        for ($i = 0; $i < 3; $i++) {
-            $words[] = $this->createWord();
-        }
+        // Use pre-created test words
+        $this->assertCount(3, $this->testWords);
 
         // Authenticate as team member
-        Sanctum::actingAs($this->teamUser, ['*']);
+        Sanctum::actingAs($this->teamUser, ['*'], 'tenant');
 
         $response = $this->getJson("/api/{$this->tenant->slug}/team/words");
 
@@ -86,7 +88,7 @@ class TeamWordControllerTest extends TenantTestCase
     public function test_store_success()
     {
         // Authenticate as team member
-        Sanctum::actingAs($this->teamUser, ['*']);
+        Sanctum::actingAs($this->teamUser, ['*'], 'tenant');
 
         $wordData = [
             'text' => 'new_test_word',
@@ -106,8 +108,7 @@ class TeamWordControllerTest extends TenantTestCase
                     'text',
                     'language_id',
                     'part_of_speech',
-                    'status',
-                    'created_by',
+                    'pronunciation_key',
                     'created_at',
                     'updated_at'
                 ]
@@ -118,8 +119,7 @@ class TeamWordControllerTest extends TenantTestCase
                 'data' => [
                     'text' => 'new_test_word',
                     'language_id' => $this->language->id,
-                    'part_of_speech' => 'verb',
-                    'status' => 'draft'
+                    'part_of_speech' => 'verb'
                 ]
             ]);
     }
@@ -130,7 +130,7 @@ class TeamWordControllerTest extends TenantTestCase
     public function test_store_validation_failure()
     {
         // Authenticate as team member
-        Sanctum::actingAs($this->teamUser, ['*']);
+        Sanctum::actingAs($this->teamUser, ['*'], 'tenant');
 
         // Missing required fields
         $wordData = [
@@ -159,7 +159,7 @@ class TeamWordControllerTest extends TenantTestCase
         $word = $this->createWord();
 
         // Authenticate as team member
-        Sanctum::actingAs($this->teamUser, ['*']);
+        Sanctum::actingAs($this->teamUser, ['*'], 'tenant');
 
         $response = $this->getJson("/api/{$this->tenant->slug}/team/words/{$word->id}");
 
@@ -197,7 +197,7 @@ class TeamWordControllerTest extends TenantTestCase
         $word = $this->createWord();
 
         // Authenticate as team member
-        Sanctum::actingAs($this->teamUser, ['*']);
+        Sanctum::actingAs($this->teamUser, ['*'], 'tenant');
 
         $updateData = [
             'text' => 'updated_word',
@@ -232,7 +232,7 @@ class TeamWordControllerTest extends TenantTestCase
         $word = $this->createWord();
 
         // Authenticate as team member
-        Sanctum::actingAs($this->teamUser, ['*']);
+        Sanctum::actingAs($this->teamUser, ['*'], 'tenant');
 
         $response = $this->deleteJson("/api/{$this->tenant->slug}/team/words/{$word->id}");
 
@@ -258,9 +258,10 @@ class TeamWordControllerTest extends TenantTestCase
     public function test_bulk_store_success()
     {
         // Authenticate as team member
-        Sanctum::actingAs($this->teamUser, ['*']);
+        Sanctum::actingAs($this->teamUser, ['*'], 'tenant');
 
         $wordData = [
+            'operation' => 'create',
             'words' => [
                 [
                     'text' => 'bulk_word_1',
@@ -284,16 +285,27 @@ class TeamWordControllerTest extends TenantTestCase
                 'success',
                 'message',
                 'data' => [
-                    '*' => [
-                        'id',
-                        'text',
-                        'language_id'
+                    'success' => [
+                        '*' => [
+                            'index',
+                            'word' => [
+                                'id',
+                                'text',
+                                'language_id'
+                            ]
+                        ]
+                    ],
+                    'errors',
+                    'summary' => [
+                        'total',
+                        'successful',
+                        'failed'
                     ]
                 ]
             ])
             ->assertJson([
                 'success' => true,
-                'message' => 'Words created successfully.'
+                'message' => 'Bulk operation completed.'
             ]);
 
         // Verify the words were actually created
@@ -313,19 +325,22 @@ class TeamWordControllerTest extends TenantTestCase
         $word2 = $this->createWord(['text' => 'bulk_update_2']);
 
         // Authenticate as team member
-        Sanctum::actingAs($this->teamUser, ['*']);
+        Sanctum::actingAs($this->teamUser, ['*'], 'tenant');
 
         $updateData = [
+            'operation' => 'update',
             'words' => [
                 [
                     'id' => $word1->id,
                     'text' => 'bulk_updated_1',
-                    'part_of_speech' => 'verb'
+                    'part_of_speech' => 'verb',
+                    'language_id' => $word1->language_id
                 ],
                 [
                     'id' => $word2->id,
                     'text' => 'bulk_updated_2',
-                    'part_of_speech' => 'adverb'
+                    'part_of_speech' => 'adverb',
+                    'language_id' => $word2->language_id
                 ]
             ]
         ];
@@ -368,10 +383,11 @@ class TeamWordControllerTest extends TenantTestCase
         $word2 = $this->createWord(['text' => 'bulk_delete_2']);
 
         // Authenticate as team member
-        Sanctum::actingAs($this->teamUser, ['*']);
+        Sanctum::actingAs($this->teamUser, ['*'], 'tenant');
 
         $deleteData = [
-            'word_ids' => [$word1->id, $word2->id]
+            'operation' => 'delete',
+            'words' => [$word1->id, $word2->id]
         ];
 
         $response = $this->postJson("/api/{$this->tenant->slug}/team/words/bulk-delete", $deleteData);
@@ -379,11 +395,27 @@ class TeamWordControllerTest extends TenantTestCase
         $response->assertStatus(200)
             ->assertJsonStructure([
                 'success',
-                'message'
+                'message',
+                'data' => [
+                    'success',
+                    'errors',
+                    'summary' => [
+                        'total',
+                        'successful',
+                        'failed'
+                    ]
+                ]
             ])
             ->assertJson([
                 'success' => true,
-                'message' => 'Words deleted successfully.'
+                'message' => 'Bulk delete completed.',
+                'data' => [
+                    'summary' => [
+                        'total' => 2,
+                        'successful' => 2,
+                        'failed' => 0
+                    ]
+                ]
             ]);
 
         // Verify the words were actually deleted
@@ -402,7 +434,7 @@ class TeamWordControllerTest extends TenantTestCase
         $word = $this->createWord();
 
         // Authenticate as team member
-        Sanctum::actingAs($this->teamUser, ['*']);
+        Sanctum::actingAs($this->teamUser, ['*'], 'tenant');
 
         // Create a second language for translation
         $targetLanguage = $this->runInTenantContext($this->tenant, function () {
@@ -439,7 +471,7 @@ class TeamWordControllerTest extends TenantTestCase
     public function test_student_cannot_access()
     {
         // Authenticate as student
-        Sanctum::actingAs($this->studentUser, ['*']);
+        Sanctum::actingAs($this->studentUser, ['*'], 'tenant');
 
         $response = $this->getJson("/api/{$this->tenant->slug}/team/words");
 
@@ -455,7 +487,7 @@ class TeamWordControllerTest extends TenantTestCase
         $word = $this->createWord();
 
         // Authenticate as team member
-        Sanctum::actingAs($this->teamUser, ['*']);
+        Sanctum::actingAs($this->teamUser, ['*'], 'tenant');
 
         // Mock the Storage facade
         Storage::fake('public');
@@ -491,7 +523,7 @@ class TeamWordControllerTest extends TenantTestCase
         }
 
         // Authenticate as team member
-        Sanctum::actingAs($this->teamUser, ['*']);
+        Sanctum::actingAs($this->teamUser, ['*'], 'tenant');
 
         $response = $this->getJson("/api/{$this->tenant->slug}/team/words/export?language_id={$this->language->id}");
 
@@ -521,7 +553,7 @@ class TeamWordControllerTest extends TenantTestCase
         }
 
         // Authenticate as team member
-        Sanctum::actingAs($this->teamUser, ['*']);
+        Sanctum::actingAs($this->teamUser, ['*'], 'tenant');
 
         $response = $this->getJson("/api/{$this->tenant->slug}/team/words/available/matching?language_id={$this->language->id}");
 
@@ -542,8 +574,8 @@ class TeamWordControllerTest extends TenantTestCase
      */
     protected function initializeTenantContext(Tenant $tenant): void
     {
-        // The tenant is already initialized and seeded in createTestTenant
-        // This method is kept for compatibility but not needed with enhanced trait
+        // Initialize the tenant context for the test
+        tenancy()->initialize($tenant);
     }
 
     /**
@@ -555,34 +587,6 @@ class TeamWordControllerTest extends TenantTestCase
             return User::factory()->create(array_merge([
                 'email' => 'admin@test.com',
                 'membership' => 'admin',
-                'email_verified_at' => now(),
-            ], $attributes));
-        });
-    }
-
-    /**
-     * Helper method to create tenant team member
-     */
-    protected function createTenantTeam(array $attributes = []): User
-    {
-        return $this->runInTenantContext($this->tenant, function () use ($attributes) {
-            return User::factory()->create(array_merge([
-                'email' => 'team@test.com',
-                'membership' => 'team',
-                'email_verified_at' => now(),
-            ], $attributes));
-        });
-    }
-
-    /**
-     * Helper method to create tenant student
-     */
-    protected function createTenantStudent(array $attributes = []): User
-    {
-        return $this->runInTenantContext($this->tenant, function () use ($attributes) {
-            return User::factory()->create(array_merge([
-                'email' => 'student@test.com',
-                'membership' => 'student',
                 'email_verified_at' => now(),
             ], $attributes));
         });

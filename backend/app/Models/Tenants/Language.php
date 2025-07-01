@@ -14,6 +14,14 @@ class Language extends Model
 {
     use HasFactory, HasAuditLog, HasVersions, BelongsToTenant;
 
+    /**
+     * Create a new factory instance for the model.
+     */
+    protected static function newFactory()
+    {
+        return \Database\Factories\Tenant\LanguageFactory::new();
+    }
+
     protected $fillable = [
         'code',
         'name',

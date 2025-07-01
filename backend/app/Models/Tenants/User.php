@@ -190,7 +190,7 @@ class User extends Authenticatable implements MustVerifyEmail
             ->where('status', UserProgress::STATUS_COMPLETED)
             ->count();
 
-        
+
         $wordsLearned = 0; // TODO: Implement GuideBook word tracking
 
         return [

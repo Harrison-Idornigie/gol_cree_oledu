@@ -26,8 +26,12 @@ return new class extends Migration
             $table->json('references')->nullable();
             $table->integer('order')->nullable();
             $table->enum('category', [
-                'lesson_guide', 'grammar', 'pronunciation', 'culture', 
-                'conversation', 'reference'
+                'lesson_guide',
+                'grammar',
+                'pronunciation',
+                'culture',
+                'conversation',
+                'reference'
             ])->default('lesson_guide');
             $table->enum('status', ['draft', 'published', 'archived'])->default('draft');
             $table->foreignId('created_by')->nullable()->constrained('users')->onDelete('set null');

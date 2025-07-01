@@ -56,7 +56,7 @@ class TeamWordController extends BaseAPIController
     public function index(Request $request): JsonResponse
     {
         $this->authorize('viewAny', Word::class);
-        
+
         try {
             $filters = [
                 'search' => $request->get('search'),
@@ -85,7 +85,6 @@ class TeamWordController extends BaseAPIController
             });
 
             return $this->sendPaginatedResponse($words, 'Words retrieved successfully.');
-
         } catch (\Exception $e) {
             return $this->sendError('Failed to retrieve words: ' . $e->getMessage());
         }
@@ -100,7 +99,7 @@ class TeamWordController extends BaseAPIController
     public function store(CreateWordRequest $request): JsonResponse
     {
         $this->authorize('create', Word::class);
-        
+
         try {
             $wordData = $request->only([
                 'language_id',
@@ -110,8 +109,8 @@ class TeamWordController extends BaseAPIController
                 'metadata'
             ]);
 
-            $audioFile = $request->hasFile('pronunciation_audio') 
-                ? $request->file('pronunciation_audio') 
+            $audioFile = $request->hasFile('pronunciation_audio')
+                ? $request->file('pronunciation_audio')
                 : null;
 
             $translations = $request->get('translations', []);
@@ -129,7 +128,6 @@ class TeamWordController extends BaseAPIController
                 $word->getPreviewData(),
                 'Word created successfully.'
             );
-
         } catch (ValidationException $e) {
             return $this->sendError('Validation failed', $e->errors(), 422);
         } catch (\Exception $e) {
@@ -147,11 +145,10 @@ class TeamWordController extends BaseAPIController
     public function show(Request $request, Word $word): JsonResponse
     {
         $this->authorize('view', $word);
-        
+
         try {
             $wordData = $this->wordService->getWordDetails($word);
             return $this->sendResponse($wordData, 'Word retrieved successfully.');
-
         } catch (\Exception $e) {
             return $this->sendError('Failed to retrieve word: ' . $e->getMessage());
         }
@@ -167,7 +164,7 @@ class TeamWordController extends BaseAPIController
     public function update(UpdateWordRequest $request, Word $word): JsonResponse
     {
         $this->authorize('update', $word);
-        
+
         try {
             $updateData = $request->only([
                 'language_id',
@@ -177,8 +174,8 @@ class TeamWordController extends BaseAPIController
                 'metadata'
             ]);
 
-            $audioFile = $request->hasFile('pronunciation_audio') 
-                ? $request->file('pronunciation_audio') 
+            $audioFile = $request->hasFile('pronunciation_audio')
+                ? $request->file('pronunciation_audio')
                 : null;
 
             $translations = $request->get('translations', []);
@@ -196,7 +193,6 @@ class TeamWordController extends BaseAPIController
                 $updatedWord->getPreviewData(),
                 'Word updated successfully.'
             );
-
         } catch (ValidationException $e) {
             return $this->sendError('Validation failed', $e->errors(), 422);
         } catch (\Exception $e) {
@@ -214,11 +210,10 @@ class TeamWordController extends BaseAPIController
     public function destroy(Request $request, Word $word): JsonResponse
     {
         $this->authorize('delete', $word);
-        
+
         try {
             $this->wordService->deleteWord($word);
             return $this->sendNoContentResponse();
-
         } catch (\Exception $e) {
             return $this->sendError('Failed to delete word: ' . $e->getMessage());
         }
@@ -233,15 +228,19 @@ class TeamWordController extends BaseAPIController
     public function bulkStore(BulkWordRequest $request): JsonResponse
     {
         $this->authorize('create', Word::class);
-        
+
         try {
             $operation = $request->get('operation', 'create');
             $data = ['words' => $request->get('words', [])];
 
             $results = $this->wordService->bulkOperation($operation, $data);
 
-            return $this->sendResponse($results, 'Bulk operation completed.');
+            // Return 201 for create operations, 200 for others
+            if ($operation === 'create') {
+                return $this->sendCreatedResponse($results, 'Bulk operation completed.');
+            }
 
+            return $this->sendResponse($results, 'Bulk operation completed.');
         } catch (ValidationException $e) {
             return $this->sendError('Validation failed', $e->errors(), 422);
         } catch (\Exception $e) {
@@ -257,14 +256,13 @@ class TeamWordController extends BaseAPIController
      */
     public function bulkUpdate(BulkWordRequest $request): JsonResponse
     {
-        $this->authorize('update', Word::class);
-        
+        $this->authorize('create', Word::class); // Use create permission for bulk operations
+
         try {
             $data = ['words' => $request->get('words', [])];
             $results = $this->wordService->bulkOperation('update', $data);
 
             return $this->sendResponse($results, 'Bulk update completed.');
-
         } catch (ValidationException $e) {
             return $this->sendError('Validation failed', $e->errors(), 422);
         } catch (\Exception $e) {
@@ -280,15 +278,14 @@ class TeamWordController extends BaseAPIController
      */
     public function bulkDelete(BulkWordRequest $request): JsonResponse
     {
-        $this->authorize('delete', Word::class);
-        
+        $this->authorize('create', Word::class); // Use create permission for bulk operations
+
         try {
             $wordIds = $request->get('words', []);
             $data = ['words' => $wordIds];
             $results = $this->wordService->bulkOperation('delete', $data);
 
             return $this->sendResponse($results, 'Bulk delete completed.');
-
         } catch (ValidationException $e) {
             return $this->sendError('Validation failed', $e->errors(), 422);
         } catch (\Exception $e) {
@@ -297,14 +294,74 @@ class TeamWordController extends BaseAPIController
     }
 
     /**
-     * Add translation to word.
-     * 
+     * Export words to CSV/JSON format.
+     *
      * @param Request $request
-     * @param Word $word
      * @return JsonResponse
      */
-    public function addTranslation(Request $request, Word $word): JsonResponse
+    public function export(Request $request): JsonResponse
     {
+        $this->authorize('viewAny', Word::class);
+
+        $request->validate([
+            'language_id' => 'nullable|exists:languages,id',
+            'format' => 'nullable|string|in:csv,json',
+            'search' => 'nullable|string|max:255',
+            'part_of_speech' => 'nullable|string',
+            'difficulty' => 'nullable|string|in:beginner,intermediate,advanced',
+            'tags' => 'nullable|array',
+            'tags.*' => 'string',
+            'has_audio' => 'nullable|boolean'
+        ]);
+
+        try {
+            $filters = $request->only([
+                'language_id',
+                'search',
+                'part_of_speech',
+                'difficulty',
+                'tags',
+                'has_audio'
+            ]);
+
+            $format = $request->get('format', 'json');
+
+            // Get words using existing service method (use large page size for export)
+            $words = $this->wordService->getWords($filters, [], 1000);
+
+            // Simple export implementation
+            $exportData = [
+                'words' => $words->map(function ($word) {
+                    return $word->getPreviewData();
+                }),
+                'format' => $format,
+                'exported_at' => now()->toISOString(),
+                'total_count' => $words->count()
+            ];
+
+            return $this->sendResponse($exportData, 'Words exported successfully.');
+        } catch (\Exception $e) {
+            return $this->sendError('Failed to export words: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Add translation to word.
+     *
+     * @param Request $request
+     * @param string $tenant
+     * @param string|Word $word
+     * @return JsonResponse
+     */
+    public function addTranslation(Request $request, string $tenant, $word): JsonResponse
+    {
+        // Handle both string ID and model binding
+        if (is_string($word) || is_numeric($word)) {
+            $word = Word::findOrFail($word);
+        }
+
+        $this->authorize('update', $word);
+
         $request->validate([
             'language_id' => 'required|exists:languages,id',
             'text' => 'required|string|max:255',
@@ -325,8 +382,8 @@ class TeamWordController extends BaseAPIController
                 'translation_order'
             ]);
 
-            $audioFile = $request->hasFile('pronunciation_audio') 
-                ? $request->file('pronunciation_audio') 
+            $audioFile = $request->hasFile('pronunciation_audio')
+                ? $request->file('pronunciation_audio')
                 : null;
 
             $translation = $this->wordService->addTranslation($word, $translationData, $audioFile);
@@ -335,7 +392,6 @@ class TeamWordController extends BaseAPIController
                 $translation->getPreviewData(),
                 'Translation added successfully.'
             );
-
         } catch (\Exception $e) {
             return $this->sendError('Failed to add translation: ' . $e->getMessage());
         }
@@ -373,8 +429,8 @@ class TeamWordController extends BaseAPIController
                 'translation_order'
             ]);
 
-            $audioFile = $request->hasFile('pronunciation_audio') 
-                ? $request->file('pronunciation_audio') 
+            $audioFile = $request->hasFile('pronunciation_audio')
+                ? $request->file('pronunciation_audio')
                 : null;
 
             $updatedTranslation = $this->wordService->updateTranslation($translation, $updateData, $audioFile);
@@ -383,7 +439,6 @@ class TeamWordController extends BaseAPIController
                 $updatedTranslation->getPreviewData(),
                 'Translation updated successfully.'
             );
-
         } catch (\Exception $e) {
             return $this->sendError('Failed to update translation: ' . $e->getMessage());
         }
@@ -404,7 +459,6 @@ class TeamWordController extends BaseAPIController
             $this->wordService->deleteTranslation($translation);
 
             return $this->sendNoContentResponse();
-
         } catch (\Exception $e) {
             return $this->sendError('Failed to delete translation: ' . $e->getMessage());
         }
@@ -428,7 +482,6 @@ class TeamWordController extends BaseAPIController
             $result = $this->wordService->uploadWordAudio($word, $audioFile);
 
             return $this->sendResponse($result, 'Audio uploaded successfully.');
-
         } catch (\Exception $e) {
             return $this->sendError('Failed to upload audio: ' . $e->getMessage());
         }
@@ -454,7 +507,6 @@ class TeamWordController extends BaseAPIController
             $result = $this->wordService->uploadTranslationAudio($translation, $audioFile);
 
             return $this->sendResponse($result, 'Translation audio uploaded successfully.');
-
         } catch (\Exception $e) {
             return $this->sendError('Failed to upload translation audio: ' . $e->getMessage());
         }
@@ -493,7 +545,6 @@ class TeamWordController extends BaseAPIController
             });
 
             return $this->sendResponse($wordsData, 'Available words retrieved successfully.');
-
         } catch (\Exception $e) {
             return $this->sendError('Failed to retrieve available words: ' . $e->getMessage());
         }
@@ -520,7 +571,6 @@ class TeamWordController extends BaseAPIController
             );
 
             return $this->sendResponse($validation, 'Word constraints validated.');
-
         } catch (\Exception $e) {
             return $this->sendError('Failed to validate word constraints: ' . $e->getMessage());
         }

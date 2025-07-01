@@ -349,6 +349,11 @@ class TeamUnitControllerTest extends TenantTestCase
 
         $unit = $this->createTestUnit();
 
+        // Set review_status to approved so it can be published
+        $this->runInTenantContext($this->tenant, function () use ($unit) {
+            $unit->update(['review_status' => 'approved']);
+        });
+
         $response = $this->patchJson("/api/{$this->tenant->slug}/team/units/{$unit->id}/status", [
             'status' => 'published'
         ]);

@@ -6,9 +6,11 @@
         "pronunciation_key": "AY",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["alphabet", "letter"],
+            "tags": [
+                "alphabet",
+                "letter"
+            ],
             "pronunciation_notes": "Pronounced like the 'a' in 'day'.",
-            "translation": "first letter of the English alphabet",
             "example": "A is the first letter of the alphabet."
         }
     },
@@ -19,9 +21,11 @@
         "pronunciation_key": "BEE",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["alphabet", "letter"],
+            "tags": [
+                "alphabet",
+                "letter"
+            ],
             "pronunciation_notes": "Pronounced like 'bee' without the final 'e' sound.",
-            "translation": "second letter of the English alphabet",
             "example": "B comes after A in the alphabet."
         }
     },
@@ -32,9 +36,11 @@
         "pronunciation_key": "SEE",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["alphabet", "letter"],
+            "tags": [
+                "alphabet",
+                "letter"
+            ],
             "pronunciation_notes": "Pronounced like 'see' without the final 'e' sound.",
-            "translation": "third letter of the English alphabet",
             "example": "C can be pronounced as 'k' or 's' depending on the word."
         }
     },
@@ -45,9 +51,11 @@
         "pronunciation_key": "DEE",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["alphabet", "letter"],
+            "tags": [
+                "alphabet",
+                "letter"
+            ],
             "pronunciation_notes": "Pronounced like 'dee' without the final 'e' sound.",
-            "translation": "fourth letter of the English alphabet",
             "example": "D is the first letter in 'dog'."
         }
     },
@@ -58,9 +66,11 @@
         "pronunciation_key": "EE",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["alphabet", "letter"],
+            "tags": [
+                "alphabet",
+                "letter"
+            ],
             "pronunciation_notes": "Pronounced like the 'e' in 'me'.",
-            "translation": "fifth letter of the English alphabet",
             "example": "E is the most common letter in English."
         }
     },
@@ -71,9 +81,11 @@
         "pronunciation_key": "EF",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["alphabet", "letter"],
+            "tags": [
+                "alphabet",
+                "letter"
+            ],
             "pronunciation_notes": "Pronounced like 'ef'.",
-            "translation": "sixth letter of the English alphabet",
             "example": "F is the first letter in 'friend'."
         }
     },
@@ -84,9 +96,11 @@
         "pronunciation_key": "JEE",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["alphabet", "letter"],
+            "tags": [
+                "alphabet",
+                "letter"
+            ],
             "pronunciation_notes": "Pronounced like 'jee' without the final 'e' sound.",
-            "translation": "seventh letter of the English alphabet",
             "example": "G can be pronounced as in 'go' or as in 'giraffe'."
         }
     },
@@ -97,9 +111,11 @@
         "pronunciation_key": "AYCH",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["alphabet", "letter"],
+            "tags": [
+                "alphabet",
+                "letter"
+            ],
             "pronunciation_notes": "Pronounced like 'aych'.",
-            "translation": "eighth letter of the English alphabet",
             "example": "H is the first letter in 'house'."
         }
     },
@@ -110,9 +126,11 @@
         "pronunciation_key": "EYE",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["alphabet", "letter"],
+            "tags": [
+                "alphabet",
+                "letter"
+            ],
             "pronunciation_notes": "Pronounced like 'eye'.",
-            "translation": "ninth letter of the English alphabet",
             "example": "I is both a letter and a word in English."
         }
     },
@@ -123,9 +141,11 @@
         "pronunciation_key": "JAY",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["alphabet", "letter"],
+            "tags": [
+                "alphabet",
+                "letter"
+            ],
             "pronunciation_notes": "Pronounced like 'jay'.",
-            "translation": "tenth letter of the English alphabet",
             "example": "J is the first letter in 'jump'."
         }
     },
@@ -136,9 +156,11 @@
         "pronunciation_key": "WUN",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["number", "counting"],
+            "tags": [
+                "number",
+                "counting"
+            ],
             "pronunciation_notes": "Rhymes with 'fun'.",
-            "translation": "the number 1",
             "example": "I have one apple."
         }
     },
@@ -149,9 +171,11 @@
         "pronunciation_key": "TOO",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["number", "counting"],
+            "tags": [
+                "number",
+                "counting"
+            ],
             "pronunciation_notes": "Rhymes with 'blue'.",
-            "translation": "the number 2",
             "example": "There are two books on the table."
         }
     },
@@ -162,9 +186,11 @@
         "pronunciation_key": "THREE",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["number", "counting"],
+            "tags": [
+                "number",
+                "counting"
+            ],
             "pronunciation_notes": "The 'th' is pronounced by placing your tongue between your teeth.",
-            "translation": "the number 3",
             "example": "She has three sisters."
         }
     },
@@ -175,9 +201,11 @@
         "pronunciation_key": "FOR",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["number", "counting"],
+            "tags": [
+                "number",
+                "counting"
+            ],
             "pronunciation_notes": "Rhymes with 'door'.",
-            "translation": "the number 4",
             "example": "There are four seasons in a year."
         }
     },
@@ -188,9 +216,11 @@
         "pronunciation_key": "FYVE",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["number", "counting"],
+            "tags": [
+                "number",
+                "counting"
+            ],
             "pronunciation_notes": "Rhymes with 'alive'.",
-            "translation": "the number 5",
             "example": "I have five fingers on each hand."
         }
     },
@@ -201,9 +231,11 @@
         "pronunciation_key": "SIKS",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["number", "counting"],
+            "tags": [
+                "number",
+                "counting"
+            ],
             "pronunciation_notes": "Rhymes with 'mix'.",
-            "translation": "the number 6",
             "example": "There are six eggs in the carton."
         }
     },
@@ -214,9 +246,11 @@
         "pronunciation_key": "SEV-en",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["number", "counting"],
+            "tags": [
+                "number",
+                "counting"
+            ],
             "pronunciation_notes": "Stress is on the first syllable.",
-            "translation": "the number 7",
             "example": "There are seven days in a week."
         }
     },
@@ -227,9 +261,11 @@
         "pronunciation_key": "AYT",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["number", "counting"],
+            "tags": [
+                "number",
+                "counting"
+            ],
             "pronunciation_notes": "Rhymes with 'late'. The 'gh' is silent.",
-            "translation": "the number 8",
             "example": "The octopus has eight tentacles."
         }
     },
@@ -240,9 +276,11 @@
         "pronunciation_key": "NYNE",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["number", "counting"],
+            "tags": [
+                "number",
+                "counting"
+            ],
             "pronunciation_notes": "Rhymes with 'line'.",
-            "translation": "the number 9",
             "example": "The cat has nine lives."
         }
     },
@@ -253,910 +291,1212 @@
         "pronunciation_key": "TEN",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["number", "counting"],
+            "tags": [
+                "number",
+                "counting"
+            ],
             "pronunciation_notes": "Rhymes with 'pen'.",
-            "translation": "the number 10",
             "example": "I can count from one to ten."
         }
     },
     {
         "text": "time",
         "part_of_speech": "noun",
-        "pronunciation_key": "/taɪm/",
+        "pronunciation_key": "\/taɪm\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "basic"]
+            "tags": [
+                "common",
+                "basic"
+            ]
         }
     },
     {
         "text": "year",
         "part_of_speech": "noun",
-        "pronunciation_key": "/jɪər/",
+        "pronunciation_key": "\/jɪər\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "basic"]
+            "tags": [
+                "common",
+                "basic"
+            ]
         }
     },
     {
         "text": "people",
         "part_of_speech": "noun",
-        "pronunciation_key": "/ˈpiːpəl/",
+        "pronunciation_key": "\/ˈpiːpəl\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "basic"]
+            "tags": [
+                "common",
+                "basic"
+            ]
         }
     },
     {
         "text": "way",
         "part_of_speech": "noun",
-        "pronunciation_key": "/weɪ/",
+        "pronunciation_key": "\/weɪ\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "basic"]
+            "tags": [
+                "common",
+                "basic"
+            ]
         }
     },
     {
         "text": "day",
         "part_of_speech": "noun",
-        "pronunciation_key": "/deɪ/",
+        "pronunciation_key": "\/deɪ\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "basic"]
+            "tags": [
+                "common",
+                "basic"
+            ]
         }
     },
     {
         "text": "man",
         "part_of_speech": "noun",
-        "pronunciation_key": "/mæn/",
+        "pronunciation_key": "\/mæn\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "basic"]
+            "tags": [
+                "common",
+                "basic"
+            ]
         }
     },
     {
         "text": "thing",
         "part_of_speech": "noun",
-        "pronunciation_key": "/θɪŋ/",
+        "pronunciation_key": "\/θɪŋ\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "basic"]
+            "tags": [
+                "common",
+                "basic"
+            ]
         }
     },
     {
         "text": "woman",
         "part_of_speech": "noun",
-        "pronunciation_key": "/ˈwʊmən/",
+        "pronunciation_key": "\/ˈwʊmən\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "basic"]
+            "tags": [
+                "common",
+                "basic"
+            ]
         }
     },
     {
         "text": "life",
         "part_of_speech": "noun",
-        "pronunciation_key": "/laɪf/",
+        "pronunciation_key": "\/laɪf\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "basic"]
+            "tags": [
+                "common",
+                "basic"
+            ]
         }
     },
     {
         "text": "child",
         "part_of_speech": "noun",
-        "pronunciation_key": "/tʃaɪld/",
+        "pronunciation_key": "\/tʃaɪld\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "basic"]
+            "tags": [
+                "common",
+                "basic"
+            ]
         }
     },
     {
         "text": "world",
         "part_of_speech": "noun",
-        "pronunciation_key": "/wɜːrld/",
+        "pronunciation_key": "\/wɜːrld\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "basic"]
+            "tags": [
+                "common",
+                "basic"
+            ]
         }
     },
     {
         "text": "school",
         "part_of_speech": "noun",
-        "pronunciation_key": "/skuːl/",
+        "pronunciation_key": "\/skuːl\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "education"]
+            "tags": [
+                "common",
+                "education"
+            ]
         }
     },
     {
         "text": "state",
         "part_of_speech": "noun",
-        "pronunciation_key": "/steɪt/",
+        "pronunciation_key": "\/steɪt\/",
         "metadata": {
             "difficulty": "intermediate",
-            "tags": ["common", "government"]
+            "tags": [
+                "common",
+                "government"
+            ]
         }
     },
     {
         "text": "family",
         "part_of_speech": "noun",
-        "pronunciation_key": "/ˈfæməli/",
+        "pronunciation_key": "\/ˈfæməli\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "relationships"]
+            "tags": [
+                "common",
+                "relationships"
+            ]
         }
     },
     {
         "text": "student",
         "part_of_speech": "noun",
-        "pronunciation_key": "/ˈstuːdənt/",
+        "pronunciation_key": "\/ˈstuːdənt\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "education"]
+            "tags": [
+                "common",
+                "education"
+            ]
         }
     },
     {
         "text": "group",
         "part_of_speech": "noun",
-        "pronunciation_key": "/ɡruːp/",
+        "pronunciation_key": "\/ɡruːp\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "basic"]
+            "tags": [
+                "common",
+                "basic"
+            ]
         }
     },
     {
         "text": "country",
         "part_of_speech": "noun",
-        "pronunciation_key": "/ˈkʌntri/",
+        "pronunciation_key": "\/ˈkʌntri\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "geography"]
+            "tags": [
+                "common",
+                "geography"
+            ]
         }
     },
     {
         "text": "problem",
         "part_of_speech": "noun",
-        "pronunciation_key": "/ˈprɑːbləm/",
+        "pronunciation_key": "\/ˈprɑːbləm\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "basic"]
+            "tags": [
+                "common",
+                "basic"
+            ]
         }
     },
     {
         "text": "hand",
         "part_of_speech": "noun",
-        "pronunciation_key": "/hænd/",
+        "pronunciation_key": "\/hænd\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "body"]
+            "tags": [
+                "common",
+                "body"
+            ]
         }
     },
     {
         "text": "part",
         "part_of_speech": "noun",
-        "pronunciation_key": "/pɑːrt/",
+        "pronunciation_key": "\/pɑːrt\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "basic"]
+            "tags": [
+                "common",
+                "basic"
+            ]
         }
     },
     {
         "text": "place",
         "part_of_speech": "noun",
-        "pronunciation_key": "/pleɪs/",
+        "pronunciation_key": "\/pleɪs\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "basic"]
+            "tags": [
+                "common",
+                "basic"
+            ]
         }
     },
     {
         "text": "case",
         "part_of_speech": "noun",
-        "pronunciation_key": "/keɪs/",
+        "pronunciation_key": "\/keɪs\/",
         "metadata": {
             "difficulty": "intermediate",
-            "tags": ["common", "basic"]
+            "tags": [
+                "common",
+                "basic"
+            ]
         }
     },
     {
         "text": "week",
         "part_of_speech": "noun",
-        "pronunciation_key": "/wiːk/",
+        "pronunciation_key": "\/wiːk\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "time"]
+            "tags": [
+                "common",
+                "time"
+            ]
         }
     },
     {
         "text": "company",
         "part_of_speech": "noun",
-        "pronunciation_key": "/ˈkʌmpəni/",
+        "pronunciation_key": "\/ˈkʌmpəni\/",
         "metadata": {
             "difficulty": "intermediate",
-            "tags": ["common", "business"]
+            "tags": [
+                "common",
+                "business"
+            ]
         }
     },
     {
         "text": "system",
         "part_of_speech": "noun",
-        "pronunciation_key": "/ˈsɪstəm/",
+        "pronunciation_key": "\/ˈsɪstəm\/",
         "metadata": {
             "difficulty": "intermediate",
-            "tags": ["common", "technical"]
+            "tags": [
+                "common",
+                "technical"
+            ]
         }
     },
     {
         "text": "program",
         "part_of_speech": "noun",
-        "pronunciation_key": "/ˈproʊɡræm/",
+        "pronunciation_key": "\/ˈproʊɡræm\/",
         "metadata": {
             "difficulty": "intermediate",
-            "tags": ["common", "technical"]
+            "tags": [
+                "common",
+                "technical"
+            ]
         }
     },
     {
         "text": "question",
         "part_of_speech": "noun",
-        "pronunciation_key": "/ˈkwestʃən/",
+        "pronunciation_key": "\/ˈkwestʃən\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "basic"]
+            "tags": [
+                "common",
+                "basic"
+            ]
         }
     },
     {
         "text": "work",
         "part_of_speech": "noun",
-        "pronunciation_key": "/wɜːrk/",
+        "pronunciation_key": "\/wɜːrk\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "basic"]
+            "tags": [
+                "common",
+                "basic"
+            ]
         }
     },
     {
         "text": "government",
         "part_of_speech": "noun",
-        "pronunciation_key": "/ˈɡʌvərnmənt/",
+        "pronunciation_key": "\/ˈɡʌvərnmənt\/",
         "metadata": {
             "difficulty": "intermediate",
-            "tags": ["common", "politics"]
+            "tags": [
+                "common",
+                "politics"
+            ]
         }
     },
     {
         "text": "number",
         "part_of_speech": "noun",
-        "pronunciation_key": "/ˈnʌmbər/",
+        "pronunciation_key": "\/ˈnʌmbər\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "math"]
+            "tags": [
+                "common",
+                "math"
+            ]
         }
     },
     {
         "text": "night",
         "part_of_speech": "noun",
-        "pronunciation_key": "/naɪt/",
+        "pronunciation_key": "\/naɪt\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "time"]
+            "tags": [
+                "common",
+                "time"
+            ]
         }
     },
     {
         "text": "point",
         "part_of_speech": "noun",
-        "pronunciation_key": "/pɔɪnt/",
+        "pronunciation_key": "\/pɔɪnt\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "basic"]
+            "tags": [
+                "common",
+                "basic"
+            ]
         }
     },
     {
         "text": "home",
         "part_of_speech": "noun",
-        "pronunciation_key": "/hoʊm/",
+        "pronunciation_key": "\/hoʊm\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "basic"]
+            "tags": [
+                "common",
+                "basic"
+            ]
         }
     },
     {
         "text": "water",
         "part_of_speech": "noun",
-        "pronunciation_key": "/ˈwɔːtər/",
+        "pronunciation_key": "\/ˈwɔːtər\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "nature"]
+            "tags": [
+                "common",
+                "nature"
+            ]
         }
     },
     {
         "text": "room",
         "part_of_speech": "noun",
-        "pronunciation_key": "/ruːm/",
+        "pronunciation_key": "\/ruːm\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "home"]
+            "tags": [
+                "common",
+                "home"
+            ]
         }
     },
     {
         "text": "mother",
         "part_of_speech": "noun",
-        "pronunciation_key": "/ˈmʌðər/",
+        "pronunciation_key": "\/ˈmʌðər\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "family"]
+            "tags": [
+                "common",
+                "family"
+            ]
         }
     },
     {
         "text": "area",
         "part_of_speech": "noun",
-        "pronunciation_key": "/ˈeriə/",
+        "pronunciation_key": "\/ˈeriə\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "geography"]
+            "tags": [
+                "common",
+                "geography"
+            ]
         }
     },
     {
         "text": "money",
         "part_of_speech": "noun",
-        "pronunciation_key": "/ˈmʌni/",
+        "pronunciation_key": "\/ˈmʌni\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "finance"]
+            "tags": [
+                "common",
+                "finance"
+            ]
         }
     },
     {
         "text": "story",
         "part_of_speech": "noun",
-        "pronunciation_key": "/ˈstɔːri/",
+        "pronunciation_key": "\/ˈstɔːri\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "entertainment"]
+            "tags": [
+                "common",
+                "entertainment"
+            ]
         }
     },
     {
         "text": "fact",
         "part_of_speech": "noun",
-        "pronunciation_key": "/fækt/",
+        "pronunciation_key": "\/fækt\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "basic"]
+            "tags": [
+                "common",
+                "basic"
+            ]
         }
     },
     {
         "text": "month",
         "part_of_speech": "noun",
-        "pronunciation_key": "/mʌnθ/",
+        "pronunciation_key": "\/mʌnθ\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "time"]
+            "tags": [
+                "common",
+                "time"
+            ]
         }
     },
     {
         "text": "lot",
         "part_of_speech": "noun",
-        "pronunciation_key": "/lɑːt/",
+        "pronunciation_key": "\/lɑːt\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "basic"]
+            "tags": [
+                "common",
+                "basic"
+            ]
         }
     },
     {
         "text": "right",
         "part_of_speech": "noun",
-        "pronunciation_key": "/raɪt/",
+        "pronunciation_key": "\/raɪt\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "basic"]
+            "tags": [
+                "common",
+                "basic"
+            ]
         }
     },
     {
         "text": "study",
         "part_of_speech": "noun",
-        "pronunciation_key": "/ˈstʌdi/",
+        "pronunciation_key": "\/ˈstʌdi\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "education"]
+            "tags": [
+                "common",
+                "education"
+            ]
         }
     },
     {
         "text": "book",
         "part_of_speech": "noun",
-        "pronunciation_key": "/bʊk/",
+        "pronunciation_key": "\/bʊk\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "education"]
+            "tags": [
+                "common",
+                "education"
+            ]
         }
     },
     {
         "text": "eye",
         "part_of_speech": "noun",
-        "pronunciation_key": "/aɪ/",
+        "pronunciation_key": "\/aɪ\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "body"]
+            "tags": [
+                "common",
+                "body"
+            ]
         }
     },
     {
         "text": "job",
         "part_of_speech": "noun",
-        "pronunciation_key": "/dʒɑːb/",
+        "pronunciation_key": "\/dʒɑːb\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "work"]
+            "tags": [
+                "common",
+                "work"
+            ]
         }
     },
     {
         "text": "word",
         "part_of_speech": "noun",
-        "pronunciation_key": "/wɜːrd/",
+        "pronunciation_key": "\/wɜːrd\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "language"]
+            "tags": [
+                "common",
+                "language"
+            ]
         }
     },
     {
         "text": "business",
         "part_of_speech": "noun",
-        "pronunciation_key": "/ˈbɪznəs/",
+        "pronunciation_key": "\/ˈbɪznəs\/",
         "metadata": {
             "difficulty": "intermediate",
-            "tags": ["common", "work"]
+            "tags": [
+                "common",
+                "work"
+            ]
         }
     },
     {
         "text": "issue",
         "part_of_speech": "noun",
-        "pronunciation_key": "/ˈɪʃuː/",
+        "pronunciation_key": "\/ˈɪʃuː\/",
         "metadata": {
             "difficulty": "intermediate",
-            "tags": ["common", "basic"]
+            "tags": [
+                "common",
+                "basic"
+            ]
         }
     },
     {
         "text": "side",
         "part_of_speech": "noun",
-        "pronunciation_key": "/saɪd/",
+        "pronunciation_key": "\/saɪd\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "basic"]
+            "tags": [
+                "common",
+                "basic"
+            ]
         }
     },
     {
         "text": "kind",
         "part_of_speech": "noun",
-        "pronunciation_key": "/kaɪnd/",
+        "pronunciation_key": "\/kaɪnd\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "basic"]
+            "tags": [
+                "common",
+                "basic"
+            ]
         }
     },
     {
         "text": "head",
         "part_of_speech": "noun",
-        "pronunciation_key": "/hed/",
+        "pronunciation_key": "\/hed\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "body"]
+            "tags": [
+                "common",
+                "body"
+            ]
         }
     },
     {
         "text": "house",
         "part_of_speech": "noun",
-        "pronunciation_key": "/haʊs/",
+        "pronunciation_key": "\/haʊs\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "home"]
+            "tags": [
+                "common",
+                "home"
+            ]
         }
     },
     {
         "text": "service",
         "part_of_speech": "noun",
-        "pronunciation_key": "/ˈsɜːrvɪs/",
+        "pronunciation_key": "\/ˈsɜːrvɪs\/",
         "metadata": {
             "difficulty": "intermediate",
-            "tags": ["common", "business"]
+            "tags": [
+                "common",
+                "business"
+            ]
         }
     },
     {
         "text": "friend",
         "part_of_speech": "noun",
-        "pronunciation_key": "/frend/",
+        "pronunciation_key": "\/frend\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "relationships"]
+            "tags": [
+                "common",
+                "relationships"
+            ]
         }
     },
     {
         "text": "father",
         "part_of_speech": "noun",
-        "pronunciation_key": "/ˈfɑːðər/",
+        "pronunciation_key": "\/ˈfɑːðər\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "family"]
+            "tags": [
+                "common",
+                "family"
+            ]
         }
     },
     {
         "text": "power",
         "part_of_speech": "noun",
-        "pronunciation_key": "/ˈpaʊər/",
+        "pronunciation_key": "\/ˈpaʊər\/",
         "metadata": {
             "difficulty": "intermediate",
-            "tags": ["common", "basic"]
+            "tags": [
+                "common",
+                "basic"
+            ]
         }
     },
     {
         "text": "hour",
         "part_of_speech": "noun",
-        "pronunciation_key": "/ˈaʊər/",
+        "pronunciation_key": "\/ˈaʊər\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "time"]
+            "tags": [
+                "common",
+                "time"
+            ]
         }
     },
     {
         "text": "game",
         "part_of_speech": "noun",
-        "pronunciation_key": "/ɡeɪm/",
+        "pronunciation_key": "\/ɡeɪm\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "entertainment"]
+            "tags": [
+                "common",
+                "entertainment"
+            ]
         }
     },
     {
         "text": "line",
         "part_of_speech": "noun",
-        "pronunciation_key": "/laɪn/",
+        "pronunciation_key": "\/laɪn\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "basic"]
+            "tags": [
+                "common",
+                "basic"
+            ]
         }
     },
     {
         "text": "end",
         "part_of_speech": "noun",
-        "pronunciation_key": "/end/",
+        "pronunciation_key": "\/end\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "basic"]
+            "tags": [
+                "common",
+                "basic"
+            ]
         }
     },
     {
         "text": "member",
         "part_of_speech": "noun",
-        "pronunciation_key": "/ˈmembər/",
+        "pronunciation_key": "\/ˈmembər\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "basic"]
+            "tags": [
+                "common",
+                "basic"
+            ]
         }
     },
     {
         "text": "law",
         "part_of_speech": "noun",
-        "pronunciation_key": "/lɔː/",
+        "pronunciation_key": "\/lɔː\/",
         "metadata": {
             "difficulty": "intermediate",
-            "tags": ["common", "legal"]
+            "tags": [
+                "common",
+                "legal"
+            ]
         }
     },
     {
         "text": "car",
         "part_of_speech": "noun",
-        "pronunciation_key": "/kɑːr/",
+        "pronunciation_key": "\/kɑːr\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "transportation"]
+            "tags": [
+                "common",
+                "transportation"
+            ]
         }
     },
     {
         "text": "city",
         "part_of_speech": "noun",
-        "pronunciation_key": "/ˈsɪti/",
+        "pronunciation_key": "\/ˈsɪti\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "geography"]
+            "tags": [
+                "common",
+                "geography"
+            ]
         }
     },
     {
         "text": "community",
         "part_of_speech": "noun",
-        "pronunciation_key": "/kəˈmjuːnəti/",
+        "pronunciation_key": "\/kəˈmjuːnəti\/",
         "metadata": {
             "difficulty": "intermediate",
-            "tags": ["common", "society"]
+            "tags": [
+                "common",
+                "society"
+            ]
         }
     },
     {
         "text": "name",
         "part_of_speech": "noun",
-        "pronunciation_key": "/neɪm/",
+        "pronunciation_key": "\/neɪm\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "basic"]
+            "tags": [
+                "common",
+                "basic"
+            ]
         }
     },
     {
         "text": "president",
         "part_of_speech": "noun",
-        "pronunciation_key": "/ˈprezɪdənt/",
+        "pronunciation_key": "\/ˈprezɪdənt\/",
         "metadata": {
             "difficulty": "intermediate",
-            "tags": ["common", "politics"]
+            "tags": [
+                "common",
+                "politics"
+            ]
         }
     },
     {
         "text": "team",
         "part_of_speech": "noun",
-        "pronunciation_key": "/tiːm/",
+        "pronunciation_key": "\/tiːm\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "sports"]
+            "tags": [
+                "common",
+                "sports"
+            ]
         }
     },
     {
         "text": "minute",
         "part_of_speech": "noun",
-        "pronunciation_key": "/ˈmɪnɪt/",
+        "pronunciation_key": "\/ˈmɪnɪt\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "time"]
+            "tags": [
+                "common",
+                "time"
+            ]
         }
     },
     {
         "text": "idea",
         "part_of_speech": "noun",
-        "pronunciation_key": "/aɪˈdiːə/",
+        "pronunciation_key": "\/aɪˈdiːə\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "basic"]
+            "tags": [
+                "common",
+                "basic"
+            ]
         }
     },
     {
         "text": "kid",
         "part_of_speech": "noun",
-        "pronunciation_key": "/kɪd/",
+        "pronunciation_key": "\/kɪd\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "informal"]
+            "tags": [
+                "common",
+                "informal"
+            ]
         }
     },
     {
         "text": "body",
         "part_of_speech": "noun",
-        "pronunciation_key": "/ˈbɑːdi/",
+        "pronunciation_key": "\/ˈbɑːdi\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "health"]
+            "tags": [
+                "common",
+                "health"
+            ]
         }
     },
     {
         "text": "information",
         "part_of_speech": "noun",
-        "pronunciation_key": "/ˌɪnfərˈmeɪʃən/",
+        "pronunciation_key": "\/ˌɪnfərˈmeɪʃən\/",
         "metadata": {
             "difficulty": "intermediate",
-            "tags": ["common", "basic"]
+            "tags": [
+                "common",
+                "basic"
+            ]
         }
     },
     {
         "text": "back",
         "part_of_speech": "noun",
-        "pronunciation_key": "/bæk/",
+        "pronunciation_key": "\/bæk\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "body"]
+            "tags": [
+                "common",
+                "body"
+            ]
         }
     },
     {
         "text": "parent",
         "part_of_speech": "noun",
-        "pronunciation_key": "/ˈperənt/",
+        "pronunciation_key": "\/ˈperənt\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "family"]
+            "tags": [
+                "common",
+                "family"
+            ]
         }
     },
     {
         "text": "face",
         "part_of_speech": "noun",
-        "pronunciation_key": "/feɪs/",
+        "pronunciation_key": "\/feɪs\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "body"]
+            "tags": [
+                "common",
+                "body"
+            ]
         }
     },
     {
         "text": "others",
         "part_of_speech": "noun",
-        "pronunciation_key": "/ˈʌðərz/",
+        "pronunciation_key": "\/ˈʌðərz\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "basic"]
+            "tags": [
+                "common",
+                "basic"
+            ]
         }
     },
     {
         "text": "level",
         "part_of_speech": "noun",
-        "pronunciation_key": "/ˈlevəl/",
+        "pronunciation_key": "\/ˈlevəl\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "basic"]
+            "tags": [
+                "common",
+                "basic"
+            ]
         }
     },
     {
         "text": "office",
         "part_of_speech": "noun",
-        "pronunciation_key": "/ˈɔːfɪs/",
+        "pronunciation_key": "\/ˈɔːfɪs\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "work"]
+            "tags": [
+                "common",
+                "work"
+            ]
         }
     },
     {
         "text": "door",
         "part_of_speech": "noun",
-        "pronunciation_key": "/dɔːr/",
+        "pronunciation_key": "\/dɔːr\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "home"]
+            "tags": [
+                "common",
+                "home"
+            ]
         }
     },
     {
         "text": "health",
         "part_of_speech": "noun",
-        "pronunciation_key": "/helθ/",
+        "pronunciation_key": "\/helθ\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "medical"]
+            "tags": [
+                "common",
+                "medical"
+            ]
         }
     },
     {
         "text": "person",
         "part_of_speech": "noun",
-        "pronunciation_key": "/ˈpɜːrsən/",
+        "pronunciation_key": "\/ˈpɜːrsən\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "basic"]
+            "tags": [
+                "common",
+                "basic"
+            ]
         }
     },
     {
         "text": "art",
         "part_of_speech": "noun",
-        "pronunciation_key": "/ɑːrt/",
+        "pronunciation_key": "\/ɑːrt\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "culture"]
+            "tags": [
+                "common",
+                "culture"
+            ]
         }
     },
     {
         "text": "war",
         "part_of_speech": "noun",
-        "pronunciation_key": "/wɔːr/",
+        "pronunciation_key": "\/wɔːr\/",
         "metadata": {
             "difficulty": "intermediate",
-            "tags": ["common", "history"]
+            "tags": [
+                "common",
+                "history"
+            ]
         }
     },
     {
         "text": "history",
         "part_of_speech": "noun",
-        "pronunciation_key": "/ˈhɪstəri/",
+        "pronunciation_key": "\/ˈhɪstəri\/",
         "metadata": {
             "difficulty": "intermediate",
-            "tags": ["common", "education"]
+            "tags": [
+                "common",
+                "education"
+            ]
         }
     },
     {
         "text": "party",
         "part_of_speech": "noun",
-        "pronunciation_key": "/ˈpɑːrti/",
+        "pronunciation_key": "\/ˈpɑːrti\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "social"]
+            "tags": [
+                "common",
+                "social"
+            ]
         }
     },
     {
         "text": "result",
         "part_of_speech": "noun",
-        "pronunciation_key": "/rɪˈzʌlt/",
+        "pronunciation_key": "\/rɪˈzʌlt\/",
         "metadata": {
             "difficulty": "intermediate",
-            "tags": ["common", "basic"]
+            "tags": [
+                "common",
+                "basic"
+            ]
         }
     },
     {
         "text": "change",
         "part_of_speech": "noun",
-        "pronunciation_key": "/tʃeɪndʒ/",
+        "pronunciation_key": "\/tʃeɪndʒ\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "basic"]
+            "tags": [
+                "common",
+                "basic"
+            ]
         }
     },
     {
         "text": "morning",
         "part_of_speech": "noun",
-        "pronunciation_key": "/ˈmɔːrnɪŋ/",
+        "pronunciation_key": "\/ˈmɔːrnɪŋ\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "time"]
+            "tags": [
+                "common",
+                "time"
+            ]
         }
     },
     {
         "text": "reason",
         "part_of_speech": "noun",
-        "pronunciation_key": "/ˈriːzən/",
+        "pronunciation_key": "\/ˈriːzən\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "basic"]
+            "tags": [
+                "common",
+                "basic"
+            ]
         }
     },
     {
         "text": "research",
         "part_of_speech": "noun",
-        "pronunciation_key": "/ˈriːsɜːrtʃ/",
+        "pronunciation_key": "\/ˈriːsɜːrtʃ\/",
         "metadata": {
             "difficulty": "intermediate",
-            "tags": ["common", "academic"]
+            "tags": [
+                "common",
+                "academic"
+            ]
         }
     },
     {
         "text": "girl",
         "part_of_speech": "noun",
-        "pronunciation_key": "/ɡɜːrl/",
+        "pronunciation_key": "\/ɡɜːrl\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "basic"]
+            "tags": [
+                "common",
+                "basic"
+            ]
         }
     },
     {
         "text": "guy",
         "part_of_speech": "noun",
-        "pronunciation_key": "/ɡaɪ/",
+        "pronunciation_key": "\/ɡaɪ\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "informal"]
+            "tags": [
+                "common",
+                "informal"
+            ]
         }
     },
     {
         "text": "moment",
         "part_of_speech": "noun",
-        "pronunciation_key": "/ˈmoʊmənt/",
+        "pronunciation_key": "\/ˈmoʊmənt\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "time"]
+            "tags": [
+                "common",
+                "time"
+            ]
         }
     },
     {
         "text": "air",
         "part_of_speech": "noun",
-        "pronunciation_key": "/er/",
+        "pronunciation_key": "\/er\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "nature"]
+            "tags": [
+                "common",
+                "nature"
+            ]
         }
     },
     {
         "text": "teacher",
         "part_of_speech": "noun",
-        "pronunciation_key": "/ˈtiːtʃər/",
+        "pronunciation_key": "\/ˈtiːtʃər\/",
         "metadata": {
             "difficulty": "beginner",
-            "tags": ["common", "education"]
+            "tags": [
+                "common",
+                "education"
+            ]
         }
     },
     {
         "text": "force",
         "part_of_speech": "noun",
-        "pronunciation_key": "/fɔːrs/",
+        "pronunciation_key": "\/fɔːrs\/",
         "metadata": {
             "difficulty": "intermediate",
-            "tags": ["common", "science"]
+            "tags": [
+                "common",
+                "science"
+            ]
         }
     },
     {
         "text": "education",
         "part_of_speech": "noun",
-        "pronunciation_key": "/ˌedʒuˈkeɪʃən/",
+        "pronunciation_key": "\/ˌedʒuˈkeɪʃən\/",
         "metadata": {
             "difficulty": "intermediate",
-            "tags": ["common", "academic"]
+            "tags": [
+                "common",
+                "academic"
+            ]
         }
     }
 ]

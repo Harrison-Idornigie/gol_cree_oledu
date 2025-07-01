@@ -42,6 +42,7 @@ class TeamLessonControllerTest extends TenantTestCase
                 'email' => 'team@example.com',
                 'password' => Hash::make('password'),
                 'email_verified_at' => now(),
+                'membership' => 'team',
             ]);
         });
 
@@ -51,6 +52,7 @@ class TeamLessonControllerTest extends TenantTestCase
                 'email' => 'student@example.com',
                 'password' => Hash::make('password'),
                 'email_verified_at' => now(),
+                'membership' => 'student',
             ]);
         });
 
@@ -250,12 +252,10 @@ class TeamLessonControllerTest extends TenantTestCase
                     'title',
                     'description',
                     'topic_id',
-                    'order_index',
-                    'lesson_type',
+                    'order',
                     'status',
-                    'content',
+                    'review_status',
                     'created_by',
-                    'exercises_count',
                     'created_at',
                     'updated_at'
                 ]

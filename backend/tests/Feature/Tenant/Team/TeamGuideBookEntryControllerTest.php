@@ -271,15 +271,15 @@ class TeamGuideBookEntryControllerTest extends TenantTestCase
      */
     public function test_team_member_can_delete_guide_entry()
     {
-        Sanctum::actingAs($this->teamMember, ['tenant']);
+        $this->runInTenantContext($this->tenant, function () {
+            Sanctum::actingAs($this->teamMember, ['*'], 'tenant');
 
-        $entry = $this->createTestGuideEntry();
+            $entry = $this->createTestGuideEntry();
 
-        $response = $this->deleteJson("/api/{$this->tenant->slug}/team/guide-entries/{$entry->id}");
+            $response = $this->deleteJson("/api/{$this->tenant->slug}/team/guide-entries/{$entry->id}");
 
-        $response->assertStatus(204);
+            $response->assertStatus(204);
 
-        $this->runInTenantContext($this->tenant, function () use ($entry) {
             $this->assertDatabaseMissing('guide_book_entries', [
                 'id' => $entry->id,
             ]);

@@ -5,7 +5,6 @@ namespace Tests;
 use App\Models\Landlord\Tenant;
 use App\Models\Landlord\CentralUser;
 use App\Models\Tenants\User;
-use App\Models\Tenants\Membership;
 use App\Models\Tenants\Role;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Event;
@@ -91,7 +90,8 @@ abstract class TenantTestCase extends TestCase
     protected function createFullTestTenant(array $tenantAttributes = [], array $adminAttributes = []): array
     {
         // Create tenant with database
-        $tenant = $this->createTestTenant($tenantAttributes);
+        $tenantSlug = $tenantAttributes['slug'] ?? null;
+        $tenant = $this->createTestTenant($tenantSlug);
 
         // Default admin attributes
         $defaultAdminAttributes = [

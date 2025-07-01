@@ -71,14 +71,6 @@ trait InteractsWithTenancy
         Config::set('tenancy.database.prefix', 'tenant_');
         Config::set('tenancy.database.suffix', '');
 
-        // Configure the tenant template connection for file-based SQLite testing
-        Config::set('database.connections.tenant_template', [
-            'driver' => 'sqlite',
-            'database' => database_path('testing.sqlite'),
-            'prefix' => '',
-            'foreign_key_constraints' => true,
-        ]);
-
         // Disable automatic tenant database creation events to avoid conflicts
         Config::set('tenancy.features', []);
 
@@ -195,34 +187,22 @@ trait InteractsWithTenancy
      */
     protected function setupCentralDatabase(): void
     {
-        // Use in-memory database for central database to avoid permissions issues
-        Config::set('database.connections.sqlite', [
-            'driver' => 'sqlite',
-            'database' => ':memory:',
-            'prefix' => '',
-            'foreign_key_constraints' => true,
+        // Use file-based database for central database (as requested)
+        // The database path is already configured in phpunit.xml
+
+        // Run central database migrations fresh (landlord migrations)
+        \Log::info("Running central database migrations...");
+        $exitCode = Artisan::call('migrate:fresh', [
+            '--database' => 'sqlite',
+            '--path' => 'database/migrations/landlord',
+            '--force' => true,
         ]);
 
-        // Run central database migrations fresh (landlord migrations), skipping Telescope migrations
-        $migrationDir = base_path('database/migrations/landlord');
-        $migrationFiles = collect(File::files($migrationDir))
-            ->filter(function ($file) {
-                return strpos($file->getFilename(), 'telescope') === false;
-            })
-            ->map(function ($file) use ($migrationDir) {
-                return 'database/migrations/landlord/' . $file->getFilename();
-            })
-            ->toArray();
+        \Log::info("Migration exit code: {$exitCode}");
+        \Log::info("Migration output: " . Artisan::output());
 
-        foreach ($migrationFiles as $migrationPath) {
-            $exitCode = Artisan::call('migrate', [
-                '--database' => 'sqlite',
-                '--path' => $migrationPath,
-                '--force' => true,
-            ]);
-            if ($exitCode !== 0) {
-                throw new \Exception("Central database migration failed for {$migrationPath} with exit code: {$exitCode}");
-            }
+        if ($exitCode !== 0) {
+            throw new \Exception("Central database migration failed with exit code: {$exitCode}");
         }
 
         // Verify that the tenants table was created
@@ -232,7 +212,7 @@ trait InteractsWithTenancy
     }
 
     /**
-     * Create tenant database for testing (SQLite)
+     * Create tenant database for testing (file-based SQLite)
      */
     protected function createTenantDatabase(Tenant $tenant): void
     {
@@ -284,20 +264,37 @@ trait InteractsWithTenancy
             }
 
             if ($exitCode !== 0) {
-                throw new \Exception("Tenant migrations failed with exit code: {$exitCode}");
+                $output = Artisan::output();
+                throw new \Exception("Tenant migrations failed with exit code: {$exitCode}. Output: {$output}");
             }
 
-            // Verify that the users table was created
+            // Verify that essential tables were created
+            $tables = DB::select("SELECT name FROM sqlite_master WHERE type='table'");
+            $tableNames = array_map(function ($table) {
+                return $table->name;
+            }, $tables);
+
             if (!DB::getSchemaBuilder()->hasTable('users')) {
-                throw new \Exception("Users table was not created in tenant database");
+                throw new \Exception("Users table was not created in tenant database. Available tables: " . implode(', ', $tableNames));
+            }
+
+            if (!DB::getSchemaBuilder()->hasTable('words')) {
+                // List all tables to debug
+                $tables = DB::select("SELECT name FROM sqlite_master WHERE type='table'");
+                $tableNames = array_map(function ($table) {
+                    return $table->name;
+                }, $tables);
+                throw new \Exception("Words table was not created in tenant database. Available tables: " . implode(', ', $tableNames));
             }
 
             // Run tenant seeders
             $this->seedTenantDatabase($tenant);
-        } finally {
-            // End tenancy context
+        } catch (\Exception $e) {
+            // End tenancy context on error
             tenancy()->end();
+            throw $e;
         }
+        // Keep tenancy context active for the test
     }
 
     /**
@@ -561,19 +558,21 @@ trait InteractsWithTenancy
      */
     protected function createTenantTeam(array $attributes = []): \App\Models\Tenants\User
     {
-        return $this->runInTenantContext($this->tenant ?? $this->createTestTenant(), function () use ($attributes) {
-            $uniqueId = \Illuminate\Support\Str::random(8);
-            return \App\Models\Tenants\User::create(array_merge([
-                'id' => \Illuminate\Support\Str::uuid(),
-                'name' => 'Team User',
-                'email' => "team-{$uniqueId}@test.com",
-                'password' => bcrypt('password'),
-                'membership' => 'team',
-                'email_verified_at' => now(),
-                'created_at' => now(),
-                'updated_at' => now(),
-            ], $attributes));
-        });
+        // Ensure tenant context is active
+        $tenant = property_exists($this, 'tenant') && $this->tenant ? $this->tenant : $this->createTestTenant();
+        tenancy()->initialize($tenant);
+
+        $uniqueId = \Illuminate\Support\Str::random(8);
+        return \App\Models\Tenants\User::create(array_merge([
+            'id' => \Illuminate\Support\Str::uuid(),
+            'name' => 'Team User',
+            'email' => "team-{$uniqueId}@test.com",
+            'password' => bcrypt('password'),
+            'membership' => 'team',
+            'email_verified_at' => now(),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ], $attributes));
     }
 
     /**
@@ -581,19 +580,21 @@ trait InteractsWithTenancy
      */
     protected function createTenantStudent(array $attributes = []): \App\Models\Tenants\User
     {
-        return $this->runInTenantContext($this->tenant ?? $this->createTestTenant(), function () use ($attributes) {
-            $uniqueId = \Illuminate\Support\Str::random(8);
-            return \App\Models\Tenants\User::create(array_merge([
-                'id' => \Illuminate\Support\Str::uuid(),
-                'name' => 'Student User',
-                'email' => "student-{$uniqueId}@test.com",
-                'password' => bcrypt('password'),
-                'membership' => 'student',
-                'email_verified_at' => now(),
-                'created_at' => now(),
-                'updated_at' => now(),
-            ], $attributes));
-        });
+        // Ensure tenant context is active
+        $tenant = property_exists($this, 'tenant') && $this->tenant ? $this->tenant : $this->createTestTenant();
+        tenancy()->initialize($tenant);
+
+        $uniqueId = \Illuminate\Support\Str::random(8);
+        return \App\Models\Tenants\User::create(array_merge([
+            'id' => \Illuminate\Support\Str::uuid(),
+            'name' => 'Student User',
+            'email' => "student-{$uniqueId}@test.com",
+            'password' => bcrypt('password'),
+            'membership' => 'student',
+            'email_verified_at' => now(),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ], $attributes));
     }
 
     /**
@@ -601,19 +602,21 @@ trait InteractsWithTenancy
      */
     protected function createTenantAdmin(array $attributes = []): \App\Models\Tenants\User
     {
-        return $this->runInTenantContext($this->tenant ?? $this->createTestTenant(), function () use ($attributes) {
-            $uniqueId = \Illuminate\Support\Str::random(8);
-            return \App\Models\Tenants\User::create(array_merge([
-                'id' => \Illuminate\Support\Str::uuid(),
-                'name' => 'Admin User',
-                'email' => "admin-{$uniqueId}@test.com",
-                'password' => bcrypt('password'),
-                'membership' => 'admin',
-                'email_verified_at' => now(),
-                'created_at' => now(),
-                'updated_at' => now(),
-            ], $attributes));
-        });
+        // Ensure tenant context is active
+        $tenant = property_exists($this, 'tenant') && $this->tenant ? $this->tenant : $this->createTestTenant();
+        tenancy()->initialize($tenant);
+
+        $uniqueId = \Illuminate\Support\Str::random(8);
+        return \App\Models\Tenants\User::create(array_merge([
+            'id' => \Illuminate\Support\Str::uuid(),
+            'name' => 'Admin User',
+            'email' => "admin-{$uniqueId}@test.com",
+            'password' => bcrypt('password'),
+            'membership' => 'admin',
+            'email_verified_at' => now(),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ], $attributes));
     }
 
     /**
@@ -621,17 +624,19 @@ trait InteractsWithTenancy
      */
     protected function createLanguage(array $attributes = []): \App\Models\Tenants\Language
     {
-        return $this->runInTenantContext($this->tenant ?? $this->createTestTenant(), function () use ($attributes) {
-            return \App\Models\Tenants\Language::create(array_merge([
-                'id' => \Illuminate\Support\Str::uuid(),
-                'code' => 'crk-' . \Illuminate\Support\Str::random(4),
-                'name' => 'Plains Cree',
-                'native_name' => 'nēhiyawēwin',
-                'is_active' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ], $attributes));
-        });
+        // Ensure tenant context is active
+        $tenant = property_exists($this, 'tenant') && $this->tenant ? $this->tenant : $this->createTestTenant();
+        tenancy()->initialize($tenant);
+
+        return \App\Models\Tenants\Language::create(array_merge([
+            'id' => \Illuminate\Support\Str::uuid(),
+            'code' => 'crk-' . \Illuminate\Support\Str::random(4),
+            'name' => 'Plains Cree',
+            'native_name' => 'nēhiyawēwin',
+            'is_active' => true,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ], $attributes));
     }
 
     /**
@@ -639,13 +644,14 @@ trait InteractsWithTenancy
      */
     protected function createWord(array $attributes = []): \App\Models\Tenants\Word
     {
-        $tenant = $this->tenant ?? $this->createTestTenant();
-        return $this->runInTenantContext($tenant, function () use ($attributes) {
-            $language = $attributes['language_id'] ?? $this->createLanguage()->id;
-            return \App\Models\Tenants\Word::factory()->create(array_merge([
-                'language_id' => $language,
-            ], $attributes));
-        });
+        // Ensure tenant context is active
+        $tenant = property_exists($this, 'tenant') && $this->tenant ? $this->tenant : $this->createTestTenant();
+        tenancy()->initialize($tenant);
+
+        $language = $attributes['language_id'] ?? $this->createLanguage()->id;
+        return \App\Models\Tenants\Word::factory()->create(array_merge([
+            'language_id' => $language,
+        ], $attributes));
     }
 
     /**

@@ -1,4 +1,5 @@
 <?php
+
 namespace Database\Factories\Tenant;
 
 use App\Models\Tenants\Language;
@@ -89,9 +90,14 @@ class WordFactory extends Factory
                 'language_id'       => Language::where('code', 'crk')->first()->id,
                 'pronunciation_key' => null, // Not using IPA
                 'part_of_speech'    => $this->faker->randomElement([
-                    'VAI', 'VTI', 'VTA', 'VII', // Verb types
-                    'NA', 'NI',                 // Noun types
-                    'PrA', 'PrI',               // Pronoun types
+                    'VAI',
+                    'VTI',
+                    'VTA',
+                    'VII', // Verb types
+                    'NA',
+                    'NI',                 // Noun types
+                    'PrA',
+                    'PrI',               // Pronoun types
                     'IPC',                      // Particle
                 ]),
                 'metadata'          => array_merge($attributes['metadata'], [
@@ -314,8 +320,10 @@ class WordFactory extends Factory
             $currentSyllable .= $chars[$i];
 
             // If this character is a vowel and the next character is a consonant or end of word
-            if (in_array($chars[$i], $vowels) &&
-                ($i == $length - 1 || ! in_array($chars[$i + 1], $vowels))) {
+            if (
+                in_array($chars[$i], $vowels) &&
+                ($i == $length - 1 || ! in_array($chars[$i + 1], $vowels))
+            ) {
 
                 // If there are at least two more characters and they're both consonants
                 if ($i < $length - 2 && ! in_array($chars[$i + 1], $vowels) && ! in_array($chars[$i + 2], $vowels)) {
@@ -352,11 +360,24 @@ class WordFactory extends Factory
         // This is just a placeholder that returns a mock syllabics representation
         // In a real app, you'd use a proper conversion library
         $syllabicsMap = [
-            'a' => 'ᐊ', 'e' => 'ᐁ', 'i' => 'ᐃ', 'o' => 'ᐅ',
-            'â' => 'ᐋ', 'ê' => 'ᐯ', 'î' => 'ᐄ', 'ô' => 'ᐆ',
-            'p' => 'ᐱ', 't' => 'ᑎ', 'k' => 'ᑭ', 'm' => 'ᒥ',
-            'n' => 'ᓂ', 's' => 'ᓯ', 'y' => 'ᔨ', 'w' => 'ᐃᐧ',
-            'h' => 'ᐦ', 'c' => 'ᒋ',
+            'a' => 'ᐊ',
+            'e' => 'ᐁ',
+            'i' => 'ᐃ',
+            'o' => 'ᐅ',
+            'â' => 'ᐋ',
+            'ê' => 'ᐯ',
+            'î' => 'ᐄ',
+            'ô' => 'ᐆ',
+            'p' => 'ᐱ',
+            't' => 'ᑎ',
+            'k' => 'ᑭ',
+            'm' => 'ᒥ',
+            'n' => 'ᓂ',
+            's' => 'ᓯ',
+            'y' => 'ᔨ',
+            'w' => 'ᐃᐧ',
+            'h' => 'ᐦ',
+            'c' => 'ᒋ',
         ];
 
         $result = '';
