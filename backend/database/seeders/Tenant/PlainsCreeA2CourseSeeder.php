@@ -52,7 +52,7 @@ class PlainsCreeA2CourseSeeder extends PlainsCreeBaseCourseSeeder
     // Level-specific configuration methods
     protected function getDefaultExerciseCount(): int
     {
-        return 6; // A2 has more exercises than A1
+        return 15; // A2 comprehensive starter package with 15 exercises per lesson
     }
 
     protected function getVocabularyPerLesson(): int

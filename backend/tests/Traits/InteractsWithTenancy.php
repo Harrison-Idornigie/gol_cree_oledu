@@ -46,11 +46,11 @@ trait InteractsWithTenancy
         // Store original database configuration
         $this->originalDatabaseConfig = config('database.connections', []);
 
-        // Use SQLite for testing with proper configuration to avoid VACUUM issues
-        Config::set('database.default', 'sqlite');
+        // Use MySQL for testing as requested by user
+        Config::set('database.default', 'mysql_testing');
 
-        // Configure tenancy to use SQLite for central connection in tests
-        Config::set('tenancy.database.central_connection', 'sqlite');
+        // Configure tenancy to use MySQL for central connection in tests
+        Config::set('tenancy.database.central_connection', 'mysql_testing');
 
         // Set up central database for testing (needed for tenant lookup)
         $this->setupCentralDatabase();

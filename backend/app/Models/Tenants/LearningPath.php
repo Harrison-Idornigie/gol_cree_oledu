@@ -25,14 +25,13 @@ class LearningPath extends Model
         'description',
         'target_level',
         'status',
-        'review_status',
+        'template_id', // Simple reference to source template (if any)
         'tenant_id',
         'created_by',
     ];
 
     protected $casts = [
-        'status'        => 'string',
-        'review_status' => 'string',
+        'status' => 'string',
     ];
 
     /**
@@ -45,7 +44,6 @@ class LearningPath extends Model
         'description',
         'target_level',
         'status',
-        'review_status',
     ];
 
     /**
@@ -87,6 +85,14 @@ class LearningPath extends Model
     public function creator(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by');
+    }
+
+    /**
+     * Get the curriculum template used to create this learning path.
+     */
+    public function template(): BelongsTo
+    {
+        return $this->belongsTo(CurriculumTemplate::class, 'template_id');
     }
 
     /**

@@ -52,7 +52,7 @@ class PlainsCreeC2CourseSeeder extends PlainsCreeBaseCourseSeeder
     // Level-specific configuration methods
     protected function getDefaultExerciseCount(): int
     {
-        return 5; // C2 focuses on mastery-level exercises
+        return 15; // C2 comprehensive starter package with 15 exercises per lesson
     }
 
     protected function getVocabularyPerLesson(): int

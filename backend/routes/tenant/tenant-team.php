@@ -169,7 +169,7 @@ Route::prefix('team')->middleware(['auth:tenant', 'verified-grace', 'role_permis
         Route::get('{template}/usage', [TeamCurriculumTemplateController::class, 'usage']);
         Route::post('{template}/instantiate', [TeamCurriculumTemplateController::class, 'instantiate']);
         Route::post('{template}/customize', [TeamCurriculumTemplateController::class, 'customize']);
-        Route::post('{template}/validate', [TeamCurriculumTemplateController::class, 'validate']);
+        Route::post('{template}/validate', [TeamCurriculumTemplateController::class, 'validateTemplate']);
     });
 
     // Content Template Management

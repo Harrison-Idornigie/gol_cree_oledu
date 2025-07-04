@@ -139,7 +139,7 @@ class TeamWordControllerTest extends TenantTestCase
 
         $response = $this->postJson("/api/{$this->tenant->slug}/team/words", $wordData);
 
-        $response->assertStatus(400)
+        $response->assertStatus(422)
             ->assertJsonStructure([
                 'success',
                 'message',
@@ -157,6 +157,16 @@ class TeamWordControllerTest extends TenantTestCase
     {
         // Create test word
         $word = $this->createWord();
+
+        // Debug: Check if word exists and has correct tenant_id
+        $this->assertNotNull($word);
+        $this->assertNotNull($word->id);
+        $this->assertEquals($this->tenant->id, $word->tenant_id);
+
+        // Debug: Check if we can find the word in the current tenant context
+        tenancy()->initialize($this->tenant);
+        $foundWord = \App\Models\Tenants\Word::find($word->id);
+        $this->assertNotNull($foundWord, "Word should be findable in tenant context");
 
         // Authenticate as team member
         Sanctum::actingAs($this->teamUser, ['*'], 'tenant');

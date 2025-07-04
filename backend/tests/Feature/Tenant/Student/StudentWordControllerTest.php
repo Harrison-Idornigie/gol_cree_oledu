@@ -125,9 +125,8 @@ class StudentWordControllerTest extends TenantTestCase
                     WordTranslation::create([
                         'word_id' => $word->id,
                         'language_id' => $this->englishLanguage->id,
-                        'translation' => $translation,
-                        'is_primary' => $translation === $wordData['translations'][0],
-                        'created_by' => $this->teamUser->id
+                        'text' => $translation,
+                        'translation_order' => 1,
                     ]);
                 }
 

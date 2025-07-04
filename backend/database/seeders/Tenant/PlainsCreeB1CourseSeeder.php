@@ -52,7 +52,7 @@ class PlainsCreeB1CourseSeeder extends PlainsCreeBaseCourseSeeder
     // Level-specific configuration methods
     protected function getDefaultExerciseCount(): int
     {
-        return 7; // B1 has more complex exercises
+        return 15; // B1 comprehensive starter package with 15 exercises per lesson
     }
 
     protected function getVocabularyPerLesson(): int

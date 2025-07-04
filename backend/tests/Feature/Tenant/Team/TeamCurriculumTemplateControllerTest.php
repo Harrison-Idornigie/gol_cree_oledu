@@ -6,6 +6,7 @@ use Tests\Traits\InteractsWithTenancy;
 use App\Models\Landlord\Tenant;
 use App\Models\Tenants\User;
 use App\Models\Tenants\Language;
+use App\Models\Tenants\LanguagePair;
 use App\Models\Tenants\CurriculumTemplate;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
@@ -20,6 +21,8 @@ class TeamCurriculumTemplateControllerTest extends TenantTestCase
     protected User $teamMember;
     protected User $studentUser;
     protected Language $language;
+    protected Language $englishLanguage;
+    protected LanguagePair $languagePair;
 
     protected function setUp(): void
     {
@@ -48,13 +51,32 @@ class TeamCurriculumTemplateControllerTest extends TenantTestCase
             ]);
         });
 
-        // Create test language
+        // Create test languages
+        $this->englishLanguage = $this->runInTenantContext($this->tenant, function () {
+            return Language::create([
+                'name' => 'English',
+                'code' => 'en',
+                'native_name' => 'English',
+                'direction' => 'ltr',
+                'status' => 'active',
+            ]);
+        });
+
         $this->language = $this->runInTenantContext($this->tenant, function () {
             return Language::create([
                 'name' => 'Spanish',
                 'code' => 'es',
                 'native_name' => 'Español',
                 'direction' => 'ltr',
+                'status' => 'active',
+            ]);
+        });
+
+        // Create language pair
+        $this->languagePair = $this->runInTenantContext($this->tenant, function () {
+            return LanguagePair::create([
+                'source_language_id' => $this->englishLanguage->id,
+                'target_language_id' => $this->language->id,
                 'status' => 'active',
             ]);
         });
@@ -72,10 +94,10 @@ class TeamCurriculumTemplateControllerTest extends TenantTestCase
             return CurriculumTemplate::create(array_merge([
                 'name' => 'Spanish Beginner Template',
                 'description' => 'A comprehensive template for Spanish beginners',
-                'language_id' => $this->language->id,
-                'level' => 'beginner',
-                'category' => 'general',
-                'structure' => json_encode([
+                'language_pair_id' => $this->languagePair->id,
+                'proficiency_level' => CurriculumTemplate::LEVEL_A1,
+                'estimated_hours' => 60,
+                'template_data' => json_encode([
                     'units' => [
                         [
                             'title' => 'Basic Greetings',
@@ -87,13 +109,11 @@ class TeamCurriculumTemplateControllerTest extends TenantTestCase
                         ]
                     ]
                 ]),
-                'objectives' => json_encode([
+                'prerequisites' => json_encode([
                     'Introduce basic Spanish greetings',
                     'Learn numbers 1-20',
                     'Practice pronunciation'
                 ]),
-                'duration_hours' => 40,
-                'status' => 'published',
                 'created_by' => $this->teamMember->id,
             ], $attributes));
         });
@@ -109,7 +129,7 @@ class TeamCurriculumTemplateControllerTest extends TenantTestCase
         Sanctum::actingAs($this->teamMember, ['tenant']);
 
         $template1 = $this->createTestCurriculumTemplate(['name' => 'Beginner Template']);
-        $template2 = $this->createTestCurriculumTemplate(['name' => 'Advanced Template', 'level' => 'advanced']);
+        $template2 = $this->createTestCurriculumTemplate(['name' => 'Advanced Template', 'proficiency_level' => 'C1']);
 
         $response = $this->getJson("/api/{$this->tenant->slug}/team/curriculum-templates");
 
@@ -181,10 +201,10 @@ class TeamCurriculumTemplateControllerTest extends TenantTestCase
     {
         Sanctum::actingAs($this->teamMember, ['tenant']);
 
-        $template1 = $this->createTestCurriculumTemplate(['level' => 'beginner', 'category' => 'general']);
-        $template2 = $this->createTestCurriculumTemplate(['level' => 'intermediate', 'category' => 'business']);
+        $template1 = $this->createTestCurriculumTemplate(['proficiency_level' => 'A1']);
+        $template2 = $this->createTestCurriculumTemplate(['proficiency_level' => 'B1']);
 
-        $response = $this->getJson("/api/{$this->tenant->slug}/team/curriculum-templates/recommendations?level=beginner&category=general");
+        $response = $this->getJson("/api/{$this->tenant->slug}/team/curriculum-templates/recommendations?level=A1");
 
         $response->assertStatus(200)
             ->assertJsonStructure([
@@ -467,12 +487,12 @@ class TeamCurriculumTemplateControllerTest extends TenantTestCase
 
         $beginnerTemplate = $this->createTestCurriculumTemplate([
             'name' => 'Beginner Template',
-            'level' => 'beginner'
+            'proficiency_level' => 'A1'
         ]);
 
         $advancedTemplate = $this->createTestCurriculumTemplate([
             'name' => 'Advanced Template',
-            'level' => 'advanced'
+            'proficiency_level' => 'C1'
         ]);
 
         // Filter by beginner level
@@ -499,22 +519,22 @@ class TeamCurriculumTemplateControllerTest extends TenantTestCase
 
         $generalTemplate = $this->createTestCurriculumTemplate([
             'name' => 'General Template',
-            'category' => 'general'
+            'proficiency_level' => 'A1'
         ]);
 
         $businessTemplate = $this->createTestCurriculumTemplate([
             'name' => 'Business Template',
-            'category' => 'business'
+            'proficiency_level' => 'B2'
         ]);
 
         // Filter by general category
-        $response = $this->getJson("/api/{$this->tenant->slug}/team/curriculum-templates?category=general");
+        $response = $this->getJson("/api/{$this->tenant->slug}/team/curriculum-templates?level=beginner");
         $response->assertStatus(200)
             ->assertJsonCount(1, 'data')
             ->assertJsonPath('data.0.name', 'General Template');
 
         // Filter by business category
-        $response = $this->getJson("/api/{$this->tenant->slug}/team/curriculum-templates?category=business");
+        $response = $this->getJson("/api/{$this->tenant->slug}/team/curriculum-templates?level=business");
         $response->assertStatus(200)
             ->assertJsonCount(1, 'data')
             ->assertJsonPath('data.0.name', 'Business Template');

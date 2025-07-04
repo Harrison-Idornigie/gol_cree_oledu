@@ -205,48 +205,48 @@ class CurriculumTemplateSeeder extends Seeder
                 'name' => 'Plains Cree Foundations (A1) - nēhiyawēwin kiskēyihtamowin',
                 'description' => 'Complete beginner Plains Cree curriculum introducing syllabics, basic vocabulary, cultural protocols, and foundational language skills for K-12 students.',
                 'estimated_hours' => 135,
-                'units_count' => 7,
-                'lessons_count' => 135,
+                'units_count' => 25, // Increased granularity following Duolingo model
+                'lessons_count' => 150, // More focused lessons per unit
                 'prerequisites' => [],
             ],
             CurriculumTemplate::LEVEL_A2 => [
                 'name' => 'Plains Cree Elementary (A2) - nēhiyawēwin kiskēyihtamowin',
                 'description' => 'Elementary Plains Cree curriculum building on A1 foundations with expanded vocabulary, basic grammar structures, and deeper cultural understanding.',
                 'estimated_hours' => 200,
-                'units_count' => 9,
-                'lessons_count' => 200,
+                'units_count' => 35, // Increased to match Duolingo's A2 progression
+                'lessons_count' => 210, // Adjusted for better pacing
                 'prerequisites' => ['A1 Plains Cree completion or equivalent'],
             ],
             CurriculumTemplate::LEVEL_B1 => [
                 'name' => 'Plains Cree Intermediate (B1) - nēhiyawēwin kiskēyihtamowin',
                 'description' => 'Intermediate Plains Cree focusing on conversational fluency, storytelling traditions, and active participation in cultural practices.',
                 'estimated_hours' => 275,
-                'units_count' => 11,
-                'lessons_count' => 275,
+                'units_count' => 40, // Increased for better skill progression
+                'lessons_count' => 240, // More manageable lesson count per unit
                 'prerequisites' => ['A2 Plains Cree completion or equivalent'],
             ],
             CurriculumTemplate::LEVEL_B2 => [
                 'name' => 'Plains Cree Upper Intermediate (B2) - nēhiyawēwin kiskēyihtamowin',
                 'description' => 'Upper intermediate Plains Cree with complex grammar, traditional literature, ceremonial language, and community leadership skills.',
                 'estimated_hours' => 375,
-                'units_count' => 13,
-                'lessons_count' => 375,
+                'units_count' => 45, // Increased to match Duolingo's granular approach
+                'lessons_count' => 270, // Adjusted for more focused lessons per unit
                 'prerequisites' => ['B1 Plains Cree completion or equivalent'],
             ],
             CurriculumTemplate::LEVEL_C1 => [
                 'name' => 'Plains Cree Advanced (C1) - nēhiyawēwin kiskēyihtamowin',
                 'description' => 'Advanced Plains Cree curriculum focusing on fluency, traditional knowledge systems, ceremonial protocols, and language teaching skills.',
                 'estimated_hours' => 475,
-                'units_count' => 16,
-                'lessons_count' => 475,
+                'units_count' => 35, // Increased for comprehensive advanced learning
+                'lessons_count' => 280, // Focused on quality over quantity
                 'prerequisites' => ['B2 Plains Cree completion or equivalent'],
             ],
             CurriculumTemplate::LEVEL_C2 => [
                 'name' => 'Plains Cree Mastery (C2) - nēhiyawēwin kiskēyihtamowin',
                 'description' => 'Mastery-level Plains Cree curriculum for near-native competency with traditional oratory, ceremonial leadership, and language revitalization skills.',
                 'estimated_hours' => 550,
-                'units_count' => 19,
-                'lessons_count' => 550,
+                'units_count' => 30, // Focused mastery units
+                'lessons_count' => 240, // Intensive, specialized lessons
                 'prerequisites' => ['C1 Plains Cree completion or equivalent'],
             ],
         ];
@@ -837,24 +837,34 @@ class CurriculumTemplateSeeder extends Seeder
     }
 
     /**
-     * Generate topics for a unit based on theme and lesson count
+     * Generate topics for a unit based on theme and lesson count (Duolingo-style granular approach)
      */
     private function generateTopicsForUnit(string $level, array $theme, int $lessonsPerUnit): array
     {
         $skillTypes = $this->getSkillBasedLessonTypes($level);
         $topics = [];
-        $topicsPerUnit = max(2, intval($lessonsPerUnit / 8)); // Roughly 8 lessons per topic
+
+        // Duolingo-style: 1-2 topics per unit for focused learning
+        $topicsPerUnit = min(2, max(1, intval($lessonsPerUnit / 4))); // 4-6 lessons per topic
 
         for ($topicOrder = 1; $topicOrder <= $topicsPerUnit; $topicOrder++) {
             $topic = [
-                'title' => $theme['english_title'] . ' - Part ' . $topicOrder,
-                'cree_title' => $theme['cree_title'] . ' - ' . $topicOrder,
+                'title' => $theme['english_title'] . ($topicsPerUnit > 1 ? ' - Part ' . $topicOrder : ''),
+                'cree_title' => $theme['cree_title'] . ($topicsPerUnit > 1 ? ' - ' . $topicOrder : ''),
                 'order' => $topicOrder,
                 'estimated_hours' => intval($lessonsPerUnit / $topicsPerUnit * 0.8), // 80% for lessons, 20% for assessment
                 'lessons' => $this->generateLessonsForTopic($level, $skillTypes, intval($lessonsPerUnit / $topicsPerUnit)),
                 'cultural_integration' => $this->getCulturalIntegration($level, $theme),
                 'vocabulary_focus' => $this->getVocabularyFocus($level, $theme),
                 'grammar_focus' => $this->getGrammarFocus($level),
+                // Duolingo-style features
+                'duolingo_features' => [
+                    'unit_practice' => true,
+                    'personalized_practice' => true,
+                    'stories' => $this->shouldIncludeStories($level),
+                    'audio_lessons' => true,
+                    'speaking_practice' => $this->shouldIncludeSpeaking($level),
+                ],
             ];
 
             $topics[] = $topic;
@@ -864,7 +874,7 @@ class CurriculumTemplateSeeder extends Seeder
     }
 
     /**
-     * Generate lessons for a topic using skill-based lesson types
+     * Generate lessons for a topic using skill-based lesson types (Duolingo-style focused approach)
      */
     private function generateLessonsForTopic(string $level, array $skillTypes, int $lessonsPerTopic): array
     {
@@ -882,17 +892,53 @@ class CurriculumTemplateSeeder extends Seeder
                 'cree_title' => $skillType['cree_title'] . ' - ' . $lessonOrder,
                 'type' => $skillKey,
                 'order' => $lessonOrder,
-                'estimated_duration' => 45, // 45 minutes per lesson
+                'estimated_duration' => 20, // Shorter, focused lessons like Duolingo
                 'skill_focus' => $skillKey,
-                'exercises_count' => $this->getExerciseCount($level, $skillKey),
+                'exercises' => $this->getDuolingoStyleExerciseCount($level, $skillKey), // Renamed for clarity
                 'cultural_components' => $skillType['structure'],
                 'assessment_type' => $this->getAssessmentType($level, $skillKey),
+                // Duolingo-style lesson features
+                'duolingo_features' => [
+                    'progressive_difficulty' => true,
+                    'spaced_repetition' => true,
+                    'immediate_feedback' => true,
+                    'audio_support' => true,
+                    'syllabics_practice' => true,
+                    'cultural_context_popups' => true,
+                    'clickable_vocabulary' => true,
+                ],
             ];
 
             $lessons[] = $lesson;
         }
 
         return $lessons;
+    }
+
+    /**
+     * Determine if stories should be included for this level (Duolingo-style)
+     */
+    private function shouldIncludeStories(string $level): bool
+    {
+        return in_array($level, ['A2', 'B1', 'B2', 'C1', 'C2']);
+    }
+
+    /**
+     * Determine if speaking practice should be included for this level
+     */
+    private function shouldIncludeSpeaking(string $level): bool
+    {
+        return in_array($level, ['A1', 'A2', 'B1', 'B2', 'C1', 'C2']);
+    }
+
+    /**
+     * Get comprehensive exercise count for robust starter package (15 exercises per lesson)
+     */
+    private function getDuolingoStyleExerciseCount(string $level, string $skillType): int
+    {
+        // Provide 15 exercises per lesson as a comprehensive starter package
+        // Teams can modify/remove exercises as needed for their specific context
+        return 15;
     }
 
     /**

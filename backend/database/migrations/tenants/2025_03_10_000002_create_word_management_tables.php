@@ -21,7 +21,15 @@ return new class extends Migration
             $table->string('part_of_speech')->nullable();
             $table->json('metadata')->nullable(); // Additional word properties
             $table->timestamps();
+            $table->enum('status', ['draft', 'published', 'archived'])
+                ->default('draft')
+                ->comment('Publication status of the word');
 
+            $table->foreignId('created_by')
+                ->nullable()
+                ->constrained('users')
+                ->onDelete('set null')
+                ->comment('User who created this word');
             $table->unique(['language_id', 'text', 'part_of_speech']);
             $table->index(['tenant_id', 'language_id']);
         });

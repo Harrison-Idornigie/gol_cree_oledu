@@ -212,12 +212,14 @@ abstract class PlainsCreeBaseCourseSeeder extends Seeder
     }
 
     /**
-     * Create exercises for a lesson using actual Plains Cree vocabulary with age-appropriate settings
+     * Create exercises for a lesson using actual Plains Cree vocabulary
+     * Provides 15 exercises per lesson as a comprehensive starter package for teams to modify
      */
     protected function createExercisesForLesson(Lesson $lesson, array $lessonData, int $unitIndex, int $topicIndex, int $lessonIndex): void
     {
-        // Use age-appropriate exercise count
-        $exerciseCount = $lessonData['exercises'] ?? $this->getAgeAppropriateExerciseCount();
+        // Provide comprehensive exercise count (15 exercises per lesson as starter package)
+        // Teams can modify/remove exercises based on their specific needs
+        $exerciseCount = $lessonData['exercises'] ?? $lessonData['exercises_count'] ?? $this->getAgeAppropriateExerciseCount();
         $lessonType = $lessonData['type'] ?? 'vocabulary';
 
         // Get vocabulary subset for this lesson
@@ -382,17 +384,13 @@ abstract class PlainsCreeBaseCourseSeeder extends Seeder
     }
 
     /**
-     * Get age-appropriate exercise count
+     * Get age-appropriate exercise count (comprehensive starter package)
      */
     protected function getAgeAppropriateExerciseCount(): int
     {
-        $baseCount = $this->getDefaultExerciseCount();
-
-        return match ($this->ageGroup) {
-            'kids' => max(3, $baseCount - 2), // Fewer exercises for kids
-            'teen_adult' => $baseCount,
-            default => $baseCount,
-        };
+        // Always provide 15 exercises as a comprehensive starter package
+        // Teams can modify/remove exercises based on their specific age group needs
+        return 15;
     }
 
     /**

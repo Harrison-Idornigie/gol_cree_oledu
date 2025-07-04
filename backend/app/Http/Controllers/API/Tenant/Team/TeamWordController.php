@@ -137,13 +137,39 @@ class TeamWordController extends BaseAPIController
 
     /**
      * Display the specified word.
-     * 
+     *
      * @param Request $request
-     * @param Word $word
+     * @param string $tenant
+     * @param string|int $word
      * @return JsonResponse
      */
-    public function show(Request $request, Word $word): JsonResponse
+    public function show(Request $request, string $tenant, $word): JsonResponse
     {
+        // Debug logging
+        \Log::info('TeamWordController::show called', [
+            'word_id' => $word,
+            'tenant_id' => tenant('id'),
+            'tenant_slug' => tenant('slug')
+        ]);
+
+        // Manual model binding for tenant context
+        try {
+            $word = Word::findOrFail($word);
+            \Log::info('Word found', ['word' => $word->toArray()]);
+        } catch (\Exception $e) {
+            \Log::error('Word not found', ['word_id' => $word, 'error' => $e->getMessage()]);
+            return $this->sendError('Word not found.', [], 404);
+        }
+
+        // Validate that the word belongs to the current tenant
+        if ($word->tenant_id !== tenant('id')) {
+            \Log::warning('Word tenant mismatch', [
+                'word_tenant_id' => $word->tenant_id,
+                'current_tenant_id' => tenant('id')
+            ]);
+            return $this->sendError('Word not found.', [], 404);
+        }
+
         $this->authorize('view', $word);
 
         try {
@@ -156,13 +182,22 @@ class TeamWordController extends BaseAPIController
 
     /**
      * Update the specified word.
-     * 
+     *
      * @param UpdateWordRequest $request
-     * @param Word $word
+     * @param string $tenant
+     * @param string|int $word
      * @return JsonResponse
      */
-    public function update(UpdateWordRequest $request, Word $word): JsonResponse
+    public function update(UpdateWordRequest $request, string $tenant, $word): JsonResponse
     {
+        // Manual model binding for tenant context
+        $word = Word::findOrFail($word);
+
+        // Validate that the word belongs to the current tenant
+        if ($word->tenant_id !== tenant('id')) {
+            return $this->sendError('Word not found.', [], 404);
+        }
+
         $this->authorize('update', $word);
 
         try {
@@ -202,13 +237,22 @@ class TeamWordController extends BaseAPIController
 
     /**
      * Remove the specified word.
-     * 
+     *
      * @param Request $request
-     * @param Word $word
+     * @param string $tenant
+     * @param string|int $word
      * @return JsonResponse
      */
-    public function destroy(Request $request, Word $word): JsonResponse
+    public function destroy(Request $request, string $tenant, $word): JsonResponse
     {
+        // Manual model binding for tenant context
+        $word = Word::findOrFail($word);
+
+        // Validate that the word belongs to the current tenant
+        if ($word->tenant_id !== tenant('id')) {
+            return $this->sendError('Word not found.', [], 404);
+        }
+
         $this->authorize('delete', $word);
 
         try {
@@ -399,14 +443,18 @@ class TeamWordController extends BaseAPIController
 
     /**
      * Update word translation.
-     * 
+     *
      * @param Request $request
-     * @param Word $word
+     * @param string $tenant
+     * @param string|int $word
      * @param int $translationId
      * @return JsonResponse
      */
-    public function updateTranslation(Request $request, Word $word, int $translationId): JsonResponse
+    public function updateTranslation(Request $request, string $tenant, $word, int $translationId): JsonResponse
     {
+        // Manual model binding for tenant context
+        $word = Word::findOrFail($word);
+
         $request->validate([
             'language_id' => 'sometimes|exists:languages,id',
             'text' => 'sometimes|string|max:255',
@@ -446,14 +494,18 @@ class TeamWordController extends BaseAPIController
 
     /**
      * Delete word translation.
-     * 
+     *
      * @param Request $request
-     * @param Word $word
+     * @param string $tenant
+     * @param string|int $word
      * @param int $translationId
      * @return JsonResponse
      */
-    public function deleteTranslation(Request $request, Word $word, int $translationId): JsonResponse
+    public function deleteTranslation(Request $request, string $tenant, $word, int $translationId): JsonResponse
     {
+        // Manual model binding for tenant context
+        $word = Word::findOrFail($word);
+
         try {
             $translation = $word->translations()->findOrFail($translationId);
             $this->wordService->deleteTranslation($translation);
@@ -466,19 +518,28 @@ class TeamWordController extends BaseAPIController
 
     /**
      * Upload audio for word.
-     * 
+     *
      * @param Request $request
-     * @param Word $word
+     * @param string $tenant
+     * @param string|int $word
      * @return JsonResponse
      */
-    public function uploadAudio(Request $request, Word $word): JsonResponse
+    public function uploadAudio(Request $request, string $tenant, $word): JsonResponse
     {
+        // Manual model binding for tenant context
+        $word = Word::findOrFail($word);
+
+        // Validate that the word belongs to the current tenant
+        if ($word->tenant_id !== tenant('id')) {
+            return $this->sendError('Word not found.', [], 404);
+        }
+
         $request->validate([
-            'audio' => 'required|file|mimes:mp3,wav|max:10240'
+            'audio_file' => 'required|file|mimes:mp3,wav|max:10240'
         ]);
 
         try {
-            $audioFile = $request->file('audio');
+            $audioFile = $request->file('audio_file');
             $result = $this->wordService->uploadWordAudio($word, $audioFile);
 
             return $this->sendResponse($result, 'Audio uploaded successfully.');
@@ -489,14 +550,17 @@ class TeamWordController extends BaseAPIController
 
     /**
      * Upload audio for word translation.
-     * 
+     *
      * @param Request $request
-     * @param Word $word
+     * @param string|int $word
      * @param int $translationId
      * @return JsonResponse
      */
-    public function uploadTranslationAudio(Request $request, Word $word, int $translationId): JsonResponse
+    public function uploadTranslationAudio(Request $request, $word, int $translationId): JsonResponse
     {
+        // Manual model binding for tenant context
+        $word = Word::findOrFail($word);
+
         $request->validate([
             'audio' => 'required|file|mimes:mp3,wav|max:10240'
         ]);

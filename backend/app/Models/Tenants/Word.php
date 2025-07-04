@@ -29,6 +29,8 @@ class Word extends Model implements HasMedia
         'pronunciation_key',
         'part_of_speech',
         'metadata',
+        'status',
+        'created_by',
         'tenant_id'
     ];
 
@@ -80,6 +82,14 @@ class Word extends Model implements HasMedia
     public function translations(): HasMany
     {
         return $this->hasMany(WordTranslation::class);
+    }
+
+    /**
+     * Get the user who created this word.
+     */
+    public function creator(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'created_by');
     }
 
     /**

@@ -27,6 +27,7 @@ class WordFactory extends Factory
             'text'              => $this->faker->word(),
             'pronunciation_key' => null, // Will be set based on language
             'part_of_speech'    => $this->faker->randomElement(['noun', 'verb', 'adjective', 'adverb', 'pronoun', 'preposition', 'conjunction', 'interjection']),
+            'status'            => 'published',
             'metadata'          => [
                 'difficulty'          => $this->faker->randomElement(['beginner', 'intermediate', 'advanced']),
                 'tags'                => $this->faker->randomElements(['common', 'academic', 'slang', 'formal', 'informal', 'technical'], $this->faker->numberBetween(1, 3)),

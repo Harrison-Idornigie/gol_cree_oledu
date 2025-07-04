@@ -210,7 +210,7 @@ class TeamCurriculumTemplateController extends BaseAPIController
     /**
      * Validate template data structure.
      */
-    public function validate(Request $request, CurriculumTemplate $template): JsonResponse
+    public function validateTemplate(Request $request, CurriculumTemplate $template): JsonResponse
     {
         try {
             $validation = $this->templateService->validateTemplate($template);
