@@ -294,7 +294,7 @@ class StudentPlainsCreeApiTest extends TenantTestCase
 
 
 
-    /** @test */
+    /**  */
     public function student_can_access_plains_cree_languages_with_starter_pack_metadata()
     {
         // Authenticate as student
@@ -331,7 +331,7 @@ class StudentPlainsCreeApiTest extends TenantTestCase
         $this->assertEquals('syllabics', $plainsCree['metadata']['writing_system']);
     }
 
-    /** @test */
+    /**  */
     public function student_can_get_learning_paths_filtered_by_proficiency_level()
     {
         // Authenticate as student
@@ -364,7 +364,7 @@ class StudentPlainsCreeApiTest extends TenantTestCase
         }
     }
 
-    /** @test */
+    /**  */
     public function student_can_access_age_appropriate_learning_paths()
     {
         // Authenticate as student
@@ -381,7 +381,7 @@ class StudentPlainsCreeApiTest extends TenantTestCase
         }
     }
 
-    /** @test */
+    /**  */
     public function student_can_get_learning_path_with_vocabulary_constraints()
     {
         // Authenticate as student
@@ -413,7 +413,7 @@ class StudentPlainsCreeApiTest extends TenantTestCase
         $this->assertTrue($pathData['metadata']['duolingo_features']['syllabics_display']);
     }
 
-    /** @test */
+    /**  */
     public function student_can_enroll_in_plains_cree_learning_path()
     {
         // Authenticate as student
@@ -445,7 +445,7 @@ class StudentPlainsCreeApiTest extends TenantTestCase
         });
     }
 
-    /** @test */
+    /**  */
     public function student_cannot_access_learning_paths_from_other_tenants()
     {
         // Create learning path in other tenant
@@ -477,7 +477,7 @@ class StudentPlainsCreeApiTest extends TenantTestCase
         $response->assertStatus(404);
     }
 
-    /** @test */
+    /**  */
     public function student_can_access_units_with_syllabics_content()
     {
         // Authenticate as student
@@ -511,7 +511,7 @@ class StudentPlainsCreeApiTest extends TenantTestCase
         }
     }
 
-    /** @test */
+    /**  */
     public function student_can_access_topics_with_cultural_context()
     {
         // Authenticate as student
@@ -545,7 +545,7 @@ class StudentPlainsCreeApiTest extends TenantTestCase
         }
     }
 
-    /** @test */
+    /**  */
     public function student_can_access_lessons_with_vocabulary_constraints()
     {
         // Authenticate as student
@@ -581,7 +581,7 @@ class StudentPlainsCreeApiTest extends TenantTestCase
         }
     }
 
-    /** @test */
+    /**  */
     public function student_can_access_exercises_with_duolingo_features()
     {
         // Authenticate as student
@@ -625,7 +625,7 @@ class StudentPlainsCreeApiTest extends TenantTestCase
         }
     }
 
-    /** @test */
+    /**  */
     public function student_can_get_vocabulary_with_progression_constraints()
     {
         // Authenticate as student
@@ -648,7 +648,7 @@ class StudentPlainsCreeApiTest extends TenantTestCase
         $this->assertNotContains('B1', $proficiencyLevels);
     }
 
-    /** @test */
+    /**  */
     public function student_can_get_words_with_syllabics_and_audio()
     {
         // Authenticate as student

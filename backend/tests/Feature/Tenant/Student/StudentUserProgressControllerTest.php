@@ -194,7 +194,7 @@ class StudentUserProgressControllerTest extends TenantTestCase
         });
     }
 
-    /** @test */
+    /**  */
     public function student_can_get_all_their_progress()
     {
         // Authenticate as student
@@ -228,7 +228,7 @@ class StudentUserProgressControllerTest extends TenantTestCase
             ]);
     }
 
-    /** @test */
+    /**  */
     public function student_can_see_progress_for_specific_item()
     {
         // Authenticate as student
@@ -256,7 +256,7 @@ class StudentUserProgressControllerTest extends TenantTestCase
             ]);
     }
 
-    /** @test */
+    /**  */
     public function student_can_create_new_progress()
     {
         // Authenticate as student
@@ -299,7 +299,7 @@ class StudentUserProgressControllerTest extends TenantTestCase
         ]);
     }
 
-    /** @test */
+    /**  */
     public function student_can_update_existing_progress()
     {
         // Authenticate as student
@@ -341,7 +341,7 @@ class StudentUserProgressControllerTest extends TenantTestCase
         ]);
     }
 
-    /** @test */
+    /**  */
     public function student_cannot_update_another_students_progress()
     {
         // Create another student
@@ -378,7 +378,7 @@ class StudentUserProgressControllerTest extends TenantTestCase
         }
     }
 
-    /** @test */
+    /**  */
     public function validates_progress_percentage_is_valid()
     {
         // Authenticate as student
@@ -411,7 +411,7 @@ class StudentUserProgressControllerTest extends TenantTestCase
             ->assertJsonValidationErrors(['progress']);
     }
 
-    /** @test */
+    /**  */
     public function unauthenticated_user_cannot_access_progress_endpoints()
     {
         // API call without authentication

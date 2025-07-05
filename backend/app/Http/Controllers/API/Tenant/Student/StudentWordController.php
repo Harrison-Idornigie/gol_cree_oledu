@@ -93,13 +93,12 @@ class StudentWordController extends BaseAPIController
     public function show(Request $request, $tenant, $word): JsonResponse
     {
         try {
-            // Manual model binding for tenant context with proper scoping
-            // Students can only access published words
+            // First find the word within tenant (proper tenant scoping)
             $word = Word::where('id', $word)
                 ->where('tenant_id', tenant('id'))
-                ->where('status', 'published')
                 ->firstOrFail();
 
+            // Then check authorization (this will return 403 for unpublished words)
             $this->authorize('view', $word);
 
             // Get detailed word information for students
@@ -108,6 +107,8 @@ class StudentWordController extends BaseAPIController
             return $this->sendResponse($wordData, 'Word retrieved successfully.');
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             return $this->sendError('Word not found.', [], 404);
+        } catch (\Illuminate\Auth\Access\AuthorizationException $e) {
+            return $this->sendError('Access denied.', [], 403);
         } catch (\Exception $e) {
             return $this->sendError('Failed to retrieve word details.', [], 500);
         }
@@ -148,6 +149,8 @@ class StudentWordController extends BaseAPIController
             return $this->sendResponse($translations, 'Word translations retrieved successfully.');
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             return $this->sendError('Word not found.', [], 404);
+        } catch (\Illuminate\Auth\Access\AuthorizationException $e) {
+            return $this->sendError('Access denied.', [], 403);
         } catch (ValidationException $e) {
             return $this->sendError('Validation failed.', $e->errors(), 422);
         } catch (\Exception $e) {

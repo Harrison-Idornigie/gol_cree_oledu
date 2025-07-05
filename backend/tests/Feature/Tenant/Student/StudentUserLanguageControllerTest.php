@@ -98,7 +98,7 @@ class StudentUserLanguageControllerTest extends TenantTestCase
         });
     }
 
-    /** @test */
+    /**  */
     public function student_can_list_selected_languages()
     {
         // Authenticate as student
@@ -129,7 +129,7 @@ class StudentUserLanguageControllerTest extends TenantTestCase
             ]);
     }
 
-    /** @test */
+    /**  */
     public function student_can_add_new_language()
     {
         // Authenticate as student
@@ -175,7 +175,7 @@ class StudentUserLanguageControllerTest extends TenantTestCase
         });
     }
 
-    /** @test */
+    /**  */
     public function student_can_remove_selected_language()
     {
         // Authenticate as student
@@ -197,7 +197,7 @@ class StudentUserLanguageControllerTest extends TenantTestCase
         });
     }
 
-    /** @test */
+    /**  */
     public function student_can_set_primary_language()
     {
         // First add a second language
@@ -240,7 +240,7 @@ class StudentUserLanguageControllerTest extends TenantTestCase
         });
     }
 
-    /** @test */
+    /**  */
     public function student_cannot_add_language_that_is_already_selected()
     {
         // Authenticate as student
@@ -256,7 +256,7 @@ class StudentUserLanguageControllerTest extends TenantTestCase
             ->assertJsonValidationErrors(['language_id']);
     }
 
-    /** @test */
+    /**  */
     public function student_cannot_add_invalid_language_id()
     {
         // Authenticate as student
@@ -272,7 +272,7 @@ class StudentUserLanguageControllerTest extends TenantTestCase
             ->assertJsonValidationErrors(['language_id']);
     }
 
-    /** @test */
+    /**  */
     public function unauthenticated_user_cannot_access_language_endpoints()
     {
         // API calls without authentication

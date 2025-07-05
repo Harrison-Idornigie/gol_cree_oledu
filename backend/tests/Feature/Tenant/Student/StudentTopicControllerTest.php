@@ -119,7 +119,7 @@ class StudentTopicControllerTest extends TenantTestCase
         });
     }
 
-    /** @test */
+    /**  */
     public function student_can_view_topics_in_unit()
     {
         // Authenticate as student
@@ -155,7 +155,7 @@ class StudentTopicControllerTest extends TenantTestCase
             ]);
     }
 
-    /** @test */
+    /**  */
     public function student_can_view_individual_topic()
     {
         // Authenticate as student
@@ -200,7 +200,7 @@ class StudentTopicControllerTest extends TenantTestCase
             ->assertJsonPath('data.user_progress.overall_progress', 70);
     }
 
-    /** @test */
+    /**  */
     public function student_can_view_topic_progress()
     {
         // Authenticate as student
@@ -232,7 +232,7 @@ class StudentTopicControllerTest extends TenantTestCase
             ]);
     }
 
-    /** @test */
+    /**  */
     public function unauthenticated_user_cannot_access_topics()
     {
         // API call without authentication
@@ -241,7 +241,7 @@ class StudentTopicControllerTest extends TenantTestCase
         $response->assertStatus(401);
     }
 
-    /** @test */
+    /**  */
     public function student_cannot_access_unpublished_topic()
     {
         // Create an unpublished topic

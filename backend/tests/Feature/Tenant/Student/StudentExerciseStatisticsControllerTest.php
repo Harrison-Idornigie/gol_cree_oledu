@@ -32,16 +32,16 @@ class StudentExerciseStatisticsControllerTest extends TenantTestCase
     {
         parent::setUp();
         $this->setUpTenancy();
-        
+
         // Create test tenant
         $this->tenant = $this->createTestTenant();
         $this->initializeTenantContext($this->tenant);
-        
+
         // Create users
         $this->studentUser = $this->createTenantStudent();
         $this->otherStudentUser = $this->createTenantStudent(['email' => 'other@example.com']);
         $this->teamUser = $this->createTenantTeam();
-        
+
         // Create test content
         $this->language = $this->createLanguage();
         $this->createTestContent();
@@ -103,11 +103,11 @@ class StudentExerciseStatisticsControllerTest extends TenantTestCase
         });
     }
 
-    /** @test */
+    /**  */
     public function student_can_get_exercise_statistics()
     {
         Sanctum::actingAs($this->studentUser, ['*'], 'tenant');
-        
+
         $response = $this->getJson("/api/{$this->tenant->slug}/student/exercises/{$this->exercise->id}/statistics");
 
         $response->assertStatus(200)
@@ -161,17 +161,17 @@ class StudentExerciseStatisticsControllerTest extends TenantTestCase
         $this->assertEquals(62.5, $data['success_rate']); // 5/8 * 100
     }
 
-    /** @test */
+    /**  */
     public function exercise_statistics_only_show_current_students_data()
     {
         Sanctum::actingAs($this->studentUser, ['*'], 'tenant');
-        
+
         $response = $this->getJson("/api/{$this->tenant->slug}/student/exercises/{$this->exercise->id}/statistics");
 
         $response->assertStatus(200);
-        
+
         $data = $response->json('data');
-        
+
         // Should only show 8 attempts (5 correct + 3 incorrect) for current student
         // Not the 2 attempts from other student
         $this->assertEquals(8, $data['total_attempts']);
@@ -179,17 +179,17 @@ class StudentExerciseStatisticsControllerTest extends TenantTestCase
         $this->assertEquals(3, $data['incorrect_attempts']);
     }
 
-    /** @test */
+    /**  */
     public function exercise_statistics_calculates_scores_correctly()
     {
         Sanctum::actingAs($this->studentUser, ['*'], 'tenant');
-        
+
         $response = $this->getJson("/api/{$this->tenant->slug}/student/exercises/{$this->exercise->id}/statistics");
 
         $response->assertStatus(200);
-        
+
         $data = $response->json('data');
-        
+
         // Verify score calculations
         // 5 attempts with 85.5 score + 3 attempts with 45.0 score
         // Average: (5 * 85.5 + 3 * 45.0) / 8 = (427.5 + 135) / 8 = 70.3125
@@ -198,17 +198,17 @@ class StudentExerciseStatisticsControllerTest extends TenantTestCase
         $this->assertEquals(45.0, $data['worst_score']);
     }
 
-    /** @test */
+    /**  */
     public function exercise_statistics_calculates_time_correctly()
     {
         Sanctum::actingAs($this->studentUser, ['*'], 'tenant');
-        
+
         $response = $this->getJson("/api/{$this->tenant->slug}/student/exercises/{$this->exercise->id}/statistics");
 
         $response->assertStatus(200);
-        
+
         $data = $response->json('data');
-        
+
         // Verify time calculations
         // 5 attempts with 30 seconds + 3 attempts with 60 seconds
         // Average: (5 * 30 + 3 * 60) / 8 = (150 + 180) / 8 = 41.25
@@ -217,21 +217,21 @@ class StudentExerciseStatisticsControllerTest extends TenantTestCase
         $this->assertEquals(60, $data['slowest_time_seconds']);
     }
 
-    /** @test */
+    /**  */
     public function exercise_statistics_includes_recent_attempts()
     {
         Sanctum::actingAs($this->studentUser, ['*'], 'tenant');
-        
+
         $response = $this->getJson("/api/{$this->tenant->slug}/student/exercises/{$this->exercise->id}/statistics");
 
         $response->assertStatus(200);
-        
+
         $data = $response->json('data');
-        
+
         // Should include recent attempts (limited to last 10)
         $this->assertArrayHasKey('recent_attempts', $data);
         $this->assertLessThanOrEqual(10, count($data['recent_attempts']));
-        
+
         // Recent attempts should be ordered by created_at desc
         $recentAttempts = $data['recent_attempts'];
         if (count($recentAttempts) > 1) {
@@ -242,17 +242,17 @@ class StudentExerciseStatisticsControllerTest extends TenantTestCase
         }
     }
 
-    /** @test */
+    /**  */
     public function exercise_statistics_returns_404_for_nonexistent_exercise()
     {
         Sanctum::actingAs($this->studentUser, ['*'], 'tenant');
-        
+
         $response = $this->getJson("/api/{$this->tenant->slug}/student/exercises/99999/statistics");
 
         $response->assertStatus(404);
     }
 
-    /** @test */
+    /**  */
     public function exercise_statistics_returns_empty_data_for_no_attempts()
     {
         // Create exercise with no attempts
@@ -262,9 +262,9 @@ class StudentExerciseStatisticsControllerTest extends TenantTestCase
                 'status' => 'published'
             ]);
         });
-        
+
         Sanctum::actingAs($this->studentUser, ['*'], 'tenant');
-        
+
         $response = $this->getJson("/api/{$this->tenant->slug}/student/exercises/{$exerciseWithNoAttempts->id}/statistics");
 
         $response->assertStatus(200)
@@ -284,17 +284,17 @@ class StudentExerciseStatisticsControllerTest extends TenantTestCase
             ]);
     }
 
-    /** @test */
+    /**  */
     public function team_members_cannot_access_student_exercise_statistics()
     {
         Sanctum::actingAs($this->teamUser, ['*'], 'tenant');
-        
+
         $response = $this->getJson("/api/{$this->tenant->slug}/student/exercises/{$this->exercise->id}/statistics");
 
         $response->assertStatus(403);
     }
 
-    /** @test */
+    /**  */
     public function unauthenticated_users_cannot_access_exercise_statistics()
     {
         $response = $this->getJson("/api/{$this->tenant->slug}/student/exercises/{$this->exercise->id}/statistics");
@@ -302,33 +302,33 @@ class StudentExerciseStatisticsControllerTest extends TenantTestCase
         $response->assertStatus(401);
     }
 
-    /** @test */
+    /**  */
     public function exercise_statistics_are_tenant_isolated()
     {
         $otherTenant = $this->createTestTenant(['slug' => 'other-tenant']);
-        
+
         Sanctum::actingAs($this->studentUser, ['*'], 'tenant');
-        
+
         // Try to access exercise from current tenant using other tenant's slug
         $response = $this->getJson("/api/{$otherTenant->slug}/student/exercises/{$this->exercise->id}/statistics");
 
         $response->assertStatus(404);
     }
 
-    /** @test */
+    /**  */
     public function exercise_statistics_include_performance_trend()
     {
         Sanctum::actingAs($this->studentUser, ['*'], 'tenant');
-        
+
         $response = $this->getJson("/api/{$this->tenant->slug}/student/exercises/{$this->exercise->id}/statistics");
 
         $response->assertStatus(200);
-        
+
         $data = $response->json('data');
-        
+
         $this->assertArrayHasKey('performance_trend', $data);
         $this->assertIsArray($data['performance_trend']);
-        
+
         // Performance trend should group attempts by date
         foreach ($data['performance_trend'] as $trendPoint) {
             $this->assertArrayHasKey('date', $trendPoint);

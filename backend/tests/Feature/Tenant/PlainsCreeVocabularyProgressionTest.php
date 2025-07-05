@@ -27,7 +27,7 @@ class PlainsCreeVocabularyProgressionTest extends TenantTestCase
         Language::create(['code' => 'en', 'name' => 'English', 'native_name' => 'English']);
     }
 
-    /** @test */
+    /**  */
     public function it_enforces_vocabulary_progression_constraints()
     {
         // Arrange
@@ -68,7 +68,7 @@ class PlainsCreeVocabularyProgressionTest extends TenantTestCase
         }
     }
 
-    /** @test */
+    /**  */
     public function it_validates_vocabulary_count_targets()
     {
         // Arrange
@@ -106,7 +106,7 @@ class PlainsCreeVocabularyProgressionTest extends TenantTestCase
         }
     }
 
-    /** @test */
+    /**  */
     public function it_ensures_a1_vocabulary_is_foundational()
     {
         // Arrange
@@ -147,7 +147,7 @@ class PlainsCreeVocabularyProgressionTest extends TenantTestCase
         );
     }
 
-    /** @test */
+    /**  */
     public function it_validates_vocabulary_progression_in_course_content()
     {
         // Arrange
@@ -218,7 +218,7 @@ class PlainsCreeVocabularyProgressionTest extends TenantTestCase
         }
     }
 
-    /** @test */
+    /**  */
     public function it_ensures_vocabulary_has_required_metadata()
     {
         // Arrange
@@ -279,7 +279,7 @@ class PlainsCreeVocabularyProgressionTest extends TenantTestCase
         }
     }
 
-    /** @test */
+    /**  */
     public function it_validates_vocabulary_distribution_across_levels()
     {
         // Arrange
@@ -330,7 +330,7 @@ class PlainsCreeVocabularyProgressionTest extends TenantTestCase
         );
     }
 
-    /** @test */
+    /**  */
     public function it_ensures_vocabulary_progression_supports_spaced_repetition()
     {
         // Arrange

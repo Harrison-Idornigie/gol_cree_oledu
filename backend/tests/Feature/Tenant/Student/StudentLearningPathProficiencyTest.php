@@ -81,7 +81,7 @@ class StudentLearningPathProficiencyTest extends TenantTestCase
 
 
 
-    /** @test */
+    /**  */
     public function student_can_get_all_learning_paths_with_proficiency_levels()
     {
         // Authenticate as student
@@ -119,7 +119,7 @@ class StudentLearningPathProficiencyTest extends TenantTestCase
         $this->assertEquals(['A1', 'A2', 'B1', 'B2', 'C1', 'C2'], array_values($levels));
     }
 
-    /** @test */
+    /**  */
     public function student_can_filter_learning_paths_by_specific_proficiency_level()
     {
         // Authenticate as student
@@ -144,7 +144,7 @@ class StudentLearningPathProficiencyTest extends TenantTestCase
         }
     }
 
-    /** @test */
+    /**  */
     public function student_can_filter_learning_paths_by_language()
     {
         // Authenticate as student
@@ -165,7 +165,7 @@ class StudentLearningPathProficiencyTest extends TenantTestCase
         }
     }
 
-    /** @test */
+    /**  */
     public function student_can_get_individual_learning_path_details()
     {
         // Authenticate as student
@@ -196,7 +196,7 @@ class StudentLearningPathProficiencyTest extends TenantTestCase
         $this->assertEquals($this->plainsCreeLanguage->id, $pathData['language_id']);
     }
 
-    /** @test */
+    /**  */
     public function student_can_enroll_in_learning_path_and_track_progress()
     {
         // Authenticate as student
@@ -237,7 +237,7 @@ class StudentLearningPathProficiencyTest extends TenantTestCase
         });
     }
 
-    /** @test */
+    /**  */
     public function student_can_get_learning_path_progress()
     {
         // Authenticate as student
@@ -278,7 +278,7 @@ class StudentLearningPathProficiencyTest extends TenantTestCase
         $this->assertIsArray($progressData['units_progress']);
     }
 
-    /** @test */
+    /**  */
     public function student_cannot_access_learning_paths_from_other_tenants()
     {
         // Authenticate as student in original tenant
@@ -300,7 +300,7 @@ class StudentLearningPathProficiencyTest extends TenantTestCase
         $response->assertStatus(404);
     }
 
-    /** @test */
+    /**  */
     public function student_can_get_learning_path_progress_after_enrollment()
     {
         // Authenticate as student
@@ -330,7 +330,7 @@ class StudentLearningPathProficiencyTest extends TenantTestCase
 
 
 
-    /** @test */
+    /**  */
     public function student_cannot_enroll_in_same_learning_path_twice()
     {
         // Authenticate as student
@@ -355,7 +355,7 @@ class StudentLearningPathProficiencyTest extends TenantTestCase
             ]);
     }
 
-    /** @test */
+    /**  */
     public function student_can_search_learning_paths()
     {
         // Authenticate as student

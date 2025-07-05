@@ -36,7 +36,7 @@ class TeamLanguageControllerTest extends TenantTestCase
     }
 
 
- 
+
 
     protected function tearDown(): void
     {
@@ -44,8 +44,8 @@ class TeamLanguageControllerTest extends TenantTestCase
         parent::tearDown();
     }
 
- 
-    /** @test */
+
+    /**  */
     public function team_member_can_view_languages_list()
     {
         // Authenticate as team member
@@ -81,7 +81,7 @@ class TeamLanguageControllerTest extends TenantTestCase
             ]);
     }
 
-    /** @test */
+    /**  */
     public function student_cannot_access_team_language_endpoints()
     {
         // Authenticate as student
@@ -92,7 +92,7 @@ class TeamLanguageControllerTest extends TenantTestCase
         $response->assertStatus(403);
     }
 
-    /** @test */
+    /**  */
     public function team_member_can_create_language()
     {
         // Authenticate as team member
@@ -133,7 +133,7 @@ class TeamLanguageControllerTest extends TenantTestCase
         ]);
     }
 
-    /** @test */
+    /**  */
     public function validation_errors_are_returned_when_creating_language_with_invalid_data()
     {
         // Authenticate as team member
@@ -158,7 +158,7 @@ class TeamLanguageControllerTest extends TenantTestCase
             ->assertJsonValidationErrors(['name', 'code', 'is_active']);
     }
 
-    /** @test */
+    /**  */
     public function team_member_can_view_language_details()
     {
         // Authenticate as team member
@@ -189,7 +189,7 @@ class TeamLanguageControllerTest extends TenantTestCase
             ]);
     }
 
-    /** @test */
+    /**  */
     public function team_member_can_update_language()
     {
         // Authenticate as team member
@@ -235,7 +235,7 @@ class TeamLanguageControllerTest extends TenantTestCase
         ]);
     }
 
-    /** @test */
+    /**  */
     public function team_member_can_update_language_status()
     {
         // Authenticate as team member
@@ -261,7 +261,7 @@ class TeamLanguageControllerTest extends TenantTestCase
         ]);
     }
 
-    /** @test */
+    /**  */
     public function team_member_can_create_language_pair()
     {
         // Authenticate as team member
@@ -303,7 +303,7 @@ class TeamLanguageControllerTest extends TenantTestCase
         ]);
     }
 
-    /** @test */
+    /**  */
     public function team_member_can_delete_language_pair()
     {
         // Authenticate as team member
@@ -359,7 +359,7 @@ class TeamLanguageControllerTest extends TenantTestCase
         });
     }
 
-    /** @test */
+    /**  */
     public function team_member_can_update_language_pair_status()
     {
         // Authenticate as team member

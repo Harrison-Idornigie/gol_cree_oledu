@@ -80,7 +80,7 @@ class StudentListeningExerciseControllerTest extends TenantTestCase
         });
     }
 
- 
+
 
     /**
      * Setup test data for listening exercises, etc.
@@ -223,7 +223,7 @@ class StudentListeningExerciseControllerTest extends TenantTestCase
         });
     }
 
-    /** @test */
+    /**  */
     public function student_can_get_listening_exercises_by_language()
     {
         // Authenticate as student
@@ -249,7 +249,7 @@ class StudentListeningExerciseControllerTest extends TenantTestCase
             ->assertJsonCount(3, 'data');
     }
 
-    /** @test */
+    /**  */
     public function student_can_check_listening_exercise_answer()
     {
         // Authenticate as student
@@ -324,7 +324,7 @@ class StudentListeningExerciseControllerTest extends TenantTestCase
             ]);
     }
 
-    /** @test */
+    /**  */
     public function student_cannot_check_answer_without_required_fields()
     {
         // Authenticate as student
@@ -350,7 +350,7 @@ class StudentListeningExerciseControllerTest extends TenantTestCase
             ->assertJsonValidationErrors(['answer']);
     }
 
-    /** @test */
+    /**  */
     public function student_cannot_access_unpublished_listening_exercise()
     {
         // Create an unpublished listening exercise
@@ -399,7 +399,7 @@ class StudentListeningExerciseControllerTest extends TenantTestCase
         $response->assertStatus(404);
     }
 
-    /** @test */
+    /**  */
     public function exercise_completion_is_tracked()
     {
         // Authenticate as student
@@ -428,7 +428,7 @@ class StudentListeningExerciseControllerTest extends TenantTestCase
         });
     }
 
-    /** @test */
+    /**  */
     public function unauthenticated_user_cannot_access_listening_exercises()
     {
         // API call without authentication

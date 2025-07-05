@@ -154,7 +154,7 @@ class StudentUnitControllerTest extends TenantTestCase
         ]);
     }
 
-    /** @test */
+    /**  */
     public function student_can_view_units_in_learning_path()
     {
         // Get test data
@@ -196,7 +196,7 @@ class StudentUnitControllerTest extends TenantTestCase
             ]);
     }
 
-    /** @test */
+    /**  */
     public function student_can_view_individual_unit()
     {
         // Get test data
@@ -228,7 +228,7 @@ class StudentUnitControllerTest extends TenantTestCase
             ]);
     }
 
-    /** @test */
+    /**  */
     public function student_can_view_unit_progress()
     {
         // Get test data
@@ -263,7 +263,7 @@ class StudentUnitControllerTest extends TenantTestCase
             ]);
     }
 
-    /** @test */
+    /**  */
     public function unauthenticated_user_cannot_access_units()
     {
         // Get test data
@@ -275,7 +275,7 @@ class StudentUnitControllerTest extends TenantTestCase
         $response->assertStatus(401);
     }
 
-    /** @test */
+    /**  */
     public function team_member_cannot_access_student_unit_endpoints()
     {
         // Get test data
@@ -296,7 +296,7 @@ class StudentUnitControllerTest extends TenantTestCase
         }
     }
 
-    /** @test */
+    /**  */
     public function student_cannot_access_unpublished_unit()
     {
         // Get test data
@@ -322,7 +322,7 @@ class StudentUnitControllerTest extends TenantTestCase
         $response->assertStatus(404);
     }
 
-    /** @test */
+    /**  */
     public function student_can_mark_unit_as_started()
     {
         // Get test data
@@ -364,7 +364,7 @@ class StudentUnitControllerTest extends TenantTestCase
         });
     }
 
-    /** @test */
+    /**  */
     public function student_can_update_unit_progress()
     {
         // Get test data
@@ -408,7 +408,7 @@ class StudentUnitControllerTest extends TenantTestCase
         });
     }
 
-    /** @test */
+    /**  */
     public function student_can_mark_unit_as_completed()
     {
         // Get test data
@@ -453,7 +453,7 @@ class StudentUnitControllerTest extends TenantTestCase
         });
     }
 
-    /** @test */
+    /**  */
     public function student_can_view_topics_in_unit()
     {
         // Get test data
@@ -503,7 +503,7 @@ class StudentUnitControllerTest extends TenantTestCase
             ]);
     }
 
-    /** @test */
+    /**  */
     public function student_can_view_unit_with_topics_and_lessons()
     {
         // Get test data
@@ -559,7 +559,7 @@ class StudentUnitControllerTest extends TenantTestCase
             ->assertJsonPath('data.topics.0.lessons.0.title', 'Lesson 1');
     }
 
-    /** @test */
+    /**  */
     public function student_can_get_next_unit_recommendation()
     {
         // Get test data
@@ -602,7 +602,7 @@ class StudentUnitControllerTest extends TenantTestCase
             ]);
     }
 
-    /** @test */
+    /**  */
     public function student_cannot_update_progress_beyond_100_percent()
     {
         // Get test data
@@ -635,7 +635,7 @@ class StudentUnitControllerTest extends TenantTestCase
         });
     }
 
-    /** @test */
+    /**  */
     public function student_cannot_access_nonexistent_unit()
     {
         // Authenticate as student
@@ -651,7 +651,7 @@ class StudentUnitControllerTest extends TenantTestCase
         $response->assertStatus(404);
     }
 
-    /** @test */
+    /**  */
     public function student_cannot_access_unit_from_different_learning_path_directly()
     {
         // Setup additional test data - another learning path with units
@@ -699,7 +699,7 @@ class StudentUnitControllerTest extends TenantTestCase
         );
     }
 
-    /** @test */
+    /**  */
     public function student_can_get_recommended_next_units()
     {
         // Get test data

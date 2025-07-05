@@ -139,7 +139,7 @@ class StudentLessonControllerTest extends TenantTestCase
         });
     }
 
-    /** @test */
+    /**  */
     public function student_can_view_lessons_in_topic()
     {
         // Authenticate as student using tenant guard (routes use auth:tenant)
@@ -173,7 +173,7 @@ class StudentLessonControllerTest extends TenantTestCase
             ->assertJsonPath('data.topic.id', $this->testData['topic_id']);
     }
 
-    /** @test */
+    /**  */
     public function student_can_view_individual_lesson()
     {
         // Authenticate as student
@@ -217,7 +217,7 @@ class StudentLessonControllerTest extends TenantTestCase
         $this->assertIsArray($response->json('data.exercises'));
     }
 
-    /** @test */
+    /**  */
     public function student_can_view_lesson_progress()
     {
         // Authenticate as student
@@ -242,7 +242,7 @@ class StudentLessonControllerTest extends TenantTestCase
             ]);
     }
 
-    /** @test */
+    /**  */
     public function unauthenticated_user_cannot_access_lessons()
     {
         // API call without authentication
@@ -251,7 +251,7 @@ class StudentLessonControllerTest extends TenantTestCase
         $response->assertStatus(401);
     }
 
-    /** @test */
+    /**  */
     public function student_cannot_access_unpublished_lesson()
     {
         // Create an unpublished lesson
@@ -278,7 +278,7 @@ class StudentLessonControllerTest extends TenantTestCase
         $response->assertStatus(404);
     }
 
-    /** @test */
+    /**  */
     public function student_cannot_access_lessons_of_unpublished_topic()
     {
         // Create an unpublished topic
@@ -305,7 +305,7 @@ class StudentLessonControllerTest extends TenantTestCase
         $response->assertStatus(404);
     }
 
-    /** @test */
+    /**  */
     public function student_can_mark_lesson_as_completed()
     {
         // Authenticate as student using tenant guard (progress routes use auth:tenant)
@@ -352,7 +352,7 @@ class StudentLessonControllerTest extends TenantTestCase
         // });
     }
 
-    /** @test */
+    /**  */
     public function sequential_learning_prevents_skipping_lessons()
     {
         // Assuming the application has sequential learning middleware
@@ -384,7 +384,7 @@ class StudentLessonControllerTest extends TenantTestCase
         }
     }
 
-    /** @test */
+    /**  */
     public function student_can_partially_update_lesson_progress()
     {
         // Authenticate as student
@@ -434,7 +434,7 @@ class StudentLessonControllerTest extends TenantTestCase
         // });
     }
 
-    /** @test */
+    /**  */
     public function team_member_can_view_lessons()
     {
         // Authenticate as team member
@@ -472,7 +472,7 @@ class StudentLessonControllerTest extends TenantTestCase
         $this->assertCount(2, $response->json('data.lessons'));
     }
 
-    /** @test */
+    /**  */
     public function invalid_lesson_id_returns_404()
     {
         // Authenticate as student
@@ -491,7 +491,7 @@ class StudentLessonControllerTest extends TenantTestCase
         $response->assertStatus(404);
     }
 
-    /** @test */
+    /**  */
     public function student_cannot_make_invalid_progress_update()
     {
         // Authenticate as student
@@ -516,7 +516,7 @@ class StudentLessonControllerTest extends TenantTestCase
             ->assertJsonValidationErrors(['completion_percentage']);
     }
 
-    /** @test */
+    /**  */
     public function student_can_create_initial_progress_record()
     {
         // Authenticate as student
@@ -570,7 +570,7 @@ class StudentLessonControllerTest extends TenantTestCase
         });
     }
 
-    /** @test */
+    /**  */
     public function lesson_progress_endpoint_returns_progress_data()
     {
         // Authenticate as student

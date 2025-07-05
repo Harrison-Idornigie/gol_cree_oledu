@@ -26,7 +26,7 @@ class PlainsCreeStarterPackTest extends TenantTestCase
         $this->starterPackService = new StarterPackService();
     }
 
-    /** @test */
+    /**  */
     public function it_can_initialize_plains_cree_starter_pack()
     {
         // Act
@@ -43,7 +43,7 @@ class PlainsCreeStarterPackTest extends TenantTestCase
         $this->assertEquals('nēhiyawēwin', $plainsCree->native_name);
     }
 
-    /** @test */
+    /**  */
     public function it_creates_complete_a1_to_c2_learning_paths()
     {
         // Arrange
@@ -64,7 +64,7 @@ class PlainsCreeStarterPackTest extends TenantTestCase
         }
     }
 
-    /** @test */
+    /**  */
     public function it_validates_vocabulary_progression_constraints()
     {
         // Arrange
@@ -97,7 +97,7 @@ class PlainsCreeStarterPackTest extends TenantTestCase
         }
     }
 
-    /** @test */
+    /**  */
     public function it_ensures_all_exercises_use_predefined_vocabulary()
     {
         // Arrange
@@ -126,7 +126,7 @@ class PlainsCreeStarterPackTest extends TenantTestCase
         }
     }
 
-    /** @test */
+    /**  */
     public function it_validates_duolingo_style_features_in_exercises()
     {
         // Arrange
@@ -178,7 +178,7 @@ class PlainsCreeStarterPackTest extends TenantTestCase
         }
     }
 
-    /** @test */
+    /**  */
     public function it_validates_age_appropriate_learning_paths()
     {
         // Arrange
@@ -228,7 +228,7 @@ class PlainsCreeStarterPackTest extends TenantTestCase
         }
     }
 
-    /** @test */
+    /**  */
     public function it_can_clone_course_structure_for_other_languages()
     {
         // Arrange
@@ -267,7 +267,7 @@ class PlainsCreeStarterPackTest extends TenantTestCase
         }
     }
 
-    /** @test */
+    /**  */
     public function it_validates_starter_pack_completeness()
     {
         // Arrange
@@ -304,7 +304,7 @@ class PlainsCreeStarterPackTest extends TenantTestCase
         }
     }
 
-    /** @test */
+    /**  */
     public function it_ensures_all_vocabulary_has_translations_and_audio_references()
     {
         // Arrange

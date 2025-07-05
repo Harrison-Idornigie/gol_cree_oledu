@@ -134,8 +134,7 @@ class StudentWordControllerTest extends TenantTestCase
         });
     }
 
-    /** @test */
-    public function student_can_list_words_with_basic_filters()
+    public function test_student_can_list_words_with_basic_filters()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
@@ -170,8 +169,7 @@ class StudentWordControllerTest extends TenantTestCase
         $this->assertCount(4, $response->json('data.data'));
     }
 
-    /** @test */
-    public function student_can_filter_words_by_language()
+    public function test_student_can_filter_words_by_language()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
@@ -204,7 +202,7 @@ class StudentWordControllerTest extends TenantTestCase
         }
     }
 
-    /** @test */
+    /**  */
     public function student_can_search_words_by_text()
     {
         // Authenticate as student
@@ -229,7 +227,7 @@ class StudentWordControllerTest extends TenantTestCase
         $this->assertTrue($found, 'Search should return words containing the search term');
     }
 
-    /** @test */
+    /**  */
     public function student_can_filter_words_by_part_of_speech()
     {
         // Authenticate as student
@@ -246,7 +244,7 @@ class StudentWordControllerTest extends TenantTestCase
         }
     }
 
-    /** @test */
+    /**  */
     public function student_can_view_individual_word_with_syllabics()
     {
         // Authenticate as student
@@ -288,7 +286,7 @@ class StudentWordControllerTest extends TenantTestCase
             ]);
     }
 
-    /** @test */
+    /**  */
     public function student_can_get_word_translations()
     {
         // Authenticate as student
@@ -327,7 +325,7 @@ class StudentWordControllerTest extends TenantTestCase
         $this->assertContains('hello', $translationTexts);
     }
 
-    /** @test */
+    /**  */
     public function student_can_get_word_translations_for_specific_language()
     {
         // Authenticate as student
@@ -346,7 +344,7 @@ class StudentWordControllerTest extends TenantTestCase
         }
     }
 
-    /** @test */
+    /**  */
     public function student_can_get_batch_words()
     {
         // Authenticate as student
@@ -393,14 +391,14 @@ class StudentWordControllerTest extends TenantTestCase
         }
     }
 
-    /** @test */
+    /**  */
     public function student_cannot_access_words_from_other_tenants()
     {
         // Create another tenant with a word
         $otherTenant = $this->createTestTenant('other-tenant');
         $otherWord = null;
 
-        $this->runInTenantContext($otherTenant, function () use (&$otherWord) {
+        $this->runInTenantContext($otherTenant, function () use (&$otherWord, $otherTenant) {
             $language = Language::create([
                 'name' => 'Test Language',
                 'code' => 'test',
@@ -416,12 +414,16 @@ class StudentWordControllerTest extends TenantTestCase
                 'language_id' => $language->id,
                 'part_of_speech' => 'noun',
                 'status' => 'published',
-                'created_by' => $otherUser->id
+                'created_by' => $otherUser->id,
+                'tenant_id' => $otherTenant->id  // Explicitly set tenant_id
             ]);
         });
 
         // Authenticate as student in original tenant
         Sanctum::actingAs($this->studentUser, [], 'tenant');
+
+        // Ensure we're in the correct tenant context for the API call
+        tenancy()->initialize($this->tenant);
 
         // Try to access word from other tenant
         $response = $this->getJson("/api/{$this->tenant->slug}/student/words/{$otherWord->id}");
@@ -433,7 +435,7 @@ class StudentWordControllerTest extends TenantTestCase
             ]);
     }
 
-    /** @test */
+    /**  */
     public function student_cannot_access_unpublished_words()
     {
         // Create an unpublished word
@@ -457,7 +459,7 @@ class StudentWordControllerTest extends TenantTestCase
         $response->assertStatus(403);
     }
 
-    /** @test */
+    /**  */
     public function unauthorized_user_cannot_access_words()
     {
         // Not authenticated
@@ -465,7 +467,7 @@ class StudentWordControllerTest extends TenantTestCase
         $response->assertStatus(401);
     }
 
-    /** @test */
+    /**  */
     public function student_can_paginate_through_words()
     {
         // Authenticate as student
@@ -491,7 +493,7 @@ class StudentWordControllerTest extends TenantTestCase
         $this->assertLessThanOrEqual(2, count($data['data']));
     }
 
-    /** @test */
+    /**  */
     public function student_can_sort_words()
     {
         // Authenticate as student
@@ -512,7 +514,7 @@ class StudentWordControllerTest extends TenantTestCase
         $this->assertEquals($sortedTexts, $texts);
     }
 
-    /** @test */
+    /**  */
     public function student_can_filter_words_by_proficiency_level()
     {
         // Authenticate as student
@@ -529,7 +531,7 @@ class StudentWordControllerTest extends TenantTestCase
         }
     }
 
-    /** @test */
+    /**  */
     public function student_can_get_vocabulary_progression_constraints()
     {
         // Authenticate as student
@@ -547,7 +549,7 @@ class StudentWordControllerTest extends TenantTestCase
         }
     }
 
-    /** @test */
+    /**  */
     public function student_can_access_syllabics_content()
     {
         // Authenticate as student
@@ -574,7 +576,7 @@ class StudentWordControllerTest extends TenantTestCase
         $this->assertEquals('ᑕᓂᓯ', $wordData['metadata']['syllabics']);
     }
 
-    /** @test */
+    /**  */
     public function student_can_get_audio_pronunciation_urls()
     {
         // Authenticate as student
@@ -592,7 +594,7 @@ class StudentWordControllerTest extends TenantTestCase
         }
     }
 
-    /** @test */
+    /**  */
     public function student_can_get_cultural_context_information()
     {
         // Authenticate as student

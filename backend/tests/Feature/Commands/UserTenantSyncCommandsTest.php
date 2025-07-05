@@ -18,7 +18,7 @@ class UserTenantSyncCommandsTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         // Create test tenants
         $this->tenant1 = Tenant::create([
             'name' => 'Test District 1',
@@ -29,13 +29,13 @@ class UserTenantSyncCommandsTest extends TestCase
 
         $this->tenant2 = Tenant::create([
             'name' => 'Test District 2',
-            'slug' => 'test-district-2', 
+            'slug' => 'test-district-2',
             'status' => 'active',
             'database_name' => 'tenant_test_2',
         ]);
     }
 
-    /** @test */
+    /**  */
     public function sync_command_shows_dry_run_results()
     {
         $this->artisan('tenant:sync-user-associations --dry-run')
@@ -43,7 +43,7 @@ class UserTenantSyncCommandsTest extends TestCase
             ->assertExitCode(0);
     }
 
-    /** @test */
+    /**  */
     public function sync_command_can_target_specific_tenant()
     {
         $this->artisan('tenant:sync-user-associations --tenant=test-district-1 --dry-run')
@@ -51,7 +51,7 @@ class UserTenantSyncCommandsTest extends TestCase
             ->assertExitCode(0);
     }
 
-    /** @test */
+    /**  */
     public function sync_command_handles_non_existent_tenant()
     {
         $this->artisan('tenant:sync-user-associations --tenant=non-existent --dry-run')
@@ -59,7 +59,7 @@ class UserTenantSyncCommandsTest extends TestCase
             ->assertExitCode(1);
     }
 
-    /** @test */
+    /**  */
     public function verify_command_works_with_no_associations()
     {
         $this->artisan('tenant:verify-user-associations --sample=1')
@@ -67,7 +67,7 @@ class UserTenantSyncCommandsTest extends TestCase
             ->assertExitCode(0);
     }
 
-    /** @test */
+    /**  */
     public function verify_command_can_check_specific_user()
     {
         // Create test association
@@ -84,7 +84,7 @@ class UserTenantSyncCommandsTest extends TestCase
             ->assertExitCode(0); // Will be 0 since we can't verify against actual tenant DB in test
     }
 
-    /** @test */
+    /**  */
     public function cleanup_command_shows_dry_run_results()
     {
         $this->artisan('tenant:cleanup-associations --dry-run --all')
@@ -92,7 +92,7 @@ class UserTenantSyncCommandsTest extends TestCase
             ->assertExitCode(0);
     }
 
-    /** @test */
+    /**  */
     public function cleanup_command_requires_cleanup_type()
     {
         $this->artisan('tenant:cleanup-associations')
@@ -100,7 +100,7 @@ class UserTenantSyncCommandsTest extends TestCase
             ->assertExitCode(1);
     }
 
-    /** @test */
+    /**  */
     public function cleanup_command_finds_orphaned_associations()
     {
         // Create association for non-existent tenant
@@ -117,7 +117,7 @@ class UserTenantSyncCommandsTest extends TestCase
             ->assertExitCode(0);
     }
 
-    /** @test */
+    /**  */
     public function cleanup_command_finds_inactive_tenant_associations()
     {
         // Create inactive tenant
@@ -142,7 +142,7 @@ class UserTenantSyncCommandsTest extends TestCase
             ->assertExitCode(0);
     }
 
-    /** @test */
+    /**  */
     public function cleanup_command_finds_duplicate_associations()
     {
         // Create duplicate associations
@@ -167,7 +167,7 @@ class UserTenantSyncCommandsTest extends TestCase
             ->assertExitCode(0);
     }
 
-    /** @test */
+    /**  */
     public function cleanup_command_actually_removes_orphaned_when_not_dry_run()
     {
         // Create orphaned association
@@ -188,7 +188,7 @@ class UserTenantSyncCommandsTest extends TestCase
         $this->assertEquals(0, UserTenantAssociation::count());
     }
 
-    /** @test */
+    /**  */
     public function commands_handle_empty_database_gracefully()
     {
         // Test all commands with empty database
@@ -202,7 +202,7 @@ class UserTenantSyncCommandsTest extends TestCase
             ->assertExitCode(0);
     }
 
-    /** @test */
+    /**  */
     public function commands_show_helpful_output_for_users()
     {
         // Test that commands provide clear, helpful output
@@ -215,14 +215,14 @@ class UserTenantSyncCommandsTest extends TestCase
             ->expectsOutput('💡 Run without --dry-run to perform actual cleanup');
     }
 
-    /** @test */
+    /**  */
     public function sync_command_respects_chunk_size()
     {
         $this->artisan('tenant:sync-user-associations --chunk=50 --dry-run')
             ->assertExitCode(0);
     }
 
-    /** @test */
+    /**  */
     public function verify_command_respects_sample_size()
     {
         $this->artisan('tenant:verify-user-associations --sample=5')

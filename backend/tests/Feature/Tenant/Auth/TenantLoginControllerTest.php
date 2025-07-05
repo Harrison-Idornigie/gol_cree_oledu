@@ -60,7 +60,7 @@ class TenantLoginControllerTest extends TenantTestCase
         parent::tearDown();
     }
 
-    /** @test */
+    /**  */
     public function user_can_login_with_valid_credentials()
     {
         $response = $this->postJson("/api/{$this->tenant->slug}/auth/tenant-login", [
@@ -103,7 +103,7 @@ class TenantLoginControllerTest extends TenantTestCase
         $this->assertNotEmpty($response->json('data.token'));
     }
 
-    /** @test */
+    /**  */
     public function login_fails_with_incorrect_password()
     {
         $response = $this->postJson("/api/{$this->tenant->slug}/auth/tenant-login", [
@@ -119,7 +119,7 @@ class TenantLoginControllerTest extends TenantTestCase
             ]);
     }
 
-    /** @test */
+    /**  */
     public function login_fails_with_nonexistent_email()
     {
         $response = $this->postJson("/api/{$this->tenant->slug}/auth/tenant-login", [
@@ -135,7 +135,7 @@ class TenantLoginControllerTest extends TenantTestCase
             ]);
     }
 
-    /** @test */
+    /**  */
     public function login_requires_device_name()
     {
         $response = $this->postJson("/api/{$this->tenant->slug}/auth/tenant-login", [
@@ -148,7 +148,7 @@ class TenantLoginControllerTest extends TenantTestCase
             ->assertJsonValidationErrors(['device_name']);
     }
 
-    /** @test */
+    /**  */
     public function user_can_logout()
     {
         // First login to get a token
@@ -179,7 +179,7 @@ class TenantLoginControllerTest extends TenantTestCase
         $verifyResponse->assertStatus(401);
     }
 
-    /** @test */
+    /**  */
     public function user_can_get_list_of_tenants()
     {
         // First login to get authenticated
@@ -197,7 +197,7 @@ class TenantLoginControllerTest extends TenantTestCase
             ]);
     }
 
-    /** @test */
+    /**  */
     public function unverified_user_can_still_login()
     {
         // Create an unverified user
@@ -241,7 +241,7 @@ class TenantLoginControllerTest extends TenantTestCase
             ]);
     }
 
-    /** @test */
+    /**  */
     public function login_validates_email_format()
     {
         $response = $this->postJson("/api/{$this->tenant->slug}/auth/tenant-login", [

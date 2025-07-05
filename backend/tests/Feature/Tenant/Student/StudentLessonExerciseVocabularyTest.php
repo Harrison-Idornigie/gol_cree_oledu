@@ -350,7 +350,7 @@ class StudentLessonExerciseVocabularyTest extends TenantTestCase
         return $questions;
     }
 
-    /** @test */
+    /**  */
     public function student_can_access_lessons_with_vocabulary_constraints()
     {
         // Enroll student in learning path
@@ -393,7 +393,7 @@ class StudentLessonExerciseVocabularyTest extends TenantTestCase
         $this->assertEquals(['A1', 'A2'], $a2Lesson['metadata']['vocabulary_constraints']);
     }
 
-    /** @test */
+    /**  */
     public function student_can_access_lesson_with_duolingo_features()
     {
         // Enroll student in learning path
@@ -444,7 +444,7 @@ class StudentLessonExerciseVocabularyTest extends TenantTestCase
         $this->assertTrue($lessonData['metadata']['duolingo_features']['syllabics_display']);
     }
 
-    /** @test */
+    /**  */
     public function student_can_access_exercises_with_vocabulary_level_constraints()
     {
         // Enroll student in learning path
@@ -491,7 +491,7 @@ class StudentLessonExerciseVocabularyTest extends TenantTestCase
         }
     }
 
-    /** @test */
+    /**  */
     public function student_can_access_exercise_with_syllabics_and_audio()
     {
         // Enroll student in learning path
@@ -520,7 +520,7 @@ class StudentLessonExerciseVocabularyTest extends TenantTestCase
         }
     }
 
-    /** @test */
+    /**  */
     public function student_can_submit_exercise_answer_and_get_feedback()
     {
         // Enroll student in learning path
@@ -586,7 +586,8 @@ class StudentLessonExerciseVocabularyTest extends TenantTestCase
     protected function createTenantStudent(array $attributes = []): User
     {
         return $this->runInTenantContext($this->tenant, function () use ($attributes) {
-            return User::factory()->create(array_merge(['email' => 'student@test.com',
+            return User::factory()->create(array_merge([
+                'email' => 'student@test.com',
                 'membership' => 'student',
                 'email_verified_at' => now(),
             ], $attributes));
@@ -596,7 +597,8 @@ class StudentLessonExerciseVocabularyTest extends TenantTestCase
     protected function createTenantTeam(array $attributes = []): User
     {
         return $this->runInTenantContext($this->tenant, function () use ($attributes) {
-            return User::factory()->create(array_merge(['email' => 'team@test.com',
+            return User::factory()->create(array_merge([
+                'email' => 'team@test.com',
                 'membership' => 'team',
                 'email_verified_at' => now(),
             ], $attributes));

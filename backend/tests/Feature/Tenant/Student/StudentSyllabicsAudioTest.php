@@ -291,7 +291,7 @@ class StudentSyllabicsAudioTest extends TenantTestCase
         });
     }
 
-    /** @test */
+    /**  */
     public function student_can_access_syllabics_vocabulary_with_audio()
     {
         // Authenticate as student
@@ -335,7 +335,7 @@ class StudentSyllabicsAudioTest extends TenantTestCase
         }
     }
 
-    /** @test */
+    /**  */
     public function student_can_access_individual_word_with_syllabics_breakdown()
     {
         // Authenticate as student
@@ -375,7 +375,7 @@ class StudentSyllabicsAudioTest extends TenantTestCase
         $this->assertTrue($wordData['metadata']['syllabics_interactive']);
     }
 
-    /** @test */
+    /**  */
     public function student_can_access_syllabics_learning_content()
     {
         // Enroll student in learning path
@@ -412,7 +412,7 @@ class StudentSyllabicsAudioTest extends TenantTestCase
         $this->assertTrue($pathData['metadata']['elder_involvement']);
     }
 
-    /** @test */
+    /**  */
     public function student_can_access_syllabics_exercise_with_audio_features()
     {
         // Enroll student in learning path
@@ -473,7 +473,7 @@ class StudentSyllabicsAudioTest extends TenantTestCase
         }
     }
 
-    /** @test */
+    /**  */
     public function student_can_get_audio_pronunciation_variants()
     {
         // Authenticate as student
@@ -497,7 +497,7 @@ class StudentSyllabicsAudioTest extends TenantTestCase
         $this->assertStringContainsString('audio/crk/elder/nīpiy.mp3', $wordData['metadata']['audio_elder_url']);
     }
 
-    /** @test */
+    /**  */
     public function student_can_access_cultural_context_with_ceremony_usage()
     {
         // Authenticate as student
@@ -515,7 +515,7 @@ class StudentSyllabicsAudioTest extends TenantTestCase
         $this->assertEquals('Invoked for strength and healing in ceremonies', $wordData['metadata']['ceremony_usage']);
     }
 
-    /** @test */
+    /**  */
     public function student_can_filter_words_by_syllabics_features()
     {
         // Authenticate as student
@@ -535,7 +535,7 @@ class StudentSyllabicsAudioTest extends TenantTestCase
         }
     }
 
-    /** @test */
+    /**  */
     public function student_can_access_topic_with_syllabics_characters()
     {
         // Enroll student in learning path
@@ -571,7 +571,7 @@ class StudentSyllabicsAudioTest extends TenantTestCase
         $this->assertTrue($topicData['metadata']['interactive_practice']);
     }
 
-    /** @test */
+    /**  */
     public function student_can_submit_syllabics_exercise_answer()
     {
         // Enroll student in learning path

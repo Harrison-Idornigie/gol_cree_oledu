@@ -70,7 +70,7 @@ class TenantAuthControllerTest extends TenantTestCase
 
     // ==================== PASSWORD RESET TESTS ====================
 
-    /** @test */
+    /**  */
     public function user_can_request_password_reset_with_valid_email()
     {
         Notification::fake();
@@ -89,7 +89,7 @@ class TenantAuthControllerTest extends TenantTestCase
         Notification::assertSentTo($this->user, ResetPasswordNotification::class);
     }
 
-    /** @test */
+    /**  */
     public function password_reset_request_validates_email_format()
     {
         $response = $this->postJson("/api/{$this->tenant->slug}/auth/password/email", [
@@ -100,7 +100,7 @@ class TenantAuthControllerTest extends TenantTestCase
         $response->assertJsonValidationErrors(['email']);
     }
 
-    /** @test */
+    /**  */
     public function password_reset_request_requires_email()
     {
         $response = $this->postJson("/api/{$this->tenant->slug}/auth/password/email", []);
@@ -109,7 +109,7 @@ class TenantAuthControllerTest extends TenantTestCase
         $response->assertJsonValidationErrors(['email']);
     }
 
-    /** @test */
+    /**  */
     public function user_can_reset_password_with_valid_token()
     {
         $this->runInTenantContext($this->tenant, function () {
@@ -143,7 +143,7 @@ class TenantAuthControllerTest extends TenantTestCase
         });
     }
 
-    /** @test */
+    /**  */
     public function password_reset_validates_required_fields()
     {
         $response = $this->postJson("/api/{$this->tenant->slug}/auth/password/reset", []);
@@ -152,7 +152,7 @@ class TenantAuthControllerTest extends TenantTestCase
         $response->assertJsonValidationErrors(['token', 'email', 'password']);
     }
 
-    /** @test */
+    /**  */
     public function password_reset_requires_password_confirmation()
     {
         $this->runInTenantContext($this->tenant, function () {
@@ -178,7 +178,7 @@ class TenantAuthControllerTest extends TenantTestCase
 
     // ==================== EMAIL VERIFICATION TESTS ====================
 
-    /** @test */
+    /**  */
     public function user_can_verify_email_with_valid_link()
     {
         // Skip this test for now due to signed URL complexity in testing
@@ -212,7 +212,7 @@ class TenantAuthControllerTest extends TenantTestCase
         });
     }
 
-    /** @test */
+    /**  */
     public function email_verification_fails_with_invalid_hash()
     {
         // Skip this test for now due to signed URL complexity in testing
@@ -227,7 +227,7 @@ class TenantAuthControllerTest extends TenantTestCase
         ]);
     }
 
-    /** @test */
+    /**  */
     public function authenticated_user_can_request_verification_email()
     {
         Notification::fake();
@@ -257,7 +257,7 @@ class TenantAuthControllerTest extends TenantTestCase
         });
     }
 
-    /** @test */
+    /**  */
     public function already_verified_user_cannot_request_verification_email()
     {
         // Create a verified user within the test to ensure proper setup
@@ -286,7 +286,7 @@ class TenantAuthControllerTest extends TenantTestCase
 
     // ==================== USER REGISTRATION TESTS ====================
 
-    /** @test */
+    /**  */
     public function user_can_register_with_valid_data()
     {
         Notification::fake();
@@ -329,7 +329,7 @@ class TenantAuthControllerTest extends TenantTestCase
         });
     }
 
-    /** @test */
+    /**  */
     public function user_registration_validates_required_fields()
     {
         $response = $this->postJson("/api/{$this->tenant->slug}/auth/register", []);
@@ -338,7 +338,7 @@ class TenantAuthControllerTest extends TenantTestCase
         $response->assertJsonValidationErrors(['name', 'email', 'password']);
     }
 
-    /** @test */
+    /**  */
     public function user_registration_prevents_duplicate_emails()
     {
         $userData = [
@@ -354,7 +354,7 @@ class TenantAuthControllerTest extends TenantTestCase
         $response->assertJsonValidationErrors(['email']);
     }
 
-    /** @test */
+    /**  */
     public function user_registration_requires_password_confirmation()
     {
         $userData = [
@@ -372,7 +372,7 @@ class TenantAuthControllerTest extends TenantTestCase
 
     // ==================== USER PROFILE TESTS ====================
 
-    /** @test */
+    /**  */
     public function authenticated_user_can_get_profile()
     {
         Sanctum::actingAs($this->user, [], 'tenant');
@@ -406,7 +406,7 @@ class TenantAuthControllerTest extends TenantTestCase
         ]);
     }
 
-    /** @test */
+    /**  */
     public function unauthenticated_user_cannot_get_profile()
     {
         $response = $this->getJson("/api/{$this->tenant->slug}/auth/me");
@@ -419,7 +419,7 @@ class TenantAuthControllerTest extends TenantTestCase
 
     // ==================== ADMIN INVITATION TESTS ====================
 
-    /** @test */
+    /**  */
     public function admin_can_send_invitation()
     {
         Sanctum::actingAs($this->adminUser, [], 'tenant');
@@ -452,7 +452,7 @@ class TenantAuthControllerTest extends TenantTestCase
         });
     }
 
-    /** @test */
+    /**  */
     public function admin_invite_validates_email_format()
     {
         Sanctum::actingAs($this->adminUser, [], 'tenant');
@@ -465,7 +465,7 @@ class TenantAuthControllerTest extends TenantTestCase
         $response->assertJsonValidationErrors(['email']);
     }
 
-    /** @test */
+    /**  */
     public function admin_invite_prevents_duplicate_user_emails()
     {
         Sanctum::actingAs($this->adminUser, [], 'tenant');
@@ -478,7 +478,7 @@ class TenantAuthControllerTest extends TenantTestCase
         $response->assertJsonValidationErrors(['email']);
     }
 
-    /** @test */
+    /**  */
     public function admin_invite_prevents_duplicate_pending_invites()
     {
         Sanctum::actingAs($this->adminUser, [], 'tenant');
@@ -508,7 +508,7 @@ class TenantAuthControllerTest extends TenantTestCase
         ]);
     }
 
-    /** @test */
+    /**  */
     public function non_admin_user_cannot_send_invites()
     {
         Sanctum::actingAs($this->user, [], 'tenant'); // Regular user, not admin
@@ -524,7 +524,7 @@ class TenantAuthControllerTest extends TenantTestCase
         ]);
     }
 
-    /** @test */
+    /**  */
     public function unauthenticated_user_cannot_send_invites()
     {
         $response = $this->postJson("/api/{$this->tenant->slug}/auth/admin-invite", [
@@ -534,7 +534,7 @@ class TenantAuthControllerTest extends TenantTestCase
         $response->assertStatus(401);
     }
 
-    /** @test */
+    /**  */
     public function user_can_register_with_valid_admin_invite_token()
     {
         $email = 'invited@example.com';
@@ -578,7 +578,7 @@ class TenantAuthControllerTest extends TenantTestCase
         });
     }
 
-    /** @test */
+    /**  */
     public function user_cannot_register_with_invalid_invite_token()
     {
         $userData = [
@@ -600,7 +600,7 @@ class TenantAuthControllerTest extends TenantTestCase
 
     // ==================== GOOGLE OAUTH TESTS ====================
 
-    /** @test */
+    /**  */
     public function user_can_get_google_auth_url()
     {
         $response = $this->postJson("/api/{$this->tenant->slug}/auth/google/url", [
@@ -622,7 +622,7 @@ class TenantAuthControllerTest extends TenantTestCase
         $this->assertNotEmpty($data['state']);
     }
 
-    /** @test */
+    /**  */
     public function google_auth_url_validates_client_type()
     {
         $response = $this->postJson("/api/{$this->tenant->slug}/auth/google/url", [
@@ -633,7 +633,7 @@ class TenantAuthControllerTest extends TenantTestCase
         $response->assertJsonValidationErrors(['client_type']);
     }
 
-    /** @test */
+    /**  */
     public function google_auth_url_requires_client_type()
     {
         $response = $this->postJson("/api/{$this->tenant->slug}/auth/google/url", []);
@@ -642,7 +642,7 @@ class TenantAuthControllerTest extends TenantTestCase
         $response->assertJsonValidationErrors(['client_type']);
     }
 
-    /** @test */
+    /**  */
     public function google_callback_validates_required_fields()
     {
         $response = $this->postJson("/api/{$this->tenant->slug}/auth/google/callback", []);
@@ -657,7 +657,7 @@ class TenantAuthControllerTest extends TenantTestCase
 
     // ==================== INTEGRATION TESTS ====================
 
-    /** @test */
+    /**  */
     public function complete_user_registration_and_verification_flow()
     {
         Notification::fake();
@@ -700,7 +700,7 @@ class TenantAuthControllerTest extends TenantTestCase
         ]);
     }
 
-    /** @test */
+    /**  */
     public function complete_admin_invite_and_registration_flow()
     {
         Sanctum::actingAs($this->adminUser, [], 'tenant');

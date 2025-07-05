@@ -38,7 +38,7 @@ class StudentUserSettingsControllerTest extends TenantTestCase
         $this->frenchLanguage = $this->createLanguage(['code' => 'fr', 'name' => 'French']);
     }
 
-    /** @test */
+    /**  */
     public function student_can_get_user_settings()
     {
         Sanctum::actingAs($this->studentUser, ['*'], 'tenant');
@@ -62,7 +62,7 @@ class StudentUserSettingsControllerTest extends TenantTestCase
             ]);
     }
 
-    /** @test */
+    /**  */
     public function student_can_update_user_settings()
     {
         Sanctum::actingAs($this->studentUser, ['*'], 'tenant');
@@ -107,7 +107,7 @@ class StudentUserSettingsControllerTest extends TenantTestCase
             ]);
     }
 
-    /** @test */
+    /**  */
     public function student_settings_validates_interface_language()
     {
         Sanctum::actingAs($this->studentUser, ['*'], 'tenant');
@@ -120,7 +120,7 @@ class StudentUserSettingsControllerTest extends TenantTestCase
             ->assertJsonValidationErrors(['interface_language']);
     }
 
-    /** @test */
+    /**  */
     public function student_settings_validates_daily_goal()
     {
         Sanctum::actingAs($this->studentUser, ['*'], 'tenant');
@@ -135,7 +135,7 @@ class StudentUserSettingsControllerTest extends TenantTestCase
             ->assertJsonValidationErrors(['learning_preferences.daily_goal_minutes']);
     }
 
-    /** @test */
+    /**  */
     public function student_settings_validates_difficulty_preference()
     {
         Sanctum::actingAs($this->studentUser, ['*'], 'tenant');
@@ -150,7 +150,7 @@ class StudentUserSettingsControllerTest extends TenantTestCase
             ->assertJsonValidationErrors(['learning_preferences.difficulty_preference']);
     }
 
-    /** @test */
+    /**  */
     public function team_members_cannot_access_student_settings()
     {
         Sanctum::actingAs($this->teamUser, ['*'], 'tenant');
@@ -164,7 +164,7 @@ class StudentUserSettingsControllerTest extends TenantTestCase
         $response->assertStatus(403);
     }
 
-    /** @test */
+    /**  */
     public function unauthenticated_users_cannot_access_settings()
     {
         $response = $this->getJson("/api/{$this->tenant->slug}/student/settings");
@@ -176,7 +176,7 @@ class StudentUserSettingsControllerTest extends TenantTestCase
         $response->assertStatus(401);
     }
 
-    /** @test */
+    /**  */
     public function student_settings_are_tenant_isolated()
     {
         $otherTenant = $this->createTestTenant('other-tenant');
@@ -188,7 +188,7 @@ class StudentUserSettingsControllerTest extends TenantTestCase
         $response->assertStatus(404);
     }
 
-    /** @test */
+    /**  */
     public function student_can_partially_update_settings()
     {
         Sanctum::actingAs($this->studentUser, ['*'], 'tenant');
@@ -213,7 +213,7 @@ class StudentUserSettingsControllerTest extends TenantTestCase
             ]);
     }
 
-    /** @test */
+    /**  */
     public function student_settings_persist_across_requests()
     {
         Sanctum::actingAs($this->studentUser, ['*'], 'tenant');

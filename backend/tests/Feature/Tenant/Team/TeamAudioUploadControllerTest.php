@@ -108,7 +108,7 @@ class TeamAudioUploadControllerTest extends TenantTestCase
         });
     }
 
-    /** @test */
+    /**  */
     public function team_member_can_upload_slow_audio_for_sentence()
     {
         $sentence = $this->createSentence();
@@ -135,7 +135,7 @@ class TeamAudioUploadControllerTest extends TenantTestCase
             ]);
     }
 
-    /** @test */
+    /**  */
     public function team_member_can_upload_audio_for_sentence_translation()
     {
         $sentence = $this->createSentence();
@@ -163,7 +163,7 @@ class TeamAudioUploadControllerTest extends TenantTestCase
             ]);
     }
 
-    /** @test */
+    /**  */
     public function team_member_can_upload_audio_for_word_translation()
     {
         $word = $this->createWord();
@@ -191,7 +191,7 @@ class TeamAudioUploadControllerTest extends TenantTestCase
             ]);
     }
 
-    /** @test */
+    /**  */
     public function audio_upload_validates_file_type()
     {
         $sentence = $this->createSentence();
@@ -209,7 +209,7 @@ class TeamAudioUploadControllerTest extends TenantTestCase
             ->assertJsonValidationErrors(['audio']);
     }
 
-    /** @test */
+    /**  */
     public function audio_upload_validates_file_size()
     {
         $sentence = $this->createSentence();
@@ -227,7 +227,7 @@ class TeamAudioUploadControllerTest extends TenantTestCase
             ->assertJsonValidationErrors(['audio']);
     }
 
-    /** @test */
+    /**  */
     public function audio_upload_requires_authentication()
     {
         $sentence = $this->createSentence();
@@ -240,7 +240,7 @@ class TeamAudioUploadControllerTest extends TenantTestCase
         $response->assertStatus(401);
     }
 
-    /** @test */
+    /**  */
     public function students_cannot_upload_audio()
     {
         $sentence = $this->createSentence();
@@ -256,7 +256,7 @@ class TeamAudioUploadControllerTest extends TenantTestCase
         $response->assertStatus(403);
     }
 
-    /** @test */
+    /**  */
     public function audio_upload_returns_404_for_nonexistent_sentence()
     {
         Sanctum::actingAs($this->teamUser, ['*'], 'tenant');
@@ -270,7 +270,7 @@ class TeamAudioUploadControllerTest extends TenantTestCase
         $response->assertStatus(404);
     }
 
-    /** @test */
+    /**  */
     public function audio_upload_returns_404_for_nonexistent_translation()
     {
         $sentence = $this->createSentence();
@@ -286,7 +286,7 @@ class TeamAudioUploadControllerTest extends TenantTestCase
         $response->assertStatus(404);
     }
 
-    /** @test */
+    /**  */
     public function audio_upload_is_tenant_isolated()
     {
         // Create sentence in current tenant

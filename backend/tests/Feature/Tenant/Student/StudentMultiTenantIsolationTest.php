@@ -247,7 +247,7 @@ class StudentMultiTenantIsolationTest extends TenantTestCase
         return $words;
     }
 
-    /** @test */
+    /**  */
     public function student_can_only_access_content_from_their_own_tenant()
     {
         // Authenticate as student from Tenant A
@@ -267,7 +267,7 @@ class StudentMultiTenantIsolationTest extends TenantTestCase
         $this->assertStringContainsString('Tenant A', $learningPath['title']);
     }
 
-    /** @test */
+    /**  */
     public function student_cannot_access_content_from_other_tenants()
     {
         // Authenticate as student from Tenant A
@@ -281,7 +281,7 @@ class StudentMultiTenantIsolationTest extends TenantTestCase
         $response->assertStatus(404);
     }
 
-    /** @test */
+    /**  */
     public function student_cannot_access_other_tenant_api_endpoints()
     {
         // Authenticate as student from Tenant A
@@ -294,7 +294,7 @@ class StudentMultiTenantIsolationTest extends TenantTestCase
         $response->assertStatus(401);
     }
 
-    /** @test */
+    /**  */
     public function tenant_specific_vocabulary_is_properly_isolated()
     {
         // Authenticate as student from Tenant A
@@ -313,7 +313,7 @@ class StudentMultiTenantIsolationTest extends TenantTestCase
         }
     }
 
-    /** @test */
+    /**  */
     public function starter_pack_system_works_correctly_across_tenants()
     {
         // Each tenant should have their own starter pack content
@@ -343,7 +343,7 @@ class StudentMultiTenantIsolationTest extends TenantTestCase
         $this->assertEquals('Tenant B specific content', $plainsCree['metadata']['tenant_customization']);
     }
 
-    /** @test */
+    /**  */
     public function tenant_enrollment_data_is_isolated()
     {
         // Enroll student A in Tenant A's learning path
@@ -375,7 +375,7 @@ class StudentMultiTenantIsolationTest extends TenantTestCase
         $this->assertEquals('B', $enrolledPath['metadata']['tenant_label']);
     }
 
-    /** @test */
+    /**  */
     public function tenant_progress_data_is_isolated()
     {
         // Enroll students and create progress
@@ -404,7 +404,7 @@ class StudentMultiTenantIsolationTest extends TenantTestCase
         $this->assertEquals($learningPath->id, $progressData['learning_path_id']);
     }
 
-    /** @test */
+    /**  */
     public function tenant_exercise_attempts_are_isolated()
     {
         // Enroll students
@@ -438,7 +438,7 @@ class StudentMultiTenantIsolationTest extends TenantTestCase
         $this->assertCount(1, $attempts); // Only student A's attempt
     }
 
-    /** @test */
+    /**  */
     public function cross_tenant_data_leakage_prevention()
     {
         // Try various cross-tenant access attempts that should all fail
@@ -462,7 +462,7 @@ class StudentMultiTenantIsolationTest extends TenantTestCase
         }
     }
 
-    /** @test */
+    /**  */
     public function tenant_customization_levels_are_respected()
     {
         // Tenant C has minimal customization (template-based)

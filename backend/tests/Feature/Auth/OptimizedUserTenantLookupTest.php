@@ -22,9 +22,9 @@ class OptimizedUserTenantLookupTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         $this->service = app(UserTenantAssociationService::class);
-        
+
         // Create test tenants
         $this->tenant1 = Tenant::create([
             'name' => 'Test School District 1',
@@ -34,14 +34,14 @@ class OptimizedUserTenantLookupTest extends TestCase
         ]);
 
         $this->tenant2 = Tenant::create([
-            'name' => 'Test School District 2', 
+            'name' => 'Test School District 2',
             'slug' => 'test-district-2',
             'status' => 'active',
             'database_name' => 'tenant_test_district_2',
         ]);
     }
 
-    /** @test */
+    /**  */
     public function it_uses_optimized_lookup_when_associations_exist()
     {
         // Create user tenant associations
@@ -69,21 +69,21 @@ class OptimizedUserTenantLookupTest extends TestCase
         $this->assertEquals('student', $tenants->first()['membership']);
     }
 
-    /** @test */
+    /**  */
     public function it_falls_back_to_legacy_when_no_associations_exist()
     {
         // Don't create any associations - should fall back to legacy method
-        
+
         // Mock tenant databases and users (this would normally be done by tenant setup)
         $this->mockTenantUser($this->tenant1, 'admin');
-        
+
         $tenants = $this->service->getUserTenants($this->testEmail);
-        
+
         // Should find user via legacy method
         $this->assertCount(1, $tenants);
     }
 
-    /** @test */
+    /**  */
     public function it_caches_user_tenant_lookups()
     {
         UserTenantAssociation::create([
@@ -106,12 +106,12 @@ class OptimizedUserTenantLookupTest extends TestCase
 
         // Results should be identical
         $this->assertEquals($tenants1->count(), $tenants2->count());
-        
+
         // Second call should be faster (cached)
         $this->assertLessThan($firstCallTime, $secondCallTime);
     }
 
-    /** @test */
+    /**  */
     public function it_handles_user_in_specific_tenant_optimized()
     {
         UserTenantAssociation::create([
@@ -129,15 +129,15 @@ class OptimizedUserTenantLookupTest extends TestCase
         $this->assertEquals('admin', $result['membership']);
     }
 
-    /** @test */
+    /**  */
     public function it_returns_null_for_non_existent_user_tenant_association()
     {
         $result = $this->service->getUserInTenant($this->testEmail, 'non-existent-tenant');
-        
+
         $this->assertNull($result);
     }
 
-    /** @test */
+    /**  */
     public function it_gets_primary_tenant_based_on_last_accessed()
     {
         // Create two associations with different access times
@@ -166,7 +166,7 @@ class OptimizedUserTenantLookupTest extends TestCase
         $this->assertEquals('team', $primary['membership']);
     }
 
-    /** @test */
+    /**  */
     public function it_updates_last_accessed_when_getting_user_in_tenant()
     {
         $association = UserTenantAssociation::create([
@@ -188,7 +188,7 @@ class OptimizedUserTenantLookupTest extends TestCase
         $this->assertGreaterThan($originalTime, $association->last_accessed_at);
     }
 
-    /** @test */
+    /**  */
     public function it_handles_inactive_tenants_correctly()
     {
         // Create association with inactive tenant
@@ -208,12 +208,12 @@ class OptimizedUserTenantLookupTest extends TestCase
         ]);
 
         $tenants = $this->service->getUserTenants($this->testEmail);
-        
+
         // Should not return inactive tenants
         $this->assertCount(0, $tenants);
     }
 
-    /** @test */
+    /**  */
     public function it_measures_performance_improvement()
     {
         // Create many tenant associations to test performance
@@ -234,7 +234,7 @@ class OptimizedUserTenantLookupTest extends TestCase
 
         // Verify results
         $this->assertGreaterThan(0, $tenants->count());
-        
+
         // Performance should be under 100ms for reasonable dataset
         $this->assertLessThan(0.1, $optimizedTime, 'Optimized lookup should be under 100ms');
     }
@@ -246,7 +246,7 @@ class OptimizedUserTenantLookupTest extends TestCase
     {
         // This is a simplified mock - in real tests you'd set up actual tenant databases
         // For now, we'll just verify the fallback mechanism works
-        
+
         // You could use tenant()->run() here if you have actual tenant databases set up
         // $tenant->run(function () use ($membership) {
         //     User::create([

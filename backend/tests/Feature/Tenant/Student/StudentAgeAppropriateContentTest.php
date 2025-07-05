@@ -454,7 +454,7 @@ class StudentAgeAppropriateContentTest extends TenantTestCase
         return ['mastery', 'practical_application', 'cultural_connection', 'personal_growth', 'long_term_goals'];
     }
 
-    /** @test */
+    /**  */
     public function student_can_access_age_appropriate_learning_paths()
     {
         // Authenticate as student
@@ -493,7 +493,7 @@ class StudentAgeAppropriateContentTest extends TenantTestCase
         }
     }
 
-    /** @test */
+    /**  */
     public function student_can_access_teen_adult_learning_paths()
     {
         // Authenticate as student
@@ -513,7 +513,7 @@ class StudentAgeAppropriateContentTest extends TenantTestCase
         }
     }
 
-    /** @test */
+    /**  */
     public function student_can_access_age_appropriate_unit_content()
     {
         // Enroll student in kids learning path

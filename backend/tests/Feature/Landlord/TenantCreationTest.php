@@ -17,7 +17,7 @@ class TenantCreationTest extends TenantTestCase
         $this->tenantService = app(TenantService::class);
     }
 
-    /** @test */
+    /**  */
     public function it_validates_tenant_data_properly()
     {
         $this->expectException(ValidationException::class);
@@ -36,7 +36,7 @@ class TenantCreationTest extends TenantTestCase
         $this->tenantService->createTenant($tenantData, $adminData);
     }
 
-    /** @test */
+    /**  */
     public function it_validates_admin_data_properly()
     {
         $this->expectException(ValidationException::class);
@@ -55,7 +55,7 @@ class TenantCreationTest extends TenantTestCase
         $this->tenantService->createTenant($tenantData, $adminData);
     }
 
-    /** @test */
+    /**  */
     public function it_prevents_duplicate_slugs()
     {
         // Create first tenant
@@ -81,7 +81,7 @@ class TenantCreationTest extends TenantTestCase
         $this->tenantService->createTenant($tenantData, $adminData);
     }
 
-    /** @test */
+    /**  */
     public function it_prevents_both_domain_and_subdomain()
     {
         $this->expectException(\Exception::class);
@@ -103,7 +103,7 @@ class TenantCreationTest extends TenantTestCase
         $this->tenantService->createTenant($tenantData, $adminData);
     }
 
-    /** @test */
+    /**  */
     public function it_can_update_tenant()
     {
         $tenant = Tenant::create([
@@ -125,7 +125,7 @@ class TenantCreationTest extends TenantTestCase
         $this->assertEquals('active', $updatedTenant->status);
     }
 
-    /** @test */
+    /**  */
     public function it_can_create_tenant_with_full_database_setup()
     {
         Event::fake();
@@ -166,7 +166,7 @@ class TenantCreationTest extends TenantTestCase
         $this->assertEquals('en', $adminUser->interface_language);
     }
 
-    /** @test */
+    /**  */
     public function it_can_create_tenant_with_domain()
     {
         $tenantData = [
@@ -189,7 +189,7 @@ class TenantCreationTest extends TenantTestCase
         $this->assertEquals('testschool.edu', $tenant->domains->first()->domain);
     }
 
-    /** @test */
+    /**  */
     public function it_can_create_tenant_with_subdomain()
     {
         $tenantData = [
@@ -214,7 +214,7 @@ class TenantCreationTest extends TenantTestCase
         $this->assertEquals($expectedDomain, $tenant->domains->first()->domain);
     }
 
-    /** @test */
+    /**  */
     public function it_can_delete_tenant()
     {
         Event::fake();
@@ -234,7 +234,7 @@ class TenantCreationTest extends TenantTestCase
         Event::assertDispatched(\App\Events\Landlord\TenantDeleting::class);
     }
 
-    /** @test */
+    /**  */
     public function it_can_test_tenant_service_with_mocked_database_creation()
     {
         Event::fake();

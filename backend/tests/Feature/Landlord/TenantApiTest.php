@@ -9,7 +9,7 @@ use Laravel\Sanctum\Sanctum;
 
 class TenantApiTest extends TenantTestCase
 {
-    /** @test */
+    /**  */
     public function it_can_create_tenant_via_api()
     {
         Event::fake();
@@ -33,7 +33,7 @@ class TenantApiTest extends TenantTestCase
         $this->assertTenantCreationEvents();
     }
 
-    /** @test */
+    /**  */
     public function it_requires_authentication_to_create_tenant()
     {
         $tenantData = [
@@ -48,7 +48,7 @@ class TenantApiTest extends TenantTestCase
         $response->assertStatus(401);
     }
 
-    /** @test */
+    /**  */
     public function it_requires_super_admin_membership_to_create_tenant()
     {
         // Create regular user
@@ -67,7 +67,7 @@ class TenantApiTest extends TenantTestCase
         $response->assertStatus(403);
     }
 
-    /** @test */
+    /**  */
     public function it_validates_required_fields_for_tenant_creation()
     {
         Sanctum::actingAs($this->superAdmin);
@@ -83,7 +83,7 @@ class TenantApiTest extends TenantTestCase
             ]);
     }
 
-    /** @test */
+    /**  */
     public function it_validates_email_format()
     {
         Sanctum::actingAs($this->superAdmin);
@@ -101,7 +101,7 @@ class TenantApiTest extends TenantTestCase
             ->assertJsonValidationErrors(['admin_email']);
     }
 
-    /** @test */
+    /**  */
     public function it_validates_unique_slug()
     {
         Sanctum::actingAs($this->superAdmin);
@@ -127,7 +127,7 @@ class TenantApiTest extends TenantTestCase
             ->assertJsonValidationErrors(['slug']);
     }
 
-    /** @test */
+    /**  */
     public function it_can_list_tenants()
     {
         Sanctum::actingAs($this->superAdmin);
@@ -162,7 +162,7 @@ class TenantApiTest extends TenantTestCase
             ]);
     }
 
-    /** @test */
+    /**  */
     public function it_can_show_specific_tenant()
     {
         Sanctum::actingAs($this->superAdmin);
@@ -187,7 +187,7 @@ class TenantApiTest extends TenantTestCase
             ]);
     }
 
-    /** @test */
+    /**  */
     public function it_can_update_tenant()
     {
         Sanctum::actingAs($this->superAdmin);
@@ -217,7 +217,7 @@ class TenantApiTest extends TenantTestCase
             ]);
     }
 
-    /** @test */
+    /**  */
     public function it_can_delete_tenant()
     {
         Event::fake();

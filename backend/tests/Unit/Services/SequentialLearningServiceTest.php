@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\Unit\Services;
 
 use App\Models\LearningPath;
@@ -84,13 +85,13 @@ class SequentialLearningServiceTest extends TestCase
         ]);
     }
 
-    /** @test */
+    /**  */
     public function first_unit_is_always_unlocked_when_enrolled()
     {
         $this->assertTrue($this->service->isUnitUnlocked($this->unit1));
     }
 
-    /** @test */
+    /**  */
     public function second_unit_is_locked_until_first_unit_is_completed()
     {
         // Initially the second unit should be locked
@@ -108,13 +109,13 @@ class SequentialLearningServiceTest extends TestCase
         $this->assertTrue($this->service->isUnitUnlocked($this->unit2));
     }
 
-    /** @test */
+    /**  */
     public function first_lesson_is_unlocked_when_unit_is_unlocked()
     {
         $this->assertTrue($this->service->isLessonUnlocked($this->lesson1));
     }
 
-    /** @test */
+    /**  */
     public function second_lesson_is_locked_until_first_lesson_is_completed()
     {
         // Initially the second lesson should be locked
@@ -132,13 +133,13 @@ class SequentialLearningServiceTest extends TestCase
         $this->assertTrue($this->service->isLessonUnlocked($this->lesson2));
     }
 
-    /** @test */
+    /**  */
     public function first_section_is_unlocked_when_lesson_is_unlocked()
     {
         $this->assertTrue($this->service->isSectionUnlocked($this->section1));
     }
 
-    /** @test */
+    /**  */
     public function second_section_is_locked_until_first_section_is_completed()
     {
         // Initially the second section should be locked
@@ -156,7 +157,7 @@ class SequentialLearningServiceTest extends TestCase
         $this->assertTrue($this->service->isSectionUnlocked($this->section2));
     }
 
-    /** @test */
+    /**  */
     public function section_is_unlocked_when_requires_previous_is_false()
     {
         // First verify that the lesson is unlocked
@@ -173,7 +174,7 @@ class SequentialLearningServiceTest extends TestCase
         $this->assertTrue($this->service->isSectionUnlocked($newSection));
     }
 
-    /** @test */
+    /**  */
     public function get_unlocked_units_returns_correct_units()
     {
         // Initially only the first unit should be unlocked
@@ -196,7 +197,7 @@ class SequentialLearningServiceTest extends TestCase
         $this->assertEquals($this->unit2->id, $unlockedUnits[1]);
     }
 
-    /** @test */
+    /**  */
     public function get_unlocked_lessons_returns_correct_lessons()
     {
         // Initially only the first lesson should be unlocked
