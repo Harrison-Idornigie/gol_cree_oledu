@@ -123,7 +123,7 @@ class TeamLessonControllerTest extends TenantTestCase
     /**
      * Test team member can list lessons
      * 
-     * @test
+     * 
      */
     public function test_team_member_can_list_lessons()
     {
@@ -159,7 +159,7 @@ class TeamLessonControllerTest extends TenantTestCase
     /**
      * Test team member can create lesson
      * 
-     * @test
+     * 
      */
     public function test_team_member_can_create_lesson()
     {
@@ -197,7 +197,7 @@ class TeamLessonControllerTest extends TenantTestCase
     /**
      * Test lesson creation validation
      * 
-     * @test
+     * 
      */
     public function test_lesson_creation_validation()
     {
@@ -232,7 +232,7 @@ class TeamLessonControllerTest extends TenantTestCase
     /**
      * Test team member can show lesson
      * 
-     * @test
+     * 
      */
     public function test_team_member_can_show_lesson()
     {
@@ -265,7 +265,7 @@ class TeamLessonControllerTest extends TenantTestCase
     /**
      * Test team member can update lesson
      * 
-     * @test
+     * 
      */
     public function test_team_member_can_update_lesson()
     {
@@ -302,7 +302,7 @@ class TeamLessonControllerTest extends TenantTestCase
     /**
      * Test team member can delete lesson
      * 
-     * @test
+     * 
      */
     public function test_team_member_can_delete_lesson()
     {
@@ -324,7 +324,7 @@ class TeamLessonControllerTest extends TenantTestCase
     /**
      * Test team member can submit lesson for review
      * 
-     * @test
+     * 
      */
     public function test_team_member_can_submit_lesson_for_review()
     {
@@ -350,7 +350,7 @@ class TeamLessonControllerTest extends TenantTestCase
     /**
      * Test team member can update lesson status
      * 
-     * @test
+     * 
      */
     public function test_team_member_can_update_lesson_status()
     {
@@ -376,7 +376,7 @@ class TeamLessonControllerTest extends TenantTestCase
     /**
      * Test team member can reorder lesson exercises
      * 
-     * @test
+     * 
      */
     public function test_team_member_can_reorder_lesson_exercises()
     {
@@ -402,7 +402,7 @@ class TeamLessonControllerTest extends TenantTestCase
     /**
      * Test students cannot access team lesson endpoints
      * 
-     * @test
+     * 
      */
     public function test_students_cannot_access_team_lesson_endpoints()
     {
@@ -432,7 +432,7 @@ class TeamLessonControllerTest extends TenantTestCase
     /**
      * Test unauthenticated access is blocked
      * 
-     * @test
+     * 
      */
     public function test_unauthenticated_access_blocked()
     {
@@ -449,7 +449,7 @@ class TeamLessonControllerTest extends TenantTestCase
     /**
      * Test nonexistent lesson returns 404
      * 
-     * @test
+     * 
      */
     public function test_nonexistent_lesson_returns_404()
     {
@@ -470,7 +470,7 @@ class TeamLessonControllerTest extends TenantTestCase
     /**
      * Test lesson with invalid content format is rejected
      * 
-     * @test
+     * 
      */
     public function test_lesson_with_invalid_content_format_is_rejected()
     {
@@ -491,7 +491,7 @@ class TeamLessonControllerTest extends TenantTestCase
     /**
      * Test cross-tenant isolation - lessons from different tenants should not be accessible
      * 
-     * @test
+     * 
      */
     public function test_cross_tenant_isolation()
     {

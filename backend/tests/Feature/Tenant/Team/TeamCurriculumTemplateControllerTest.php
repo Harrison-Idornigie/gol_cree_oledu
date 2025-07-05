@@ -122,7 +122,7 @@ class TeamCurriculumTemplateControllerTest extends TenantTestCase
     /**
      * Test team member can list curriculum templates
      * 
-     * @test
+     * 
      */
     public function test_team_member_can_list_curriculum_templates()
     {
@@ -159,7 +159,7 @@ class TeamCurriculumTemplateControllerTest extends TenantTestCase
     /**
      * Test team member can show curriculum template
      * 
-     * @test
+     * 
      */
     public function test_team_member_can_show_curriculum_template()
     {
@@ -195,7 +195,7 @@ class TeamCurriculumTemplateControllerTest extends TenantTestCase
     /**
      * Test team member can get curriculum template recommendations
      * 
-     * @test
+     * 
      */
     public function test_team_member_can_get_curriculum_template_recommendations()
     {
@@ -230,7 +230,7 @@ class TeamCurriculumTemplateControllerTest extends TenantTestCase
     /**
      * Test team member can preview curriculum template
      * 
-     * @test
+     * 
      */
     public function test_team_member_can_preview_curriculum_template()
     {
@@ -266,7 +266,7 @@ class TeamCurriculumTemplateControllerTest extends TenantTestCase
     /**
      * Test team member can get curriculum template effectiveness
      * 
-     * @test
+     * 
      */
     public function test_team_member_can_get_curriculum_template_effectiveness()
     {
@@ -295,7 +295,7 @@ class TeamCurriculumTemplateControllerTest extends TenantTestCase
     /**
      * Test team member can get curriculum template usage
      * 
-     * @test
+     * 
      */
     public function test_team_member_can_get_curriculum_template_usage()
     {
@@ -329,7 +329,7 @@ class TeamCurriculumTemplateControllerTest extends TenantTestCase
     /**
      * Test team member can instantiate curriculum template
      * 
-     * @test
+     * 
      */
     public function test_team_member_can_instantiate_curriculum_template()
     {
@@ -380,7 +380,7 @@ class TeamCurriculumTemplateControllerTest extends TenantTestCase
     /**
      * Test instantiation validation
      * 
-     * @test
+     * 
      */
     public function test_instantiation_validation()
     {
@@ -398,7 +398,7 @@ class TeamCurriculumTemplateControllerTest extends TenantTestCase
     /**
      * Test team member can customize curriculum template
      * 
-     * @test
+     * 
      */
     public function test_team_member_can_customize_curriculum_template()
     {
@@ -437,7 +437,7 @@ class TeamCurriculumTemplateControllerTest extends TenantTestCase
     /**
      * Test team member can validate curriculum template
      * 
-     * @test
+     * 
      */
     public function test_team_member_can_validate_curriculum_template()
     {
@@ -479,7 +479,7 @@ class TeamCurriculumTemplateControllerTest extends TenantTestCase
     /**
      * Test filtering templates by level
      * 
-     * @test
+     * 
      */
     public function test_filtering_templates_by_level()
     {
@@ -511,7 +511,7 @@ class TeamCurriculumTemplateControllerTest extends TenantTestCase
     /**
      * Test filtering templates by category
      * 
-     * @test
+     * 
      */
     public function test_filtering_templates_by_category()
     {
@@ -543,7 +543,7 @@ class TeamCurriculumTemplateControllerTest extends TenantTestCase
     /**
      * Test students cannot access team curriculum template endpoints
      * 
-     * @test
+     * 
      */
     public function test_students_cannot_access_team_curriculum_template_endpoints()
     {
@@ -567,7 +567,7 @@ class TeamCurriculumTemplateControllerTest extends TenantTestCase
     /**
      * Test unauthenticated access is blocked
      * 
-     * @test
+     * 
      */
     public function test_unauthenticated_access_blocked()
     {
@@ -581,7 +581,7 @@ class TeamCurriculumTemplateControllerTest extends TenantTestCase
     /**
      * Test nonexistent template returns 404
      * 
-     * @test
+     * 
      */
     public function test_nonexistent_template_returns_404()
     {

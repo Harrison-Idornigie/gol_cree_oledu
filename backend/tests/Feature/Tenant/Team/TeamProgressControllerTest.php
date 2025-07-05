@@ -107,7 +107,7 @@ class TeamProgressControllerTest extends TenantTestCase
     /**
      * Test team member can get progress overview
      * 
-     * @test
+     * 
      */
     public function test_team_member_can_get_progress_overview()
     {
@@ -131,7 +131,7 @@ class TeamProgressControllerTest extends TenantTestCase
     /**
      * Test team member can get their content progress
      * 
-     * @test
+     * 
      */
     public function test_team_member_can_get_my_content_progress()
     {
@@ -155,7 +155,7 @@ class TeamProgressControllerTest extends TenantTestCase
     /**
      * Test team member can get students progress
      * 
-     * @test
+     * 
      */
     public function test_team_member_can_get_students_progress()
     {
@@ -178,7 +178,7 @@ class TeamProgressControllerTest extends TenantTestCase
     /**
      * Test team member can get specific content progress
      * 
-     * @test
+     * 
      */
     public function test_team_member_can_get_specific_content_progress()
     {
@@ -229,7 +229,7 @@ class TeamProgressControllerTest extends TenantTestCase
     /**
      * Test progress endpoints with filters and pagination
      * 
-     * @test
+     * 
      */
     public function test_progress_endpoints_support_filters()
     {
@@ -262,7 +262,7 @@ class TeamProgressControllerTest extends TenantTestCase
     /**
      * Test students cannot access team progress endpoints
      * 
-     * @test
+     * 
      */
     public function test_students_cannot_access_team_progress_endpoints()
     {
@@ -284,7 +284,7 @@ class TeamProgressControllerTest extends TenantTestCase
     /**
      * Test unauthenticated access is blocked
      * 
-     * @test
+     * 
      */
     public function test_unauthenticated_access_blocked()
     {
@@ -301,7 +301,7 @@ class TeamProgressControllerTest extends TenantTestCase
     /**
      * Test nonexistent content returns 404
      * 
-     * @test
+     * 
      */
     public function test_nonexistent_content_returns_404()
     {
@@ -320,7 +320,7 @@ class TeamProgressControllerTest extends TenantTestCase
     /**
      * Test invalid content type returns 422
      * 
-     * @test
+     * 
      */
     public function test_invalid_content_type_returns_422()
     {
@@ -333,7 +333,7 @@ class TeamProgressControllerTest extends TenantTestCase
     /**
      * Test progress data includes correct team member filtering
      * 
-     * @test
+     * 
      */
     public function test_progress_data_filtered_by_team_member()
     {

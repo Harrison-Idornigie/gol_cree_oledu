@@ -115,7 +115,7 @@ class TeamGamificationControllerTest extends TenantTestCase
     /**
      * Test team member can get achievements overview
      * 
-     * @test
+     * 
      */
     public function test_team_member_can_get_achievements_overview()
     {
@@ -162,7 +162,7 @@ class TeamGamificationControllerTest extends TenantTestCase
     /**
      * Test team member can get detailed statistics
      * 
-     * @test
+     * 
      */
     public function test_team_member_can_get_detailed_statistics()
     {
@@ -213,7 +213,7 @@ class TeamGamificationControllerTest extends TenantTestCase
     /**
      * Test filtering achievements by type
      * 
-     * @test
+     * 
      */
     public function test_filtering_achievements_by_type()
     {
@@ -249,7 +249,7 @@ class TeamGamificationControllerTest extends TenantTestCase
     /**
      * Test filtering achievements by category
      * 
-     * @test
+     * 
      */
     public function test_filtering_achievements_by_category()
     {
@@ -285,7 +285,7 @@ class TeamGamificationControllerTest extends TenantTestCase
     /**
      * Test filtering statistics by date range
      * 
-     * @test
+     * 
      */
     public function test_filtering_statistics_by_date_range()
     {
@@ -318,7 +318,7 @@ class TeamGamificationControllerTest extends TenantTestCase
     /**
      * Test getting statistics by learning path
      * 
-     * @test
+     * 
      */
     public function test_getting_statistics_by_learning_path()
     {
@@ -346,7 +346,7 @@ class TeamGamificationControllerTest extends TenantTestCase
     /**
      * Test achievement engagement metrics
      * 
-     * @test
+     * 
      */
     public function test_achievement_engagement_metrics()
     {
@@ -368,7 +368,7 @@ class TeamGamificationControllerTest extends TenantTestCase
     /**
      * Test students cannot access team gamification endpoints
      * 
-     * @test
+     * 
      */
     public function test_students_cannot_access_team_gamification_endpoints()
     {
@@ -386,7 +386,7 @@ class TeamGamificationControllerTest extends TenantTestCase
     /**
      * Test unauthenticated access is blocked
      * 
-     * @test
+     * 
      */
     public function test_unauthenticated_access_blocked()
     {
@@ -400,7 +400,7 @@ class TeamGamificationControllerTest extends TenantTestCase
     /**
      * Test achievement statistics with no data
      * 
-     * @test
+     * 
      */
     public function test_achievement_statistics_with_no_data()
     {
@@ -416,7 +416,7 @@ class TeamGamificationControllerTest extends TenantTestCase
     /**
      * Test statistics export functionality
      * 
-     * @test
+     * 
      */
     public function test_statistics_export_functionality()
     {
@@ -447,7 +447,7 @@ class TeamGamificationControllerTest extends TenantTestCase
     /**
      * Test achievement performance analytics
      * 
-     * @test
+     * 
      */
     public function test_achievement_performance_analytics()
     {

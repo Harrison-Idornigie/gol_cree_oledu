@@ -151,7 +151,7 @@ class TeamExerciseControllerTest extends TenantTestCase
     /**
      * Test team member can list exercises
      *
-     * @test
+     * 
      */
     public function test_team_member_can_list_exercises()
     {
@@ -210,7 +210,7 @@ class TeamExerciseControllerTest extends TenantTestCase
     /**
      * Test team member can create exercise
      * 
-     * @test
+     * 
      */
     public function test_team_member_can_create_exercise()
     {
@@ -251,7 +251,7 @@ class TeamExerciseControllerTest extends TenantTestCase
     /**
      * Test exercise creation validation
      * 
-     * @test
+     * 
      */
     public function test_exercise_creation_validation()
     {
@@ -289,7 +289,7 @@ class TeamExerciseControllerTest extends TenantTestCase
     /**
      * Test team member can show exercise
      * 
-     * @test
+     * 
      */
     public function test_team_member_can_show_exercise()
     {
@@ -323,7 +323,7 @@ class TeamExerciseControllerTest extends TenantTestCase
     /**
      * Test team member can update exercise
      * 
-     * @test
+     * 
      */
     public function test_team_member_can_update_exercise()
     {
@@ -360,7 +360,7 @@ class TeamExerciseControllerTest extends TenantTestCase
     /**
      * Test team member can delete exercise
      * 
-     * @test
+     * 
      */
     public function test_team_member_can_delete_exercise()
     {
@@ -382,7 +382,7 @@ class TeamExerciseControllerTest extends TenantTestCase
     /**
      * Test students cannot access team exercise endpoints
      * 
-     * @test
+     * 
      */
     public function test_students_cannot_access_team_exercise_endpoints()
     {
@@ -414,7 +414,7 @@ class TeamExerciseControllerTest extends TenantTestCase
     /**
      * Test unauthenticated access is blocked
      * 
-     * @test
+     * 
      */
     public function test_unauthenticated_access_blocked()
     {
@@ -432,7 +432,7 @@ class TeamExerciseControllerTest extends TenantTestCase
     /**
      * Test nonexistent exercise returns 404
      * 
-     * @test
+     * 
      */
     public function test_nonexistent_exercise_returns_404()
     {
@@ -453,7 +453,7 @@ class TeamExerciseControllerTest extends TenantTestCase
     /**
      * Test exercise with invalid content format is rejected
      * 
-     * @test
+     * 
      */
     public function test_exercise_with_invalid_content_format_is_rejected()
     {
@@ -475,7 +475,7 @@ class TeamExerciseControllerTest extends TenantTestCase
     /**
      * Test exercise types are properly validated
      * 
-     * @test
+     * 
      */
     public function test_exercise_types_are_properly_validated()
     {

@@ -15,7 +15,7 @@ class TenantRegistrationTest extends TenantTestCase
     /**
      * Test tenant admin registration
      * 
-     * @test
+     * 
      */
     public function test_super_admin_can_register_new_tenant_admin()
     {
@@ -60,7 +60,7 @@ class TenantRegistrationTest extends TenantTestCase
     /**
      * Test tenant slug validation
      * 
-     * @test
+     * 
      */
     public function test_can_validate_tenant_slug_availability()
     {
@@ -78,7 +78,7 @@ class TenantRegistrationTest extends TenantTestCase
     /**
      * Test tenant slug validation for existing slug
      * 
-     * @test
+     * 
      */
     public function test_validation_fails_for_existing_tenant_slug()
     {
@@ -96,7 +96,7 @@ class TenantRegistrationTest extends TenantTestCase
     /**
      * Test tenant creation progress tracking
      * 
-     * @test
+     * 
      */
     public function test_can_check_tenant_creation_progress()
     {
@@ -121,7 +121,7 @@ class TenantRegistrationTest extends TenantTestCase
     /**
      * Test registration validation
      * 
-     * @test
+     * 
      */
     public function test_tenant_registration_validates_required_fields()
     {
@@ -157,7 +157,7 @@ class TenantRegistrationTest extends TenantTestCase
     /**
      * Test duplicate slug handling
      * 
-     * @test
+     * 
      */
     public function test_registration_fails_with_duplicate_slug()
     {
@@ -188,7 +188,7 @@ class TenantRegistrationTest extends TenantTestCase
     /**
      * Test duplicate email handling
      * 
-     * @test
+     * 
      */
     public function test_registration_fails_with_duplicate_email()
     {
@@ -217,7 +217,7 @@ class TenantRegistrationTest extends TenantTestCase
     /**
      * Test registration requires super admin auth
      * 
-     * @test
+     * 
      */
     public function test_tenant_registration_requires_super_admin_auth()
     {

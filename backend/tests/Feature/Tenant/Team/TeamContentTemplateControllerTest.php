@@ -76,7 +76,7 @@ class TeamContentTemplateControllerTest extends TenantTestCase
     /**
      * Test team member can list content templates
      * 
-     * @test
+     * 
      */
     public function test_team_member_can_list_content_templates()
     {
@@ -111,7 +111,7 @@ class TeamContentTemplateControllerTest extends TenantTestCase
     /**
      * Test team member can create content template
      * 
-     * @test
+     * 
      */
     public function test_team_member_can_create_content_template()
     {
@@ -151,7 +151,7 @@ class TeamContentTemplateControllerTest extends TenantTestCase
     /**
      * Test content template creation validation
      * 
-     * @test
+     * 
      */
     public function test_content_template_creation_validation()
     {
@@ -177,7 +177,7 @@ class TeamContentTemplateControllerTest extends TenantTestCase
     /**
      * Test team member can get recommendations
      * 
-     * @test
+     * 
      */
     public function test_team_member_can_get_template_recommendations()
     {
@@ -198,7 +198,7 @@ class TeamContentTemplateControllerTest extends TenantTestCase
     /**
      * Test team member can get templates by type
      * 
-     * @test
+     * 
      */
     public function test_team_member_can_get_templates_by_type()
     {
@@ -230,7 +230,7 @@ class TeamContentTemplateControllerTest extends TenantTestCase
     /**
      * Test team member can show content template
      * 
-     * @test
+     * 
      */
     public function test_team_member_can_show_content_template()
     {
@@ -264,7 +264,7 @@ class TeamContentTemplateControllerTest extends TenantTestCase
     /**
      * Test team member can update content template
      * 
-     * @test
+     * 
      */
     public function test_team_member_can_update_content_template()
     {
@@ -303,7 +303,7 @@ class TeamContentTemplateControllerTest extends TenantTestCase
     /**
      * Test team member can delete content template
      * 
-     * @test
+     * 
      */
     public function test_team_member_can_delete_content_template()
     {
@@ -325,7 +325,7 @@ class TeamContentTemplateControllerTest extends TenantTestCase
     /**
      * Test team member can preview template
      * 
-     * @test
+     * 
      */
     public function test_team_member_can_preview_template()
     {
@@ -348,7 +348,7 @@ class TeamContentTemplateControllerTest extends TenantTestCase
     /**
      * Test team member can clone template
      * 
-     * @test
+     * 
      */
     public function test_team_member_can_clone_template()
     {
@@ -378,7 +378,7 @@ class TeamContentTemplateControllerTest extends TenantTestCase
     /**
      * Test team member can get template usage stats
      * 
-     * @test
+     * 
      */
     public function test_team_member_can_get_template_usage_stats()
     {
@@ -402,7 +402,7 @@ class TeamContentTemplateControllerTest extends TenantTestCase
     /**
      * Test team member can instantiate template
      * 
-     * @test
+     * 
      */
     public function test_team_member_can_instantiate_template()
     {
@@ -433,7 +433,7 @@ class TeamContentTemplateControllerTest extends TenantTestCase
     /**
      * Test students cannot access team content template endpoints
      * 
-     * @test
+     * 
      */
     public function test_students_cannot_access_team_content_template_endpoints()
     {
@@ -464,7 +464,7 @@ class TeamContentTemplateControllerTest extends TenantTestCase
     /**
      * Test unauthenticated access is blocked
      * 
-     * @test
+     * 
      */
     public function test_unauthenticated_access_blocked()
     {
@@ -482,7 +482,7 @@ class TeamContentTemplateControllerTest extends TenantTestCase
     /**
      * Test nonexistent template returns 404
      * 
-     * @test
+     * 
      */
     public function test_nonexistent_template_returns_404()
     {

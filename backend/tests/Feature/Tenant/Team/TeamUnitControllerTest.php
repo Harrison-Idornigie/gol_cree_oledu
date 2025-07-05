@@ -95,7 +95,7 @@ class TeamUnitControllerTest extends TenantTestCase
     /**
      * Test team member can list units
      *
-     * @test
+     * 
      */
     public function test_team_member_can_list_units()
     {
@@ -152,7 +152,7 @@ class TeamUnitControllerTest extends TenantTestCase
     /**
      * Test team member can create unit
      * 
-     * @test
+     * 
      */
     public function test_team_member_can_create_unit()
     {
@@ -186,7 +186,7 @@ class TeamUnitControllerTest extends TenantTestCase
     /**
      * Test unit creation validation
      * 
-     * @test
+     * 
      */
     public function test_unit_creation_validation()
     {
@@ -211,7 +211,7 @@ class TeamUnitControllerTest extends TenantTestCase
     /**
      * Test team member can show unit
      *
-     * @test
+     * 
      */
     public function test_team_member_can_show_unit()
     {
@@ -247,7 +247,7 @@ class TeamUnitControllerTest extends TenantTestCase
     /**
      * Test team member can update unit
      * 
-     * @test
+     * 
      */
     public function test_team_member_can_update_unit()
     {
@@ -281,7 +281,7 @@ class TeamUnitControllerTest extends TenantTestCase
     /**
      * Test team member can delete unit
      * 
-     * @test
+     * 
      */
     public function test_team_member_can_delete_unit()
     {
@@ -303,7 +303,7 @@ class TeamUnitControllerTest extends TenantTestCase
     /**
      * Test team member can submit unit for review
      *
-     * @test
+     * 
      */
     public function test_team_member_can_submit_unit_for_review()
     {
@@ -341,7 +341,7 @@ class TeamUnitControllerTest extends TenantTestCase
     /**
      * Test team member can update unit status
      * 
-     * @test
+     * 
      */
     public function test_team_member_can_update_unit_status()
     {
@@ -372,7 +372,7 @@ class TeamUnitControllerTest extends TenantTestCase
     /**
      * Test team member can reorder unit topics
      *
-     * @test
+     * 
      */
     public function test_team_member_can_reorder_unit_topics()
     {
@@ -430,7 +430,7 @@ class TeamUnitControllerTest extends TenantTestCase
     /**
      * Test students cannot access team unit endpoints
      * 
-     * @test
+     * 
      */
     public function test_students_cannot_access_team_unit_endpoints()
     {
@@ -460,7 +460,7 @@ class TeamUnitControllerTest extends TenantTestCase
     /**
      * Test unauthenticated access is blocked
      * 
-     * @test
+     * 
      */
     public function test_unauthenticated_access_blocked()
     {
@@ -477,7 +477,7 @@ class TeamUnitControllerTest extends TenantTestCase
     /**
      * Test nonexistent unit returns 404
      * 
-     * @test
+     * 
      */
     public function test_nonexistent_unit_returns_404()
     {

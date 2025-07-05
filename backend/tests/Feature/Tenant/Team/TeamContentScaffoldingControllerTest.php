@@ -81,7 +81,7 @@ class TeamContentScaffoldingControllerTest extends TenantTestCase
     /**
      * Test team member can generate exercises
      * 
-     * @test
+     * 
      */
     public function test_team_member_can_generate_exercises()
     {
@@ -128,7 +128,7 @@ class TeamContentScaffoldingControllerTest extends TenantTestCase
     /**
      * Test team member can generate exercises from sentences
      * 
-     * @test
+     * 
      */
     public function test_team_member_can_generate_exercises_from_sentences()
     {
@@ -166,7 +166,7 @@ class TeamContentScaffoldingControllerTest extends TenantTestCase
     /**
      * Test team member can preview exercises before generation
      * 
-     * @test
+     * 
      */
     public function test_team_member_can_preview_exercises()
     {
@@ -203,7 +203,7 @@ class TeamContentScaffoldingControllerTest extends TenantTestCase
     /**
      * Test team member can generate lesson with AI
      * 
-     * @test
+     * 
      */
     public function test_team_member_can_generate_lesson()
     {
@@ -263,7 +263,7 @@ class TeamContentScaffoldingControllerTest extends TenantTestCase
     /**
      * Test team member can perform bulk generation
      * 
-     * @test
+     * 
      */
     public function test_team_member_can_perform_bulk_generation()
     {
@@ -315,7 +315,7 @@ class TeamContentScaffoldingControllerTest extends TenantTestCase
     /**
      * Test generation validation
      * 
-     * @test
+     * 
      */
     public function test_generation_endpoints_validate_input()
     {
@@ -351,7 +351,7 @@ class TeamContentScaffoldingControllerTest extends TenantTestCase
     /**
      * Test generation with AI service limitations
      * 
-     * @test
+     * 
      */
     public function test_generation_handles_ai_service_limitations()
     {
@@ -374,7 +374,7 @@ class TeamContentScaffoldingControllerTest extends TenantTestCase
     /**
      * Test students cannot access scaffolding endpoints
      * 
-     * @test
+     * 
      */
     public function test_students_cannot_access_scaffolding_endpoints()
     {
@@ -403,7 +403,7 @@ class TeamContentScaffoldingControllerTest extends TenantTestCase
     /**
      * Test unauthenticated access is blocked
      * 
-     * @test
+     * 
      */
     public function test_unauthenticated_access_blocked()
     {
@@ -424,7 +424,7 @@ class TeamContentScaffoldingControllerTest extends TenantTestCase
     /**
      * Test generation with nonexistent sentences
      * 
-     * @test
+     * 
      */
     public function test_generation_from_nonexistent_sentences_returns_422()
     {
@@ -444,7 +444,7 @@ class TeamContentScaffoldingControllerTest extends TenantTestCase
     /**
      * Test rate limiting on AI generation endpoints
      * 
-     * @test
+     * 
      */
     public function test_generation_respects_rate_limiting()
     {

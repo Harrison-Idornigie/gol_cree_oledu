@@ -71,7 +71,7 @@ class TeamGuideBookEntryControllerTest extends TenantTestCase
     /**
      * Test team member can list guide entries
      * 
-     * @test
+     * 
      */    public function test_team_member_can_list_guide_entries()
     {
         $this->runInTenantContext($this->tenant, function () {
@@ -116,7 +116,7 @@ class TeamGuideBookEntryControllerTest extends TenantTestCase
     /**
      * Test team member can create guide entry
      * 
-     * @test
+     * 
      */
     public function test_team_member_can_create_guide_entry()
     {
@@ -154,7 +154,7 @@ class TeamGuideBookEntryControllerTest extends TenantTestCase
     /**
      * Test guide entry creation validation
      * 
-     * @test
+     * 
      */
     public function test_guide_entry_creation_validation()
     {
@@ -194,7 +194,7 @@ class TeamGuideBookEntryControllerTest extends TenantTestCase
     /**
      * Test team member can show guide entry
      * 
-     * @test
+     * 
      */
     public function test_team_member_can_show_guide_entry()
     {
@@ -230,7 +230,7 @@ class TeamGuideBookEntryControllerTest extends TenantTestCase
     /**
      * Test team member can update guide entry
      * 
-     * @test
+     * 
      */
     public function test_team_member_can_update_guide_entry()
     {
@@ -267,7 +267,7 @@ class TeamGuideBookEntryControllerTest extends TenantTestCase
     /**
      * Test team member can delete guide entry
      * 
-     * @test
+     * 
      */
     public function test_team_member_can_delete_guide_entry()
     {
@@ -289,7 +289,7 @@ class TeamGuideBookEntryControllerTest extends TenantTestCase
     /**
      * Test filtering guide entries by category
      * 
-     * @test
+     * 
      */
     public function test_filtering_guide_entries_by_category()
     {
@@ -321,7 +321,7 @@ class TeamGuideBookEntryControllerTest extends TenantTestCase
     /**
      * Test filtering guide entries by language
      * 
-     * @test
+     * 
      */
     public function test_filtering_guide_entries_by_language()
     {
@@ -364,7 +364,7 @@ class TeamGuideBookEntryControllerTest extends TenantTestCase
     /**
      * Test searching guide entries
      * 
-     * @test
+     * 
      */
     public function test_searching_guide_entries()
     {
@@ -389,7 +389,7 @@ class TeamGuideBookEntryControllerTest extends TenantTestCase
     /**
      * Test students cannot access team guide entry endpoints
      * 
-     * @test
+     * 
      */
     public function test_students_cannot_access_team_guide_entry_endpoints()
     {
@@ -420,7 +420,7 @@ class TeamGuideBookEntryControllerTest extends TenantTestCase
     /**
      * Test unauthenticated access is blocked
      * 
-     * @test
+     * 
      */
     public function test_unauthenticated_access_blocked()
     {
@@ -438,7 +438,7 @@ class TeamGuideBookEntryControllerTest extends TenantTestCase
     /**
      * Test nonexistent guide entry returns 404
      * 
-     * @test
+     * 
      */
     public function test_nonexistent_guide_entry_returns_404()
     {
@@ -459,7 +459,7 @@ class TeamGuideBookEntryControllerTest extends TenantTestCase
     /**
      * Test valid categories are accepted
      * 
-     * @test
+     * 
      */
     public function test_valid_categories_are_accepted()
     {
@@ -483,7 +483,7 @@ class TeamGuideBookEntryControllerTest extends TenantTestCase
     /**
      * Test guide entry status transitions
      * 
-     * @test
+     * 
      */
     public function test_guide_entry_status_transitions()
     {

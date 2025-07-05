@@ -138,7 +138,7 @@ class TeamTopicControllerTest extends TenantTestCase
     /**
      * Test team member can list topics
      *
-     * @test
+     * 
      */
     public function test_team_member_can_list_topics()
     {
@@ -197,7 +197,7 @@ class TeamTopicControllerTest extends TenantTestCase
     /**
      * Test team member can create topic
      *
-     * @test
+     * 
      */
     public function test_team_member_can_create_topic()
     {
@@ -231,7 +231,7 @@ class TeamTopicControllerTest extends TenantTestCase
     /**
      * Test topic creation validation
      *
-     * @test
+     * 
      */
     public function test_topic_creation_validation()
     {
@@ -256,7 +256,7 @@ class TeamTopicControllerTest extends TenantTestCase
     /**
      * Test team member can show topic
      *
-     * @test
+     * 
      */
     public function test_team_member_can_show_topic()
     {
@@ -288,7 +288,7 @@ class TeamTopicControllerTest extends TenantTestCase
     /**
      * Test team member can update topic
      *
-     * @test
+     * 
      */
     public function test_team_member_can_update_topic()
     {
@@ -322,7 +322,7 @@ class TeamTopicControllerTest extends TenantTestCase
     /**
      * Test team member can delete topic
      *
-     * @test
+     * 
      */
     public function test_team_member_can_delete_topic()
     {
@@ -344,7 +344,7 @@ class TeamTopicControllerTest extends TenantTestCase
     /**
      * Test team member can submit topic for review
      *
-     * @test
+     * 
      */
     public function test_team_member_can_submit_topic_for_review()
     {
@@ -372,7 +372,7 @@ class TeamTopicControllerTest extends TenantTestCase
     /**
      * Test team member can update topic status
      *
-     * @test
+     * 
      */
     public function test_team_member_can_update_topic_status()
     {
@@ -398,7 +398,7 @@ class TeamTopicControllerTest extends TenantTestCase
     /**
      * Test team member can reorder topic lessons
      *
-     * @test
+     * 
      */
     public function test_team_member_can_reorder_topic_lessons()
     {
@@ -436,7 +436,7 @@ class TeamTopicControllerTest extends TenantTestCase
     /**
      * Test students cannot access team topic endpoints
      *
-     * @test
+     * 
      */
     public function test_students_cannot_access_team_topic_endpoints()
     {
@@ -466,7 +466,7 @@ class TeamTopicControllerTest extends TenantTestCase
     /**
      * Test unauthenticated access is blocked
      *
-     * @test
+     * 
      */
     public function test_unauthenticated_access_blocked()
     {
@@ -483,7 +483,7 @@ class TeamTopicControllerTest extends TenantTestCase
     /**
      * Test nonexistent topic returns 404
      *
-     * @test
+     * 
      */
     public function test_nonexistent_topic_returns_404()
     {
