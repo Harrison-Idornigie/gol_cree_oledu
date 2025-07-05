@@ -12,7 +12,8 @@ class WordPolicy
      */
     public function viewAny(User $user): bool
     {
-        return true; // All authenticated users can view words
+        // All authenticated users can view words (students see only published ones via service layer)
+        return true;
     }
 
     /**
@@ -20,7 +21,13 @@ class WordPolicy
      */
     public function view(User $user, Word $word): bool
     {
-        return true; // All authenticated users can view individual words
+        // Students can only view published words
+        if ($user->isStudent()) {
+            return $word->status === 'published';
+        }
+
+        // Admins and team members can view all words
+        return $user->isTenantAdmin() || $user->isTeam();
     }
 
     /**

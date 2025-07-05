@@ -4,6 +4,8 @@ namespace App\Http\Requests\Tenant\Team\Language;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class CreateWordRequest extends FormRequest
 {
@@ -38,7 +40,7 @@ class CreateWordRequest extends FormRequest
             'metadata.tags' => 'nullable|array',
             'metadata.tags.*' => 'string|max:50',
             'metadata.notes' => 'nullable|string',
-            
+
             'translations' => 'array',
             'translations.*.language_id' => [
                 'required',
@@ -53,7 +55,7 @@ class CreateWordRequest extends FormRequest
             'translations.*.usage_examples.*.translation' => 'required|string|max:1000',
             'translations.*.usage_examples.*.type' => 'required|string|in:common,formal,casual,idiom',
             'translations.*.translation_order' => 'nullable|integer|min:0',
-            
+
             'pronunciation_audio' => [
                 'nullable',
                 'file',
@@ -63,7 +65,7 @@ class CreateWordRequest extends FormRequest
                     return in_array($this->input('metadata.difficulty'), ['beginner', 'intermediate']);
                 })
             ],
-            
+
             'translations.*.pronunciation_audio' => 'nullable|file|mimes:mp3,wav|max:10240'
         ];
     }
@@ -119,5 +121,19 @@ class CreateWordRequest extends FormRequest
 
             $this->merge(['translations' => $translations]);
         }
+    }
+
+    /**
+     * Handle a failed validation attempt.
+     */
+    protected function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(
+            response()->json([
+                'success' => false,
+                'message' => 'Validation failed.',
+                'errors' => $validator->errors(),
+            ], 422)
+        );
     }
 }

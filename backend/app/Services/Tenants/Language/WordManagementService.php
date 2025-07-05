@@ -534,8 +534,7 @@ class WordManagementService
             'language',
             'translations.language',
             'translations.media',
-            'media',
-            'usageExamples'
+            'media'
         ]);
 
         $wordData = $word->getPreviewData();
@@ -545,7 +544,9 @@ class WordManagementService
             'total_translations' => $word->translations->count(),
             'languages_available' => $word->translations->pluck('language.code')->unique()->count(),
             'has_audio' => $word->hasMedia('pronunciation'),
-            'has_usage_examples' => $word->usageExamples->isNotEmpty(),
+            'has_usage_examples' => $word->translations->some(function ($translation) {
+                return !empty($translation->usage_examples);
+            }),
             'sentences_count' => $word->sentences()->count(),
         ];
 
@@ -557,16 +558,10 @@ class WordManagementService
             return $data;
         });
 
-        // Add usage examples
-        $wordData['usage_examples'] = $word->usageExamples->map(function ($example) {
-            return [
-                'id' => $example->id,
-                'example' => $example->example,
-                'translation' => $example->translation,
-                'context' => $example->context,
-                'type' => $example->type,
-            ];
-        });
+        // Add usage examples from translations
+        $wordData['usage_examples'] = $word->translations->flatMap(function ($translation) {
+            return $translation->usage_examples ?? [];
+        })->unique();
 
         return $wordData;
     }
@@ -577,7 +572,8 @@ class WordManagementService
     public function getWordsForStudents(array $filters = [], int $perPage = 20, int $page = 1): array
     {
         $query = Word::with(['language', 'translations.language', 'media'])
-            ->withCount('translations');
+            ->withCount('translations')
+            ->where('status', 'published'); // Students can only see published words
 
         // Apply search
         if (!empty($filters['search'])) {
@@ -598,6 +594,22 @@ class WordManagementService
 
         if (!empty($filters['part_of_speech'])) {
             $query->where('part_of_speech', $filters['part_of_speech']);
+        }
+
+        // Apply proficiency level filtering
+        if (!empty($filters['proficiency_level'])) {
+            $query->whereJsonContains('metadata->proficiency_level', $filters['proficiency_level']);
+        }
+
+        // Apply max proficiency level filtering (for vocabulary progression)
+        if (!empty($filters['max_proficiency_level'])) {
+            $maxLevel = $filters['max_proficiency_level'];
+            $allowedLevels = $this->getProficiencyLevelsUpTo($maxLevel);
+            $query->where(function ($q) use ($allowedLevels) {
+                foreach ($allowedLevels as $level) {
+                    $q->orWhereJsonContains('metadata->proficiency_level', $level);
+                }
+            });
         }
 
         // Apply sorting
@@ -622,14 +634,12 @@ class WordManagementService
 
         return [
             'data' => $words,
-            'pagination' => [
-                'current_page' => $paginated->currentPage(),
-                'last_page' => $paginated->lastPage(),
-                'per_page' => $paginated->perPage(),
-                'total' => $paginated->total(),
-                'from' => $paginated->firstItem(),
-                'to' => $paginated->lastItem(),
-            ]
+            'current_page' => $paginated->currentPage(),
+            'last_page' => $paginated->lastPage(),
+            'per_page' => $paginated->perPage(),
+            'total' => $paginated->total(),
+            'from' => $paginated->firstItem(),
+            'to' => $paginated->lastItem(),
         ];
     }
 
@@ -693,6 +703,8 @@ class WordManagementService
         return $translations->map(function ($translation) use ($includeAudio) {
             $data = [
                 'id' => $translation->id,
+                'translation' => $translation->text,
+                'language_id' => $translation->language->id,
                 'language' => [
                     'id' => $translation->language->id,
                     'code' => $translation->language->code,
@@ -702,6 +714,7 @@ class WordManagementService
                 'pronunciation_key' => $translation->pronunciation_key,
                 'context_notes' => $translation->context_notes,
                 'usage_examples' => $translation->usage_examples,
+                'is_primary' => $translation->translation_order === 1,
             ];
 
             if ($includeAudio) {
@@ -709,6 +722,8 @@ class WordManagementService
                 $data['audio_url'] = $translation->hasMedia('pronunciation')
                     ? $translation->getFirstMediaUrl('pronunciation')
                     : null;
+            } else {
+                $data['audio_url'] = null;
             }
 
             return $data;
@@ -789,11 +804,13 @@ class WordManagementService
             'text' => $word->text,
             'pronunciation_key' => $word->pronunciation_key,
             'part_of_speech' => $word->part_of_speech,
+            'language_id' => $word->language_id,
             'language' => [
                 'id' => $word->language->id,
                 'code' => $word->language->code,
                 'name' => $word->language->name,
             ],
+            'metadata' => $word->metadata ?? [],
             'has_audio' => $word->hasMedia('pronunciation'),
             'audio_url' => $word->hasMedia('pronunciation')
                 ? $word->getFirstMediaUrl('pronunciation')
@@ -807,6 +824,21 @@ class WordManagementService
         }
 
         return $data;
+    }
+
+    /**
+     * Get proficiency levels up to and including the specified level.
+     */
+    private function getProficiencyLevelsUpTo(string $maxLevel): array
+    {
+        $levels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
+        $maxIndex = array_search($maxLevel, $levels);
+
+        if ($maxIndex === false) {
+            return ['A1']; // Default to A1 if invalid level
+        }
+
+        return array_slice($levels, 0, $maxIndex + 1);
     }
 
     /**

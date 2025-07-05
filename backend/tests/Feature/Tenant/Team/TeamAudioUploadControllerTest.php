@@ -10,9 +10,11 @@ use App\Models\Tenants\Word;
 use App\Models\Tenants\WordTranslation;
 use App\Models\Tenants\Sentence;
 use App\Models\Tenants\SentenceTranslation;
+use App\Services\Tenants\Media\AudioProcessingService;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\Sanctum;
+use Mockery;
 
 class TeamAudioUploadControllerTest extends TenantTestCase
 {
@@ -43,6 +45,9 @@ class TeamAudioUploadControllerTest extends TenantTestCase
 
         // Mock storage
         Storage::fake('public');
+
+        // Mock AudioProcessingService to avoid ffprobe dependency
+        $this->mockAudioProcessingService();
     }
 
     protected function tearDown(): void
@@ -51,6 +56,40 @@ class TeamAudioUploadControllerTest extends TenantTestCase
         $this->tearDownTenancy();
 
         parent::tearDown();
+    }
+
+    protected function mockAudioProcessingService(): void
+    {
+        $mock = Mockery::mock(AudioProcessingService::class);
+
+        // Mock processWordAudio method
+        $mock->shouldReceive('processWordAudio')
+            ->andReturn([
+                'audio_url' => 'http://example.com/audio/test.mp3',
+                'duration' => 2.5,
+                'collection' => 'pronunciation',
+                'media_id' => 1
+            ]);
+
+        // Mock processSentenceAudio method
+        $mock->shouldReceive('processSentenceAudio')
+            ->andReturn([
+                'audio_url' => 'http://example.com/audio/sentence.mp3',
+                'duration' => 3.0,
+                'collection' => 'pronunciation',
+                'media_id' => 2
+            ]);
+
+        // Mock processTranslationAudio method
+        $mock->shouldReceive('processTranslationAudio')
+            ->andReturn([
+                'audio_url' => 'http://example.com/audio/translation.mp3',
+                'duration' => 2.8,
+                'collection' => 'pronunciation',
+                'media_id' => 3
+            ]);
+
+        $this->app->instance(AudioProcessingService::class, $mock);
     }
 
 

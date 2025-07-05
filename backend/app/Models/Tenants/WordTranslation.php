@@ -30,9 +30,9 @@ class WordTranslation extends Model implements HasMedia
     ];
 
     protected array $auditLogEvents = [
-        'created' => 'Created translation for :word in :language: :text',
-        'updated' => 'Updated translation for :word in :language',
-        'deleted' => 'Deleted translation for :word in :language'
+        'created' => 'Created translation for :word in :language_code: :text',
+        'updated' => 'Updated translation for :word in :language_code',
+        'deleted' => 'Deleted translation for :word in :language_code'
     ];
 
     protected array $auditLogProperties = [
@@ -74,7 +74,7 @@ class WordTranslation extends Model implements HasMedia
         return $this->word?->text ?? 'unknown';
     }
 
-    public function getLanguageAttribute(): string
+    public function getLanguageCodeAttribute(): string
     {
         return $this->language?->code ?? 'unknown';
     }
@@ -84,7 +84,7 @@ class WordTranslation extends Model implements HasMedia
      */
     public function getPronunciationUrl(): ?string
     {
-        return $this->hasMedia('pronunciation') ? 
+        return $this->hasMedia('pronunciation') ?
             $this->getFirstMediaUrl('pronunciation') : null;
     }
 

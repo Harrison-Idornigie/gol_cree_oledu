@@ -36,11 +36,11 @@ class AudioProcessingService
     ): array {
         // Get audio duration using getID3
         $duration = $this->getAudioDuration($audioFile);
-        
+
         // Add to media collection
         $collectionName = $isSlowVersion ? 'slow_pronunciation' : 'pronunciation';
         $fileName = "{$sentence->id}_" . ($isSlowVersion ? 'slow' : 'normal') . ".mp3";
-        
+
         $mediaFile = $sentence->addMedia($audioFile)
             ->usingFileName($fileName)
             ->withCustomProperties([
@@ -51,7 +51,7 @@ class AudioProcessingService
             ->toMediaCollection($collectionName);
 
         return [
-            'url' => $mediaFile->getUrl(),
+            'audio_url' => $mediaFile->getUrl(),
             'duration' => $duration,
             'collection' => $collectionName,
             'media_id' => $mediaFile->id
@@ -67,10 +67,10 @@ class AudioProcessingService
         ?string $languageCode = null
     ): array {
         $duration = $this->getAudioDuration($audioFile);
-        
+
         $collection = $languageCode ? "pronunciation_{$languageCode}" : 'pronunciation';
         $fileName = "{$word->id}" . ($languageCode ? "_{$languageCode}" : '') . ".mp3";
-        
+
         $mediaFile = $word->addMedia($audioFile)
             ->usingFileName($fileName)
             ->withCustomProperties([
@@ -81,7 +81,7 @@ class AudioProcessingService
             ->toMediaCollection($collection);
 
         return [
-            'url' => $mediaFile->getUrl(),
+            'audio_url' => $mediaFile->getUrl(),
             'duration' => $duration,
             'collection' => $collection,
             'media_id' => $mediaFile->id
@@ -97,10 +97,10 @@ class AudioProcessingService
         ?string $languageCode = null
     ): array {
         $duration = $this->getAudioDuration($audioFile);
-        
+
         $collection = $languageCode ? "pronunciation_{$languageCode}" : 'pronunciation';
         $fileName = "{$translation->id}" . ($languageCode ? "_{$languageCode}" : '') . ".mp3";
-        
+
         $mediaFile = $translation->addMedia($audioFile)
             ->usingFileName($fileName)
             ->withCustomProperties([
@@ -111,7 +111,7 @@ class AudioProcessingService
             ->toMediaCollection($collection);
 
         return [
-            'url' => $mediaFile->getUrl(),
+            'audio_url' => $mediaFile->getUrl(),
             'duration' => $duration,
             'collection' => $collection,
             'media_id' => $mediaFile->id

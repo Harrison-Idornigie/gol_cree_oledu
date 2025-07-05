@@ -27,7 +27,6 @@ class StudentWordControllerTest extends TenantTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->setUpTenancy();
 
         // Create test tenant
         $this->tenant = $this->createTestTenant();
@@ -381,7 +380,7 @@ class StudentWordControllerTest extends TenantTestCase
             ])
             ->assertJson([
                 'success' => true,
-                'message' => 'Words retrieved successfully.'
+                'message' => 'Batch words retrieved successfully.'
             ]);
 
         // Verify we get the requested words
@@ -409,12 +408,15 @@ class StudentWordControllerTest extends TenantTestCase
                 'is_active' => true
             ]);
 
+            // Create a user in the other tenant context
+            $otherUser = $this->createTenantTeam();
+
             $otherWord = Word::create([
                 'text' => 'other-word',
                 'language_id' => $language->id,
                 'part_of_speech' => 'noun',
                 'status' => 'published',
-                'created_by' => 1
+                'created_by' => $otherUser->id
             ]);
         });
 
@@ -586,7 +588,7 @@ class StudentWordControllerTest extends TenantTestCase
         $words = $response->json('data.data');
         foreach ($words as $word) {
             $this->assertArrayHasKey('audio_url', $word['metadata']);
-            $this->assertStringContains('audio/crk/', $word['metadata']['audio_url']);
+            $this->assertStringContainsString('audio/crk/', $word['metadata']['audio_url']);
         }
     }
 

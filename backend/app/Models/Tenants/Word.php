@@ -39,7 +39,7 @@ class Word extends Model implements HasMedia
     ];
 
     protected array $auditLogEvents = [
-        'created' => 'Created new word: :text (:language)',
+        'created' => 'Created new word: :text (:language_code)',
         'updated' => 'Updated word: :text',
         'deleted' => 'Deleted word: :text',
     ];
@@ -102,18 +102,12 @@ class Word extends Model implements HasMedia
             ->orderBy('position');
     }
 
-    /**
-     * Get this word's usage examples.
-     */
-    public function usageExamples(): HasMany
-    {
-        return $this->hasMany(UsageExample::class);
-    }
+
 
     /**
      * Custom attribute for audit log message.
      */
-    public function getLanguageAttribute(): string
+    public function getLanguageCodeAttribute(): string
     {
         return $this->language?->code ?? 'unknown';
     }
@@ -142,6 +136,8 @@ class Word extends Model implements HasMedia
             'text' => $this->text,
             'pronunciation_key' => $this->pronunciation_key,
             'part_of_speech' => $this->part_of_speech,
+            'status' => $this->status,
+            'created_by' => $this->created_by,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at
         ];

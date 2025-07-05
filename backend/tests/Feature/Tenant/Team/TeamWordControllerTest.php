@@ -8,10 +8,12 @@ use App\Models\Landlord\Tenant;
 use App\Models\Tenants\User;
 use App\Models\Tenants\Language;
 use App\Models\Tenants\Word;
+use App\Services\Tenants\Media\AudioProcessingService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\UploadedFile;
+use Mockery;
 
 class TeamWordControllerTest extends TenantTestCase
 {
@@ -45,12 +47,31 @@ class TeamWordControllerTest extends TenantTestCase
         for ($i = 0; $i < 3; $i++) {
             $this->testWords[] = $this->createWord();
         }
+
+        // Mock AudioProcessingService to avoid ffprobe dependency
+        $this->mockAudioProcessingService();
     }
 
     protected function tearDown(): void
     {
         $this->tearDownTenancy();
         parent::tearDown();
+    }
+
+    protected function mockAudioProcessingService(): void
+    {
+        $mock = Mockery::mock(AudioProcessingService::class);
+
+        // Mock processWordAudio method
+        $mock->shouldReceive('processWordAudio')
+            ->andReturn([
+                'audio_url' => 'http://example.com/audio/test.mp3',
+                'duration' => 2.5,
+                'collection' => 'pronunciation',
+                'media_id' => 1
+            ]);
+
+        $this->app->instance(AudioProcessingService::class, $mock);
     }
 
 
@@ -586,19 +607,5 @@ class TeamWordControllerTest extends TenantTestCase
     {
         // Initialize the tenant context for the test
         tenancy()->initialize($tenant);
-    }
-
-    /**
-     * Helper method to create tenant admin
-     */
-    protected function createTenantAdmin(array $attributes = []): User
-    {
-        return $this->runInTenantContext($this->tenant, function () use ($attributes) {
-            return User::factory()->create(array_merge([
-                'email' => 'admin@test.com',
-                'membership' => 'admin',
-                'email_verified_at' => now(),
-            ], $attributes));
-        });
     }
 }

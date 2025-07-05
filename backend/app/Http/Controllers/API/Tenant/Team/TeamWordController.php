@@ -257,7 +257,7 @@ class TeamWordController extends BaseAPIController
 
         try {
             $this->wordService->deleteWord($word);
-            return $this->sendNoContentResponse();
+            return $this->sendResponse([], 'Word deleted successfully.');
         } catch (\Exception $e) {
             return $this->sendError('Failed to delete word: ' . $e->getMessage());
         }
@@ -306,7 +306,7 @@ class TeamWordController extends BaseAPIController
             $data = ['words' => $request->get('words', [])];
             $results = $this->wordService->bulkOperation('update', $data);
 
-            return $this->sendResponse($results, 'Bulk update completed.');
+            return $this->sendResponse($results, 'Words updated successfully.');
         } catch (ValidationException $e) {
             return $this->sendError('Validation failed', $e->errors(), 422);
         } catch (\Exception $e) {

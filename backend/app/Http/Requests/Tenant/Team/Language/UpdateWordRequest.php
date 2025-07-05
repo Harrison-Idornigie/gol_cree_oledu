@@ -20,18 +20,28 @@ class UpdateWordRequest extends FormRequest
      */
     public function rules(): array
     {
-        $word = $this->route('word');
-        
+        $wordId = $this->route('word');
+
+        // Get the actual word model for validation
+        $word = null;
+        if ($wordId) {
+            try {
+                $word = \App\Models\Tenants\Word::find($wordId);
+            } catch (\Exception $e) {
+                // If word not found, validation will fail anyway
+            }
+        }
+
         return [
             'language_id' => 'sometimes|exists:languages,id',
             'text' => [
                 'sometimes',
                 'string',
                 'max:255',
-                Rule::unique('words')->where(function ($query) {
-                    return $query->where('language_id', $this->language_id ?? $this->route('word')->language_id)
-                        ->where('part_of_speech', $this->part_of_speech ?? $this->route('word')->part_of_speech);
-                })->ignore($word->id)
+                Rule::unique('words')->where(function ($query) use ($word) {
+                    return $query->where('language_id', $this->language_id ?? ($word ? $word->language_id : null))
+                        ->where('part_of_speech', $this->part_of_speech ?? ($word ? $word->part_of_speech : null));
+                })->ignore($wordId)
             ],
             'pronunciation_key' => 'nullable|string|max:255',
             'part_of_speech' => 'sometimes|string|max:50',
@@ -40,13 +50,13 @@ class UpdateWordRequest extends FormRequest
             'metadata.tags' => 'nullable|array',
             'metadata.tags.*' => 'string|max:50',
             'metadata.notes' => 'nullable|string',
-            
+
             'translations' => 'sometimes|array',
             'translations.*.id' => 'nullable|exists:word_translations,id',
             'translations.*.language_id' => [
                 'required_with:translations.*',
                 'exists:languages,id',
-                Rule::notIn([$this->language_id ?? $word->language_id])
+                Rule::notIn([$this->language_id ?? ($word ? $word->language_id : null)])
             ],
             'translations.*.text' => 'required_with:translations.*|string|max:255',
             'translations.*.pronunciation_key' => 'nullable|string|max:255',
@@ -56,7 +66,7 @@ class UpdateWordRequest extends FormRequest
             'translations.*.usage_examples.*.translation' => 'required|string|max:1000',
             'translations.*.usage_examples.*.type' => 'required|string|in:common,formal,casual,idiom',
             'translations.*.translation_order' => 'nullable|integer|min:0',
-            
+
             'pronunciation_audio' => 'nullable|file|mimes:mp3,wav|max:10240',
             'translations.*.pronunciation_audio' => 'nullable|file|mimes:mp3,wav|max:10240'
         ];

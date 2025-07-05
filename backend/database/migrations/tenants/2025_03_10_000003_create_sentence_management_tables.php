@@ -52,18 +52,7 @@ return new class extends Migration
             $table->index(['sentence_id', 'word_id']);
         });
 
-        // Usage examples
-        Schema::create('usage_examples', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('word_id')->constrained()->onDelete('cascade');
-            $table->foreignId('sentence_id')->constrained();
-            $table->string('type'); // common usage, idiom, formal, casual, etc.
-            $table->integer('difficulty_level');
-            $table->json('metadata')->nullable();
-            $table->timestamps();
-
-            $table->index(['word_id', 'type', 'difficulty_level']);
-        });
+        
     }
 
     /**
@@ -71,7 +60,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('usage_examples');
         Schema::dropIfExists('sentence_words');
         Schema::dropIfExists('sentence_translations');
         Schema::dropIfExists('sentences');

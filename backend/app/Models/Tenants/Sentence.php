@@ -84,13 +84,7 @@ class Sentence extends Model implements HasMedia
             ->orderBy('position');
     }
 
-    /**
-     * Get the usage examples that use this sentence.
-     */
-    public function usageExamples(): HasMany
-    {
-        return $this->hasMany(UsageExample::class);
-    }
+
 
     /**
      * Custom attribute for audit log message.
