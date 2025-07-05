@@ -155,7 +155,7 @@ class StudentUnitControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_view_units_in_learning_path()
+    public function test_student_can_view_units_in_learning_path()
     {
         // Get test data
         $testData = $this->setupTestData();
@@ -197,7 +197,7 @@ class StudentUnitControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_view_individual_unit()
+    public function test_student_can_view_individual_unit()
     {
         // Get test data
         $testData = $this->setupTestData();
@@ -229,7 +229,7 @@ class StudentUnitControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_view_unit_progress()
+    public function test_student_can_view_unit_progress()
     {
         // Get test data
         $testData = $this->setupTestData();
@@ -264,7 +264,7 @@ class StudentUnitControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function unauthenticated_user_cannot_access_units()
+    public function test_unauthenticated_user_cannot_access_units()
     {
         // Get test data
         $testData = $this->setupTestData();
@@ -276,7 +276,7 @@ class StudentUnitControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function team_member_cannot_access_student_unit_endpoints()
+    public function test_team_member_cannot_access_student_unit_endpoints()
     {
         // Get test data
         $testData = $this->setupTestData();
@@ -297,7 +297,7 @@ class StudentUnitControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function student_cannot_access_unpublished_unit()
+    public function test_student_cannot_access_unpublished_unit()
     {
         // Get test data
         $testData = $this->setupTestData();
@@ -323,7 +323,7 @@ class StudentUnitControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_mark_unit_as_started()
+    public function test_student_can_mark_unit_as_started()
     {
         // Get test data
         $testData = $this->setupTestData();
@@ -365,7 +365,7 @@ class StudentUnitControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_update_unit_progress()
+    public function test_student_can_update_unit_progress()
     {
         // Get test data
         $testData = $this->setupTestData();
@@ -409,7 +409,7 @@ class StudentUnitControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_mark_unit_as_completed()
+    public function test_student_can_mark_unit_as_completed()
     {
         // Get test data
         $testData = $this->setupTestData();
@@ -454,7 +454,7 @@ class StudentUnitControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_view_topics_in_unit()
+    public function test_student_can_view_topics_in_unit()
     {
         // Get test data
         $testData = $this->setupTestData();
@@ -504,7 +504,7 @@ class StudentUnitControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_view_unit_with_topics_and_lessons()
+    public function test_student_can_view_unit_with_topics_and_lessons()
     {
         // Get test data
         $testData = $this->setupTestData();
@@ -560,7 +560,7 @@ class StudentUnitControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_get_next_unit_recommendation()
+    public function test_student_can_get_next_unit_recommendation()
     {
         // Get test data
         $testData = $this->setupTestData();
@@ -603,7 +603,7 @@ class StudentUnitControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function student_cannot_update_progress_beyond_100_percent()
+    public function test_student_cannot_update_progress_beyond_100_percent()
     {
         // Get test data
         $testData = $this->setupTestData();
@@ -636,7 +636,7 @@ class StudentUnitControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function student_cannot_access_nonexistent_unit()
+    public function test_student_cannot_access_nonexistent_unit()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
@@ -652,7 +652,7 @@ class StudentUnitControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function student_cannot_access_unit_from_different_learning_path_directly()
+    public function test_student_cannot_access_unit_from_different_learning_path_directly()
     {
         // Setup additional test data - another learning path with units
         $additionalTestData = $this->runInTenantContext($this->tenant, function () {
@@ -700,7 +700,7 @@ class StudentUnitControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_get_recommended_next_units()
+    public function test_student_can_get_recommended_next_units()
     {
         // Get test data
         $testData = $this->setupTestData();

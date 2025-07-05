@@ -122,7 +122,7 @@ class StudentGuideControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_view_published_guide_entries()
+    public function test_student_can_view_published_guide_entries()
     {
         Sanctum::actingAs($this->studentUser, [], 'tenant');
 
@@ -163,7 +163,7 @@ class StudentGuideControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_view_specific_published_guide_entry()
+    public function test_student_can_view_specific_published_guide_entry()
     {
         Sanctum::actingAs($this->studentUser, [], 'tenant');
 
@@ -199,7 +199,7 @@ class StudentGuideControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function student_cannot_view_draft_guide_entries()
+    public function test_student_cannot_view_draft_guide_entries()
     {
         Sanctum::actingAs($this->studentUser, [], 'tenant');
 
@@ -215,7 +215,7 @@ class StudentGuideControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function student_cannot_view_private_guide_entries()
+    public function test_student_cannot_view_private_guide_entries()
     {
         Sanctum::actingAs($this->studentUser, [], 'tenant');
 
@@ -231,7 +231,7 @@ class StudentGuideControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function unauthenticated_user_cannot_access_guide_entries()
+    public function test_unauthenticated_user_cannot_access_guide_entries()
     {
         $response = $this->getJson("/api/{$this->tenant->slug}/student/guide-entries");
 
@@ -239,7 +239,7 @@ class StudentGuideControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function guide_entries_are_filtered_by_student_context()
+    public function test_guide_entries_are_filtered_by_student_context()
     {
         Sanctum::actingAs($this->studentUser, [], 'tenant');
 
@@ -257,7 +257,7 @@ class StudentGuideControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function guide_entries_support_filtering_by_category()
+    public function test_guide_entries_support_filtering_by_category()
     {
         Sanctum::actingAs($this->studentUser, [], 'tenant');
 
@@ -273,7 +273,7 @@ class StudentGuideControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function guide_entries_support_filtering_by_language()
+    public function test_guide_entries_support_filtering_by_language()
     {
         Sanctum::actingAs($this->studentUser, [], 'tenant');
 
@@ -289,7 +289,7 @@ class StudentGuideControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function guide_entries_support_search_functionality()
+    public function test_guide_entries_support_search_functionality()
     {
         Sanctum::actingAs($this->studentUser, [], 'tenant');
 
@@ -318,7 +318,7 @@ class StudentGuideControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function guide_entry_includes_related_data()
+    public function test_guide_entry_includes_related_data()
     {
         Sanctum::actingAs($this->studentUser, [], 'tenant');
 
@@ -344,7 +344,7 @@ class StudentGuideControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function guide_entries_respect_tenant_isolation()
+    public function test_guide_entries_respect_tenant_isolation()
     {
         // Create another tenant with guide entries
         $otherTenant = $this->createTestTenant('other-tenant');
@@ -375,7 +375,7 @@ class StudentGuideControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function guide_entry_handles_nonexistent_id()
+    public function test_guide_entry_handles_nonexistent_id()
     {
         Sanctum::actingAs($this->studentUser, [], 'tenant');
 
@@ -389,7 +389,7 @@ class StudentGuideControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function guide_entries_handle_server_errors_gracefully()
+    public function test_guide_entries_handle_server_errors_gracefully()
     {
         Sanctum::actingAs($this->studentUser, [], 'tenant');
 

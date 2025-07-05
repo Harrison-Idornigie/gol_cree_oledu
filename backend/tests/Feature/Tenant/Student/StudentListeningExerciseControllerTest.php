@@ -224,7 +224,7 @@ class StudentListeningExerciseControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_get_listening_exercises_by_language()
+    public function test_student_can_get_listening_exercises_by_language()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
@@ -250,7 +250,7 @@ class StudentListeningExerciseControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_check_listening_exercise_answer()
+    public function test_student_can_check_listening_exercise_answer()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
@@ -325,7 +325,7 @@ class StudentListeningExerciseControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function student_cannot_check_answer_without_required_fields()
+    public function test_student_cannot_check_answer_without_required_fields()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
@@ -351,7 +351,7 @@ class StudentListeningExerciseControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function student_cannot_access_unpublished_listening_exercise()
+    public function test_student_cannot_access_unpublished_listening_exercise()
     {
         // Create an unpublished listening exercise
         $unpublishedExerciseId = $this->runInTenantContext($this->tenant, function () {
@@ -400,7 +400,7 @@ class StudentListeningExerciseControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function exercise_completion_is_tracked()
+    public function test_exercise_completion_is_tracked()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
@@ -429,7 +429,7 @@ class StudentListeningExerciseControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function unauthenticated_user_cannot_access_listening_exercises()
+    public function test_unauthenticated_user_cannot_access_listening_exercises()
     {
         // API call without authentication
         $response = $this->getJson("/api/{$this->tenant->slug}/student/exercises/listening/language/{$this->testData['language_id']}");

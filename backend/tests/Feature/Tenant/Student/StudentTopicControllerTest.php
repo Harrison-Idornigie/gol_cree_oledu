@@ -120,7 +120,7 @@ class StudentTopicControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_view_topics_in_unit()
+    public function test_student_can_view_topics_in_unit()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
@@ -156,7 +156,7 @@ class StudentTopicControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_view_individual_topic()
+    public function test_student_can_view_individual_topic()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
@@ -201,7 +201,7 @@ class StudentTopicControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_view_topic_progress()
+    public function test_student_can_view_topic_progress()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
@@ -233,7 +233,7 @@ class StudentTopicControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function unauthenticated_user_cannot_access_topics()
+    public function test_unauthenticated_user_cannot_access_topics()
     {
         // API call without authentication
         $response = $this->getJson("/api/{$this->tenant->slug}/student/topics/{$this->testData['topic1_id']}");
@@ -242,7 +242,7 @@ class StudentTopicControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function student_cannot_access_unpublished_topic()
+    public function test_student_cannot_access_unpublished_topic()
     {
         // Create an unpublished topic
         $unpublishedTopicId = $this->runInTenantContext($this->tenant, function () {

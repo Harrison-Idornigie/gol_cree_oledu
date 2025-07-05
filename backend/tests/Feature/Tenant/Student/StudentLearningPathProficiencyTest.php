@@ -82,7 +82,7 @@ class StudentLearningPathProficiencyTest extends TenantTestCase
 
 
     /**  */
-    public function student_can_get_all_learning_paths_with_proficiency_levels()
+    public function test_student_can_get_all_learning_paths_with_proficiency_levels()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
@@ -120,7 +120,7 @@ class StudentLearningPathProficiencyTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_filter_learning_paths_by_specific_proficiency_level()
+    public function test_student_can_filter_learning_paths_by_specific_proficiency_level()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
@@ -145,7 +145,7 @@ class StudentLearningPathProficiencyTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_filter_learning_paths_by_language()
+    public function test_student_can_filter_learning_paths_by_language()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
@@ -166,7 +166,7 @@ class StudentLearningPathProficiencyTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_get_individual_learning_path_details()
+    public function test_student_can_get_individual_learning_path_details()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
@@ -197,7 +197,7 @@ class StudentLearningPathProficiencyTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_enroll_in_learning_path_and_track_progress()
+    public function test_student_can_enroll_in_learning_path_and_track_progress()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
@@ -238,7 +238,7 @@ class StudentLearningPathProficiencyTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_get_learning_path_progress()
+    public function test_student_can_get_learning_path_progress()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
@@ -279,7 +279,7 @@ class StudentLearningPathProficiencyTest extends TenantTestCase
     }
 
     /**  */
-    public function student_cannot_access_learning_paths_from_other_tenants()
+    public function test_student_cannot_access_learning_paths_from_other_tenants()
     {
         // Authenticate as student in original tenant
         Sanctum::actingAs($this->studentUser, [], 'tenant');
@@ -301,7 +301,7 @@ class StudentLearningPathProficiencyTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_get_learning_path_progress_after_enrollment()
+    public function test_student_can_get_learning_path_progress_after_enrollment()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
@@ -331,7 +331,7 @@ class StudentLearningPathProficiencyTest extends TenantTestCase
 
 
     /**  */
-    public function student_cannot_enroll_in_same_learning_path_twice()
+    public function test_student_cannot_enroll_in_same_learning_path_twice()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
@@ -356,7 +356,7 @@ class StudentLearningPathProficiencyTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_search_learning_paths()
+    public function test_student_can_search_learning_paths()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');

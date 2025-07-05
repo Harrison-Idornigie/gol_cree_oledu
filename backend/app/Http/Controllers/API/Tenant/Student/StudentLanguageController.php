@@ -81,8 +81,12 @@ class StudentLanguageController extends BaseAPIController
      * @param Language $language
      * @return JsonResponse
      */
-    public function show(Request $request, Language $language): JsonResponse
+    public function show(Request $request, $languageId): JsonResponse
     {
+        $language = Language::find($languageId);
+        if (!$language) {
+            return $this->sendErrorResponse('Language not found or not available', [], 404);
+        }
         $this->authorize('view', $language);
 
         try {
@@ -106,11 +110,15 @@ class StudentLanguageController extends BaseAPIController
      * Get learning paths for a language.
      * 
      * @param Request $request
-     * @param Language $language
+     * @param string $languageId
      * @return JsonResponse
      */
-    public function learningPaths(Request $request, Language $language): JsonResponse
+    public function learningPaths(Request $request, $languageId): JsonResponse
     {
+        $language = Language::find($languageId);
+        if (!$language) {
+            return $this->sendErrorResponse('Language not found or not available', [], 404);
+        }
         $this->authorize('view', $language);
 
         try {
@@ -135,11 +143,15 @@ class StudentLanguageController extends BaseAPIController
      * Get proficiency levels for a language.
      * 
      * @param Request $request
-     * @param Language $language
+     * @param string $languageId
      * @return JsonResponse
      */
-    public function proficiencyLevels(Request $request, Language $language): JsonResponse
+    public function proficiencyLevels(Request $request, $languageId): JsonResponse
     {
+        $language = Language::find($languageId);
+        if (!$language) {
+            return $this->sendErrorResponse('Language not found or not available', [], 404);
+        }
         $this->authorize('view', $language);
 
         try {
@@ -155,11 +167,15 @@ class StudentLanguageController extends BaseAPIController
      * Get user's progress in a language.
      * 
      * @param Request $request
-     * @param Language $language
+     * @param string $languageId
      * @return JsonResponse
      */
-    public function userProgress(Request $request, Language $language): JsonResponse
+    public function userProgress(Request $request, $languageId): JsonResponse
     {
+        $language = Language::find($languageId);
+        if (!$language) {
+            return $this->sendErrorResponse('Language not found or not available', [], 404);
+        }
         $this->authorize('view', $language);
 
         try {
@@ -179,8 +195,12 @@ class StudentLanguageController extends BaseAPIController
      * @param Language $language
      * @return JsonResponse
      */
-    public function dashboard(Request $request, Language $language): JsonResponse
+    public function dashboard(Request $request, $languageId): JsonResponse
     {
+        $language = Language::find($languageId);
+        if (!$language) {
+            return $this->sendErrorResponse('Language not found or not available', [], 404);
+        }
         $this->authorize('view', $language);
 
         try {

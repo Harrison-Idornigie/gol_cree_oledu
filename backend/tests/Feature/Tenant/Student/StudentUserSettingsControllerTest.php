@@ -39,7 +39,7 @@ class StudentUserSettingsControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_get_user_settings()
+    public function test_student_can_get_user_settings()
     {
         Sanctum::actingAs($this->studentUser, ['*'], 'tenant');
 
@@ -63,7 +63,7 @@ class StudentUserSettingsControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_update_user_settings()
+    public function test_student_can_update_user_settings()
     {
         Sanctum::actingAs($this->studentUser, ['*'], 'tenant');
 
@@ -108,7 +108,7 @@ class StudentUserSettingsControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function student_settings_validates_interface_language()
+    public function test_student_settings_validates_interface_language()
     {
         Sanctum::actingAs($this->studentUser, ['*'], 'tenant');
 
@@ -121,7 +121,7 @@ class StudentUserSettingsControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function student_settings_validates_daily_goal()
+    public function test_student_settings_validates_daily_goal()
     {
         Sanctum::actingAs($this->studentUser, ['*'], 'tenant');
 
@@ -136,7 +136,7 @@ class StudentUserSettingsControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function student_settings_validates_difficulty_preference()
+    public function test_student_settings_validates_difficulty_preference()
     {
         Sanctum::actingAs($this->studentUser, ['*'], 'tenant');
 
@@ -165,7 +165,7 @@ class StudentUserSettingsControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function unauthenticated_users_cannot_access_settings()
+    public function test_unauthenticated_users_cannot_access_settings()
     {
         $response = $this->getJson("/api/{$this->tenant->slug}/student/settings");
         $response->assertStatus(401);
@@ -177,7 +177,7 @@ class StudentUserSettingsControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function student_settings_are_tenant_isolated()
+    public function test_student_settings_are_tenant_isolated()
     {
         $otherTenant = $this->createTestTenant('other-tenant');
 
@@ -189,7 +189,7 @@ class StudentUserSettingsControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_partially_update_settings()
+    public function test_student_can_partially_update_settings()
     {
         Sanctum::actingAs($this->studentUser, ['*'], 'tenant');
 
@@ -214,7 +214,7 @@ class StudentUserSettingsControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function student_settings_persist_across_requests()
+    public function test_student_settings_persist_across_requests()
     {
         Sanctum::actingAs($this->studentUser, ['*'], 'tenant');
 

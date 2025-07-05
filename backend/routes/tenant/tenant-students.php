@@ -85,12 +85,12 @@ Route::prefix('student')->middleware(['auth:tenant', 'tenant-access', \App\Http\
     Route::get('learning-paths/{learningPathId}/next-unit', [StudentUnitController::class, 'nextUnit'])->withoutMiddleware('Illuminate\Routing\Middleware\SubstituteBindings');
     Route::get('units/recommendations', [StudentUnitController::class, 'recommendations']);
     Route::get('units/{unitId}', [StudentUnitController::class, 'show'])->middleware('sequential-learning')->withoutMiddleware('Illuminate\Routing\Middleware\SubstituteBindings');
-    Route::get('units/{unitId}/progress', [StudentUnitController::class, 'progress'])->withoutMiddleware('Illuminate\Routing\Middleware\SubstituteBindings');
-    Route::get('units/{unitId}/topics', [StudentUnitController::class, 'topics'])->withoutMiddleware('Illuminate\Routing\Middleware\SubstituteBindings');
-    Route::get('units/{unitId}/contents', [StudentUnitController::class, 'contents'])->withoutMiddleware('Illuminate\Routing\Middleware\SubstituteBindings');
-    Route::post('units/{unitId}/start', [StudentUnitController::class, 'start'])->withoutMiddleware('Illuminate\Routing\Middleware\SubstituteBindings');
-    Route::put('units/{unitId}/progress', [StudentUnitController::class, 'updateProgress'])->withoutMiddleware('Illuminate\Routing\Middleware\SubstituteBindings');
-    Route::put('units/{unitId}/complete', [StudentUnitController::class, 'complete'])->withoutMiddleware('Illuminate\Routing\Middleware\SubstituteBindings');
+    Route::get('units/{unitId}/progress', [StudentUnitController::class, 'progress']);
+    Route::get('units/{unitId}/topics', [StudentUnitController::class, 'topics']);
+    Route::get('units/{unitId}/contents', [StudentUnitController::class, 'contents']);
+    Route::post('units/{unitId}/start', [StudentUnitController::class, 'start']);
+    Route::put('units/{unitId}/progress', [StudentUnitController::class, 'updateProgress']);
+    Route::put('units/{unitId}/complete', [StudentUnitController::class, 'complete']);
 
     // Topics
     Route::get('units/{unit}/topics', [StudentTopicController::class, 'index']);

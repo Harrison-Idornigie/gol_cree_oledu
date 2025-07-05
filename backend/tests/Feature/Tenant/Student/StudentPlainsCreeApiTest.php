@@ -295,7 +295,7 @@ class StudentPlainsCreeApiTest extends TenantTestCase
 
 
     /**  */
-    public function student_can_access_plains_cree_languages_with_starter_pack_metadata()
+    public function test_student_can_access_plains_cree_languages_with_starter_pack_metadata()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
@@ -332,7 +332,7 @@ class StudentPlainsCreeApiTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_get_learning_paths_filtered_by_proficiency_level()
+    public function test_student_can_get_learning_paths_filtered_by_proficiency_level()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
@@ -365,7 +365,7 @@ class StudentPlainsCreeApiTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_access_age_appropriate_learning_paths()
+    public function test_student_can_access_age_appropriate_learning_paths()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
@@ -382,7 +382,7 @@ class StudentPlainsCreeApiTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_get_learning_path_with_vocabulary_constraints()
+    public function test_student_can_get_learning_path_with_vocabulary_constraints()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
@@ -414,7 +414,7 @@ class StudentPlainsCreeApiTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_enroll_in_plains_cree_learning_path()
+    public function test_student_can_enroll_in_plains_cree_learning_path()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
@@ -446,7 +446,7 @@ class StudentPlainsCreeApiTest extends TenantTestCase
     }
 
     /**  */
-    public function student_cannot_access_learning_paths_from_other_tenants()
+    public function test_student_cannot_access_learning_paths_from_other_tenants()
     {
         // Create learning path in other tenant
         $otherLearningPath = $this->runInTenantContext($this->otherTenant, function () {
@@ -478,7 +478,7 @@ class StudentPlainsCreeApiTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_access_units_with_syllabics_content()
+    public function test_student_can_access_units_with_syllabics_content()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
@@ -512,7 +512,7 @@ class StudentPlainsCreeApiTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_access_topics_with_cultural_context()
+    public function test_student_can_access_topics_with_cultural_context()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
@@ -546,7 +546,7 @@ class StudentPlainsCreeApiTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_access_lessons_with_vocabulary_constraints()
+    public function test_student_can_access_lessons_with_vocabulary_constraints()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
@@ -582,7 +582,7 @@ class StudentPlainsCreeApiTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_access_exercises_with_duolingo_features()
+    public function test_student_can_access_exercises_with_duolingo_features()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
@@ -626,7 +626,7 @@ class StudentPlainsCreeApiTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_get_vocabulary_with_progression_constraints()
+    public function test_student_can_get_vocabulary_with_progression_constraints()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
@@ -649,7 +649,7 @@ class StudentPlainsCreeApiTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_get_words_with_syllabics_and_audio()
+    public function test_student_can_get_words_with_syllabics_and_audio()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');

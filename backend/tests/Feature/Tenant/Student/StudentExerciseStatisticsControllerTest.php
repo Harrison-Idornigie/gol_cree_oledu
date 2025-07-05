@@ -104,7 +104,7 @@ class StudentExerciseStatisticsControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_get_exercise_statistics()
+    public function test_student_can_get_exercise_statistics()
     {
         Sanctum::actingAs($this->studentUser, ['*'], 'tenant');
 
@@ -162,7 +162,7 @@ class StudentExerciseStatisticsControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function exercise_statistics_only_show_current_students_data()
+    public function test_exercise_statistics_only_show_current_students_data()
     {
         Sanctum::actingAs($this->studentUser, ['*'], 'tenant');
 
@@ -180,7 +180,7 @@ class StudentExerciseStatisticsControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function exercise_statistics_calculates_scores_correctly()
+    public function test_exercise_statistics_calculates_scores_correctly()
     {
         Sanctum::actingAs($this->studentUser, ['*'], 'tenant');
 
@@ -199,7 +199,7 @@ class StudentExerciseStatisticsControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function exercise_statistics_calculates_time_correctly()
+    public function test_exercise_statistics_calculates_time_correctly()
     {
         Sanctum::actingAs($this->studentUser, ['*'], 'tenant');
 
@@ -218,7 +218,7 @@ class StudentExerciseStatisticsControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function exercise_statistics_includes_recent_attempts()
+    public function test_exercise_statistics_includes_recent_attempts()
     {
         Sanctum::actingAs($this->studentUser, ['*'], 'tenant');
 
@@ -243,7 +243,7 @@ class StudentExerciseStatisticsControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function exercise_statistics_returns_404_for_nonexistent_exercise()
+    public function test_exercise_statistics_returns_404_for_nonexistent_exercise()
     {
         Sanctum::actingAs($this->studentUser, ['*'], 'tenant');
 
@@ -253,7 +253,7 @@ class StudentExerciseStatisticsControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function exercise_statistics_returns_empty_data_for_no_attempts()
+    public function test_exercise_statistics_returns_empty_data_for_no_attempts()
     {
         // Create exercise with no attempts
         $exerciseWithNoAttempts = $this->runInTenantContext($this->tenant, function () {
@@ -295,7 +295,7 @@ class StudentExerciseStatisticsControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function unauthenticated_users_cannot_access_exercise_statistics()
+    public function test_unauthenticated_users_cannot_access_exercise_statistics()
     {
         $response = $this->getJson("/api/{$this->tenant->slug}/student/exercises/{$this->exercise->id}/statistics");
 
@@ -303,7 +303,7 @@ class StudentExerciseStatisticsControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function exercise_statistics_are_tenant_isolated()
+    public function test_exercise_statistics_are_tenant_isolated()
     {
         $otherTenant = $this->createTestTenant(['slug' => 'other-tenant']);
 
@@ -316,7 +316,7 @@ class StudentExerciseStatisticsControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function exercise_statistics_include_performance_trend()
+    public function test_exercise_statistics_include_performance_trend()
     {
         Sanctum::actingAs($this->studentUser, ['*'], 'tenant');
 

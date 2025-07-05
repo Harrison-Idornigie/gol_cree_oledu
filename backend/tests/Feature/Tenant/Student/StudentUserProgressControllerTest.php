@@ -195,7 +195,7 @@ class StudentUserProgressControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_get_all_their_progress()
+    public function test_student_can_get_all_their_progress()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
@@ -229,7 +229,7 @@ class StudentUserProgressControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_see_progress_for_specific_item()
+    public function test_student_can_see_progress_for_specific_item()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
@@ -257,7 +257,7 @@ class StudentUserProgressControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_create_new_progress()
+    public function test_student_can_create_new_progress()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
@@ -300,7 +300,7 @@ class StudentUserProgressControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_update_existing_progress()
+    public function test_student_can_update_existing_progress()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
@@ -342,7 +342,7 @@ class StudentUserProgressControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function student_cannot_update_another_students_progress()
+    public function test_student_cannot_update_another_students_progress()
     {
         // Create another student
         $otherStudent = $this->createTenantStudent();
@@ -379,7 +379,7 @@ class StudentUserProgressControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function validates_progress_percentage_is_valid()
+    public function test_validates_progress_percentage_is_valid()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
@@ -412,7 +412,7 @@ class StudentUserProgressControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function unauthenticated_user_cannot_access_progress_endpoints()
+    public function test_unauthenticated_user_cannot_access_progress_endpoints()
     {
         // API call without authentication
         $response = $this->getJson("/api/{$this->tenant->slug}/student/progress");

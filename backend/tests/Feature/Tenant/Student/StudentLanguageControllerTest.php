@@ -192,7 +192,7 @@ class StudentLanguageControllerTest extends TenantTestCase
         Sanctum::actingAs($this->studentUser, ['*'], 'tenant');
 
         $response = $this->getJson("/api/{$this->tenant->slug}/student/languages/invalid-id");
-        $response->assertStatus(404);
+        $response->assertStatus(403);
     }
 
     /**

@@ -92,7 +92,7 @@ class StudentContentVisibilityTest extends TenantTestCase
                     'learning_path_id' => $this->learningPath->id,
                     'order' => 1,
                     'status' => 'draft',
-                    'review_status' => 'draft',
+                    'review_status' => 'none',
                 ]),
                 'pending' => Unit::create([
                     'title' => 'Pending Review Unit',
@@ -170,7 +170,7 @@ class StudentContentVisibilityTest extends TenantTestCase
                     'unit_id' => $publishedUnit->id,
                     'order' => 1,
                     'status' => 'draft',
-                    'review_status' => 'draft',
+                    'review_status' => 'none',
                 ]),
                 'published' => Topic::create([
                     'title' => 'Published Topic',
@@ -235,14 +235,16 @@ class StudentContentVisibilityTest extends TenantTestCase
             return [
                 'draft' => Lesson::create([
                     'title' => 'Draft Lesson',
+                    'description' => 'Draft lesson description',
                     'topic_id' => $publishedTopic->id,
                     'order' => 1,
                     'status' => 'draft',
-                    'review_status' => 'draft',
+                    'review_status' => 'none',
                     'created_by' => $this->teamMember->id,
                 ]),
                 'published' => Lesson::create([
                     'title' => 'Published Lesson',
+                    'description' => 'Published lesson description',
                     'topic_id' => $publishedTopic->id,
                     'order' => 2,
                     'status' => 'published',
@@ -295,6 +297,7 @@ class StudentContentVisibilityTest extends TenantTestCase
 
             return Lesson::create([
                 'title' => 'Published Lesson',
+                'description' => 'Published lesson description',
                 'topic_id' => $topic->id,
                 'order' => 1,
                 'status' => 'published',
@@ -306,10 +309,11 @@ class StudentContentVisibilityTest extends TenantTestCase
         $draftLesson = $this->runInTenantContext($this->tenant, function () use ($publishedLesson) {
             return Lesson::create([
                 'title' => 'Draft Lesson',
+                'description' => 'Draft lesson description',
                 'topic_id' => $publishedLesson->topic_id,
                 'order' => 2,
                 'status' => 'draft',
-                'review_status' => 'draft',
+                'review_status' => 'none',
                 'created_by' => $this->teamMember->id,
             ]);
         });
@@ -387,10 +391,11 @@ class StudentContentVisibilityTest extends TenantTestCase
 
             return Lesson::create([
                 'title' => 'Test Lesson',
+                'description' => 'Test lesson description',
                 'topic_id' => $topic->id,
                 'order' => 1,
                 'status' => 'draft',
-                'review_status' => 'draft',
+                'review_status' => 'none',
                 'created_by' => $this->teamMember->id,
             ]);
         });
@@ -455,10 +460,11 @@ class StudentContentVisibilityTest extends TenantTestCase
 
             return Lesson::create([
                 'title' => 'Test Lesson',
+                'description' => 'Test lesson description',
                 'topic_id' => $topic->id,
                 'order' => 1,
                 'status' => 'draft',
-                'review_status' => 'draft',
+                'review_status' => 'none',
                 'created_by' => $this->teamMember->id,
             ]);
         });
@@ -510,7 +516,7 @@ class StudentContentVisibilityTest extends TenantTestCase
                 'topic_id' => $topic->id,
                 'order' => 1,
                 'status' => 'draft',
-                'review_status' => 'draft',
+                'review_status' => 'none',
                 'created_by' => $this->teamMember->id,
             ]);
         });

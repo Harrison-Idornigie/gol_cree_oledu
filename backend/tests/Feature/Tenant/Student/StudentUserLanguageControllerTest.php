@@ -99,7 +99,7 @@ class StudentUserLanguageControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_list_selected_languages()
+    public function test_student_can_list_selected_languages()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
@@ -130,7 +130,7 @@ class StudentUserLanguageControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_add_new_language()
+    public function test_student_can_add_new_language()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
@@ -176,7 +176,7 @@ class StudentUserLanguageControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_remove_selected_language()
+    public function test_student_can_remove_selected_language()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
@@ -198,7 +198,7 @@ class StudentUserLanguageControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_set_primary_language()
+    public function test_student_can_set_primary_language()
     {
         // First add a second language
         Sanctum::actingAs($this->studentUser, [], 'tenant');
@@ -241,7 +241,7 @@ class StudentUserLanguageControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function student_cannot_add_language_that_is_already_selected()
+    public function test_student_cannot_add_language_that_is_already_selected()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
@@ -257,7 +257,7 @@ class StudentUserLanguageControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function student_cannot_add_invalid_language_id()
+    public function test_student_cannot_add_invalid_language_id()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
@@ -273,7 +273,7 @@ class StudentUserLanguageControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function unauthenticated_user_cannot_access_language_endpoints()
+    public function test_unauthenticated_user_cannot_access_language_endpoints()
     {
         // API calls without authentication
         $response = $this->getJson("/api/{$this->tenant->slug}/student/user/selected-languages");

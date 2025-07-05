@@ -140,7 +140,7 @@ class StudentUnitTopicSequentialTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_access_units_for_enrolled_learning_path()
+    public function test_student_can_access_units_for_enrolled_learning_path()
     {
         // Enroll student in learning path
         $this->enrollStudentInLearningPath();
@@ -192,7 +192,7 @@ class StudentUnitTopicSequentialTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_access_individual_unit_with_syllabics_content()
+    public function test_student_can_access_individual_unit_with_syllabics_content()
     {
         // Enroll student in learning path
         $this->enrollStudentInLearningPath();
@@ -242,7 +242,7 @@ class StudentUnitTopicSequentialTest extends TenantTestCase
     }
 
     /**  */
-    public function student_cannot_access_locked_unit_due_to_sequential_learning()
+    public function test_student_cannot_access_locked_unit_due_to_sequential_learning()
     {
         // Enroll student in learning path
         $this->enrollStudentInLearningPath();
@@ -263,7 +263,7 @@ class StudentUnitTopicSequentialTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_unlock_next_unit_after_completing_previous()
+    public function test_student_can_unlock_next_unit_after_completing_previous()
     {
         // Enroll student in learning path
         $this->enrollStudentInLearningPath();
@@ -286,7 +286,7 @@ class StudentUnitTopicSequentialTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_access_topics_within_unlocked_unit()
+    public function test_student_can_access_topics_within_unlocked_unit()
     {
         // Enroll student in learning path
         $this->enrollStudentInLearningPath();
@@ -336,7 +336,7 @@ class StudentUnitTopicSequentialTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_access_individual_topic_with_cultural_context()
+    public function test_student_can_access_individual_topic_with_cultural_context()
     {
         // Enroll student in learning path
         $this->enrollStudentInLearningPath();
@@ -387,7 +387,7 @@ class StudentUnitTopicSequentialTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_get_topic_progress_with_syllabics_tracking()
+    public function test_student_can_get_topic_progress_with_syllabics_tracking()
     {
         // Enroll student in learning path
         $this->enrollStudentInLearningPath();
@@ -427,7 +427,7 @@ class StudentUnitTopicSequentialTest extends TenantTestCase
     }
 
     /**  */
-    public function student_cannot_access_topics_in_locked_unit()
+    public function test_student_cannot_access_topics_in_locked_unit()
     {
         // Enroll student in learning path
         $this->enrollStudentInLearningPath();
@@ -448,7 +448,7 @@ class StudentUnitTopicSequentialTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_track_unit_progress_with_topic_breakdown()
+    public function test_student_can_track_unit_progress_with_topic_breakdown()
     {
         // Enroll student in learning path
         $this->enrollStudentInLearningPath();
@@ -496,7 +496,7 @@ class StudentUnitTopicSequentialTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_get_units_with_syllabics_mastery_indicators()
+    public function test_student_can_get_units_with_syllabics_mastery_indicators()
     {
         // Enroll student in learning path
         $this->enrollStudentInLearningPath();
@@ -521,7 +521,7 @@ class StudentUnitTopicSequentialTest extends TenantTestCase
     }
 
     /**  */
-    public function student_cannot_access_units_without_enrollment()
+    public function test_student_cannot_access_units_without_enrollment()
     {
         // Don't enroll student in learning path
 

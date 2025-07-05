@@ -131,9 +131,8 @@ class StudentLessonExerciseVocabularyTest extends TenantTestCase
                         WordTranslation::create([
                             'word_id' => $word->id,
                             'language_id' => $this->englishLanguage->id,
-                            'translation' => $translation,
-                            'is_primary' => $index === 0,
-                            'created_by' => $this->teamUser->id
+                            'text' => $translation,
+                            'translation_order' => $index + 1,
                         ]);
                     }
 
@@ -351,7 +350,7 @@ class StudentLessonExerciseVocabularyTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_access_lessons_with_vocabulary_constraints()
+    public function test_student_can_access_lessons_with_vocabulary_constraints()
     {
         // Enroll student in learning path
         $this->enrollStudentInLearningPath();
@@ -394,7 +393,7 @@ class StudentLessonExerciseVocabularyTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_access_lesson_with_duolingo_features()
+    public function test_student_can_access_lesson_with_duolingo_features()
     {
         // Enroll student in learning path
         $this->enrollStudentInLearningPath();
@@ -445,7 +444,7 @@ class StudentLessonExerciseVocabularyTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_access_exercises_with_vocabulary_level_constraints()
+    public function test_student_can_access_exercises_with_vocabulary_level_constraints()
     {
         // Enroll student in learning path
         $this->enrollStudentInLearningPath();
@@ -492,7 +491,7 @@ class StudentLessonExerciseVocabularyTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_access_exercise_with_syllabics_and_audio()
+    public function test_student_can_access_exercise_with_syllabics_and_audio()
     {
         // Enroll student in learning path
         $this->enrollStudentInLearningPath();
@@ -521,7 +520,7 @@ class StudentLessonExerciseVocabularyTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_submit_exercise_answer_and_get_feedback()
+    public function test_student_can_submit_exercise_answer_and_get_feedback()
     {
         // Enroll student in learning path
         $this->enrollStudentInLearningPath();

@@ -455,7 +455,7 @@ class StudentAgeAppropriateContentTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_access_age_appropriate_learning_paths()
+    public function test_student_can_access_age_appropriate_learning_paths()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
@@ -494,7 +494,7 @@ class StudentAgeAppropriateContentTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_access_teen_adult_learning_paths()
+    public function test_student_can_access_teen_adult_learning_paths()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
@@ -514,7 +514,7 @@ class StudentAgeAppropriateContentTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_access_age_appropriate_unit_content()
+    public function test_student_can_access_age_appropriate_unit_content()
     {
         // Enroll student in kids learning path
         $this->enrollStudentInLearningPath('A1_kids');

@@ -140,7 +140,7 @@ class StudentLessonControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_view_lessons_in_topic()
+    public function test_student_can_view_lessons_in_topic()
     {
         // Authenticate as student using tenant guard (routes use auth:tenant)
         Sanctum::actingAs($this->studentUser, [], 'tenant');
@@ -174,7 +174,7 @@ class StudentLessonControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_view_individual_lesson()
+    public function test_student_can_view_individual_lesson()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
@@ -218,7 +218,7 @@ class StudentLessonControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_view_lesson_progress()
+    public function test_student_can_view_lesson_progress()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
@@ -243,7 +243,7 @@ class StudentLessonControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function unauthenticated_user_cannot_access_lessons()
+    public function test_unauthenticated_user_cannot_access_lessons()
     {
         // API call without authentication
         $response = $this->getJson("/api/{$this->tenant->slug}/student/lessons/{$this->testData['lesson1_id']}");
@@ -252,7 +252,7 @@ class StudentLessonControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function student_cannot_access_unpublished_lesson()
+    public function test_student_cannot_access_unpublished_lesson()
     {
         // Create an unpublished lesson
         $unpublishedLessonId = $this->runInTenantContext($this->tenant, function () {
@@ -279,7 +279,7 @@ class StudentLessonControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function student_cannot_access_lessons_of_unpublished_topic()
+    public function test_student_cannot_access_lessons_of_unpublished_topic()
     {
         // Create an unpublished topic
         $unpublishedTopicId = $this->runInTenantContext($this->tenant, function () {
@@ -306,7 +306,7 @@ class StudentLessonControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_mark_lesson_as_completed()
+    public function test_student_can_mark_lesson_as_completed()
     {
         // Authenticate as student using tenant guard (progress routes use auth:tenant)
         Sanctum::actingAs($this->studentUser, [], 'tenant');
@@ -353,7 +353,7 @@ class StudentLessonControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function sequential_learning_prevents_skipping_lessons()
+    public function test_sequential_learning_prevents_skipping_lessons()
     {
         // Assuming the application has sequential learning middleware
         // First, ensure the student hasn't completed or started lesson 1
@@ -385,7 +385,7 @@ class StudentLessonControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_partially_update_lesson_progress()
+    public function test_student_can_partially_update_lesson_progress()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
@@ -435,7 +435,7 @@ class StudentLessonControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function team_member_can_view_lessons()
+    public function test_team_member_can_view_lessons()
     {
         // Authenticate as team member
         Sanctum::actingAs($this->teamUser, [], 'tenant');
@@ -473,7 +473,7 @@ class StudentLessonControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function invalid_lesson_id_returns_404()
+    public function test_invalid_lesson_id_returns_404()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
@@ -492,7 +492,7 @@ class StudentLessonControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function student_cannot_make_invalid_progress_update()
+    public function test_student_cannot_make_invalid_progress_update()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
@@ -517,7 +517,7 @@ class StudentLessonControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_create_initial_progress_record()
+    public function test_student_can_create_initial_progress_record()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
@@ -571,7 +571,7 @@ class StudentLessonControllerTest extends TenantTestCase
     }
 
     /**  */
-    public function lesson_progress_endpoint_returns_progress_data()
+    public function test_lesson_progress_endpoint_returns_progress_data()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');

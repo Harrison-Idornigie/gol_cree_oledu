@@ -292,7 +292,7 @@ class StudentSyllabicsAudioTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_access_syllabics_vocabulary_with_audio()
+    public function test_student_can_access_syllabics_vocabulary_with_audio()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
@@ -336,7 +336,7 @@ class StudentSyllabicsAudioTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_access_individual_word_with_syllabics_breakdown()
+    public function test_student_can_access_individual_word_with_syllabics_breakdown()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
@@ -376,7 +376,7 @@ class StudentSyllabicsAudioTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_access_syllabics_learning_content()
+    public function test_student_can_access_syllabics_learning_content()
     {
         // Enroll student in learning path
         $this->enrollStudentInLearningPath();
@@ -413,7 +413,7 @@ class StudentSyllabicsAudioTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_access_syllabics_exercise_with_audio_features()
+    public function test_student_can_access_syllabics_exercise_with_audio_features()
     {
         // Enroll student in learning path
         $this->enrollStudentInLearningPath();
@@ -474,7 +474,7 @@ class StudentSyllabicsAudioTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_get_audio_pronunciation_variants()
+    public function test_student_can_get_audio_pronunciation_variants()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
@@ -498,7 +498,7 @@ class StudentSyllabicsAudioTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_access_cultural_context_with_ceremony_usage()
+    public function test_student_can_access_cultural_context_with_ceremony_usage()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
@@ -516,7 +516,7 @@ class StudentSyllabicsAudioTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_filter_words_by_syllabics_features()
+    public function test_student_can_filter_words_by_syllabics_features()
     {
         // Authenticate as student
         Sanctum::actingAs($this->studentUser, [], 'tenant');
@@ -536,7 +536,7 @@ class StudentSyllabicsAudioTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_access_topic_with_syllabics_characters()
+    public function test_student_can_access_topic_with_syllabics_characters()
     {
         // Enroll student in learning path
         $this->enrollStudentInLearningPath();
@@ -572,7 +572,7 @@ class StudentSyllabicsAudioTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_submit_syllabics_exercise_answer()
+    public function test_student_can_submit_syllabics_exercise_answer()
     {
         // Enroll student in learning path
         $this->enrollStudentInLearningPath();

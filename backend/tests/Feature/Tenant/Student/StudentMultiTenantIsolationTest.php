@@ -70,7 +70,7 @@ class StudentMultiTenantIsolationTest extends TenantTestCase
 
         // Create users for Tenant C
         $this->initializeTenantContext($this->tenantC);
-        $this->studentUserC = $this->createTenantStudent('student-c@tenantc.com');
+        $this->studentUserC = $this->createTenantStudent(['email' => 'student-c@tenantc.com']);
     }
 
     protected function createTenantSpecificContent(): void
@@ -248,7 +248,7 @@ class StudentMultiTenantIsolationTest extends TenantTestCase
     }
 
     /**  */
-    public function student_can_only_access_content_from_their_own_tenant()
+    public function test_student_can_only_access_content_from_their_own_tenant()
     {
         // Authenticate as student from Tenant A
         Sanctum::actingAs($this->studentUserA, [], 'tenant');
@@ -268,7 +268,7 @@ class StudentMultiTenantIsolationTest extends TenantTestCase
     }
 
     /**  */
-    public function student_cannot_access_content_from_other_tenants()
+    public function test_student_cannot_access_content_from_other_tenants()
     {
         // Authenticate as student from Tenant A
         Sanctum::actingAs($this->studentUserA, [], 'tenant');
@@ -282,7 +282,7 @@ class StudentMultiTenantIsolationTest extends TenantTestCase
     }
 
     /**  */
-    public function student_cannot_access_other_tenant_api_endpoints()
+    public function test_student_cannot_access_other_tenant_api_endpoints()
     {
         // Authenticate as student from Tenant A
         Sanctum::actingAs($this->studentUserA, [], 'tenant');
@@ -314,7 +314,7 @@ class StudentMultiTenantIsolationTest extends TenantTestCase
     }
 
     /**  */
-    public function starter_pack_system_works_correctly_across_tenants()
+    public function test_starter_pack_system_works_correctly_across_tenants()
     {
         // Each tenant should have their own starter pack content
 
@@ -439,7 +439,7 @@ class StudentMultiTenantIsolationTest extends TenantTestCase
     }
 
     /**  */
-    public function cross_tenant_data_leakage_prevention()
+    public function test_cross_tenant_data_leakage_prevention()
     {
         // Try various cross-tenant access attempts that should all fail
 
